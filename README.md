@@ -18,11 +18,13 @@ Things i have done:
 
 - moved settings.showAvarage to access tab because in layout tab the display conditions does not work as with settings.accessType
 
-## Added 2 new features: 
-also it would be possible to use hooks/signalslot to receice this, i decide to integrate my features directly, as it looks as there will be no further developement of ke_questionnaire.
+## Added new features: 
+Maybe also it would be possible to use hooks/signalslot to receice this, i decide to integrate my features directly, as it looks as there will be no further developement of ke_questionnaire.
 The added features are:
 - Choose X Random Questions from question pool and max random questions per page
 - max. time in seconds for total questionnaire
+- Possability in extension configuration to disable in backendcotroller, that the list of feusers, feGroups or tt Addresses are loaded
+ (will run into memory problem in Installations with lots of fe users, groups or tt_addresses)
 
 
 I also changed configuration\flexforms\questionnaire.xlm to be able to configure this 2 new features.
@@ -37,7 +39,15 @@ it uses:
 - TYPO3\CMS\Fluid\View\TemplateView->getLayoutRootPath() 
 since fluid 8.7 is removed. Need to use getLayoutRootPaths()
 
+## Breaking changes
 
+If you have changed the template:
+ke_questionnaire/Resources/Private/Templates/Backend/AuthCodesMail.html
+or the partial:
+ke_questionnaire/Resources/Private/Partials/Backend/CreateAndMailAuthCodes.html
+
+you need to adjust this:
+(You need to handover to the partial parameter 'text' and render the Email preview inside of the template )
 
 ## Bugs / Issues
 feel free to report Bugs to my fork in the github issue list.
