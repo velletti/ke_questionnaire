@@ -63,8 +63,10 @@
 	<br />
 	<div class="mailPreview">
 		<b>Subject:</b> {preview.subject}<br /><br />
-		<b>Mail-Text:</b><br />
-		<f:format.raw>{preview.body}</f:format.raw>	
+        <b>Mail-Text:</b><br /><br />
+        <f:format.html>{text.before}</f:format.html>
+        {authCode.authCode}
+        <f:format.html>{text.after}</f:format.html>
 	</div>
 	<hr />
 	<b><a title="Edit record" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[tt_content][{plugin.uid}]=edit'; return false;" href="#">

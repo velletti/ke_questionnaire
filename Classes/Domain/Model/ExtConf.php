@@ -67,6 +67,8 @@ class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var integer
 	 */
 	protected $csvExportInterval;
+
+
         
         /**
 	 * Premium
@@ -75,6 +77,22 @@ class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public $premium;
 
+
+    /**
+     * @var boolean
+     */
+    public $enableAuthCode2feUser ;
+
+
+    /**
+     * @var boolean
+     */
+    public $enableAuthCode2feGroups ;
+
+    /**
+     * @var boolean
+     */
+    public $enableAuthCode2ttAddress ;
 
 
 	/**
@@ -195,5 +213,53 @@ class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->csvExportInterval = $csvExportInterval;
 	}
 
+    /**
+     * @return bool
+     */
+    public function isEnableAuthCode2feUser()
+    {
+        return $this->enableAuthCode2feUser;
+    }
+
+    /**
+     * @param bool $enableAuthCode2feUser
+     */
+    public function setEnableAuthCode2feUser($enableAuthCode2feUser)
+    {
+        $this->enableAuthCode2feUser = $enableAuthCode2feUser;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnableAuthCode2feGroups()
+    {
+        return $this->enableAuthCode2feGroups;
+    }
+
+    /**
+     * @param bool $enableAuthCode2feGroups
+     */
+    public function setEnableAuthCode2feGroups($enableAuthCode2feGroups)
+    {
+        $this->enableAuthCode2feGroups = $enableAuthCode2feGroups;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnableAuthCode2ttAddress()
+    {
+        return $this->enableAuthCode2ttAddress;
+    }
+
+    /**
+     * @param bool $enableAuthCode2ttAddress
+     */
+    public function setEnableAuthCode2ttAddress($enableAuthCode2ttAddress)
+    {
+        $this->enableAuthCode2ttAddress = $enableAuthCode2ttAddress;
+    }
+
+
 }
-?>

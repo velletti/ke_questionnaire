@@ -65,6 +65,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	*/
     protected $flexFormService;
 
+
 	/**
      * @param \TYPO3\CMS\Extbase\Service\FlexFormService $flexFormService
      * @return void
@@ -152,28 +153,52 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		if ($plugin) $this->plugin = $plugin;
 		
 		$this->view->assign('plugin',$this->plugin);
-		
-		//feUser
-		$userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-		$groupRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository');
-		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$querySettings->setRespectStoragePage(FALSE);
-		$userRepository->setDefaultQuerySettings($querySettings);
-		$groupRepository->setDefaultQuerySettings($querySettings);
-		$this->view->assign('feusers',$userRepository->findAll());
-		$this->view->assign('fegroups',$groupRepository->findAll());
+
+		if ( $this->extConf->isEnableAuthCode2feUser() || $this->extConf->isEnableAuthCode2feGroups() ) {
+            // FE user / FFE Group Lists
+            $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+            $querySettings->setRespectStoragePage(FALSE);
+
+
+            if ( $this->extConf->isEnableAuthCode2feUser()  ) {
+                $userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+                $userRepository->setDefaultQuerySettings($querySettings);
+                $this->view->assign('feusers', $userRepository->findAll());
+            } else {
+                $this->view->assign('feusers', 'Disabled in EXT Configuration');
+            }
+            if ( $this->extConf->isEnableAuthCode2feGroups() ) {
+                $groupRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository');
+                $groupRepository->setDefaultQuerySettings($querySettings);
+                $this->view->assign('fegroups',$groupRepository->findAll());
+            } else {
+                $this->view->assign('fegroups', 'Disabled in EXT Configuration');
+
+            }
+        }
+
 		
 		//tt_address
 		$addresses = false;
-		//check if extension is installed
-		if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
-			$res = $GLOBALS['TYPO3_DB']->sql_query("SELECT * from tt_address WHERE hidden=0 and deleted=0");
-			$addresses = array();
-			while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-				$addresses[] = $address;
-			}
-		}
-		$this->view->assign('ttaddresses', $addresses);
+        if ( $this->extConf->isEnableAuthCode2ttAddress() ) {
+            //check if extension is installed
+            if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
+                $res = $GLOBALS['TYPO3_DB']->sql_query("SELECT * from tt_address WHERE hidden=0 and deleted=0");
+                $addresses = array();
+                while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+                    $addresses[] = $address;
+                }
+                $this->view->assign('ttaddresses', $addresses);
+            } else {
+                $this->view->assign('ttaddresses', "Extension ttaddress is not installed");
+            }
+
+        }  else {
+            $this->view->assign('ttaddresses', 'Disabled in EXT Configuration');
+
+        }
+
+
 		
 		//create the preview with the plugin or standard-texts
 		$preview = array();
@@ -182,8 +207,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']?$this->plugin['ffdata']['settings']['email']['invite']['text']['before']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.before', $this->extensionName)));
 		$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName)));
 		$this->view->assign('text',$text);
-		//render the preview with the "CreatedMail"-Template
-		$preview['body'] = trim($this->view->render('CreatedMail'));
+		// $preview['body'] = trim($this->view->render('CreatedMail'));
 		
 		$this->view->assign('preview', $preview);		
 	}
