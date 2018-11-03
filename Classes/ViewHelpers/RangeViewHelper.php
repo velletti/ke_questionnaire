@@ -86,11 +86,15 @@ class RangeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		
 		$this->output = '';
 		//check the Ranges
-		foreach ($this->collectRanges() as $range){
-			$this->templateVariableContainer->add($as, $range);
-			$this->output .= $this->renderChildren();
-			$this->templateVariableContainer->remove($as);			
-		}
+        $ranges = $this->collectRanges() ;
+        if( is_array($ranges)) {
+            foreach ($ranges as $range){
+                $this->templateVariableContainer->add($as, $range);
+                $this->output .= $this->renderChildren();
+                $this->templateVariableContainer->remove($as);
+            }
+        }
+
 		return $this->output;
 	}	
 	
@@ -101,12 +105,17 @@ class RangeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 */
 	private function collectRanges(){
 		$all_ranges = $this->getRanges();
-		/** @var \Kennziffer\KeQuestionnaire\Domain\Model\Range $range */
-        foreach ($all_ranges as $range){
-			if ($this->result->getPoints() >= $range->getPointsFrom() AND $this->result->getPoints() <= $range->getPointsUntil()){
-				$this->ranges[$range->getUid()] = $range;
-			}
-		}
+		if ( is_object($all_ranges) ||is_array($all_ranges)) {
+            /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Range $range */
+            foreach ($all_ranges as $range){
+                if ($this->result->getPoints() >= $range->getPointsFrom() AND $this->result->getPoints() <= $range->getPointsUntil()){
+                    $this->ranges[$range->getUid()] = $range;
+                }
+            }
+        } else {
+		    return false ;
+        }
+
 		
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'getPremiumRanges', array($this));
 		return $this->ranges;

@@ -248,9 +248,9 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 				// JVE - Jörg velletti Nov 2016 Changed hardCoded Template
 				$TemplateRootPaths = $this->view->getTemplateRootPaths() ;
 				foreach ($TemplateRootPaths as $templatePath ) {
-					$templatePathAndFilename = $templatePath . '/Result/End.html' ;
-					if (is_file($templatePathAndFilename)) {
-						break ;
+					$tempTemplatePathAndFilename = $templatePath . '/Result/End.html' ;
+					if (is_file($tempTemplatePathAndFilename)) {
+                        $templatePathAndFilename = $tempTemplatePathAndFilename ;
 					}
 				}
 
