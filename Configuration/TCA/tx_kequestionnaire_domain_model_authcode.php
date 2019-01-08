@@ -23,7 +23,7 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'authcode,',
+        'searchFields' => 'auth_code,',
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/authcode.svg'
     ),
 
