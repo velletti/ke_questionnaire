@@ -24,7 +24,7 @@ return  array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'finished,questions,',
+        'searchFields' => 'finished,questions,auth_code,',
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/result.svg'
     ),
     'interface' => array(
