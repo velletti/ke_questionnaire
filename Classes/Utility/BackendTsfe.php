@@ -31,23 +31,18 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-/*require_once(PATH_tslib . 'class.tslib_fe.php');
-require_once(PATH_t3lib . 'class.t3lib_userauth.php');
-require_once(PATH_tslib . 'class.tslib_feuserauth.php');
-require_once(PATH_t3lib . 'class.t3lib_cs.php');
-require_once(PATH_tslib . 'class.tslib_content.php');
-require_once(PATH_t3lib . 'class.t3lib_tstemplate.php');
-require_once(PATH_t3lib . 'class.t3lib_page.php');
-*/
 class BackendTsfe {
 
 	function buildTSFE() {
+	    // j.v. page ID and TypeNum  needed to make the instance of TypoScriptFrntendController
+	    $typeNum = 0 ;
 		if (!is_object($GLOBALS['TT'])) {
 			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\TimeTracker;
 			$GLOBALS['TT']->start();
 		}
-		$TSFEclassName = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController');
-		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $this->pid, '0', 1, '', '', '', '');
+		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFEclassName */
+		$TSFEclassName = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,array(NULL , $this->pid , $typeNum  ,1, '', '', '', '') );
+		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $this->pid, $typeNum , 1, '', '', '', '');
 		$GLOBALS['TSFE']->initFEuser();
 		$GLOBALS['TSFE']->fetch_the_id();
 		$GLOBALS['TSFE']->getPageAndRootline();
