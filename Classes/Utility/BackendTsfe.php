@@ -33,15 +33,24 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  */
 class BackendTsfe {
 
+    /**
+     * @var int
+     */
+    public $pid=1 ;
+
+
 	function buildTSFE() {
-	    // j.v. page ID and TypeNum  needed to make the instance of TypoScriptFrntendController
+	    // j.v. page ID and TypeNum  needed to make the instance of TypoScriptFrontendController
 	    $typeNum = 0 ;
+	    if(  $this->pid < 1 ) {
+            $this->pid = 1 ;
+        }
 		if (!is_object($GLOBALS['TT'])) {
 			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\TimeTracker;
 			$GLOBALS['TT']->start();
 		}
 		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFEclassName */
-		$TSFEclassName = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,array(NULL , $this->pid , $typeNum  ,1, '', '', '', '') );
+		$TSFEclassName = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,NULL , $this->pid , $typeNum  ,1, '', '', '', '') ;
 		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $this->pid, $typeNum , 1, '', '', '', '');
 		$GLOBALS['TSFE']->initFEuser();
 		$GLOBALS['TSFE']->fetch_the_id();
