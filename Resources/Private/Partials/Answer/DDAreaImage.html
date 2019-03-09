@@ -6,7 +6,7 @@
 		<div class="answerInfo" id="keq{question.uid}a{answer.uid}info"></div>
 
 		<div class="keq-dd-area-container">
-			<ke:image src="uploads/tx_kequestionnaire/{answer.image}" alt="areaimage" width="{answer.width}px" height="{answer.height}px" />
+			<f:image src="uploads/tx_kequestionnaire/{answer.image}" alt="areaimage" width="{answer.width}px" height="{answer.height}px" />
 			<f:for each="{answer.coords}" as="area">
 				<div value="{area.key}" class="keq-placeholder dd-area ui-droppable {f:if(condition:'{answer.areaHighlight}',then:'dd-area-highlight',else:'')}" style="top: {area.y1}px; left: {area.x1}px; width: {area.width}px; height: {area.height}px">
 					<f:if condition="{area.title}">
@@ -24,7 +24,7 @@
 					</f:alias>
 				   <f:if condition="{dd.image.image}">
 						<f:then>
-							<ke:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}" />
+							<f:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}" />
 						</f:then>
 						<f:else>
 							{dd.image.title}

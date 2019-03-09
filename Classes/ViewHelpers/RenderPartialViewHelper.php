@@ -33,7 +33,7 @@ use \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper ;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class RenderPartialViewHelper extends RenderViewHelper {
+class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper {
 
     /**
      * @var boolean

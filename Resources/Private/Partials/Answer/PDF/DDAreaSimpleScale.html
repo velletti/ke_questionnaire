@@ -9,7 +9,7 @@
 			<f:if condition="{answer.image}">
 				<f:then></f:then>
 				<f:else>
-					<ke:image src="typo3conf/ext/ke_questionnaire/Resources/Public/Images/simpleScale.png" alt="scale"/>
+					<f:image src="typo3conf/ext/ke_questionnaire/Resources/Public/Images/simpleScale.png" alt="scale"/>
 				</f:else>
 			</f:if>
 		</div>
@@ -20,7 +20,7 @@
 						<f:form.hidden name="newResult[questions][{question.uid}][answers][{dd.image.uid}][answer]" value="{dd.image.uid}" />
 						<f:form.hidden name="newResult[questions][{question.uid}][answers][{dd.image.uid}][value]" value="{f:if(condition: boxResultAnswer.value, then: boxResultAnswer.value)}" />
 					</f:alias>
-					<ke:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}"/>
+					<f:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}"/>
 				</div>
 			</ke:ddImage>
 		</div>

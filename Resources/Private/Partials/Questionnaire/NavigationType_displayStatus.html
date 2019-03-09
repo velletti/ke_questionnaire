@@ -5,7 +5,7 @@
 		<li style="{f:if(condition: '{question.page} == {questionnaire.page}',then: 'font-weight:bold;',else:'')}">
 			{question.numbering} {question.title} <f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:navigation.onPage" /> {question.page}
 			<ke:checkAnsweredQuestion question="{question}" result="{result}">
-				<ke:image src="EXT:ke_questionnaire/Resources/Public/Images/greenCheck.gif" alt="check" />
+				<f:image src="EXT:ke_questionnaire/Resources/Public/Images/greenCheck.gif" alt="check" />
 			</ke:checkAnsweredQuestion>
 		</li>
 	</f:for>

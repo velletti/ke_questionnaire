@@ -12,7 +12,7 @@
 			<ke:ddImage answer="{answer}" question="{question}" as="dd">
 				<f:if condition="{dd.image.image}">
 					<f:then>
-						<ke:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}"/>
+						<f:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}"/>
 					</f:then>
 					<f:else>
 						{dd.image.title}
