@@ -44,18 +44,25 @@ class MatrixRowViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
     protected $escapeOutput = false;
 
 
+    /**
+     * Initialize arguments.
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('answer', 'mixed', 'Answer Type Matrix or Matrix Header or extended matrix Header');
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'question');
+        $this->registerArgument('as', 'string', 'The name of the iteration variable');
+    }
 
 	/**
-	 * Adds the needed Javascript-File to Additional Header Data
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow $answer Answer to be rendered
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the images are in
-	 * @param string $as The name of the iteration variable
 	 * @return string
 	 */
-	public function render(\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow $answer ,
-                           \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question,
-                           $as) {
+	public function render( ) {
+        $answer = $this->arguments['answer'] ;
+        $question = $this->arguments['question'] ;
+        $as = $this->arguments['as'] ;
+
 		if (get_class($answer) == 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\MatrixHeader' OR get_class($answer) == 'Kennziffer\\KeQuestionnairePremium\\Domain\\Model\\AnswerType\\ExtendedMatrixHeader'){
 		    $rows = $answer->getRows($question);
 			
@@ -73,4 +80,3 @@ class MatrixRowViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
         return $output;
 	}	
 }
-?>
