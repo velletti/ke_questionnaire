@@ -1,0 +1,42 @@
+{
+  "name": "velletti/ke_questionnaire",
+  "type": "typo3-cms-extension",
+  "description": "Fork of ke_questionnaire: Easily create any type of questionnaire, survey, poll, quiz or ",
+  "homepage": "https://github.com/velletti/ke_questionnaire/",
+  "license": ["GPL-2.0+"],
+
+  "support" : {
+    "issues" : "https://github.com/velletti/ke_questionnaire/issues"
+  },
+  "keywords": [
+    "TYPO3 CMS",
+    "Polls",
+    "Frontend"
+  ],
+
+  "require": {
+    "typo3/cms-core": "^8.7.0"
+  },
+
+  "replace": {
+    "sf_register": "self.version",
+    "typo3-ter/sf-register": "self.version"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "Kennziffer\\KeQuestionnaire\\": "Classes"
+    }
+  },
+
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web"
+    }
+  }
+}
