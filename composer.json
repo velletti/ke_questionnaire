@@ -19,8 +19,8 @@
   },
 
   "replace": {
-    "sf_register": "self.version",
-    "typo3-ter/sf-register": "self.version"
+    "ke_questionnaire": "self.version",
+    "typo3-ter/ke_questionnaire": "self.version"
   },
 
   "autoload": {
