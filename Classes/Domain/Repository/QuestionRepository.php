@@ -44,7 +44,7 @@ class QuestionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * find all questions for pid
 	 * 
 	 * @param integer $pid
-	 * @return Query Result
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array Query  Result
 	 */
 	public function findAllForPid($pid) {
 		$query = $this->createQuery();

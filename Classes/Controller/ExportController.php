@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -47,19 +49,9 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 		$this->csvExport = $csvExport;
 	}
     
-        /**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\PdfExport
-	 */
-	protected $pdfExport;
+  	protected $pdfExport;
 	
-	/**
-	 * inject pdfExport
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\PdfExport $pdfExport
-	 */
-	public function injectPdfExport(\Kennziffer\KeQuestionnaire\Utility\PdfExport $pdfExport) {
-		$this->pdfExport = $pdfExport;
-	}
+
 	
 	/**
 	 * @var \Kennziffer\KeQuestionnaire\Utility\BackendTsfe
@@ -74,7 +66,28 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	public function injectBackendTsfe(\Kennziffer\KeQuestionnaire\Utility\BackendTsfe $backendTsfe) {
 		$this->backendTsfe = $backendTsfe;
 	}
-	
+    /**
+     * initialize Action
+     */
+    public function initializeAction() {
+        parent::initializeAction();
+
+
+        try {
+            if( class_exists("Kennziffer\\KeQuestionnaire\\Utility\\PdfExport")) {
+                /**
+                 * @param \Kennziffer\KeQuestionnaire\Utility\PdfExport $pdfExport
+                 */
+                $this->pdfExport = GeneralUtility::makeInstance("Kennziffer\\KeQuestionnaire\\Utility\\PdfExport") ;
+
+            } else {
+                $this->pdfExport = false ;
+            }
+
+        } catch(\Exception $e) {
+            // Composer setp is not correct so pDF class may not be found .. Ignore it .
+        }
+    }
         /**
 	 * action index
 	 */
@@ -418,8 +431,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
             $this->csvExport->setResults($this->resultRepository->findAllForPid($this->storagePid));
 		}
 		//create the csvdata
-		$csvdata .= $this->csvExport->createQuestionBased($this->plugin);
-		
+		$csvdata = $this->csvExport->createQuestionBased($this->plugin);
+        $encoding = "utf-8" ;
 		if ($encoding != mb_detect_encoding($csvdata)) $csvdata = mb_convert_encoding($csvdata, $encoding, mb_detect_encoding($csvdata));
 		if( strtolower($encoding) == "utf-8") {
 			$csvdata =  pack("CCC", 0xef, 0xbb, 0xbf) . $csvdata ;
@@ -456,8 +469,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
             $this->csvExport->setResults($this->resultRepository->findAllForPid($this->storagePid));
 		}
 		//create the csvdata
-		$csvdata .= $this->csvExport->createResultBased($this->plugin);
-		
+		$csvdata = $this->csvExport->createResultBased($this->plugin);
+        $encoding = "utf-8" ;
 	    if ($encoding != mb_detect_encoding($csvdata)) $csvdata = mb_convert_encoding($csvdata, $encoding, mb_detect_encoding($csvdata));
 		if( strtolower($encoding) == "utf-8") {
 			$csvdata =  pack("CCC", 0xef, 0xbb, 0xbf) . $csvdata ;
@@ -487,8 +500,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 		$authCodes = $this->authCodeRepository->findAllForPid($this->storagePid)->toArray();
 		//create the csvdata
                 $this->csvExport->extConf = $this->extConf;
-		$csvdata .= $this->csvExport->createAuthCodes($authCodes);
-		
+		$csvdata = $this->csvExport->createAuthCodes($authCodes);
+        $encoding = "utf-8" ;
 		if ($encoding != mb_detect_encoding($csvdata)) $csvdata = mb_convert_encoding($csvdata, $encoding, mb_detect_encoding($csvdata));
 		if( strtolower($encoding) == "utf-8") {
 			$csvdata =  pack("CCC", 0xef, 0xbb, 0xbf) . $csvdata ;
@@ -613,8 +626,11 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 		$base = str_replace("/mod.php",'',$base);
 		$content = str_replace('<img src="fileadmin/','<img src="http://'.$base.'/fileadmin/',$content);
 		//create the pdf
-		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($content, 'pdf');	
-		$this->pdfExport->createPdfFromHTML($css.'<br>'.$content);          
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($content, 'pdf');
+        if( $this->pdfExport && class_exists("Kennziffer\\KeQuestionnaire\\Utility\\PdfExport")) {
+            $this->pdfExport->createPdfFromHTML($css.'<br>'.$content);
+        }
+
     }
 	
 	/**
@@ -622,8 +638,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param array $plugin
 	 * @ignorevalidaton $plugin
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult 
-	 */
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+     */
 	private function getQuestions($plugin) {
 		$pids = explode(',',$plugin['pages']);
 		$storagePid = $pids[0];
