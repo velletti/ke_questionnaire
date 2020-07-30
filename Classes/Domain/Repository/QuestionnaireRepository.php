@@ -80,7 +80,7 @@ class QuestionnaireRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
        /**
         * find ke_questionnaires for uids
         * 
-        * @params array $uids
+        * @param array $uids
         * @return questionnaires
         */
        public function findForUids($uids) {
@@ -94,7 +94,7 @@ class QuestionnaireRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
        /**
         * find ke_questionnaires for uid
         * 
-        * @params integer $uid
+        * @param integer $uid
         * @return questionnaire
         */
        public function findForUid($uid) {

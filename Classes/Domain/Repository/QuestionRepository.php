@@ -82,7 +82,7 @@ class QuestionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	/**
 	* find questions for uids
 	* 
-	* @params string $uids
+	* @param string $uids
 	* @return questions
 	*/
    public function findForUids($uids) {
@@ -96,7 +96,7 @@ class QuestionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
    /**
 	* find question for uid
 	* 
-	* @params integer $uid
+	* @param integer $uid
 	* @return questionnaire
 	*/
    public function findForUid($uid) {

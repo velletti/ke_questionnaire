@@ -102,7 +102,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function csvAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -272,7 +272,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function csvRbAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -400,7 +400,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function pdfAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -416,7 +416,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function downloadCsvAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -454,7 +454,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function downloadCsvRbAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -491,7 +491,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function downloadAuthCodesCsvAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -557,7 +557,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function downloadPdfAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -638,7 +638,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * get the Questions for the questionnaire
 	 * 
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
 	 */
 	private function getQuestions($plugin) {

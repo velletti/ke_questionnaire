@@ -38,7 +38,7 @@ class AjaxController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 *
 	 * @param string $type Which Ajax Object has to be called
 	 * @param array $arguments If you want, you can add some arguments to your object
-	 * @ignorevalidaton $arguments
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $arguments
 	 * @return string In most cases JSON
 	 */
 	public function ajaxAction($type, $arguments = array()) {

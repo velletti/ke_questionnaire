@@ -566,7 +566,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the calculated Average
 	 *
-	 * @params boolean $calculateAll
+	 * @param boolean $calculateAll
 	 * @return integer $average
 	 */
 	public function getAverage($all = false) {

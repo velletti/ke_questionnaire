@@ -69,7 +69,7 @@ class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendC
      * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
      */
     public function questionsAction($storage = false, $plugin = false) {
         if ($storage) $this->storagePid = $storage;
@@ -105,7 +105,7 @@ class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendC
      * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
      */
     public function generalAction($storage = false, $plugin = false) {
         if ($storage) $this->storagePid = $storage;

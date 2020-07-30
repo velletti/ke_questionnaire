@@ -113,7 +113,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function authCodesAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -131,7 +131,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function authCodesSimpleAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -146,7 +146,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function authCodesMailAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
@@ -183,9 +183,20 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
         if ( $this->extConf->isEnableAuthCode2ttAddress() ) {
             //check if extension is installed
             if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
-                $res = $GLOBALS['TYPO3_DB']->sql_query("SELECT * from tt_address WHERE hidden=0 and deleted=0");
+
+                /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+                $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+
+
+                /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+                $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_address') ;
+                $res  = $queryBuilder ->select('*' ) ->from('tt_address')
+                    ->orderBy("name" , "ASC")
+                    ->setMaxResults(1000)
+                    ->execute() ;
+
                 $addresses = array();
-                while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+                while ($address = $res->fetch()){
                     $addresses[] = $address;
                 }
                 $this->view->assign('ttaddresses', $addresses);
@@ -401,7 +412,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	 * 
 	 * @param integer $storage
 	 * @param array $plugin
-	 * @ignorevalidaton $plugin
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
 	 */
 	public function authCodesRemindAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
