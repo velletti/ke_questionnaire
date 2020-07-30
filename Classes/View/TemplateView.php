@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\View;
+use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -85,7 +87,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\TemplateView {
 				}
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 	
 	/**
@@ -93,7 +95,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\TemplateView {
 	 *
 	 * @return array Path(s) to partial root directory
 	 */
-	protected function getPartialRootPaths() {
+	public function getPartialRootPaths() {
 		$base = 'EXT:ke_questionnaire/Resources/Private/Partials/';		
 		if ($this->partialRootPaths !== NULL) {
 			if (!in_array($base,$this->partialRootPaths)){

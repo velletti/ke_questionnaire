@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -51,13 +52,24 @@ class BackendTsfe {
 			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\TimeTracker;
 			$GLOBALS['TT']->start();
 		}
+/*
+        * @param array $_ unused, previously defined to set TYPO3_CONF_VARS
+        * @param mixed $id The value of GeneralUtility::_GP('id')
+        * @param int $type The value of GeneralUtility::_GP('type')
+        * @param bool|string $no_cache The value of GeneralUtility::_GP('no_cache'), evaluated to 1/0, will be unused in TYPO3 v10.0.
+     * @param string $cHash The value of GeneralUtility::_GP('cHash')
+        * @param string $_2 previously was used to define the jumpURL
+        * @param string $MP The value of GeneralUtility::_GP('MP')
+        */
+    // public function __construct($_ = null, $id, $type, $no_cache = null, $cHash = '', $_2 = null, $MP = '')
+
 		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFEclassName */
-		$TSFEclassName = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,NULL , $this->pid , $typeNum  ,1, '', '', '', '') ;
+		$TSFEclassName = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,NULL , $this->pid , $typeNum  , '1', '', '', '') ;
 		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $this->pid, $typeNum , 1, '', '', '', '');
 		$GLOBALS['TSFE']->initFEuser();
 		$GLOBALS['TSFE']->fetch_the_id();
 		$GLOBALS['TSFE']->getPageAndRootline();
-		$GLOBALS['TSFE']->initTemplate();
+	//	$GLOBALS['TSFE']->initTemplate();
 		$GLOBALS['TSFE']->tmpl->getFileName_backPath = Environment::getPublicPath() . '/';
 		$GLOBALS['TSFE']->forceTemplateParsing = 1;
 		$GLOBALS['TSFE']->getConfigArray();

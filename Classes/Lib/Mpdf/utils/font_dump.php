@@ -37,6 +37,7 @@ $mpdf->StartProgressBarOutput(2);
 $mpdf->SetDisplayMode('fullpage');
 
 $mpdf->useSubstitutions = true;
+// @extensionScannerIgnoreLine
 $mpdf->debug = true;
 $mpdf->simpleTables = true;
 // force fonts to be embedded whole i.e. NOT susbet

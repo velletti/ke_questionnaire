@@ -31,6 +31,7 @@ include("../mpdf.php");
 $mpdf=new mPDF('','A4-L','','',10,10,10,10); 
 $mpdf->SetDisplayMode('fullpage');
 $mpdf->useSubstitutions = true;
+// @extensionScannerIgnoreLine
 $mpdf->debug = true;
 $mpdf->simpleTables = true;
 if ($checkdir) { 

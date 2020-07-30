@@ -16,9 +16,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+
 /**
  * @extensionScannerIgnoreFile
  */
+
 class FilterLZW {
     
     var $sTable = array();
@@ -31,7 +33,7 @@ class FilterLZW {
     var $nextData = 0;
     var $nextBits = 0;
     var $andTable = array(511, 1023, 2047, 4095);
-
+// @extensionScannerIgnoreLine
     function error($msg) {
         die($msg);
     }
