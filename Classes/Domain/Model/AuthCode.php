@@ -51,20 +51,20 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Participations
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Result>
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $participations;
         
         /**
 	 * FeUser
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
 	protected $feUser;
         
         /**
 	 * TtAddress
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 * @var \TYPO3\TtAddress\Domain\Model\Address
 	 */
 	protected $ttAddress;

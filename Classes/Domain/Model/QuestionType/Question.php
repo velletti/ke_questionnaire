@@ -79,7 +79,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * Answers
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer>
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $answers;
 	

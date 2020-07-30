@@ -37,7 +37,7 @@ class ClozeText extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	 * Terms
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer>
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $terms;
 	
@@ -45,7 +45,7 @@ class ClozeText extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	 * WordPositions
 	 *
 	 * @var array
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $wordPositions;
 	

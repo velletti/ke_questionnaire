@@ -58,7 +58,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	public function initialize() {
 		parent::initialize();
 	}
-	
+
 	/**
 	 * initializes the actions
 	 */
@@ -72,25 +72,28 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		$querySettings->setRespectStoragePage(FALSE);
 		$userRepository->setDefaultQuerySettings($querySettings);
 
-		if ($GLOBALS['TSFE']->fe_user->user['uid']) $this->user = $userRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);				
-		
+		if ($GLOBALS['TSFE']->fe_user->user['uid']) $this->user = $userRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+
 		//check jsKey for the created js-file
 		$jsKey = substr($GLOBALS['TSFE']->fe_user->id,0,10).'_keqjs';
-		$GLOBALS['TSFE']->fe_user->setKey('ses','keq_jskey',$jsKey);	
+		$GLOBALS['TSFE']->fe_user->setKey('ses','keq_jskey',$jsKey);
 		//maybe better to erase the js file every time
 		$pathname = 'typo3temp/ke_questionnaire';
 		$filename = $pathname.'/'.$jsKey.'.js';
 		if (file_exists(Environment::getPublicPath() . '/'.$filename)) unlink($filename);
 	}
 
-	/**
-	 * Displays a form for saving a new questionnaire
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult A fresh new result object
-	 * @param integer $requestedPage after checking the questions of currentPage redirect to this page
-	 * @return void
-	 * @ignorevalidaton $newResult
-	 */
+    /**
+     * Displays a form for saving a new questionnaire
+     *
+     * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult A fresh new result object
+     * @param integer $requestedPage after checking the questions of currentPage redirect to this page
+     *
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $newResult
+     * @return void
+     */
 	public function newAction(\Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult = NULL, $requestedPage = 0) {
 		if ($newResult == NULL) { // workaround for fluid bug ##5636
 			$newResult = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\Result');
@@ -121,7 +124,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		//get the questions and add them to the questionnaire
 		$questions = $this->questionRepository->findAll();
 		$this->questionnaire->setQuestions($questions);
-		
+
 		//SignalSlot for newAction
         $this->signalResult = $newResult;
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array($this));
@@ -142,9 +145,9 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 
 		$this->view->assign('questions', $this->questionnaire->getQuestionsForPage($requestedPage));
 		$this->view->assign('questionnaire', $this->questionnaire);
-		$this->view->assign('newResult', $newResult);		
+		$this->view->assign('newResult', $newResult);
 	}
-	
+
 	
 
 	/**
@@ -196,9 +199,9 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	 * Creates a new questionnaire
 	 *
 	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult A fresh Questionnaire object
-         * @ignorevalidation $newResult
 	 * @param integer $currentPage check, validate and save the results of this page
 	 * @param integer $requestedPage after checking the questions of currentPage redirect to this page
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $newResult
 	 * @return void
          */
 	public function createAction(\Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult, $currentPage, $requestedPage) {

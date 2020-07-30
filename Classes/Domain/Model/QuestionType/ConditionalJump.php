@@ -37,7 +37,7 @@ class ConditionalJump extends \Kennziffer\KeQuestionnaire\Domain\Model\Question 
 	 * Dependancies
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Dependancy>
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $dependancies;
     

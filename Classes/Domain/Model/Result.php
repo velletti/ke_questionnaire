@@ -78,14 +78,14 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	
 	/**
 	 * FeUser
-	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
 	protected $feUser;
 
 	/**
 	 * AuthCode
-         * @lazy
+         * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\AuthCode
 	 */
 	protected $authCode;
