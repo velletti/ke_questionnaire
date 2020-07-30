@@ -70,8 +70,6 @@ class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHe
     /** * Constructor *
      * @api */
     public function initializeArguments() {
-        $this->registerArgument('arguments', 'array', 'the arguments array  ', false , [] );
-        $this->registerArgument('partial', 'string', 'the filename of Fartial  ', false , TRUE );
         parent::initializeArguments() ;
     }
 
