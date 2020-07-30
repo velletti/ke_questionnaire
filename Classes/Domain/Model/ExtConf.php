@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -99,7 +103,8 @@ class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Constructor of this class
 	 */
 	public function __construct() {
-		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ke_questionnaire']);
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_questionnaire');
+		//$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ke_questionnaire']);
 		if (is_array($extConf)) {
 			foreach ($extConf as $key => $value) {
 				$methodName = 'set' . ucfirst($key);
@@ -110,12 +115,13 @@ class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			throw new \Kennziffer\KeQuestionnaire\Exception('saveExtConf', 1349685793);
 		}
-                if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')) {
-                    $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ke_questionnaire_premium']);
-                    if (is_array($extConf)) {
-                        $this->premium = $extConf;
-                    }
-                }
+        if(ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')) {
+            //$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ke_questionnaire_premium']);
+            $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_questionnaire_premium');
+            if (is_array($extConf)) {
+                $this->premium = $extConf;
+            }
+        }
 	}
 
 	/**
