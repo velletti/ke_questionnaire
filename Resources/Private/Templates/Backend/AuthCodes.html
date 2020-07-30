@@ -5,14 +5,11 @@
 <f:section name="main">
 	<f:be.container
 			pageTitle="Ke Questionnaire Backend Modules"
-			enableClickMenu="false"
-			loadJQuery="true"
-			includeCssFiles="{0: '{f:uri.resource(path:\'Css/Backend.css\')}'}"> 
+			includeCssFiles="{0: '{f:uri.resource(path:\'Css/Backend.css\')}'}">
 		<f:flashMessages />
 		<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:header" /> "{plugin.header}"</h3>
 		<hr />
 		<f:render partial="Backend/AuthCodesMenu" arguments="{plugin:plugin}"/>
-		<hr />
 		<f:if condition="{authCodes}">
 			<f:then>
 				<div class="keq_authCodes_exportlink">
@@ -20,11 +17,13 @@
 				</div>				
 				<b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:codes.existing" /></b><br />
 				<br />
-				<table>                                    
+
+				<hr>
+				<table>
                                 <f:if condition="{ke:premiumLoaded()}">
                                     <f:then>
-                                       <kep:authCodesTtAddressList arguments="{authCodes:authCodes}"/> 
-                                    </f:then>
+                                    ... Premium not implemented ...
+									</f:then>
                                     <f:else>
 					<tr>
 						<th style="width:200px"><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:list.table.authCode" /></th>

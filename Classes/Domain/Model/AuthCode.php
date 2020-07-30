@@ -65,7 +65,7 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
         /**
 	 * TtAddress
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 * @var \TYPO3\TtAddress\Domain\Model\Address
+	 * @var \FriendsOfTYPO3\TtAddress\Domain\Model\Address
 	 */
 	protected $ttAddress;
         
@@ -203,17 +203,17 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
         /**
 	 * Setter for ttAddress
 	 *
-	 * @param \TYPO3\TtAddress\Domain\Model\Address $ttAddress ttAddress
+	 * @param \FriendsOfTYPO3\TtAddress\Domain\Model\Address $ttAddress ttAddress
 	 * @return void
 	 */
-	public function setTtAddress(\TYPO3\TtAddress\Domain\Model\Address $ttAddress) {
+	public function setTtAddress(\FriendsOfTYPO3\TtAddress\Domain\Model\Address $ttAddress) {
 		$this->ttAddress = $ttAddress;
 	}
 
 	/**
 	 * Getter for ttAddress
 	 *
-	 * @return \TYPO3\TtAddress\Domain\Model\Address ttAddress
+	 * @return \FriendsOfTYPO3\TtAddress\Domain\Model\Address ttAddress
 	 */
 	public function getTtAddress() {
 		return $this->ttAddress;

@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +34,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class PremiumLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class PremiumLoadedViewHelper extends AbstractConditionViewHelper {
 
     /**
      * @var boolean
@@ -44,17 +47,18 @@ class PremiumLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
     protected $escapeOutput = false;
 
 
-	/**
-	 * Check if the ke_questionnaire_premium is loaded
-	 * 
-	 * @return boolean
-	 */	 	
-	public function render() {
-		if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')) {
-			return true;
-		}
-		return NULL;
-	}
+    /**
+     * Evaluate
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null) {
+
+        if(ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')) {
+            return true;
+        }
+        return false;
+
+    }
 
 }
 ?>
