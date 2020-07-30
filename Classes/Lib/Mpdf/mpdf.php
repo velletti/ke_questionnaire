@@ -11,6 +11,9 @@
 // Changes:  See changelog.txt                                                  *
 // ******************************************************************************
 
+/**
+ * @extensionScannerIgnoreFile
+ */
 
 define('mPDF_VERSION','5.7.1');
 

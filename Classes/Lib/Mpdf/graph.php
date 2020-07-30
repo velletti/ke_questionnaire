@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @extensionScannerIgnoreFile
+ */
 
 // mPDF 4.5.009
 define("FF_USERFONT", 15);	// See jpgraph_ttf.inc.php for font IDs

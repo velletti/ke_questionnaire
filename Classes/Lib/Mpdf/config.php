@@ -1,4 +1,7 @@
 <?php
+/**
+ * @extensionScannerIgnoreFile
+ */
 
 // mPDF 5.7
 // Specify whether to automatically generate bookmarks or ToC entries from h1 - h6 tags

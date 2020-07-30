@@ -9,7 +9,9 @@
    You can optionally define an alternative folder to examine by setting 
    the variable below (must be a relative path, or filesystem path):
 */
-
+/**
+ * @extensionScannerIgnoreFile
+ */
 
 $checkdir = '';
 

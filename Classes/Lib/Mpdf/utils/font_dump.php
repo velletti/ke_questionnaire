@@ -10,7 +10,9 @@
    You can optionally define an alternative font file to examine by setting 
    the variable below (must be a relative path, or filesystem path):
 */
-
+/**
+ * @extensionScannerIgnoreFile
+ */
 
 $font = 'dejavusanscondensed';	// Use internal mPDF font-name
 

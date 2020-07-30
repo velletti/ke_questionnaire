@@ -16,7 +16,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
+/**
+ * @extensionScannerIgnoreFile
+ */
 if (!defined('ORD_z'))
 	define('ORD_z',ord('z'));
 if (!defined('ORD_exclmark'))
