@@ -603,7 +603,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	 * Action to show the End Page of the questionnaire
 	 *
 	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @dontvalidate $result
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $result
 	 * @return void
 	 */
 	public function endAction(\Kennziffer\KeQuestionnaire\Domain\Model\Result $result = NULL) {
