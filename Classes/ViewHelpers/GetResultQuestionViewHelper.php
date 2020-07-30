@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GetResultQuestionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class GetResultQuestionViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 
     /**
@@ -44,15 +46,24 @@ class GetResultQuestionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
      */
     protected $escapeOutput = false;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', true );
+        $this->registerArgument('questionUid', 'integer', 'the question id  ', true );
+        parent::initializeArguments() ;
+    }
 
 	/**
 	 * Returns a requested question from result record
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param integer $questionUid
 	 * @return
 	 */
-	public function render($result, $questionUid) {
+	public function render() {
+        /** @var Result $result */
+        $result = $this->arguments['result'] ;
+        $questionUid = $this->arguments['questionUid'] ;
+
 		$questions = $result->getQuestions();
 		/* @var $question \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 		foreach ($questions as $key => $question) {

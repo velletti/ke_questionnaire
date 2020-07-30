@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +35,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class RankingTermViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RankingTermViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -43,18 +47,45 @@ class RankingTermViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
      */
     protected $escapeOutput = false;
 
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    private $objectManager;
 
+
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\Answer', ' The Answer ', true );
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'the question object  ', false );
+        $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', false , Null );
+
+        parent::initializeArguments() ;
+    }
 
 	/**
 	 * Adds the needed Javascript-File to Additional Header Data
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer Answer to be rendered
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the images are in
+	 * @param Answer $answer Answer to be rendered
+	 * @param Question $question the images are in
 	 * @param string $as The name of the iteration variable
-     * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
+     * @param Result $result
 	 * @return string
 	 */
 	public function render($answer,$question,$as,$result=NULL) {
+
+        /** @var Result $result */
+        $result = $this->arguments['result'] ;
+
+        /** @var Question $question */
+        $question = $this->arguments['question'] ;
+
+        /** @var Answer $answer */
+        $answer = $this->arguments['answer'] ;
+
+        $as = $this->arguments['as'] ;
+
 		$terms = $this->getTerms($question, $answer, $result);
 		
 		$templateVariableContainer = $this->renderingContext->getVariableProvider();
@@ -75,8 +106,8 @@ class RankingTermViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 	/**
 	 * Gets the Images
 	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
-     * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
+	 * @param Question $question the terms are in
+     * @param Result $result
 	 * @return array
 	 */
 	public function getTerms($question, $header, $result){
@@ -86,6 +117,7 @@ class RankingTermViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 		$addIt = false;
         $type = '';
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		/** @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $rep */
 		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestion($question);
 		

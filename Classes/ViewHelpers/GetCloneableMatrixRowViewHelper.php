@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +35,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GetCloneableMatrixRowViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class GetCloneableMatrixRowViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -43,15 +47,27 @@ class GetCloneableMatrixRowViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
      */
     protected $escapeOutput = false;
 
+
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader', ' The answerType ', true );
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'the question object  ', false );
+        parent::initializeArguments() ;
+    }
+
 	/**
 	 * Adds the needed Javascript-File to Additional Header Data
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader $answer Answer to be rendered
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the images are in
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow
+	 * @return MatrixRow
 	 */
-	public function render(\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader $answer,
-                           \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question) {
+	public function render() {
+        /** @var Question $question */
+        $question = $this->arguments['question'] ;
+
+        /** @var MatrixHeader $answer */
+        $answer = $this->arguments['answer'] ;
+
         return $answer->getCloneableRow($question);
 	}
 }

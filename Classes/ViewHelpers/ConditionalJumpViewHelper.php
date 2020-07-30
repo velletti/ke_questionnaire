@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\ConditionalJump;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +34,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ConditionalJumpViewHelper  extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ConditionalJumpViewHelper  extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 
     /**
@@ -50,12 +53,23 @@ class ConditionalJumpViewHelper  extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
 
     public $jsViewhelper ;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\ConditionalJump', ' The question ', true );
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
+        parent::initializeArguments() ;
+    }
+
 	/**
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\ConditionalJump $question
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
      * @return string
 	 */	 	
-	public function render(\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\ConditionalJump $question, \Kennziffer\KeQuestionnaire\Domain\Model\Result $result) {
+	public function render() {
+        /** @var Result $result */
+        $result = $this->arguments['result'] ;
+        /** @var ConditionalJump $question */
+        $question = $this->arguments['question'] ;
+
 		$output = '';
         
         if ($question->isDependant()){

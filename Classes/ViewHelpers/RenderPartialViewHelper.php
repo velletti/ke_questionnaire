@@ -66,14 +66,23 @@ class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHe
 		$this->objectManager = $objectManager;
 	}
 
+
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('arguments', 'array', 'the arguments array  ', false , [] );
+        $this->registerArgument('partial', 'string', 'the filename of Fartial  ', false , TRUE );
+        parent::initializeArguments() ;
+    }
+
 	/**
 	 * Renders the content.
 	 *
-         * @param string $partial The partial to render
-	 * @param array $arguments Arguments to pass to the partial
 	 * @return string
 	 */
-	public function render($partial = NULL, array $arguments = array()) {
+	public function render() {
+        $partial = $this->arguments['partial'] ;
+        $arguments = $this->arguments['arguments'] ;
         if (file_exists($partial)){
             // Overload arguments with own extension local settings (to pass own settings to external partial)
             $arguments = $this->loadSettingsIntoArguments($arguments);

@@ -31,7 +31,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ContentElementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ContentElementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -53,13 +53,21 @@ class ContentElementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	 */
 	protected $cObj;
 
+
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('uid', 'int', ' UID of any content element ', false );
+        parent::initializeArguments() ;
+    }
+
     /**
      * Parse a content element
      *
-	 * @param	int			UID of any content element
      * @return 	string		Parsed Content Element
      */
-    public function render($uid) {
+    public function render() {
+        $uid = $this->arguments['uid'] ;
 		$conf = array( // config
 			'tables' => 'tt_content',
 			'source' => $uid,

@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +35,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class RangeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RangeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -46,17 +50,27 @@ class RangeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @var Dispatcher
 	 */
 	protected $signalSlotDispatcher;
-	
+
+    /**
+     * @var Questionnaire
+     */
+	private $questionnaire ;
+
+    /**
+     * @var Result
+     */
+	private $result ;
+
 	/**
 	 * inject signal slots
 	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 * @param Dispatcher $signalSlotDispatcher
 	 * @return void
 	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+	public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
 			$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 	
@@ -67,35 +81,44 @@ class RangeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 */
 	protected $ranges;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('questionnaire', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', ' The questionnaire ', true );
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
+        $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );
+        parent::initializeArguments() ;
+    }
+
 	/**
 	 * Checks for the right Range Texts and stuff to be shown
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param string $as The name of the iteration variable
 	 * @return string
 	 */
-	public function render($questionnaire,$result, $as) {
-		$this->result = $result;
-		$this->questionnaire = $questionnaire;
+	public function render() {
+
+
+		$this->result = $this->arguments['result'];
+		$this->questionnaire = $this->arguments['questionnaire'];
+		$as= $this->arguments['as'];
 
 		$this->templateVariableContainer = $this->renderingContext->getVariableProvider();
-		if ($result === NULL) {
+		if ($this->result === NULL) {
 			return '';
 		}
 		
-		$this->output = '';
+		$output = '';
 		//check the Ranges
         $ranges = $this->collectRanges() ;
         if( is_array($ranges)) {
             foreach ($ranges as $range){
                 $this->templateVariableContainer->add($as, $range);
-                $this->output .= $this->renderChildren();
+                $output .= $this->renderChildren();
                 $this->templateVariableContainer->remove($as);
             }
         }
 
-		return $this->output;
+		return $output;
 	}	
 	
 	/**

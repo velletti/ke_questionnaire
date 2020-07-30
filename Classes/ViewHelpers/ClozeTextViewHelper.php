@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+use \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -43,16 +46,28 @@ class ClozeTextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
      */
     protected $escapeOutput = false;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', ' The question ', true );
+        $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText', 'the answer object  ', false );
+        $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );
+        parent::initializeArguments() ;
+    }
 
 	/**
 	 * Adds the needed Javascript-File to Additional Header Data
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText $answer Answer to be rendered
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
-	 * @param string $as The name of the iteration variable
 	 * @return string
 	 */
 	public function render($answer, $question, $as) {
+
+        /** @var ClozeText $answer */
+        $answer = $this->arguments['answer'] ;
+        /** @var Question $question */
+        $question = $this->arguments['question'] ;
+        $as = $this->arguments['as'] ;
+
 		$templateVariableContainer = $this->renderingContext->getVariableProvider();
         if ($question === NULL OR ($answer->getShortType() != 'ClozeText' AND $answer->getShortType() != 'ClozeTextDD')) {
 			return '';

@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +35,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class CheckAnsweredQuestionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CheckAnsweredQuestionViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -43,16 +47,27 @@ class CheckAnsweredQuestionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
      */
     protected $escapeOutput = false;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\Question', ' The question ', true );
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
+        parent::initializeArguments() ;
+    }
+
 	/**
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
      * @return mixed The finally rendered child nodes.
 	 */	 	
-	public function render(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question, \Kennziffer\KeQuestionnaire\Domain\Model\Result $result) {
-		//$output = $this->renderChildren();
-		foreach ($result->getQuestions() as $rQuestion){
+	public function render() {
+	    /** @var Result $result */
+        $result = $this->arguments['result'] ;
+        /** @var Question $question */
+        $question = $this->arguments['question'] ;
+
+        /** @var Question $rQuestion */
+        foreach ($result->getQuestions() as $rQuestion){
 			if ($rQuestion->getQuestion() === $question){
-			    /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Answer $rAnswer */
+			    /** @var Answer $rAnswer */
                 foreach ($rQuestion->getAnswers() as $rAnswer){
 					if ($rAnswer->getValue() != '') return $this->renderChildren();					
 				}

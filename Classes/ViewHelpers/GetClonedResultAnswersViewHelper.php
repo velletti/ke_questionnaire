@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +36,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GetClonedResultAnswersViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class GetClonedResultAnswersViewHelper extends AbstractViewHelper {
 
 
     /**
@@ -45,20 +50,32 @@ class GetClonedResultAnswersViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\
     protected $escapeOutput = false;
 
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', true );
+        $this->registerArgument('questionUid', 'integer', 'the question id  ', true );
+        $this->registerArgument('answerUid', 'integer', 'the answer id  ', true );
+        parent::initializeArguments() ;
+    }
 	/**
 	 * Returns a requested question from result record
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param integer $questionUid
-	 * @param integer $answerUid
 	 * @return
 	 */
-    public function render($result, $questionUid, $answerUid) {
+    public function render() {
+
+        /** @var Result $result */
+        $result = $this->arguments['result'] ;
+        $questionUid = $this->arguments['questionUid'] ;
+        $answerUid = $this->arguments['answerUid'] ;
+
+
         $resultQuestions = $result->getQuestions();
-        /* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
+        /* @var $resultQuestion ResultQuestion */
 		foreach ($resultQuestions as $resultQuestion) {
             if ($questionUid == $resultQuestion->getQuestion()->getUid()) {
-				/* @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
+				/* @var $resultAnswer ResultAnswer */
 				return $resultQuestion->getClonedAnswers();
 			}
 		}

@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GetResultAnswerMatrixViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class GetResultAnswerMatrixViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 
     /**
@@ -45,19 +47,35 @@ class GetResultAnswerMatrixViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
     protected $escapeOutput = false;
 
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', true );
+        $this->registerArgument('questionUid', 'int', 'the question id  ', true );
+        $this->registerArgument('rowUid', 'int', 'the rowUid id  ', true );
+        $this->registerArgument('columnUid', 'int', 'the columnUid id  ', true );
+        $this->registerArgument('matrixType', 'string', 'the matrixType id  ', false ,  'normal' );
+        $this->registerArgument('radio', 'boolean', 'is radio ', false ,  false );
+        $this->registerArgument('clone', 'int', 'is clone / to be cloned  ?? ', false ,  0 );
+        parent::initializeArguments() ;
+    }
+
 	/**
 	 * Returns a requested question from result record
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param integer $questionUid
-	 * @param integer $rowUid
-	 * @param integer $columnUid
-	 * @param string $matrixType
-	 * @param boolean $radio
-     * @param integer $clone
 	 * @return
 	 */
-	public function render($result, $questionUid, $rowUid, $columnUid, $matrixType = 'normal', $radio = false, $clone = 0) {        
+	public function render() {
+
+        /** @var Result $result */
+        $result = $this->arguments['result'] ;
+        $questionUid = $this->arguments['questionUid'] ;
+        $rowUid = $this->arguments['rowUid'] ;
+        $columnUid = $this->arguments['columnUid'] ;
+        $matrixType = $this->arguments['matrixType'] ;
+        $radio = $this->arguments['radio'] ;
+        $clone = $this->arguments['clone'] ;
+
 		if (!$radio){
 			$rAnswer = $result->getAnswer($questionUid, $rowUid, $columnUid);
 			if ($rAnswer) {

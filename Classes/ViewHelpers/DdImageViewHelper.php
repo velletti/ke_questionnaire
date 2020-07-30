@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +34,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DdImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DdImageViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -43,16 +46,31 @@ class DdImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
      */
     protected $escapeOutput = false;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+
+        $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\Answer', ' The answerType ', true );
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'the question object  ', false );
+        $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );
+
+        parent::initializeArguments() ;
+    }
 
 	/**
 	 * Adds the needed Javascript-File to Additional Header Data
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer Answer to be rendered
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the images are in
-	 * @param string $as The name of the iteration variable
 	 * @return string
 	 */
 	public function render($answer,$question,$as) {
+
+        /** @var Question $question */
+        $question = $this->arguments['question'] ;
+
+        /** @var Answer $answer */
+        $answer = $this->arguments['answer'] ;
+        $as = $this->arguments['as'] ;
+
 		$images = $this->getImages($question, $answer);
 		
 		$templateVariableContainer = $this->renderingContext->getVariableProvider();

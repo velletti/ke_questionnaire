@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 use TYPO3\CMS\Core\Core\Environment;
 
 /***************************************************************
@@ -34,7 +37,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DdAreaExportViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DdAreaExportViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 
     /**
@@ -47,18 +50,32 @@ class DdAreaExportViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
      */
     protected $escapeOutput = false;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage', ' The question ', true );
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', ' The question ', true );
+        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
+        $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );
+        parent::initializeArguments() ;
+    }
 
 	/**
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage $answer Answer to be rendered
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the images are in
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param string $as The name of the iteration variable
 	 * @return string filename
 	 */
-	public function render( \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage $answer,
-                            \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question,
-                            \Kennziffer\KeQuestionnaire\Domain\Model\Result $result, $as) {
-		//area image
+	public function render( ) {
+
+        /** @var Result $result */
+        $result = $this->arguments['result'] ;
+
+        /** @var Question $question */
+        $question = $this->arguments['question'] ;
+
+        /** @var DDAreaImage $answer */
+        $answer = $this->arguments['answer'] ;
+        $as = $this->arguments['as'] ;
+
+	    //area image
 		$main = $answer->getImage();
 		//d&d images
 		$images = $this->getImages($question, $answer);
@@ -83,15 +100,15 @@ class DdAreaExportViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @param string $main main-image
 	 * @param array $images d&d images
 	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the images are in
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage $answer Answer to be rendered
+	 * @param Question $question the images are in
+	 * @param DDAreaImage $answer Answer to be rendered
      * @return string
 	 */
 	private function createExportImage($main,
                                        array $images,
                                        \Kennziffer\KeQuestionnaire\Domain\Model\Result$result,
-                                       \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question,
-                                       \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage $answer){
+                                       Question $question,
+                                       DDAreaImage $answer){
 		$width = 0;
         $height = 0;
 		$filename = 'test.png';
@@ -201,7 +218,7 @@ class DdAreaExportViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	/**
 	 * Gets the Images
 	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
+	 * @param Question $question the terms are in
 	 * @return array
 	 */
 	public function getImages($question, $header){

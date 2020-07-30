@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +35,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class CoaViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CoaViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 
     /**
@@ -96,17 +100,25 @@ class CoaViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 
 
 
-
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('typoScript', 'string', ' the TypoScript to render ', false );
+        $this->registerArgument('data', 'mixed', ' the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used', false );
+        $this->registerArgument('currentValueKey', 'string', ' currentValueKey ', false );
+        parent::initializeArguments() ;
+    }
 
 	/**
 	 * Renders the TypoScript
 	 *
-	 * @param string $typoScript the TypoScript to render
-	 * @param mixed $data the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used
-	 * @param string $currentValueKey
 	 * @return string the content of the rendered TypoScript object
 	 */
-	public function render($typoScript, $data = NULL, $currentValueKey = NULL) {
+	public function render() {
+        $typoScript = $this->arguments['typoScript'] ;
+        $data = $this->arguments['data'] ;
+        $currentValueKey = $this->arguments['currentValueKey'] ;
+
 		if (TYPO3_MODE === 'BE') {
 			$this->simulateFrontendEnvironment();
 		}
@@ -116,14 +128,14 @@ class CoaViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 		}
 		$currentValue = NULL;
 		if (is_object($data)) {
-			$data = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($data);
+			$data = ObjectAccess::getGettableProperties($data);
 		} elseif (is_string($data) || is_numeric($data)) {
 			$currentValue = (string) $data;
 			$data = array($data);
 		}
 
-        /* @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
-		$contentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        /* @var ContentObjectRenderer $contentObject */
+		$contentObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
 		$contentObject->start($data);
 
@@ -154,7 +166,7 @@ class CoaViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 	 */
 	protected function simulateFrontendEnvironment() {
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
-		$GLOBALS['TSFE'] = new stdClass();
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->cObjectDepthCounter = 100;
 	}
 

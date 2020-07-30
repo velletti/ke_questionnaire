@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +34,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DdClozeTermViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DdClozeTermViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 
     /**
@@ -44,18 +47,34 @@ class DdClozeTermViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
      */
     protected $escapeOutput = false;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD', ' The answerType ', true );
+        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'the question object  ', false );
+        parent::initializeArguments() ;
+    }
 
-	/**
+
+    /**
 	 * Adds the needed Javascript-File to Additional Header Data
 	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD $answer Answer to be rendered
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
+	 * @param ClozeTextDD $answer Answer to be rendered
+	 * @param Question $question the terms are in
 	 * @param string $as The name of the iteration variable
 	 * @return string
 	 */
-	public function render( \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD $answer,
-                            \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question,
-                            $as) {
+	public function render(ClozeTextDD $answer,
+                           Question $question,
+                           $as) {
+
+        /** @var Question $question */
+        $question = $this->arguments['question'] ;
+
+        /** @var ClozeTextDD $answer */
+        $answer = $this->arguments['answer'] ;
+        $as = $this->arguments['as'] ;
+
 		$terms = $this->getClozeTerms($question);
 		$additional_terms = explode(',',$answer->getClozeAddTerms());
 		
@@ -87,7 +106,7 @@ class DdClozeTermViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 	/**
 	 * Gets the Terms to be be replaced
 	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
+	 * @param Question $question the terms are in
 	 * @return array
 	 */
 	public function getClozeTerms($question){

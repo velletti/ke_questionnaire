@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class JavaScriptFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class JavaScriptFileViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -46,14 +46,24 @@ class JavaScriptFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     protected $escapeOutput = false;
 
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('key', 'string', ' The key ', false , '' );
+        $this->registerArgument('filename', 'string', ' The $filename ', true  );
+        $this->registerArgument('footer', 'boolean', 'Put file to footer', false , true );
+        parent::initializeArguments() ;
+    }
+
 	/**
 	 * ViewHelper to bundle the javascript in a single file and include this
 	 * 
-	 * @param string $key
-	 * @param string $filename
-	 * @param boolean $footer
-	 */	 	
-	public function render($key = '', $filename, $footer = true) {
+	 */
+	public function render() {
+        $key = $this->arguments['key'] ;
+        $filename = $this->arguments['filename'] ;
+        $footer = $this->arguments['footer'] ;
+
 		if ($footer) $GLOBALS['TSFE']->additionalFooterData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
 		else  $GLOBALS['TSFE']->additionalHeaderData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
 	}	

@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class JavaScriptViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class JavaScriptViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -51,14 +51,20 @@ class JavaScriptViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 */
 	protected $always;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('alwaysreplace', 'mixed', 'if alwaysreplace do something', false , FALSE );
+        parent::initializeArguments() ;
+    }
+
 	/**
 	 * ViewHelper to bundle the javascript in a single file and include this
 	 * 
-	 * @param string $alwaysreplace
-	 */	 	
-	public function render($alwaysreplace = FALSE) {
-		$this->always = $alwaysreplace;
-		$this->cacheJavaScript($this->renderChildren());	
+	 */
+	public function render() {
+        $this->always = $this->arguments['alwaysreplace'] ;
+		$this->cacheJavaScript($this->renderChildren());
 	}
 	
 	/**

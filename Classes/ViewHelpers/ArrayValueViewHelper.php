@@ -31,7 +31,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ArrayValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ArrayValueViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
      * @var boolean
@@ -43,12 +43,20 @@ class ArrayValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
      */
     protected $escapeOutput = false;
 
+    /** * Constructor *
+     * @api */
+    public function initializeArguments() {
+        $this->registerArgument('array', 'array', ' The Array ', false , []);
+        $this->registerArgument('key', 'string', 'Key in array we are searching for  ', false , "-");
+        parent::initializeArguments() ;
+    }
+
 	/**
-	 * @param $array array
-	 * @param $key string
      * @return mixed
 	 */	 	
-	public function render($array, $key) {
+	public function render() {
+        $array = $this->arguments['array'] ;
+        $key = $this->arguments['key'] ;
         if(is_array($array)) {
 			if(array_key_exists($key, $array)) {
 				return $array[$key];
