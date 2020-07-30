@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+use TYPO3\CMS\Core\Core\Environment;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -56,7 +58,7 @@ class BackendTsfe {
 		$GLOBALS['TSFE']->fetch_the_id();
 		$GLOBALS['TSFE']->getPageAndRootline();
 		$GLOBALS['TSFE']->initTemplate();
-		$GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
+		$GLOBALS['TSFE']->tmpl->getFileName_backPath = Environment::getPublicPath() . '/';
 		$GLOBALS['TSFE']->forceTemplateParsing = 1;
 		$GLOBALS['TSFE']->getConfigArray();
 	}	

@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3\CMS\Core\Core\Environment;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -96,19 +98,19 @@ class DdAreaExportViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		$main_infos = array();
         
 		//get image size of main image
-		$size = getimagesize(PATH_site.'uploads/tx_kequestionnaire/'.$main, $main_infos);
+		$size = getimagesize(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$main, $main_infos);
 		$width = $size[0];
 		$height = $size[1];
         $mainImage = NULL ;
 		switch ($size[2]){
 			case 1: //IMAGETYPE_GIF
-				$mainImage = imagecreatefromgif(PATH_site.'uploads/tx_kequestionnaire/'.$main);
+				$mainImage = imagecreatefromgif(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$main);
 				break;
 			case 2: //IMAGETYPE_JPEG
-				$mainImage = imagecreatefromjpeg(PATH_site.'uploads/tx_kequestionnaire/'.$main);
+				$mainImage = imagecreatefromjpeg(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$main);
 				break;
 			case 3: //IMAGETYPE_PNG
-				$mainImage = imagecreatefrompng(PATH_site.'uploads/tx_kequestionnaire/'.$main);
+				$mainImage = imagecreatefrompng(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$main);
 				break;				
 		}	
 		if( !$mainImage ) {
@@ -118,16 +120,16 @@ class DdAreaExportViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
         $ddImage = NULL ;
 		foreach ($images as $image){
 			$resultAnswer = $this->getResultAnswer($result, $question->getUid(), $image->getUid());
-			$info = getimagesize(PATH_site.'uploads/tx_kequestionnaire/'.$image->getImage());
+			$info = getimagesize(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$image->getImage());
 			switch ($info[2]){
 				case 1: //IMAGETYPE_GIF
-					$ddImage = imagecreatefromgif(PATH_site.'uploads/tx_kequestionnaire/'.$image->getImage());
+					$ddImage = imagecreatefromgif(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$image->getImage());
 					break;
 				case 2: //IMAGETYPE_JPEG
-					$ddImage = imagecreatefromjpeg(PATH_site.'uploads/tx_kequestionnaire/'.$image->getImage());
+					$ddImage = imagecreatefromjpeg(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$image->getImage());
 					break;
 				case 3: //IMAGETYPE_PNG
-					$ddImage = imagecreatefrompng(PATH_site.'uploads/tx_kequestionnaire/'.$image->getImage());
+					$ddImage = imagecreatefrompng(Environment::getPublicPath() . '/'.'uploads/tx_kequestionnaire/'.$image->getImage());
 					break;				
 			}
 			if ($resultAnswer->getValue() && $ddImage  ){
@@ -165,7 +167,7 @@ class DdAreaExportViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 			imagedestroy($ddImage);
 		}
         
-        $save_file = PATH_site.'typo3temp/ke_questionnaire/'.$filename;
+        $save_file = Environment::getPublicPath() . '/'.'typo3temp/ke_questionnaire/'.$filename;
 		imagepng($mainImage,$save_file);
         imagedestroy($mainImage);
 		

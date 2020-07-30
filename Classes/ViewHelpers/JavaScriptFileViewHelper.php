@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3\CMS\Core\Core\Environment;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -52,8 +54,8 @@ class JavaScriptFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	 * @param boolean $footer
 	 */	 	
 	public function render($key = '', $filename, $footer = true) {
-		if ($footer) $GLOBALS['TSFE']->additionalFooterData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(PATH_site .$filename).'"></script>'; 
-		else  $GLOBALS['TSFE']->additionalHeaderData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(PATH_site .$filename).'"></script>'; 
+		if ($footer) $GLOBALS['TSFE']->additionalFooterData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
+		else  $GLOBALS['TSFE']->additionalHeaderData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
 	}	
 }
 ?>

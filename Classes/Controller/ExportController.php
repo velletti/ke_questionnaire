@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -150,16 +151,16 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 			$fileName = $pathName . '/' . $csvTempFile;
 			//when the progval is 0 => create datafile
 			if ($_SESSION['progval'] == 0){
-				if (!file_exists(PATH_site . $pathName)) {
-					mkdir(PATH_site . $pathName, 0777);
-					chmod(PATH_site . $pathName, 0777);
+				if (!file_exists(Environment::getPublicPath() . '/' . $pathName)) {
+					mkdir(Environment::getPublicPath() . '/' . $pathName, 0777);
+					chmod(Environment::getPublicPath() . '/' . $pathName, 0777);
 				}				
 			} else {
 				//else open file and add data
 				//get old file content
 				$oldContent = '';
-				if(file_exists(PATH_site . $fileName)) {
-					$oldContent = file_get_contents(PATH_site . $fileName);
+				if(file_exists(Environment::getPublicPath() . '/' . $fileName)) {
+					$oldContent = file_get_contents(Environment::getPublicPath() . '/' . $fileName);
 				}				
 			}
 			//Load the interval batch
@@ -174,11 +175,11 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 			}
 			$csvContent = $this->csvExport->processQbIntervalExport($this->plugin, $oldContent);
 			//clear the file
-			$csvFile = fopen(PATH_site . $fileName, 'w+b');
+			$csvFile = fopen(Environment::getPublicPath() . '/' . $fileName, 'w+b');
 			//write the js
 			fwrite($csvFile, $csvContent);
 			fclose($csvFile);
-			chmod(PATH_site . $fileName, 0777);
+			chmod(Environment::getPublicPath() . '/' . $fileName, 0777);
 
 			if ($correct_interval != $interval) {
 				$_SESSION['progval'] = $resultCount;                            
@@ -197,8 +198,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 		$finishedFileName = $pathName . '/csv_finished_'.time();
 		//get old file content
 		$oldContent = '';
-		if(file_exists(PATH_site . $fileName)) {
-			$oldContent = file_get_contents(PATH_site . $fileName);
+		if(file_exists(Environment::getPublicPath() . '/' . $fileName)) {
+			$oldContent = file_get_contents(Environment::getPublicPath() . '/' . $fileName);
 			//load all results for uids
 
 
@@ -213,13 +214,13 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 			$csvContent = $this->csvExport->finishIntervalExport($this->plugin, $csvContent);				
 			//write this content	
 			//clear the file
-			$finishedCsvFile = fopen(PATH_site . $finishedFileName, 'w+b');
+			$finishedCsvFile = fopen(Environment::getPublicPath() . '/' . $finishedFileName, 'w+b');
 			//write the js
             fwrite($finishedCsvFile, $csvContent);
 			fclose($finishedCsvFile);
-            chmod(PATH_site . $finishedFileName, 0777);		
+            chmod(Environment::getPublicPath() . '/' . $finishedFileName, 0777);
 			//delete the temp file
-			if (file_exists(PATH_site.$fileName)) unlink(PATH_site.$fileName); 
+			if (file_exists(Environment::getPublicPath() . '/'.$fileName)) unlink(Environment::getPublicPath() . '/'.$fileName);
 		}		
 		$_SESSION['progval'] = 0;
 		
@@ -232,8 +233,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 * @param string $filename
 	 */
 	public function downloadCsvIntervalAction($fileName) {
-		$csvdata = file_get_contents(PATH_site . $fileName);
-		unlink(PATH_site.$fileName);
+		$csvdata = file_get_contents(Environment::getPublicPath() . '/' . $fileName);
+		unlink(Environment::getPublicPath() . '/'.$fileName);
         $encoding = "utf-8" ;
 		if ($encoding != mb_detect_encoding($csvdata)) $csvdata = mb_convert_encoding($csvdata, $encoding, mb_detect_encoding($csvdata));
 
@@ -320,16 +321,16 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 			$fileName = $pathName . '/' . $csvTempFile;
 			//when the progval is 0 => create datafile
 			if ($_SESSION['progval'] == 0){
-				if (!file_exists(PATH_site . $pathName)) {
-					mkdir(PATH_site . $pathName, 0777);
-					chmod(PATH_site . $pathName, 0777);
+				if (!file_exists(Environment::getPublicPath() . '/' . $pathName)) {
+					mkdir(Environment::getPublicPath() . '/' . $pathName, 0777);
+					chmod(Environment::getPublicPath() . '/' . $pathName, 0777);
 				}				
 			} else {
 				//else open file and add data
 				//get old file content
 				$oldContent = '';
-				if(file_exists(PATH_site . $fileName)) {
-					$oldContent = file_get_contents(PATH_site . $fileName);
+				if(file_exists(Environment::getPublicPath() . '/' . $fileName)) {
+					$oldContent = file_get_contents(Environment::getPublicPath() . '/' . $fileName);
 				}				
 			}
 			//Load the interval batch
@@ -344,11 +345,11 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 			}
 			$csvContent = $this->csvExport->processRbIntervalExport($this->plugin, $oldContent);
 			//clear the file
-			$csvFile = fopen(PATH_site . $fileName, 'w+b');
+			$csvFile = fopen(Environment::getPublicPath() . '/' . $fileName, 'w+b');
 			//write the js
 			fwrite($csvFile, $csvContent);
 			fclose($csvFile);
-			chmod(PATH_site . $fileName, 0777);
+			chmod(Environment::getPublicPath() . '/' . $fileName, 0777);
 
 			if ($correct_interval != $interval) {
 				$_SESSION['progval'] = $resultCount;                            
@@ -367,8 +368,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 		$finishedFileName = $pathName . '/csv_finished_'.time();
 		//get old file content
 		$oldContent = '';
-		if(file_exists(PATH_site . $fileName)) {
-			$oldContent = file_get_contents(PATH_site . $fileName);
+		if(file_exists(Environment::getPublicPath() . '/' . $fileName)) {
+			$oldContent = file_get_contents(Environment::getPublicPath() . '/' . $fileName);
 			//load all results for uids
 			if ($this->request->getArgument('finished') == 'finished'){
 				$this->csvExport->setResults($this->resultRepository->findFinishedForPid($this->storagePid));
@@ -379,13 +380,13 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 			$csvContent = $this->csvExport->finishRbIntervalExport($this->plugin, $csvContent);				
 			//write this content	
 			//clear the file
-			$finishedCsvFile = fopen(PATH_site . $finishedFileName, 'w+b');
+			$finishedCsvFile = fopen(Environment::getPublicPath() . '/' . $finishedFileName, 'w+b');
 			//write the js
             fwrite($finishedCsvFile, $csvContent);
 			fclose($finishedCsvFile);
-            chmod(PATH_site . $finishedFileName, 0777);		
+            chmod(Environment::getPublicPath() . '/' . $finishedFileName, 0777);
 			//delete the temp file
-			if (file_exists(PATH_site.$fileName)) unlink(PATH_site.$fileName); 
+			if (file_exists(Environment::getPublicPath() . '/'.$fileName)) unlink(Environment::getPublicPath() . '/'.$fileName);
 		}		
 		$_SESSION['progval'] = 0;
 		
@@ -613,8 +614,8 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 		if ($compared) $this->view->assign('compare',$this->questionnaire->getCompareResult());
 		
 		//load the css-data for the pdf
-		$css_filename = PATH_site.'typo3conf/ext/'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/KeQuestionnaire.css';
-		$css_filename2 = PATH_site.'typo3conf/ext/'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/PDF.css';
+		$css_filename = Environment::getPublicPath() . '/'.'typo3conf/ext/'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/KeQuestionnaire.css';
+		$css_filename2 = Environment::getPublicPath() . '/'.'typo3conf/ext/'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/PDF.css';
         $css = '<style>'.file_get_contents($css_filename)."\n".file_get_contents($css_filename2).'</style>';
         //render the pdf-html-data
 		$content = $this->view->render();

@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use TYPO3\CMS\Core\Core\Environment;
 /***************************************************************
  *  Copyright notice
  *
@@ -79,7 +80,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		//maybe better to erase the js file every time
 		$pathname = 'typo3temp/ke_questionnaire';
 		$filename = $pathname.'/'.$jsKey.'.js';
-		if (file_exists(PATH_site.$filename)) unlink($filename); 
+		if (file_exists(Environment::getPublicPath() . '/'.$filename)) unlink($filename);
 	}
 
 	/**

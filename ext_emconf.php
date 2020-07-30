@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Questionnaire',
-	'description' => 'SEE https://www.pivotaltracker.com/story/show/132754271 !! Easily create any type of questionnaire, survey, poll, quiz or eLearning. The results may be evaluated and displayed graphically at any time. See further information - also about the premium version - at www.ke-questionnaire.de',
+	'description' => 'Fork of Kennziffer LTS 7 version. adapted for LTS 8 aund 9  !! Easily create any type of questionnaire, survey, poll, quiz or eLearning. The results may be evaluated and displayed graphically at any time. See further information - also about the premium version - at www.ke-questionnaire.de',
 	'category' => 'plugin',
 	'author' => 'kennziffer.com',
 	'author_email' => 'info@kennziffer.com',

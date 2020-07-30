@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3\CMS\Core\Core\Environment;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -73,15 +75,15 @@ class JavaScriptViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 			$pathName = 'typo3temp/ke_questionnaire';
 			$fileName = $pathName . '/' . $jsKey . '.js';
 
-			if (!file_exists(PATH_site . $pathName)) {
-                mkdir(PATH_site . $pathName, 0777);
-                chmod(PATH_site . $pathName, 0777);
+			if (!file_exists(Environment::getPublicPath() . '/' . $pathName)) {
+                mkdir(Environment::getPublicPath() . '/' . $pathName, 0777);
+                chmod(Environment::getPublicPath() . '/' . $pathName, 0777);
             }
 			//get old file content
 			$oldContent = '';
 
-			if(file_exists(PATH_site . $fileName)) {
-				$oldContent = file_get_contents(PATH_site . $fileName);
+			if(file_exists(Environment::getPublicPath() . '/' . $fileName)) {
+				$oldContent = file_get_contents(Environment::getPublicPath() . '/' . $fileName);
 			}
 
 			//check old file content for alwaysreplace_start and _end parameter
@@ -98,16 +100,16 @@ class JavaScriptViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 				} else $content = $oldContent;
 			}
 			//clear the file
-            $jsFile = fopen(PATH_site . $fileName, 'w+b');
+            $jsFile = fopen(Environment::getPublicPath() . '/' . $fileName, 'w+b');
 
             //write the js
             fwrite($jsFile, $content);
 			fclose($jsFile);
-            chmod(PATH_site . $fileName, 0777);
+            chmod(Environment::getPublicPath() . '/' . $fileName, 0777);
 
 			//add it to the headerData
 			$GLOBALS['TSFE']->additionalFooterData['ke_questionnaire_tempjs'] = '<script type="text/javascript" src="' .
-				$fileName . "?" . filemtime(PATH_site . $fileName) . '"></script>';
+				$fileName . "?" . filemtime(Environment::getPublicPath() . '/' . $fileName) . '"></script>';
 		}
 	}
 }

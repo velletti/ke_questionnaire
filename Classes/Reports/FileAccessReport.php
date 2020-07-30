@@ -24,6 +24,7 @@ namespace Kennziffer\KeQuestionnaire\Reports;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -83,7 +84,7 @@ class FileAccessReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * @return void
 	 */
 	protected function init() {
-		$this->tmpFileAndPath = PATH_site . 'typo3temp/ke_questionnaire/pdf/TEST';
+		$this->tmpFileAndPath = Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/pdf/TEST';
 		$this->siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
 		$this->staticStateResponseData = array(
@@ -138,8 +139,8 @@ class FileAccessReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * @return string
 	 */
 	protected function createAndCheckTmpFile() {
-		if(!is_dir(PATH_site . 'typo3temp/ke_questionnaire/pdf')) {
-			@mkdir(PATH_site . 'typo3temp/ke_questionnaire/pdf');
+		if(!is_dir(Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/pdf')) {
+			@mkdir(Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/pdf');
 		}
 		//create htaccess file
 		$htaccess = '
@@ -151,8 +152,8 @@ Allow from 127.0.0.1
 	Order Allow,Deny
 	Allow from all
 </FilesMatch>';
-		$htaccessFileAndPath = PATH_site . 'typo3temp/ke_questionnaire/.htaccess';
-		//$htaccessFileAndPath = PATH_site . 'typo3temp/ke_questionnaire/pdf/.htaccess';
+		$htaccessFileAndPath = Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/.htaccess';
+		//$htaccessFileAndPath = Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/pdf/.htaccess';
 		$writeHtaccess = GeneralUtility::writeFileToTypo3tempDir($htaccessFileAndPath, $htaccess);
 		if($writeHtaccess !== NULL) {
 			return 'writeFail';
