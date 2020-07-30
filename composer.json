@@ -15,7 +15,7 @@
   ],
 
   "require": {
-    "typo3/cms-core": "^8.7.0"
+    "typo3/cms-core": "^9.5.0"
   },
 
   "replace": {
@@ -28,7 +28,8 @@
       "Kennziffer\\KeQuestionnaire\\": "Classes"
     },
     "classmap": [
-      "Classes/Lib/Mpdf"
+      "Classes/Lib/Mpdf",
+      "Classes/Lib/Mpdf/classes"
     ]
   },
 

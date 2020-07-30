@@ -121,7 +121,7 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer>
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 * @cascade remove
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */
 	protected $answers;
     
@@ -130,7 +130,7 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Dependancy>
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 * @cascade remove
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */
 	protected $dependancies;
     

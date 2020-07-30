@@ -58,7 +58,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Questions
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion>
-	 * @cascade remove
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */
 	protected $questions;
 
