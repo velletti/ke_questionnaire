@@ -49,6 +49,11 @@ ke_questionnaire/Resources/Private/Partials/Backend/CreateAndMailAuthCodes.html
 you need to adjust this:
 (You need to handover to the partial parameter 'text' and render the Email preview inside of the template )
 
+### - LTS 9 
+Add this to your config/sites/<site>.yaml
+imports:
+  - { resource: "EXT:ke_questionnaire/Configuration/Routing/routes.yaml" }
+
 ## Bugs / Issues
 feel free to report Bugs to my fork in the github issue list.
 or create directly a pull request. 

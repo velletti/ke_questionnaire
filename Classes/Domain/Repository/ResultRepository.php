@@ -298,7 +298,8 @@ class ResultRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @return integer
 	 */
 	public function clearRATable() {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_kequestionnaire_domain_model_resultanswer','resultquestion = 0');
+        $query = $this->createQuery();
+        $query->statement("DELETE from tx_kequestionnaire_domain_model_resultanswer WHERE resultquestion = 0 ")->execute() ;
 	}
 	
 	/**

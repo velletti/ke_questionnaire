@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -146,7 +149,9 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		$this->view->assign('questions', $this->questionnaire->getQuestionsForPage($requestedPage));
 		$this->view->assign('questionnaire', $this->questionnaire);
 		$this->view->assign('newResult', $newResult);
-	}
+
+
+    }
 
 	
 
@@ -175,9 +180,11 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	public function initializeCreateAction() {
 		//to get correct updates it is needed that a clone of the actual result is created
 		//the temp_result stores the current newResult-data
-		$this->temp_result = $this->request->getArgument('newResult');
+        if ( $this->request->hasArgument("newResult") ) {
+            $this->temp_result = $this->request->getArgument('newResult');
+        }
 		//SignalSlot for this action
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'initializeCreateAction', array($this, $this->arguments));
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'initializeCreateAction', array($this, $this->arguments));
 		//check for autoSave
 		//Premium function needs to be checked here anyway. The autosave Action is part of the premium
         if ($this->settings['ajaxAutoSave'] == 1 AND $GLOBALS['TSFE']->fe_user->user['uid'] > 0){
@@ -186,13 +193,38 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 				$this->request->setArgument('newResult',$result);
 			}
 		}
+
+
 		//if the result is not new create the clone of the stored before it is updated
 		//if the old-result is not stored, given answers of other pages will be deleted
-		if ($this->temp_result['__identity'] > 0) {
-			$result = $this->resultRepository->findByUid($this->temp_result['__identity']);	
-			if ($result) $this->oldResult = clone $result;
-		}
-		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings, 'settings');		
+        if( is_array( $this->temp_result )) {
+            if (array_key_exists('__identity' , $this->temp_result ) && $this->temp_result['__identity'] > 0) {
+                $result = $this->resultRepository->findByUid($this->temp_result['__identity']);
+                if ($result) $this->oldResult = clone $result;
+            } elseif (array_key_exists('questions' , $this->temp_result ) &&count( $this->temp_result['questions']) > 0)  {
+                //  Need to build newResult Object from array ??
+                    /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult  */
+                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $resultAnswer  */
+                /** @var  \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultQuestion */
+                /*
+                    $newResult = GeneralUtility::makeInstance("Kennziffer\\KeQuestionnaire\\Domain\\Model\\Result") ;
+                    foreach ( $this->temp_result['questions'] as $questionUid) {
+
+                       //  $resultQuestion = $this->questionRepository->findByUid(intval($questionUid["question"])) ;
+
+
+                        foreach ( $resultQuestion->getAnswers() as $resultAnswer) {
+                            foreach($questionUid['answers'] as $givenAnswer ) {
+                                if( $resultAnswer->getUid() == $givenAnswer['answer']) {
+                               //     $resultAnswer->setValue($givenAnswer['value']);
+                                }
+                            }
+                        }
+                    }
+                */
+            }
+        }
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings, 'settings');
 	}
 
 	/**
@@ -221,7 +253,8 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 					$this->checkAuthCode();
 					$newResult->setAuthCode($this->authCode);
 				break;
-		}		
+		}
+
 		//validate the result
 		$this->validateResult($newResult, $requestedPage);
 		//rework the result so all given answers to all questions (not only current page) are stored
@@ -324,7 +357,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	 * @return void
 	 */
 	public function validateResult(\Kennziffer\KeQuestionnaire\Domain\Model\Result &$result, $requestedPage = 1) {
-		/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
+		/* @var  \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultQuestion  */
 		//check for every question in result
 		foreach ($result->getQuestions() as $resultQuestion) {
 				if ($resultQuestion->getQuestion()){
