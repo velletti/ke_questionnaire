@@ -616,19 +616,31 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		foreach ($this->getQuestions() as $resultQuestion) {
 				if ($resultQuestion->getQuestion()){
 						// check for point calculation
-						$pointsForQuestion = 0;				
+						$pointsForQuestion = 0;
+						$calcPoints = 0;
+						$wrongAnswersForQuestion = 0;
+						$givenAnswersForQuestion = 0;
 						/* @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
 						if (count($resultQuestion->getAnswers()) > 0){
 							//calculate for each answer
-							foreach ($resultQuestion->getAnswers() as $resultAnswer) {						
-									if ($resultAnswer->getAnswer()){
-											$calcPoints = 0;
-											$calcPoints = $resultAnswer->getPoints();
-											$pointsForResult += $calcPoints;
-											$pointsForQuestion += $calcPoints;
-									}
-									$resultAnswer->setFeCruserId($userId);
+							foreach ($resultQuestion->getAnswers() as $resultAnswer) {
+                                $givenAnswersForQuestion++ ;
+                                if ($resultAnswer->getAnswer()){
+
+                                        $calcPoints = $resultAnswer->getPoints();
+                                        if( $calcPoints > 0 ) {
+                                            $pointsForQuestion += $calcPoints;
+                                        } else {
+                                            $wrongAnswersForQuestion ++ ;
+                                        }
+
+                                }
+                                $resultAnswer->setFeCruserId($userId);
 							}
+							if ( $wrongAnswersForQuestion > 0 ) {
+                                $pointsForQuestion = round( $pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion ) / 2 ) ,0) ;
+                            }
+                            $pointsForResult += $pointsForQuestion;
 						}
 						//set the points for this questions
 						$resultQuestion->setPoints($pointsForQuestion);
