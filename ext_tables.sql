@@ -216,6 +216,7 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultquestion (
 	answers int(11) unsigned DEFAULT '0' NOT NULL,
 	question int(11) unsigned DEFAULT '0',
 	points int(11) DEFAULT '0' NOT NULL,
+	page int(11) DEFAULT '1' NOT NULL,
 	max_points int(11) DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,

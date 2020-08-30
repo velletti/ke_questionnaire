@@ -56,9 +56,11 @@ imports:
 
 ## Bugs / Issues
 feel free to report Bugs to my fork in the github issue list.
-or create directly a pull request. 
+or 
+create directly a pull request. 
 
-[Github Repo](https://github.com/jvelletti/ke_qeustionnaire/issues)
+[Github Repo]  
+(https://github.com/jvelletti/ke_qeustionnaire/issues)
 
 ## Contact
 - Email: typo3@velletti.de

@@ -40,6 +40,13 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	protected $feCruserId;
 
+    /**
+     * number of page if question list  has pagePbreaks . if Questions are Shuffled, need this to generate same questionnaire from stored temp result
+     *
+     * @var integer
+     */
+    protected $page;
+
 	/**
 	 * Answers
 	 *
@@ -273,6 +280,24 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setQuestion(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question) {
 		$this->question = $question;
 	}
+
+    /**
+     * @return int
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param int $page
+     */
+    public function setPage($page)
+    {
+        $this->page = $page;
+    }
+
+
 
 	/**
 	 * Returns the points

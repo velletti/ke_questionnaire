@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -49,7 +54,7 @@ class ContentElementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstrac
 	protected $configurationManager;
 
 	/**
-	 * @var Content Object
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer Object
 	 */
 	protected $cObj;
 
@@ -58,6 +63,7 @@ class ContentElementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstrac
      * @api */
     public function initializeArguments() {
         $this->registerArgument('uid', 'int', ' UID of any content element ', false );
+        $this->registerArgument('sysLanguageUid', 'int', ' Language UID that should be rendered', false );
         parent::initializeArguments() ;
     }
 
@@ -67,18 +73,48 @@ class ContentElementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstrac
      * @return 	string		Parsed Content Element
      */
     public function render() {
-        $uid = $this->arguments['uid'] ;
+        $uid = intval( $this->arguments['uid'] );
+        if ( $uid == 0 ) {
+            return '' ;
+        }
+        if( $this->hasArgument('sysLanguageUid')) {
+            $sysLanguageUid = (integer)$this->arguments['sysLanguageUid'];
+        }
+        // If a sysLanguageUid is set, get the translated record
+        if(intval($sysLanguageUid) > 0){
+
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = $connectionPool->getConnectionForTable('tt_content')->createQueryBuilder();
+            $queryBuilder->select('uid')
+                ->from('tt_content') ;
+
+            $expr = $queryBuilder->expr();
+            $queryBuilder->where(
+                $expr->eq('uid', $queryBuilder->createNamedParameter(intval($uid), Connection::PARAM_INT))
+            )->orWhere(
+                $expr->eq('l18n_parent', $queryBuilder->createNamedParameter(intval($uid), Connection::PARAM_INT))
+            )->andWhere(
+                $expr->eq('sys_language_uid', $queryBuilder->createNamedParameter(intval($sysLanguageUid), Connection::PARAM_INT))
+            ) ;
+
+
+            $result = $queryBuilder->execute()->fetch();
+
+            if(is_array( $result) && isset($result['uid'])){
+                $uid = $result['uid'];
+            }
+
+        }
+
 		$conf = array( // config
 			'tables' => 'tt_content',
 			'source' => $uid,
 			'dontCheckPid' => 1
 		);
-		$conf_test = htmlspecialchars($conf);
-		if (count($conf_test) > 0) {
-            $conf = $conf_test;
-        }
-        // ToDo J.V. Rebuild this
-		return $this->cObj->RECORDS($conf);
+		return $this->cObj->cObjGetSingle('RECORDS', $conf);
     }
 
 	/**

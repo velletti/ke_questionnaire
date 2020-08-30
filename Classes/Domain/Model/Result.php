@@ -352,6 +352,20 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getQuestions() {
 		return $this->questions;
 	}
+    /** returns array of questions for specific page in questionaiere
+     * @return array
+     */
+    public function getQuestionsForPage($page) {
+	    $questions=[] ;
+	    /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $question */
+        foreach ( $this->questions as $question) {
+	        if( $question->getPage() == $page ) {
+                $questions[] = $question->getQuestion() ;
+            }
+        }
+        return $questions ;
+    }
+
 	
 	/**
 	 * Returns the questions
@@ -596,6 +610,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$group = NULL;
 		$groupPoints = 0;
 		$maxGroupPoints = 0;
+		$userId = $GLOBALS['TSFE']->fe_user->user['uid'] ? $GLOBALS['TSFE']->fe_user->user['uid'] : 0 ;
 		/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 		//count for all questions in result
 		foreach ($this->getQuestions() as $resultQuestion) {
@@ -612,12 +627,12 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 											$pointsForResult += $calcPoints;
 											$pointsForQuestion += $calcPoints;
 									}
-									$resultAnswer->setFeCruserId($GLOBALS['TSFE']->fe_user->user['uid']);						
+									$resultAnswer->setFeCruserId($userId);
 							}
 						}
 						//set the points for this questions
 						$resultQuestion->setPoints($pointsForQuestion);
-						$resultQuestion->setFeCruserId($GLOBALS['TSFE']->fe_user->user['uid']);
+						$resultQuestion->setFeCruserId($userId);
 
 						//maxPoints are the maximum points for all the questions already part of this result
 						$maxPoints += $resultQuestion->getMaxPoints();

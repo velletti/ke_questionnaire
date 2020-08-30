@@ -157,6 +157,15 @@ return array(
                 'eval' => 'int'
             ),
         ),
+        'page' => array(
+            'exclude' => 0,
+            'label' => 'Page Number',
+            'config' => array(
+                'type' => 'input',
+                'size' => 4,
+                'eval' => 'int'
+            ),
+        ),
         'result' => array(
             'config' => array(
                 'type' => 'passthrough',
