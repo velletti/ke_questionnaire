@@ -133,7 +133,22 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */
 	protected $dependancies;
-    
+
+    /**
+    * Min answers
+    *
+    * @var boolean
+	 */
+	protected $minAnswers = 0 ;
+
+    /**
+     * Max answers
+     *
+     * @var boolean
+     */
+    protected $maxAnswers = 0 ;
+
+
     /**
 	 * Css
 	 *
@@ -545,7 +560,41 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setCss($css) {
 		$this->css = $css;
 	}
-    
+
+    /**
+     * @return bool
+     */
+    public function isMinAnswers()
+    {
+        return $this->minAnswers;
+    }
+
+    /**
+     * @param bool $minAnswers
+     */
+    public function setMinAnswers($minAnswers)
+    {
+        $this->minAnswers = $minAnswers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMaxAnswers()
+    {
+        return $this->maxAnswers;
+    }
+
+    /**
+     * @param bool $maxAnswers
+     */
+    public function setMaxAnswers($maxAnswers)
+    {
+        $this->maxAnswers = $maxAnswers;
+    }
+
+
+
     /**
 	 * Returns the template
 	 *

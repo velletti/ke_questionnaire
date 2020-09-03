@@ -233,6 +233,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		$codeLength = $this->settings['authCodes']['length'];
 		//create the codes and store them in the storagepid of the plugin
 		for ($i = 0; $i < $amount; $i++){
+		    /** @var \Kennziffer\KeQuestionnaire\Domain\Model\AuthCode $newAuthCode */
 			$newAuthCode = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
 			$newAuthCode->generateAuthCode($codeLength,$this->storagePid);
 			$newAuthCode->setPid($this->storagePid);

@@ -601,10 +601,10 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	
 	/**
 	 * check the points for the result object
-	 *
+	 * @param boolean $reducePointsforWrongAnswers
 	 * @return void
 	 */
-	public function calculatePoints() {
+	public function calculatePoints($reducePointsforWrongAnswers=false) {
 		$maxPoints = 0;
 		$pointsForResult = 0;
 		$group = NULL;
@@ -637,8 +637,13 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
                                 }
                                 $resultAnswer->setFeCruserId($userId);
 							}
-							if ( $wrongAnswersForQuestion > 0 ) {
-                                $pointsForQuestion = round( $pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion ) / 2 ) ,0) ;
+                            if( $resultQuestion->getQuestion()->getMaxAnswers() > 0 || $reducePointsforWrongAnswers  ) {
+                                if ( $wrongAnswersForQuestion > 0 ) {
+                                    $pointsForQuestion = round( $pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion ) / 2 ) ,0) ;
+                                }
+                            }
+							if( $pointsForQuestion < 0 ) {
+                                $pointsForQuestion = 0 ;
                             }
                             $pointsForResult += $pointsForQuestion;
 						}

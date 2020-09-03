@@ -338,7 +338,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
         //rework the result so all given answers to all questions (not only current page) are stored
 		$result = $this->getSavedAndMergedResult($newResult);
 		//calculate the points of the questions and the result
-		$result->calculatePoints();
+		$result->calculatePoints($this->settings['reducePointsforWrongAnswers']);
 		$this->resultRepository->update($result);
 		
 		$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');

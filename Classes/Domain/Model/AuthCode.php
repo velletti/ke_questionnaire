@@ -146,12 +146,24 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			list($usec, $sec) = explode(' ', microtime());
 			mt_srand((float) $sec + ((float) $usec * 100000));
 
-			$inputs = array_merge(range('z','a'),range(0,9),range('A','Z'));
+            $inputs = array_merge(
+                range('z','p'),
+                range('h','a'),
 
-			for($i=0; $i<$length; $i++)
-			{
-				$key .= $inputs{mt_rand(0,61)};
-			}
+                range(2,9),
+                range('A','H'),
+                range('P','Z'),
+                array("m" , "M" , "n" , "N" , "k" , "K" , "j" , "J")
+            );
+
+            for($i=0; $i<$length; $i++)
+            {
+                $key .= $inputs{mt_rand(0,count($inputs)-1)};
+                if( round(($i+1)/($length/2),0) == ($i+1)/($length/2) ) {
+                    $key .= "-" ;
+                }
+            }
+            $key = rtrim($key , "-") ;
 
 			$existent = $ac_rep->findByAuthCodeForPid($key,$pid);
 			if ($existent) $loop = 0;
