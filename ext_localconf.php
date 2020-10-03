@@ -54,4 +54,16 @@ if (!defined('TYPO3_MODE')) {
 		'Result' => 'show',
 	)
 );
-?>
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'Kennziffer.'.$_EXTKEY,
+    'Be',
+    array(
+        'Backend' =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
+        'Export'  => 'downloadPdf, pdf, downloadAuthCodesCsv'
+    ),
+    // non-cacheable actions
+    array(
+        'Backend' =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
+        'Export'  => 'downloadPdf, pdf, downloadAuthCodesCsv'
+    )
+);
