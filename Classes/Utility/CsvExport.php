@@ -619,13 +619,13 @@ class CsvExport {
 	 * get the Questions for the questionnaire
 	 * 
 	 * @param array $plugin
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult 
+	 * @return array|\TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface
 	 */
 	protected function getQuestions($plugin) {
 		$pids = explode(',',$plugin['pages']);
 		$storagePid = $pids[0];
 		
-		$questions = $this->questionRepository->findAllForPid($storagePid);
+		$questions = $this->questionRepository->findAllForPidtoExport($storagePid);
 		
 		return $questions;
 	}

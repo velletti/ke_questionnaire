@@ -52,7 +52,23 @@ class QuestionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$query->matching($query->equals('pid', $pid));
 		return $query->execute();
 	}
-    
+
+    /**
+     * find all questions for pid
+     *
+     * @param integer $pid
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array Query  Result
+     */
+    public function findAllForPidtoExport($pid) {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $constraints[] = $query->equals('pid', $pid) ;
+        $constraints[] = $query->logicalNot( $query->equals('type', "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak") ) ;
+
+        $query->matching($query->logicalAnd($constraints));
+        return $query->execute();
+    }
+
     /**
 	 * find one question without check the pid
 	 * 

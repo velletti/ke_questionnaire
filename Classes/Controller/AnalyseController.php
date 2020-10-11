@@ -76,7 +76,7 @@ class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendC
 		if ($plugin) $this->plugin = $plugin;
 		
         $questionnaire = $this->questionnaireRepository->findByUid($this->plugin['uid']);
-        $questions = $this->questionRepository->findAllForPid($questionnaire->getStoragePid());
+        $questions = $this->questionRepository->findAllForPidtoExport($questionnaire->getStoragePid());
 		// if a question is selected, create the analysis for this question
 		// else select the first keq-element of type question for analysis
         if ($this->request->hasArgument('question')){
