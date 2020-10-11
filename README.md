@@ -1,8 +1,11 @@
-**Fork for TYPO3 8 LTS**
+**Fork for TYPO3 9 LTS**
 
 This is NOT the offical Version of ke_questionnaire!
 =======================================================
-I just made a fork and made changes, that enables the USE of TYPO3 8-LTS as i needed this in 2 projects.
+I just made a fork and made changes, that enables the USE of TYPO3 8-LTS  
+Actual development is only on Branch TYPO3-9-LTS 
+
+Adjustments for LTS 10 are planned for Q1 / 2021.
 
 ================================================
 
@@ -49,6 +52,11 @@ ke_questionnaire/Resources/Private/Partials/Backend/CreateAndMailAuthCodes.html
 you need to adjust this:
 (You need to handover to the partial parameter 'text' and render the Email preview inside of the template )
 
+Most Templates have to be adjusted for LTS9, see Git Repositorys history
+Removed outdate Arguments in Backend Viewhalpers
+added sometimes now <format.raw> 
+
+
 ### - LTS 9 
 Add this to your config/sites/<site>.yaml
 imports:
@@ -58,6 +66,7 @@ imports:
 feel free to report Bugs to my fork in the github issue list.
 or 
 create directly a pull request. 
+
 
 [Github Repo]  
 (https://github.com/jvelletti/ke_qeustionnaire/issues)
