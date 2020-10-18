@@ -2,10 +2,10 @@
 
 This is NOT the offical Version of ke_questionnaire!
 =======================================================
-I just made a fork and made changes, that enables the USE of TYPO3 8-LTS  
+I just made a fork and made changes, that enables the USE of TYPO3 8-LTS  (and now also LTS 9 )
 Actual development is only on Branch TYPO3-9-LTS 
 
-Adjustments for LTS 10 are planned for Q1 / 2021.
+Adjustments for LTS 10 are planned for Q1 / 2021. 
 
 ================================================
 
