@@ -13,8 +13,8 @@
 	/*
 	 * Checks the Answer for the inside Text and replaces it with zero if focused
 	 */
-	jQuery("#keq{question.uid}a{answer.uid}").focus( function() {
-		if(this.value=='{answer.inText}') this.value='';
+	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>").focus( function() {
+		if(this.value=='<f:format.raw>{answer.inText}</f:format.raw>') this.value='';
 	});
 </ke:JavaScript>
 <f:if condition="{question.isMandatory}">
@@ -22,29 +22,29 @@
 	/*
 	 * As soon as a Radio Button on clicked mandatory is fullfilled
 	 */
-	jQuery( "#keq{question.uid}a{answer.uid}" ).on( "blur", function() {
-		check_keq{question.uid}a{answer.uid}();
+	jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>" ).on( "blur", function() {
+		check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>();
 	});
-	check_keq{question.uid}a{answer.uid} = function() {
+	check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw> = function() {
 		var length = 0;
-		jQuery("#keq{question.uid} textarea").each(function(){
+		jQuery("#keq<f:format.raw>{question.uid}</f:format.raw> textarea").each(function(){
 			length += jQuery(this).val().length;
 		});
-		if (length > 0) jQuery("#keqMandatory{question.uid}").val(0);
-		else jQuery("#keqMandatory{question.uid}").val(1);		
+		if (length > 0) jQuery("#keqMandatory<f:format.raw>{question.uid}</f:format.raw>").val(0);
+		else jQuery("#keqMandatory<f:format.raw>{question.uid}</f:format.raw>").val(1);
 		checkMandatory();
 	}
-	check_keq{question.uid}a{answer.uid}();
+	check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>();
 </ke:JavaScript>
 </f:if>
 <!-- Javascript to check the Validationtypes for the InputField-->
-<f:if condition="{answer.validationType}">
+<f:if condition="<f:format.raw>{answer.validationType}</f:format.raw>">
 	<ke:JavaScript>
 	/*
 	 * Checks the Answer for the type of the chosen validation
 	 */
-	jQuery("#keq{question.uid}a{answer.uid}").blur( function() {
-		var a_id = {answer.uid};
+	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>").blur( function() {
+		var a_id = <f:format.raw>{answer.uid}</f:format.raw>;
 		var val = jQuery(this).val();
 		var this_id = jQuery(this).attr('id');
 		jQuery.ajax({

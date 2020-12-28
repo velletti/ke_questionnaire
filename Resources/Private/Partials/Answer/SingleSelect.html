@@ -13,12 +13,12 @@
 	 * Selectboxes are always answered
 	 */
        
-	check_keq{question.uid}a{answer.uid} = function() {
+	check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw> = function() {
                 /*<![CDATA[*//*]]>*/	
-		jQuery("#keqMandatory{question.uid}").val(0);	
+		jQuery("#keqMandatory<f:format.raw>{question.uid}</f:format.raw>").val(0);
                 checkMandatory();
 	};
-	check_keq{question.uid}a{answer.uid}();
+	check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>();
         
 </ke:JavaScript>
 </f:if>
