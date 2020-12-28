@@ -1,3 +1,6 @@
+[request.getQueryParams()] && [request.getQueryParams()['type'] == '2667'] || [getTSFE().type == 2667]
+    page.typeNum = 2667
+[END]
 keqAjaxResponse = PAGE
 keqAjaxResponse {
 	typeNum = 2667
@@ -25,6 +28,5 @@ keqAjaxResponse {
 		}
 		settings =< plugin.tx_kequestionnaire.settings
 		persistence =< plugin.tx_kequestionnaire.persistence
-		#view =< plugin.tx_myextensionname.view
 	}
 }
