@@ -46,7 +46,7 @@
 	 */
 	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>").blur( function() {
 		var a_id = <f:format.raw>{answer.uid}</f:format.raw>;
-		var q_id = <f:format.raw>{question.uid}</f:format.raw>
+		var q_id = <f:format.raw>{question.uid}</f:format.raw>;
 		var val = jQuery(this).val();
 		var this_id = jQuery(this).attr('id');
 		jQuery.ajax({
