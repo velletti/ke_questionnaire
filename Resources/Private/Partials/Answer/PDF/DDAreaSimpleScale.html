@@ -9,7 +9,7 @@
 			<f:if condition="{answer.image}">
 				<f:then></f:then>
 				<f:else>
-					<f:image src="typo3conf/ext/ke_questionnaire/Resources/Public/Images/simpleScale.png" alt="scale"/>
+					<ke:image src="typo3conf/ext/ke_questionnaire/Resources/Public/Images/simpleScale.png" alt="scale"/>
 				</f:else>
 			</f:if>
 		</div>
@@ -20,7 +20,7 @@
 						<f:form.hidden name="newResult[questions][{question.uid}][answers][{dd.image.uid}][answer]" value="{dd.image.uid}" />
 						<f:form.hidden name="newResult[questions][{question.uid}][answers][{dd.image.uid}][value]" value="{f:if(condition: boxResultAnswer.value, then: boxResultAnswer.value)}" />
 					</f:alias>
-					<f:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}"/>
+					<ke:image src="uploads/tx_kequestionnaire/{dd.image.image}" alt="{dd.image.title}" width="{f:if(condition: dd.image.width, then: dd.image.width)}" height="{f:if(condition: dd.image.height, then: dd.image.height)}"/>
 				</div>
 			</ke:ddImage>
 		</div>
@@ -32,9 +32,9 @@
 	/*
 	 * If the option is checked the hoverClass is defined
 	 */
-		jQuery( "#keq{question.uid} .keq-moveable" ).xdraggable("option","containment","#keq{question.uid}");
-		jQuery( "#keq{question.uid} .keqDDArea .keq-placeholder" ).droppable("option","hoverClass","dd-area-highlight-hover");
-		jQuery( "#keq{question.uid} .keqDDArea .keq-moveable-container" ).droppable("option","hoverClass","dd-area-highlight-hover");
+		jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw> .keq-moveable" ).xdraggable("option","containment","#keq<f:format.raw>{question.uid}</f:format.raw>");
+		jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw> .keqDDArea .keq-placeholder" ).droppable("option","hoverClass","dd-area-highlight-hover");
+		jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw> .keqDDArea .keq-moveable-container" ).droppable("option","hoverClass","dd-area-highlight-hover");
 		</ke:JavaScript>
 	</f:then>
 	<f:else>
@@ -42,9 +42,9 @@
 	/*
 	 * Else the images need to fit in the areas totally
 	 */
-		jQuery( "#keq{question.uid} .keq-moveable" ).xdraggable("option","containment","#keq{question.uid}");
-		jQuery( "#keq{question.uid} .keqDDArea .keq-placeholder" ).droppable("option","tolerance","fit");
-		jQuery( "#keq{question.uid} .keqDDArea .keq-moveable-container" ).droppable("option","tolerance","fit");
+		jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw> .keq-moveable" ).xdraggable("option","containment","#keq<f:format.raw>{question.uid}</f:format.raw>");
+		jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw> .keqDDArea .keq-placeholder" ).droppable("option","tolerance","fit");
+		jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw> .keqDDArea .keq-moveable-container" ).droppable("option","tolerance","fit");
 		</ke:JavaScript>
 	</f:else>
 </f:if>

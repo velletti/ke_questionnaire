@@ -33,13 +33,13 @@
 	</f:if>
 </f:alias>
 <ke:JavaScript>
-/*
- * Check Input fields on change
- */
-	var idy = 'keq{question.uid}r{row.uid}';
+	/*
+	 * Check Input fields on change
+	 */
+	var idy = 'keq<f:format.raw>{question.uid}</f:format.raw>r<f:format.raw>{row.uid}</f:format.raw>';
+	var idy2 = '#' + idy ;
 	checkMatrixRadioValues(idy);
-	jQuery( "#keq{question.uid}r{row.uid} input:radio" ).on( "change", function() {
-		var idy = 'keq{question.uid}r{row.uid}';
+	jQuery( idy2 + " input:radio" ).on( "change", function() {
 		checkMatrixRadioValues(idy);
 	});
 </ke:JavaScript>

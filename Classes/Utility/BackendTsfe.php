@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -66,9 +67,13 @@ class BackendTsfe {
 		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFEclassName */
 		$TSFEclassName = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,NULL , $this->pid , $typeNum  , '1', '', '', '') ;
 		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $this->pid, $typeNum , 1, '', '', '', '');
+        // note: we need to instantiate the logger manually here since the injection happens after the constructor
+        $GLOBALS['TSFE']->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__) ;
 		$GLOBALS['TSFE']->initFEuser();
 		$GLOBALS['TSFE']->fetch_the_id();
-		$GLOBALS['TSFE']->getPageAndRootline();
+
+		// done already in fetch the ID
+	//	$GLOBALS['TSFE']->getPageAndRootline();
 	//	$GLOBALS['TSFE']->initTemplate();
 		$GLOBALS['TSFE']->tmpl->getFileName_backPath = Environment::getPublicPath() . '/';
 		$GLOBALS['TSFE']->forceTemplateParsing = 1;

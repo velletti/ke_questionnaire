@@ -26,14 +26,14 @@
 	/*
 	 * Checks the Answer for the type of the chosen validation
 	 */
-	jQuery("#keq{question.uid}c{colum.uid}r{row.uid}").blur( function() {
-		var c_id = {column.uid};
-		var r_id = {row.uid};
+	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>c<f:format.raw>{colum.uid}</f:format.raw>r<f:format.raw>{row.uid}</f:format.raw>").blur( function() {
+		var c_id = <f:format.raw>{column.uid}</f:format.raw>;
+		var r_id = <f:format.raw>{row.uid}</f:format.raw>;
 		var val = jQuery(this).val();
 		var this_id = jQuery(this).attr('id');
 		jQuery.ajax({
 			type: "GET",
-			url: window.location.pathname,
+			url: 'keAnswerValidation.json',
 			data: 'type=2667&tx_kequestionnaire_questionnaire[type]=AnswerValidation&tx_kequestionnaire_questionnaire[arguments][answerUid]='+c_id+'&tx_kequestionnaire_questionnaire[arguments][value]='+val,
 			async: false,
 			success: function(data){
