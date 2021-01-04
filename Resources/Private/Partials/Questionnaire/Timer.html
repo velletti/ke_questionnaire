@@ -16,7 +16,7 @@
     var maxSeconds = <f:format.raw>{maxSeconds}</f:format.raw> ;
     var totalTime = getLeftTime (parseInt( <f:format.raw>{maxSeconds}</f:format.raw>)) ;
     var endTime =  parseInt(started + maxSeconds ) ;
-    if( isNaN(totalTime)) {
+    if( isNaN(maxSeconds)) {
         jQuery('#ke_questionaire_totalTime ').html( '<div class="alert alert-danger"> Error in Test configuration: no time settings. Please contact Us!</div>' );
     } else {
         jQuery('#ke_questionaire_totalTime SPAN').html( totalTime );
