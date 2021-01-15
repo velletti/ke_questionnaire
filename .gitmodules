@@ -1,0 +1,3 @@
+[submodule "http/typo3conf/ext/jvchat"]
+	path = http/typo3conf/ext/jvchat
+	url = git@github.com:velletti/jvchat.git
