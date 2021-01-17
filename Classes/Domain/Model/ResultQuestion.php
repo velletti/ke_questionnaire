@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+use TYPO3\CMS\Fluid\Core\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -206,7 +208,11 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function removeAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $answerToRemove) {
-		$this->answers->detach($answerToRemove);
+	    try {
+            $this->answers->detach($answerToRemove);
+        } catch(Exception $e){
+	        // ignore it detach throws an error !!
+        }
 	}
 
 	/**
@@ -235,6 +241,20 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 		$persistenceManager->persistAll();
 	}
+
+    /**
+     * removes the answers from the resultAnswer.
+     * needed when someone reloads 2.cond or thirdpage ..
+     *
+     * @return void
+     */
+    public function removeAnswers() {
+        foreach ($this->getAnswers() as $rAnswer){
+           $this->removeAnswer($rAnswer);
+        }
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager->persistAll();
+    }
     
     /**
 	 * Returns the cloned answers

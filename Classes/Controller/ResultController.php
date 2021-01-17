@@ -243,7 +243,9 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		//if the old-result is not stored, given answers of other pages will be deleted
         if( is_array( $this->temp_result )) {
             /** @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $answerRepository */
+            /** @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository */
             $answerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository');
+            $resultAnswerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository');
             if (array_key_exists('__identity' , $this->temp_result ) && $this->temp_result['__identity'] > 0) {
                 /** @var  $result Result */
                 $result = $this->resultRepository->findByUid($this->temp_result['__identity']);
@@ -254,10 +256,12 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 
                             foreach ( $this->temp_result['questions'] as $formquestion ) {
                                 if($formquestion['question'] == $resultQuestion->getQuestion()->getUid() ) {
+                                    // first remove all old answers for this Question!
+                                    $resultQuestion->removeAnswers();
+
                                     foreach( $formquestion['answers'] as $formAnswer) {
                                         if( $formAnswer['value'] ) {
                                             $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
-
                                             /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer$resultAnswer */
                                             $resultAnswer = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
                                             $resultAnswer->setPid($result->getPid()) ;
@@ -270,7 +274,9 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                                                 $resultAnswer->setAdditionalValue('');
                                             }
                                             $resultAnswer->setAnswer($answer);
+
                                             $resultQuestion->addAnswer($resultAnswer);
+
                                         }
 
                                     }
