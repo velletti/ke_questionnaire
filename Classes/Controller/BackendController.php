@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -61,16 +63,17 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	var $mailSender;
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\Service\FlexFormService
+	 * @var \TYPO3\CMS\Core\Service\FlexFormService
 	*/
     protected $flexFormService;
 
 
 	/**
-     * @param \TYPO3\CMS\Extbase\Service\FlexFormService $flexFormService
+     * @param \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
      * @return void
      */
-    public function injectFlexFormService(\TYPO3\CMS\Extbase\Service\FlexFormService $flexFormService) {
+    public function injectFlexFormService(\TYPO3\CMS\Core\Service\FlexFormService $flexFormService) {
+
         $this->flexFormService = $flexFormService;
     }
 	
@@ -91,8 +94,10 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		//the plugin selected in the be
 		if ($this->request->hasArgument('pluginUid')) $this->plugin = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $this->request->getArgument('pluginUid'));
 		//create the flexform-data for this questionnaire
+
 		if ($this->plugin['pi_flexform']) $this->pluginFF = $this->flexFormService->convertFlexFormContentToArray($this->plugin['pi_flexform']);
 		//merge the settings
+       
 		if (is_array($this->pluginFF['settings']) AND is_array($this->settings)) $this->pluginFF['settings'] = array_merge($this->settings,$this->pluginFF['settings']);
 		else $this->pluginFF['settings'] = $this->settings;
 		$this->plugin['ffdata'] = $this->pluginFF;
@@ -230,18 +235,24 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		//amount of authCodes to create
 		$amount = $this->request->getArgument('amount');
 		//length of created AuthCode
-		$codeLength = $this->settings['authCodes']['length'];
+        if ((int)$this->settings['authCodes']['length'] > 1 ) $codeLength = $this->settings['authCodes']['length'];
+        else $codeLength = 10;
+
 		//create the codes and store them in the storagepid of the plugin
 		for ($i = 0; $i < $amount; $i++){
 		    /** @var \Kennziffer\KeQuestionnaire\Domain\Model\AuthCode $newAuthCode */
-			$newAuthCode = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
+			$newAuthCode = GeneralUtility::makeInstance( 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
+
 			$newAuthCode->generateAuthCode($codeLength,$this->storagePid);
 			$newAuthCode->setPid($this->storagePid);
+
 			$this->authCodeRepository->add($newAuthCode);
-			$persistenceManager = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-			/* @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
-			$persistenceManager->persistAll();
+
 		}
+        $persistenceManager = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        /* @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
+        $persistenceManager->persistAll();
+
 		//forward to the standard-Action
 		$this->forward('authCodes');
 	}
@@ -252,14 +263,17 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	public function createAndMailAuthCodesAction() {
                 $this->view->assign('plugin',$this->plugin);
 		//emails to send the authcodes to
-		foreach (explode(',',$this->request->getArgument('emails')) as $mail){
-			if ($mail){
+        $mailsAsText = trim( $this->request->getArgument('emails')) ;
+        $mailsAsText = str_replace(array("\n" , " " , ";") , array("," , "," , ","), $mailsAsText);
+
+        foreach (explode(',',$mailsAsText ) as $mail){
+		    $mail = trim( $mail , "\n\t\r") ;
+			if ( GeneralUtility::validEmail( $mail)){
 				$email['email'] = $mail;
                                 $email['sourcetype'] = 'email';
 				$emails[] = $email;
 			}
 		}
-		
 		if ($this->request->hasArgument('feusers')){
 			$add = $this->request->getArgument('feusers');
 			if (is_array($add)){
@@ -291,36 +305,38 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 			}
 		}
                 //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($emails, 'emails');exit;
-                if ($this->settings['authCodes']['length']) $codeLength = $this->settings['authCodes']['length'];
-		else $codeLength = 10;
+        if ((int)$this->settings['authCodes']['length'] > 1 ) $codeLength = $this->settings['authCodes']['length'];
+        else $codeLength = 10;
 		
 		//send the mail for each given email
 		foreach ($emails as $mail){
-			if ($mail['email'] != ''){
+			if ($mail['email'] != '' && GeneralUtility::validEmail($mail['email'])){
 				//create the authcode
-				$newAuthCode = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
-				$newAuthCode->generateAuthCode($codeLength,$this->storagePid);
+                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\AuthCode $newAuthCode */
+                $newAuthCode = GeneralUtility::makeInstance( 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
+
+                $newAuthCode->generateAuthCode($codeLength,$this->storagePid);
 				$newAuthCode->setPid($this->storagePid);
 				$newAuthCode->setEmail($mail['email']);
-                                switch($mail['sourcetype']) {
-                                    case 'feuser': 
-                                            $userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-                                            $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-                                            $querySettings->setRespectStoragePage(FALSE);
-                                            $userRepository->setDefaultQuerySettings($querySettings);
-                                            $newAuthCode->setFeUser($userRepository->findByUid($mail['uid']));
-                                        break;
-                                    case 'ttaddress':
-                                            $addrRepository = $this->objectManager->get('TYPO3\\TtAddress\\Domain\\Repository\\AddressRepository');
-                                            $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-                                            $querySettings->setRespectStoragePage(FALSE);
-                                            $addrRepository->setDefaultQuerySettings($querySettings);
-                                            $newAuthCode->setTtAddress($addrRepository->findByUid($mail['uid']));
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                //store the authcode
+                    switch($mail['sourcetype']) {
+                        case 'feuser':
+                                $userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+                                $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+                                $querySettings->setRespectStoragePage(FALSE);
+                                $userRepository->setDefaultQuerySettings($querySettings);
+                                $newAuthCode->setFeUser($userRepository->findByUid($mail['uid']));
+                            break;
+                        case 'ttaddress':
+                                $addrRepository = $this->objectManager->get('TYPO3\\TtAddress\\Domain\\Repository\\AddressRepository');
+                                $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+                                $querySettings->setRespectStoragePage(FALSE);
+                                $addrRepository->setDefaultQuerySettings($querySettings);
+                                $newAuthCode->setTtAddress($addrRepository->findByUid($mail['uid']));
+                            break;
+                        default:
+                            break;
+                    }
+                    //store the authcode
 				$this->authCodeRepository->add($newAuthCode);
 				//add mail data to view
 				$this->view->assign('authCode',$newAuthCode);
@@ -339,12 +355,13 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 					->setHtml($this->view->render('createdMail'))
 					->setSubject($subject)
 					->sendMail();
-				//store the authCode
-				$persistenceManager = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-				// @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager 
-				$persistenceManager->persistAll();
+
 			}			
 		}
+        //store the authCode
+        $persistenceManager = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        // @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+        $persistenceManager->persistAll();
 		//forward to standard-action
 		$this->forward('authCodes');
 	}

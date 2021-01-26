@@ -617,7 +617,8 @@ class Questionnaire extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      * @return $piFlexForm
      */
     public function getPiFlexForm() {
-        $ffs = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\FlexFormService');
+
+        $ffs = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Service\\FlexFormService');
         return $ffs->convertFlexFormContentToArray($this->piFlexForm);
         //return $this->piFlexForm;
     }
