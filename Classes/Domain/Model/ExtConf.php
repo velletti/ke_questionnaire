@@ -104,7 +104,7 @@ class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function __construct() {
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_questionnaire');
-		if (is_array($extConf)) {
+        if (is_array($extConf)) {
 			foreach ($extConf as $key => $value) {
 				$methodName = 'set' . ucfirst($key);
 				if (method_exists($this, $methodName)) {
