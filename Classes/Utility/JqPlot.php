@@ -48,7 +48,7 @@ class JqPlot {
             case 'barChart': return $this->createSingleBarChart($divId, $dataArray, $question, $labels);
 				break;
 			case 'pieChart': 
-			default: return $this->createPieChart($divId, $dataArray, $question);
+			default: return $this->createPieChart($divId, $dataArray, $question , false );
 				break;
 			
 		}
@@ -213,9 +213,10 @@ class JqPlot {
 	 * @return string $chart
      */
     public function createPieChart($type, $values, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question = NULL, $absoluteValues = false){
-		$data = '[';
+
+        $data = '[';
         foreach ($values as $key => $answer){
-            if ($answer['answer']) $data .= "['".$answer["answer"]->getTitle()."', ";
+            if ($answer['answer']) $data .= "['".  $answer["value"] . " " . $answer["answer"]->getTitle()."', ";
 			else $data .= "['".$key."', ";
             $data .= $answer["value"]."],";
         }
@@ -240,6 +241,7 @@ class JqPlot {
 		}
 		$js .= "  }
                     },
+                    
                     legend: { 
 						show:true, 
 						location: 'e',
