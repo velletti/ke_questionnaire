@@ -4,9 +4,9 @@ if (!defined('TYPO3_MODE')) {
 }
 
 
-include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Classes/Utility/AddActivatorsToDependancy.php');
+include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ke_questionnaire').'Classes/Utility/AddActivatorsToDependancy.php');
 
-$extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY);
+$extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase('ke_questionnaire');
 
 $pluginSignature = strtolower($extensionName) . '_questionnaire';
 $pluginSignature2 = strtolower($extensionName) . '_qlist';
@@ -60,6 +60,7 @@ if (TYPO3_MODE === 'BE'){
  
     // Hack damit das Modul direkt nach dem Web Modul erscheint
     // die Angabe der $position in addModule() funktioniert hier leider nicht
+    /*
     if (!isset($TBE_MODULES[$mainModuleName])) {
         $temp_TBE_MODULES = array();
         foreach($TBE_MODULES as $key => $val) {
@@ -71,58 +72,58 @@ if (TYPO3_MODE === 'BE'){
             }
         }
         $TBE_MODULES = $temp_TBE_MODULES;
-    }
+    }*/
 	
     // Hauptmodul erstellen
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.$_EXTKEY,            # Extension-Key
+		'Kennziffer.'.'ke_questionnaire',            # Extension-Key
 		$mainModuleName,				   # Kategorie
 		'',								   # Modulname
 		'',                                # Position
 		Array ( ),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
-				'icon'	 => 'EXT:'.$_EXTKEY.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_mod.xml',				
+				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
+				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod.xml',
 		)
 	);
 	
     // Authcode Backend Modul der Extension
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.$_EXTKEY,                  # Extension-Key
+		'Kennziffer.'.'ke_questionnaire',                  # Extension-Key
 		$mainModuleName,		   # Kategorie
 		'Authcode',				   # Modulname
 		'',                                # Position
 		Array ( 'Backend' => 'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
 				'Export'  => 'downloadPdf, pdf, downloadAuthCodesCsv'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
-				'icon'	 => 'EXT:'.$_EXTKEY.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_mod_authcode.xml'
+				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
+				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_authcode.xml'
 		)
 	);
 	
 	// Export Backend Modul der Extension
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.$_EXTKEY,                  # Extension-Key
+		'Kennziffer.'.'ke_questionnaire',                  # Extension-Key
 		$mainModuleName,		   # Kategorie
 		'Export',				   # Modulname
 		'',                                # Position
 		Array ( 'Export' => 'index,csv,csvRb,downloadCsv,downloadCsvRb,pdf,downloadPdf,csvInterval,csvRbInterval,csvCheckInterval,downloadCsvInterval'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
-				'icon'	 => 'EXT:'.$_EXTKEY.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_mod_export.xml',
+				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
+				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_export.xml',
 		)
 	);
     
     // Analyse Backend Modul der Extension
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.$_EXTKEY,                  # Extension-Key
+		'Kennziffer.'.'ke_questionnaire',                  # Extension-Key
 		$mainModuleName,		   # Kategorie
 		'Analyse',				   # Modulname
 		'',                                # Position
 		Array ( 'Analyse' => 'index,questions,general'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
-				'icon'	 => 'EXT:'.$_EXTKEY.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_mod_analyse.xml',
+				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
+				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_analyse.xml',
 		)
 	);  
 	

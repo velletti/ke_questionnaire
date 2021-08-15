@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Kennziffer.'.$_EXTKEY,
+	'Kennziffer.'.'ke_questionnaire',
 	'Questionnaire',
 	array(
 		'Result' => 'new,create,show,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,end',
@@ -30,7 +30,7 @@ if (!defined('TYPO3_MODE')) {
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Kennziffer.'.$_EXTKEY,
+	'Kennziffer.'.'ke_questionnaire',
 	'QList',
 	array(
 		'Questionnaire' => 'list',
@@ -44,7 +44,7 @@ if (!defined('TYPO3_MODE')) {
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Kennziffer.'.$_EXTKEY,
+	'Kennziffer.'.'ke_questionnaire',
 	'View',
 	array(
 		'Result' => 'show',
@@ -55,7 +55,7 @@ if (!defined('TYPO3_MODE')) {
 	)
 );
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Kennziffer.'.$_EXTKEY,
+    'Kennziffer.'.'ke_questionnaire',
     'Be',
     array(
         'Backend' =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
