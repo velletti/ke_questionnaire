@@ -210,7 +210,7 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function removeAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $answerToRemove) {
 	    try {
             $this->answers->detach($answerToRemove);
-        } catch(Exception $e){
+        } catch(\Exception $e){
 	        // ignore it detach throws an error !!
         }
 	}

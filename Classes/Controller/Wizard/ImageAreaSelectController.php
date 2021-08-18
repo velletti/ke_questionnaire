@@ -91,12 +91,12 @@ class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\Abs
      *
      * @var DocumentTemplate
      */
-    public $doc;
+    public $docTemplate;
 
     /**
      * @var string
      */
-    public $content;
+    public $renderedContent;
     
     /**
      * Constructor
@@ -139,9 +139,9 @@ class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\Abs
             }
         }
         // Initialize document object:
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);       
+        $this->docTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);       
         // Start page:
-        $this->content .= $this->doc->startPage($this->getLanguageService()->getLL('colorpicker_title'));
+        $this->renderedContent .= $this->docTemplate->startPage($this->getLanguageService()->getLL('colorpicker_title'));
     }
     
     /**
@@ -156,7 +156,7 @@ class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\Abs
     {
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->wizardParameters, 'c');	
 		$this->main($request);
-		$response->getBody()->write($this->content);
+		$response->getBody()->write($this->renderedContent);
         return $response;        
     }
 	
@@ -169,35 +169,35 @@ class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\Abs
     public function main(ServerRequestInterface $request)
     {		
 		$baseurl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        if ($this->doClose) {
+        if ($this->docTemplatelose) {
             return $this->closeWindow;
         } else {    
 		// Putting together the items into a form:
-			$this->content .= '<link rel="stylesheet" type="text/css" href="'.$baseurl.'typo3conf/ext/ke_questionnaire/Resources/Public/Css/imgareaselect-animated.css" media="all">';
-			$this->content .= '<script src="'.$baseurl.'typo3conf/ext/ke_questionnaire/Resources/Public/Script/jquery-1.11.3.min.js" type="text/javascript"></script>
+			$this->renderedContent .= '<link rel="stylesheet" type="text/css" href="'.$baseurl.'typo3conf/ext/ke_questionnaire/Resources/Public/Css/imgareaselect-animated.css" media="all">';
+			$this->renderedContent .= '<script src="'.$baseurl.'typo3conf/ext/ke_questionnaire/Resources/Public/Script/jquery-1.11.3.min.js" type="text/javascript"></script>
 								<script src="'.$baseurl.'typo3conf/ext/ke_questionnaire/Resources/Public/Script/jquery-ui-1.11.4.min.js" type="text/javascript"></script>
 								<script src="'.$baseurl.'typo3conf/ext/ke_questionnaire/Resources/Public/Script/jquery-migrate-1.2.1.js" type="text/javascript"></script>
 								<script src="'.$baseurl.'typo3conf/ext/ke_questionnaire/Resources/Public/Script/jquery.imgareaselect.min.js" type="text/javascript"></script>
 								';
-            $this->content .= '<div class=ke_questionnaire" style="padding: 5px;">';
-            $this->content .= '<h2>' . $this->getLanguageService()->getLL('imageAreaSelectHeader', true) . '</h2>';
-			$this->content .= '<p>' . $this->getLanguageService()->getLL('imageAreaSelectInfo', true) . '</p>';            
-			$this->content .= '<hr /><br/>';
-			$this->content .= '<img id="imageAreaSource" src="'.$baseurl.'uploads/tx_kequestionnaire/'.$this->areaImage.'" alt="areaImage" title="areaImage" ';
-			if ($this->answer['width']) $this->content .= ' width="'.$this->answer['width'].'px" ';
-			if ($this->answer['height']) $this->content .= ' width="'.$this->answer['height'].'px" ';
-			$this->content .= '/><br/>';
-			$this->content .= '<input type="hidden" name="x1" value="" />
+            $this->renderedContent .= '<div class=ke_questionnaire" style="padding: 5px;">';
+            $this->renderedContent .= '<h2>' . $this->getLanguageService()->getLL('imageAreaSelectHeader') . '</h2>';
+			$this->renderedContent .= '<p>' . $this->getLanguageService()->getLL('imageAreaSelectInfo') . '</p>';
+			$this->renderedContent .= '<hr /><br/>';
+			$this->renderedContent .= '<img id="imageAreaSource" src="'.$baseurl.'uploads/tx_kequestionnaire/'.$this->areaImage.'" alt="areaImage" title="areaImage" ';
+			if ($this->answer['width']) $this->renderedContent .= ' width="'.$this->answer['width'].'px" ';
+			if ($this->answer['height']) $this->renderedContent .= ' width="'.$this->answer['height'].'px" ';
+			$this->renderedContent .= '/><br/>';
+			$this->renderedContent .= '<input type="hidden" name="x1" value="" />
 								<input type="hidden" name="y1" value="" />
 								<input type="hidden" name="x2" value="" />
 								<input type="hidden" name="y2" value="" />';
-			$this->content .= '<hr /><br/>';
-			$this->content .= '<div>
-									<button id="setArea">'.$this->getLanguageService()->getLL('imageAreaSelectSave', true).'</button>
-									<button id="closeWizard" onclick="javascipt:window.close();">'.$this->getLanguageService()->getLL('imageAreaSelectClose', true).'</button>
+			$this->renderedContent .= '<hr /><br/>';
+			$this->renderedContent .= '<div>
+									<button id="setArea">'.$this->getLanguageService()->getLL('imageAreaSelectSave').'</button>
+									<button id="closeWizard" onclick="javascipt:window.close();">'.$this->getLanguageService()->getLL('imageAreaSelectClose' ).'</button>
 								</div>';
-			$this->content .= '</div>';
-			$this->content .= '<script type="text/javascript">
+			$this->renderedContent .= '</div>';
+			$this->renderedContent .= '<script type="text/javascript">
 								var formName = \'{P.formName}\';
 								var itemName = \'{P.itemName}\';
 									jQuery(\'#imageAreaSource\').imgAreaSelect({
@@ -222,20 +222,7 @@ class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\Abs
 		}
     }
     
-    /**
-     * Returns the sourcecode to the browser
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
-        echo $this->content;
-    }
-    
+
     /**
      * Determines whether submitted field change functions are valid
      * and are coming from the system and not from an external abuse.
@@ -255,16 +242,4 @@ class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\Abs
         return GeneralUtility::makeInstance(PageRenderer::class);
     }
     
-    /**
-     * Printing a little JavaScript to close the open window.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function closeWindow()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->closeWindow;
-        die;
-    }
 }

@@ -177,7 +177,9 @@ Allow from 127.0.0.1
 		$responseHeaders = array();
 
 		//try to read test file
-		$readTestFile = GeneralUtility::getUrl($this->siteUrl . 'typo3temp/ke_questionnaire/pdf/TEST', 1, FALSE, $responseHeaders);
+		$url = $this->siteUrl . 'typo3temp/ke_questionnaire/pdf/TEST' ;
+		$response = GeneralUtility::makeInstance(RequestFactory::class)->request($url);
+		$responseHeaders = $response->getHeaders();
 		@unlink($this->tmpFileAndPath);
 
 		//if testfile is readable

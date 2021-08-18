@@ -208,11 +208,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	public function setStoragePid($storagePid) {
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		//fallback to current pid if no storagePid is defined
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$configuration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		} else {
-			$configuration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		}
+        $configuration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$currentPid['persistence']['storagePid'] = $storagePid;
 		$configurationManager->setConfiguration(array_merge($configuration, $currentPid));
 	}
