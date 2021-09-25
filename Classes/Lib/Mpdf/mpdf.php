@@ -1,4 +1,8 @@
 <?php
+/**
+ * @extensionScannerIgnoreFile
+ */
+
 // ******************************************************************************
 // Software: mPDF, Unicode-HTML Free PDF generator                              *
 // Version:  5.7.1     based on                                                   *
@@ -11,9 +15,7 @@
 // Changes:  See changelog.txt                                                  *
 // ******************************************************************************
 
-/**
- * @extensionScannerIgnoreFile
- */
+
 
 define('mPDF_VERSION','5.7.1');
 
