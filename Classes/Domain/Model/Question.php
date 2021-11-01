@@ -91,9 +91,10 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Image
 	 *
-	 * @var string
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
 	 */
-	protected $image;
+	protected $image = null;
+
 
 	/**
 	 * Image position
@@ -184,6 +185,8 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 */
 		$this->answers = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->dependancies = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+
+        $this->image = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 	
 	/**
@@ -360,7 +363,7 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the image
 	 *
-	 * @return string $image
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $image
 	 */
 	public function getImage() {
 		return $this->image;
@@ -369,10 +372,10 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the image
 	 *
-	 * @param string $image
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference  $image
 	 * @return void
 	 */
-	public function setImage($image) {
+	public function setImage(\TYPO3\CMS\Extbase\Domain\Model\FileReference $image) {
 		$this->image = $image;
 	}
 

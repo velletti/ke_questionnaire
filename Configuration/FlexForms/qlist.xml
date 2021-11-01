@@ -43,6 +43,7 @@
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0">
 										<numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.listType.all</numIndex>
@@ -60,7 +61,7 @@
 							</config>
 						</TCEforms>
 					</settings.listType>
-                                        <settings.showParticipated>
+					<settings.showParticipated>
 						<TCEforms>
 							<label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.showParticipated</label>
 							<displayCond>FIELD:settings.listType:=:all</displayCond>
@@ -78,7 +79,7 @@
 							</config>
 						</TCEforms>
 					</settings.showParticipations>
-                                        <settings.singleView>
+					<settings.singleView>
 						<TCEforms>
 							<exclude>1</exclude>
 							<label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.singleView</label>
@@ -93,15 +94,6 @@
 							</config>
 						</TCEforms>
 					</settings.singleView>	
-                                        <settings.PDFdownload>
-						<TCEforms>
-							<label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.PDFdownload</label>
-							<config>
-								<type>user</type>		
-								<userFunc>Kennziffer\KeQuestionnaire\Utility\PremiumInfo->showInfo</userFunc>
-							</config>
-						</TCEforms>
-					</settings.PDFdownload>	
 				</el>
 			</ROOT>
 		</layout>

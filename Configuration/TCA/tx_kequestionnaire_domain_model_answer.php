@@ -384,6 +384,7 @@ return array(
                 'eval' => 'trim',
             ),
         ),
+        /*
         'image' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.image',
@@ -398,6 +399,7 @@ return array(
                 'disallowed' => '',
             ),
         ),
+        */
         'coords' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.coords',

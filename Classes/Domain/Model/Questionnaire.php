@@ -549,9 +549,9 @@ class Questionnaire extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
     * Returns the pid
     *
-    * @return int $pid
+    * @return int|null $pid
     */
-    public function getPid() {
+    public function getPid(): ?int {
         return $this->pid;
     }
     /**

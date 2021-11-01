@@ -637,7 +637,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
                                 }
                                 $resultAnswer->setFeCruserId($userId);
 							}
-                            if( $resultQuestion->getQuestion()->getMaxAnswers() > 0 || $reducePointsforWrongAnswers  ) {
+                            if( $resultQuestion->getQuestion()->isMaxAnswers()  || $reducePointsforWrongAnswers  ) {
                                 if ( $wrongAnswersForQuestion > 0 ) {
                                     $pointsForQuestion = round( $pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion ) / 2 ) ,0) ;
                                 }

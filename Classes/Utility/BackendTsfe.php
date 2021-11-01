@@ -65,8 +65,8 @@ class BackendTsfe {
     // public function __construct($_ = null, $id, $type, $no_cache = null, $cHash = '', $_2 = null, $MP = '')
 
 		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFEclassName */
-		$TSFEclassName = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,NULL , $this->pid , $typeNum  , '1', '', '', '') ;
-		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $this->pid, $typeNum , 1, '', '', '', '');
+		$TSFEclassName = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController' ,NULL , $this->pid , $typeNum  , null , '', '', '') ;
+		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $this->pid, $typeNum , null , '', '', '', '');
         // note: we need to instantiate the logger manually here since the injection happens after the constructor
         $GLOBALS['TSFE']->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__) ;
 		$GLOBALS['TSFE']->initFEuser();

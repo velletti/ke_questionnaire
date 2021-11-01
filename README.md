@@ -5,7 +5,24 @@ This is NOT the offical Version of ke_questionnaire!
 I just made a fork and made changes, that enables the USE of TYPO3 8-LTS  (and now also LTS 9 )
 Actual development is only on Branch TYPO3-9-LTS 
 
-Adjustments for LTS 10 are planned for Q1 / 2021. 
+Adjustments for LTS 10 are planned for Q4 / 2021. 
+
+### IMPORTANT Breaking changes 
+================================================
+ files from 'uploadfolder' => 'uploads/tx_kequestionnaire' are not supported anymore
+ You need to migrate such attached images to Questions and Answers to FAL
+ as i did not use this kind of data, i do NOT plan to develope a migration wizard
+ 
+ 
+ *If You need this:*
+ You have to copy this files from uploads/tx_kequestionnaire to fileadmin/user_upload/tx_kequestionnaire
+ 
+ run indexer for Files to have sys_file entries and create sys_file_references between  
+ question / Answer and then replace the value form the field with 1
+
+### Minor Breaking changes 
+================================================
+ The empty partial PageBreak.html was renamed from lowercase Pagebreak.html to camelCase PageBreak.html
 
 ================================================
 

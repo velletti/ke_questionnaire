@@ -213,19 +213,41 @@ return array(
                 'eval' => 'trim'
             ),
         ),
+
         'image' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.image',
-            'config' => array(
-                'type' => 'group',
-                'internal_type' => 'file',
-                'uploadfolder' => 'uploads/tx_kequestionnaire',
-                'show_thumbs' => 1,
-                'size' => 5,
-                'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                'disallowed' => '',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'image',
+                array(
+                    'appearance' => array(
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    ),
+                    'foreign_types' => array(
+                        '0' => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+
+
+                    ),
+                    'maxitems' => 1
+                ),
+                "jpg,jpeg,gif,png"
             ),
         ),
+
         'image_position' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.image_position',
@@ -368,6 +390,7 @@ return array(
                 'default' => 0
             ),
         ),
+        /*
         'javascript' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.javascript',
@@ -378,6 +401,7 @@ return array(
                 'maxitems' => 1
             ),
         ),
+        */
         'only_js' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.only_js',
@@ -395,7 +419,10 @@ return array(
                 'rows' => 15,
                 'eval' => 'trim'
             ),
-        ),
+        )
+        /*
+        ,
+
         'template' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.template',
@@ -406,5 +433,6 @@ return array(
                 'maxitems' => 1
             ),
         ),
+        */
     ),
 );

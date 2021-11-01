@@ -77,7 +77,22 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var integer
 	 */
 	protected $maxPoints;
-	
+
+
+    /**
+     * Min answers
+     *
+     * @var boolean
+     */
+    protected $minAnswers = 0 ;
+
+    /**
+     * Max answers
+     *
+     * @var boolean
+     */
+    protected $maxAnswers = 0 ;
+
 	/**
 	 * Default constructor.
 	 */
@@ -99,6 +114,39 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 */
 		$this->answers = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
+
+
+    /**
+     * @return bool
+     */
+    public function isMinAnswers()
+    {
+        return $this->minAnswers;
+    }
+
+    /**
+     * @param bool $minAnswers
+     */
+    public function setMinAnswers($minAnswers)
+    {
+        $this->minAnswers = $minAnswers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMaxAnswers()
+    {
+        return $this->maxAnswers;
+    }
+
+    /**
+     * @param bool $maxAnswers
+     */
+    public function setMaxAnswers($maxAnswers)
+    {
+        $this->maxAnswers = $maxAnswers;
+    }
 
 	/**
 	 * Returns the feCruserId

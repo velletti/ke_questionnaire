@@ -256,7 +256,16 @@
 							</config>
 						</TCEforms>
 					</settings.redirectFinished>
-
+					<settings.dependancy.questionnaire>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.dependancy.questionnaire</label>
+							<config>
+								<type>user</type>
+								<userFunc>Kennziffer\KeQuestionnaire\Utility\PremiumInfo->showInfo</userFunc>
+							</config>
+						</TCEforms>
+					</settings.dependancy.questionnaire>
 					<settings.dependancy.points>
 						<TCEforms>
 							<exclude>1</exclude>
@@ -272,6 +281,16 @@
 							</config>
 						</TCEforms>
 					</settings.dependancy.points>
+					<settings.ajaxAutoSave>
+						<TCEforms>
+							<exclude>0</exclude>
+							<label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.ajaxAutoSave</label>
+							<config>
+								<type>user</type>
+								<userFunc>Kennziffer\KeQuestionnaire\Utility\PremiumInfo->showInfo</userFunc>
+							</config>
+						</TCEforms>
+					</settings.ajaxAutoSave>
 				</el>
 			</ROOT>
 		</behaviour>

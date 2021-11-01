@@ -139,7 +139,7 @@ class DataMapper {
 	/**
 	 * Sets the given properties on the object.
 	 *
-	 * @param $object The object to set properties on
+	 * @param mixed $object The object to set properties on
 	 * @param array $row
 	 * @return object
 	 */
@@ -151,7 +151,7 @@ class DataMapper {
 			$propertyData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$propertyValue = NULL;
 			if ($row[$propertyName] !== NULL) {
-				switch ($propertyData['type']) {
+				switch ($propertyData->getType()) {
 					case 'integer':
 						$propertyValue = (int) $row[$propertyName];
 					break;
@@ -174,8 +174,8 @@ class DataMapper {
 			}
 
 			if ($propertyValue !== NULL) {
-				$validators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions($className, $method);
-				/* @var $validator Tx_Extbase_Validation_Validator_AbstractValidator */
+				$validators = $this->validatorResolver->getBaseValidatorConjunction($className);
+				/* @var $validator \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator */
 				foreach ($validators as $validator) {
 					$error = $validator->validate($propertyValue);
 					if ($error->hasErrors()) {
