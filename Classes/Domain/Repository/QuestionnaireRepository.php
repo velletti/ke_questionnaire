@@ -47,7 +47,8 @@ class QuestionnaireRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
                         $query->equals('list_type','kequestionnaire_questionnaire')
                    );
            $query->matching($constraint);
-           
+           $query->setOrderings([ "header" => "ASC" ]) ;
+
            return $query->execute();
        }
 	
