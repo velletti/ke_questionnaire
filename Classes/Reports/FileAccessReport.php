@@ -24,7 +24,9 @@ namespace Kennziffer\KeQuestionnaire\Reports;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Kennziffer\KeQuestionnaire\Exception;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -178,20 +180,25 @@ Allow from 127.0.0.1
 
 		//try to read test file
 		$url = $this->siteUrl . 'typo3temp/ke_questionnaire/pdf/TEST' ;
-		$response = GeneralUtility::makeInstance(RequestFactory::class)->request($url);
-		$responseHeaders = $response->getHeaders();
-		@unlink($this->tmpFileAndPath);
+		try{
+			$response = GeneralUtility::makeInstance(RequestFactory::class)->request($url);
+			$responseHeaders = $response->getHeaders();
+			@unlink($this->tmpFileAndPath);
 
-		//if testfile is readable
-		if($responseHeaders['error'] !== 0 && $responseHeaders['error'] !== 22) {
-			$this->staticStateResponseData['unknownErrorCheckingTmpFile'][2] .= '<br /><br />' . $responseHeaders['message'];
+			//if testfile is readable
+			if($responseHeaders['error'] !== 0 && $responseHeaders['error'] !== 22) {
+				$this->staticStateResponseData['unknownErrorCheckingTmpFile'][2] .= '<br /><br />' . $responseHeaders['message'];
 
-			return 'unknownErrorCheckingTmpFile';
+				return 'unknownErrorCheckingTmpFile';
+			}
+
+			if(intval($responseHeaders['http_code']) === 200) {
+				return 'tmpFileReadable';
+			}
+		} catch (\Exception $e) {
+			return 'tmpFileNotReadable';
 		}
 
-		if(intval($responseHeaders['http_code']) === 200) {
-			return 'tmpFileReadable';
-		}
 
 		return '';
 	}

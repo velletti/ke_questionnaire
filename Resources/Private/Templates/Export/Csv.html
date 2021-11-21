@@ -4,7 +4,9 @@
 <f:section name="main">
 	<f:be.container
 			pageTitle="Ke Questionnaire Backend Modules"
-			includeCssFiles="{0: '{f:uri.resource(path:\'Css/Backend.css\')}'}">
+			includeCssFiles="{0: '{f:uri.resource(path:\'Css/Backend.css\')}'}"
+			includeRequireJsModules="{0: 'TYPO3/CMS/Core/Contrib/jquery/jquery'}"
+	    >
 		<f:flashMessages />
 		<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xml:header" /> "{plugin.header}"</h3>		
 		<hr />
@@ -34,18 +36,19 @@
 			</ul>
 			<br />
 			<f:if condition="{counter.all} > {csvExportInterval}">
+				<f:then>
 			<script>
-                            var all = {counter.all};
-                            var finished = {counter.finished};
-                            	TYPO3.jQuery(document).ready(function () {                                    
+					var all = {counter.all};
+					var finished = {counter.finished};
+					TYPO3.jQuery(document).ready(function () {
 					function getStatus() {
 						interval = TYPO3.jQuery('#exportInterval').val();
 						uid = TYPO3.jQuery('#pluginUid').val();
-                                                if (TYPO3.jQuery('#finished').attr('checked')){
-                                                    max = finished;
-                                                } else {
-                                                    max = all;
-                                                }
+						if (TYPO3.jQuery('#finished').attr('checked')){
+							max = finished;
+						} else {
+							max = all;
+						}
 						TYPO3.jQuery.ajax({
 							url: '<f:uri.action action="csvCheckInterval" />',
 							type: 'get',
@@ -61,16 +64,18 @@
 									// Recheck status until completed
 									getStatus();
 								} else {
-									TYPO3.jQuery("#startInterval").removeAttr('disabled');
+									TYPO3.jQuery("#startInterval").removeClass("hide" );
+									TYPO3.jQuery("#startInterval_load").addClass("hide" );
 								}
 							}
 						});
 					}
 					TYPO3.jQuery("#startInterval").click(function (event) {
-                                                interval = TYPO3.jQuery('#exportInterval').val();
+						interval = TYPO3.jQuery('#exportInterval').val();
 						uid = TYPO3.jQuery('#pluginUid').val();
-                                                console.log("Started");
-						TYPO3.jQuery("#startInterval").attr("disabled", "disabled");
+						console.log("Started");
+						TYPO3.jQuery("#startInterval").addClass("hide" );
+						TYPO3.jQuery("#startInterval_load").removeClass("hide" );
 						TYPO3.jQuery.ajax({
 							url: '<f:uri.action action="csvInterval" />',
 							type: 'get',
@@ -88,6 +93,16 @@
 					});
 				});
 				</script>
+				</f:then>
+				<f:else>
+					<script>
+						document.addEventListener("DOMContentLoaded", function(event) {
+							TYPO3.jQuery("#startInterval").click(function (event) {
+								TYPO3.jQuery("#startInterval_load").removeClass("hide");
+							});
+						});
+					</script>
+				</f:else>
 				</f:if>
 			<br />
 			<div>
@@ -99,9 +114,10 @@
 					<f:form.button onclick="return false;" id="startInterval">{f:translate(key:'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xml:csv.exportInterval.start')}</f:form.button>
 				</f:then>
 				<f:else>
-					<f:form.submit value="{f:translate(key:'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xml:csv.download')}" />
+					<f:form.submit  onclick="return false;" id="startInterval" value="{f:translate(key:'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xml:csv.download')}" />
 				</f:else>
 			</f:if>
+			<span class="hide" id="startInterval_load" > <span class="fa fa-spinner fa-spin" > </span> Loading ... </span>
 		</f:form>
 	</f:be.container>
 </f:section>

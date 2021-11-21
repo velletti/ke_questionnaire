@@ -3,6 +3,7 @@ namespace Kennziffer\KeQuestionnaire\Controller;
 use Jve\JveTemplate\Utility\TypoScriptUtility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -63,6 +64,11 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	 * @var \Kennziffer\KeQuestionnaire\Utility\Mail
 	 */
 	var $mailSender;
+
+    /**
+     * @var string
+     */
+	var $extensionName = "ke_questionnaire" ;
 	
 	/**
 	 * @var \TYPO3\CMS\Core\Service\FlexFormService
@@ -92,6 +98,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	 * initialize Action
 	 */
 	public function initializeAction() {
+
 		parent::initializeAction();
 		//the plugin selected in the be
 		if ($this->request->hasArgument('pluginUid')) $this->plugin = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $this->request->getArgument('pluginUid'));
@@ -279,7 +286,10 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	 * generate and mail AuthCodes
 	 */
 	public function createAndMailAuthCodesAction() {
-                $this->view->assign('plugin',$this->plugin);
+	    if(! $this->view ) {
+            $this->initializeAction() ;
+        }
+        $this->view->assign('plugin',$this->plugin);
 		//emails to send the authcodes to
         $mailsAsText = trim( $this->request->getArgument('emails')) ;
         $mailsAsText = str_replace(array("\n" , " " , ";") , array("," , "," , ","), $mailsAsText);
@@ -371,6 +381,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 				$this->mailSender
 					->addReceiver($mail['email'])
 					->setHtml($this->view->render('createdMail'))
+					->setBody($this->view->render('createdMail'))
 					->setSubject($subject)
 					->sendMail();
 

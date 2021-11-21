@@ -420,11 +420,12 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	 */
 	public function downloadCsvAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
-		if ($plugin) $this->plugin = $plugin;                
-		
+		if ($plugin) $this->plugin = $plugin;
+
+
 		$this->iniCsvExport();
 		//load the results
-		if ($this->request->getArgument('finished') == 'finished'){
+		if ($this->request->hasArgument( 'finished') && $this->request->getArgument('finished') == 'finished'){
             $this->csvExport->setResultsRaw($this->resultRepository->findFinishedForPidRaw($this->storagePid));
 			$this->csvExport->setResults($this->resultRepository->findFinishedForPid($this->storagePid));
 		} else {

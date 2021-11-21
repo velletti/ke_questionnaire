@@ -90,7 +90,8 @@ class Mail {
 	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
 	 */
 	public function setBody($body) {
-		$this->message->setBody($body);
+	    $body = strip_tags( str_replace(  "</p>" , "\n" , $body) ) ;
+		$this->message->text($body , 'utf-8');
 		return $this;
 	}
 
@@ -101,7 +102,7 @@ class Mail {
 	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
 	 */
 	public function setHtml($html) {
-		$this->message->addPart($html, 'text/html');
+		$this->message->html($html, 'utf-8');
 		return $this;
 	}
 
