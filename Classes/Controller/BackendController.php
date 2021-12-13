@@ -373,7 +373,9 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 				$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName)));
 				foreach ($mail as $field => $value){
 					$text['before'] = str_replace('###'.strtoupper($field).'###', $value, $text['before']);
+					$text['before'] = str_replace('###'.strtolower($field).'###', $value, $text['before']);
 					$text['after'] = str_replace('###'.strtoupper($field).'###', $value, $text['after']);
+					$text['after'] = str_replace('###'.strtolower($field).'###', $value, $text['after']);
 				}
 				$this->view->assign('text',$text);
 				
