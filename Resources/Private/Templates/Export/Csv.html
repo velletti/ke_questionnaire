@@ -40,46 +40,46 @@
 			<script>
 					var all = {counter.all};
 					var finished = {counter.finished};
-					TYPO3.jQuery(document).ready(function () {
+					$(document).ready(function () {
 					function getStatus() {
-						interval = TYPO3.jQuery('#exportInterval').val();
-						uid = TYPO3.jQuery('#pluginUid').val();
-						if (TYPO3.jQuery('#finished').attr('checked')){
+						interval = $('#exportInterval').val();
+						uid = $('#pluginUid').val();
+						if ($('#finished').attr('checked')){
 							max = finished;
 						} else {
 							max = all;
 						}
-						TYPO3.jQuery.ajax({
+						$.ajax({
 							url: '<f:uri.action action="csvCheckInterval" />',
 							type: 'get',
-							data: TYPO3.jQuery('#csvExportForm').serialize(),
+							data: $('#csvExportForm').serialize(),
 							dataType: 'json',							
 							cache: false,
 							async: false,
 							success: function (data) {
 								console.log(data);
 								var percentage = parseInt(data);
-								TYPO3.jQuery("#intervalInfo").html(percentage);
+								$("#intervalInfo").html(percentage);
 								if (percentage < max) {
 									// Recheck status until completed
 									getStatus();
 								} else {
-									TYPO3.jQuery("#startInterval").removeClass("hide" );
-									TYPO3.jQuery("#startInterval_load").addClass("hide" );
+									$("#startInterval").removeClass("hide" );
+									$("#startInterval_load").addClass("hide" );
 								}
 							}
 						});
 					}
-					TYPO3.jQuery("#startInterval").click(function (event) {
-						interval = TYPO3.jQuery('#exportInterval').val();
-						uid = TYPO3.jQuery('#pluginUid').val();
+					$("#startInterval").click(function (event) {
+						interval = $('#exportInterval').val();
+						uid = $('#pluginUid').val();
 						console.log("Started");
-						TYPO3.jQuery("#startInterval").addClass("hide" );
-						TYPO3.jQuery("#startInterval_load").removeClass("hide" );
-						TYPO3.jQuery.ajax({
+						$("#startInterval").addClass("hide" );
+						$("#startInterval_load").removeClass("hide" );
+						$.ajax({
 							url: '<f:uri.action action="csvInterval" />',
 							type: 'get',
-							data: TYPO3.jQuery('#csvExportForm').serialize(),
+							data: $('#csvExportForm').serialize(),
 							dataType: 'json',
 							cache: false,
 							async: true,
@@ -97,8 +97,8 @@
 				<f:else>
 					<script>
 						document.addEventListener("DOMContentLoaded", function(event) {
-							TYPO3.jQuery("#startInterval").click(function (event) {
-								TYPO3.jQuery("#startInterval_load").removeClass("hide");
+							$("#startInterval").click(function (event) {
+								$("#startInterval_load").removeClass("hide");
 							});
 						});
 					</script>
