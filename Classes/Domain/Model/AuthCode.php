@@ -185,7 +185,7 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Loads the results of this authCode for the be-module
 	 */
 	public function getAndLoadParticipations() {
-            if (count($this->participations) == 0){
+            if (!$this->participations ){
                     $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
                     $rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
                     $this->participations = $rep->findForAuthCode($this);
