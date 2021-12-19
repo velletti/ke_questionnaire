@@ -39,9 +39,9 @@
   },
   "extra": {
     "typo3/cms": {
+      "extension-key": "ke_questionnaire",
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web",
-      "extension-key": "ke_questionnaire"
+      "web-dir": ".Build/Web"
     }
   }
 }
