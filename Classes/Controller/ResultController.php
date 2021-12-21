@@ -250,47 +250,49 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                     if( $result->getQuestions() ) {
                         /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultQuestion */
                         foreach ($result->getQuestions()  as $resultQuestion) {
+                            if( $this->temp_result['questions'] ) {
 
-                            foreach ( $this->temp_result['questions'] as $formquestion ) {
+                                foreach ( $this->temp_result['questions'] as $formquestion ) {
 
-                                if($formquestion['question'] == $resultQuestion->getQuestion()->getUid() ) {
-                                    // first remove all old answers for this Question!
-                                    $resultQuestion->removeAnswers();
-                                    $debug[] = var_export( $formquestion , true );
+                                    if($formquestion['question'] == $resultQuestion->getQuestion()->getUid() ) {
+                                        // first remove all old answers for this Question!
+                                        $resultQuestion->removeAnswers();
+                                        $debug[] = var_export( $formquestion , true );
 
-                                    foreach( $formquestion['answers'] as $formAnswer) {
-                                        if( $formAnswer['value'] || $formAnswer['answer'] ) {
-                                            $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
-                                            /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer$resultAnswer */
-                                            $resultAnswer = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
-                                            $resultAnswer->setPid($result->getPid()) ;
-                                            $resultAnswer->setResultquestion($resultQuestion);
-                                            $resultAnswer->setFeCruserId(   $this->userUid );
-                                            if( $formAnswer['additional_value'] ) {
-                                                $resultAnswer->setAdditionalValue($formAnswer['additional_value']);
-                                            } else {
-                                                $resultAnswer->setAdditionalValue('');
+                                        foreach( $formquestion['answers'] as $formAnswer) {
+                                            if( $formAnswer['value'] || $formAnswer['answer'] ) {
+                                                $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
+                                                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer$resultAnswer */
+                                                $resultAnswer = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
+                                                $resultAnswer->setPid($result->getPid()) ;
+                                                $resultAnswer->setResultquestion($resultQuestion);
+                                                $resultAnswer->setFeCruserId(   $this->userUid );
+                                                if( $formAnswer['additional_value'] ) {
+                                                    $resultAnswer->setAdditionalValue($formAnswer['additional_value']);
+                                                } else {
+                                                    $resultAnswer->setAdditionalValue('');
+                                                }
+
+                                                if( $answer->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton") {
+                                                    $resultAnswer->setValue( $formAnswer['answer']);
+                                                    $resultAnswer->setValue( $formAnswer['value']);
+                                                } else {
+                                                    $resultAnswer->setValue( $formAnswer['value']);
+                                                }
+
+
+
+                                                $resultAnswer->setAnswer($answer);
+
+                                                $resultQuestion->addAnswer($resultAnswer);
+
                                             }
-
-                                            if( $answer->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton") {
-                                                $resultAnswer->setValue( $formAnswer['answer']);
-                                                $resultAnswer->setValue( $formAnswer['value']);
-                                            } else {
-                                                $resultAnswer->setValue( $formAnswer['value']);
-                                            }
-
-
-
-                                            $resultAnswer->setAnswer($answer);
-
-                                            $resultQuestion->addAnswer($resultAnswer);
 
                                         }
 
                                     }
 
                                 }
-
                             }
                         }
 
