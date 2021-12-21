@@ -261,7 +261,8 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$localizedMessage = $this->translate($messageLocallangKey, '[' . $messageLocallangKey . ']');
 		$titleLocallangKey = sprintf('%s.title', $messageLocallangKey);
 		$localizedTitle = $this->translate($titleLocallangKey, '[' . $titleLocallangKey . ']');
-		$this->flashMessageContainer->add($localizedMessage, $localizedTitle, $severity);
+
+        $this->addFlashMessage($localizedMessage, $localizedTitle, $severity)  ;
 	}
 
 	/**

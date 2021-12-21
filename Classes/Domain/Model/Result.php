@@ -613,8 +613,10 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$userId = $GLOBALS['TSFE']->fe_user->user['uid'] ? $GLOBALS['TSFE']->fe_user->user['uid'] : 0 ;
 		/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 		//count for all questions in result
+        $debug = [] ;
 		foreach ($this->getQuestions() as $resultQuestion) {
 				if ($resultQuestion->getQuestion()){
+                    $debug[] = "resultQuestion ID: " . $resultQuestion->getUid() ;
 						// check for point calculation
 						$pointsForQuestion = 0;
 						$calcPoints = 0;
@@ -622,17 +624,20 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 						$givenAnswersForQuestion = 0;
 						/* @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
 						if (count($resultQuestion->getAnswers()) > 0){
+                            $debug[] = "result Answers: " . count($resultQuestion->getAnswers()) ;
 							//calculate for each answer
 							foreach ($resultQuestion->getAnswers() as $resultAnswer) {
+                                $debug[] = "result Answer ID: " . $resultAnswer->getUid()  ;
                                 $givenAnswersForQuestion++ ;
                                 if ($resultAnswer->getAnswer()){
-
-                                        $calcPoints = $resultAnswer->getPoints();
-                                        if( $calcPoints > 0 ) {
-                                            $pointsForQuestion += $calcPoints;
-                                        } else {
-                                            $wrongAnswersForQuestion ++ ;
-                                        }
+                                    $debug[] = "result Answer  : " . $resultAnswer->getValue()  ;
+                                    $debug[] = "result Answer get Points : " . $resultAnswer->getPoints()  ;
+                                    $calcPoints = $resultAnswer->getPoints();
+                                    if( $calcPoints > 0 ) {
+                                        $pointsForQuestion += $calcPoints;
+                                    } else {
+                                        $wrongAnswersForQuestion ++ ;
+                                    }
 
                                 }
                                 $resultAnswer->setFeCruserId($userId);
@@ -647,6 +652,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
                             }
                             $pointsForResult += $pointsForQuestion;
 						}
+
 						//set the points for this questions
 						$resultQuestion->setPoints($pointsForQuestion);
 						$resultQuestion->setFeCruserId($userId);
@@ -672,6 +678,9 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 						}					
 				}
 		}
+        // echo "<pre>" ;
+        // var_dump( $debug);
+        // die;
 		$this->setPoints($pointsForResult);
 		$this->setMaxPoints($maxPoints);			
 	}	

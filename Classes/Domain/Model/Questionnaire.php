@@ -688,7 +688,7 @@ class Questionnaire extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     }
 
     /**
-     * @param array $questionsByPage
+     * @param array|object $questionsByPage
      */
     public function setShuffledQuestionsByPage($questionsByPage , $page ) {
        //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$page : ' . var_export($page, TRUE) . "<hr>";

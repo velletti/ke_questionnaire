@@ -243,6 +243,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
             $answerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository');
             $resultAnswerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository');
             if (array_key_exists('__identity' , $this->temp_result ) && $this->temp_result['__identity'] > 0) {
+                $debug = [] ;
                 /** @var  $result Result */
                 $result = $this->resultRepository->findByUid($this->temp_result['__identity']);
                 if (array_key_exists('questions' , $this->temp_result ) && count( $this->temp_result['questions']) > 0)  {
@@ -251,24 +252,35 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                         foreach ($result->getQuestions()  as $resultQuestion) {
 
                             foreach ( $this->temp_result['questions'] as $formquestion ) {
+
                                 if($formquestion['question'] == $resultQuestion->getQuestion()->getUid() ) {
                                     // first remove all old answers for this Question!
                                     $resultQuestion->removeAnswers();
+                                    $debug[] = var_export( $formquestion , true );
 
                                     foreach( $formquestion['answers'] as $formAnswer) {
-                                        if( $formAnswer['value'] ) {
+                                        if( $formAnswer['value'] || $formAnswer['answer'] ) {
                                             $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
                                             /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer$resultAnswer */
                                             $resultAnswer = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
                                             $resultAnswer->setPid($result->getPid()) ;
                                             $resultAnswer->setResultquestion($resultQuestion);
                                             $resultAnswer->setFeCruserId(   $this->userUid );
-                                            $resultAnswer->setValue( $formAnswer['value']);
                                             if( $formAnswer['additional_value'] ) {
                                                 $resultAnswer->setAdditionalValue($formAnswer['additional_value']);
                                             } else {
                                                 $resultAnswer->setAdditionalValue('');
                                             }
+
+                                            if( $answer->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton") {
+                                                $resultAnswer->setValue( $formAnswer['answer']);
+                                                $resultAnswer->setValue( $formAnswer['value']);
+                                            } else {
+                                                $resultAnswer->setValue( $formAnswer['value']);
+                                            }
+
+
+
                                             $resultAnswer->setAnswer($answer);
 
                                             $resultQuestion->addAnswer($resultAnswer);
@@ -417,7 +429,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	 */
 	public function showAction(Result $result = NULL) {
 		if (!$result) {
-			$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('feView.noResultError', $this->extensionName), \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('feView.noResultErrorTitle', $this->extensionName), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('feView.noResultError' ), \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('feView.noResultErrorTitle' ), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 		} else {
 			$questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
 			$this->view->assign('questionnaire', $questionnaire[0]);
@@ -737,7 +749,9 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
             $pages = array() ;
             // seperate all questions for each page
             foreach($questions as $question) {
-                if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak) {
+               // echo "<br>Page: " . $page . " Question id " . $question->getUid() . " " . $question->getType() ;
+
+                if($question->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak" ) {
                     $page++;
                     continue;
                 }
