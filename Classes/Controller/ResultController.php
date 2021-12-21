@@ -166,7 +166,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
         if( $this->settings['randomQuestionsMax'] > 0 ) {
             $this->shuffleQuestions() ;
         }
-        if( $newResult->getQuestions()  && count( $newResult->getQuestions() < 1 ) && $requestedPage > 0 ) {
+        if( $newResult->getQuestions()  && count( $newResult->getQuestions()) < 1  && $requestedPage > 0 ) {
             $pages = $this->questionnaire->getCountPages() ;
             for ( $page=1 ; $page<= $pages ; $page++ ) {
                 $questions = $this->questionnaire->getQuestionsForPage($page) ;
