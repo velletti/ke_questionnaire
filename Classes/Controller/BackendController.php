@@ -298,7 +298,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		    $mail = trim( $mail , "\n\t\r") ;
 			if ( GeneralUtility::validEmail( $mail)){
 				$email['email'] = $mail;
-                                $email['sourcetype'] = 'email';
+                $email['sourcetype'] = 'email';
 				$emails[] = $email;
 			}
 		}
@@ -372,10 +372,12 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 				$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']?$this->plugin['ffdata']['settings']['email']['invite']['text']['before']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.before', $this->extensionName)));
 				$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName)));
 				foreach ($mail as $field => $value){
+					$text['before'] = str_replace('###'.($field).'###', $value, $text['before']);
 					$text['before'] = str_replace('###'.strtoupper($field).'###', $value, $text['before']);
 					$text['before'] = str_replace('###'.strtolower($field).'###', $value, $text['before']);
-					$text['after'] = str_replace('###'.strtoupper($field).'###', $value, $text['after']);
-					$text['after'] = str_replace('###'.strtolower($field).'###', $value, $text['after']);
+					$text['after']  = str_replace('###'.($field).'###', $value, $text['after']);
+					$text['after']  = str_replace('###'.strtoupper($field).'###', $value, $text['after']);
+					$text['after']  = str_replace('###'.strtolower($field).'###', $value, $text['after']);
 				}
 				$this->view->assign('text',$text);
 				
@@ -383,7 +385,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 				$this->mailSender
 					->addReceiver($mail['email'])
 					->setHtml($this->view->render('createdMail'))
-					->setBody($this->view->render('createdMail'))
+					// ->setBody($this->view->render('createdMail'))
 					->setSubject($subject)
 					->sendMail();
 
