@@ -370,8 +370,11 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 				$this->view->assign('authCode',$newAuthCode);
 				$subject = ($this->plugin['ffdata']['settings']['email']['invite']['subject']?$this->plugin['ffdata']['settings']['email']['invite']['subject']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.subject', $this->extensionName));
 				$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']?$this->plugin['ffdata']['settings']['email']['invite']['text']['before']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.before', $this->extensionName)));
+
 				$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName)));
-				foreach ($mail as $field => $value){
+
+
+                foreach ($mail as $field => $value){
 					$text['before'] = str_replace('###'.($field).'###', $value, $text['before']);
 					$text['before'] = str_replace('###'.strtoupper($field).'###', $value, $text['before']);
 					$text['before'] = str_replace('###'.strtolower($field).'###', $value, $text['before']);
@@ -380,12 +383,13 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 					$text['after']  = str_replace('###'.strtolower($field).'###', $value, $text['after']);
 				}
 				$this->view->assign('text',$text);
-				
+                $htmlText = $this->view->render('createdMail') ;
+
 				//create mailSender
 				$this->mailSender
 					->addReceiver($mail['email'])
-					->setHtml($this->view->render('createdMail'))
-					// ->setBody($this->view->render('createdMail'))
+					->setHtml($htmlText )
+					->setBody($htmlText )
 					->setSubject($subject)
 					->sendMail();
 
