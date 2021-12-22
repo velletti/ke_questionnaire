@@ -76,7 +76,7 @@ class JavaScriptViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
 			$beginningOfFile = "jQuery(document).ready(function() {\n";
 			
 			//get the stored jsKey
-			$jsKey = $GLOBALS['TSFE']->fe_user->getKey('ses', 'keq_jskey');
+			$jsKey = date("d-m-y-H-i-s-") . $GLOBALS['TSFE']->fe_user->getKey('ses', 'keq_jskey');
 			//get the file
 			$pathName = 'typo3temp/ke_questionnaire';
 			$fileName = $pathName . '/' . $jsKey . '.js';
