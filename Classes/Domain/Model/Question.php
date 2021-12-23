@@ -88,6 +88,14 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	protected $helpText;
 
+    /**
+     * random answers
+     *
+     * @var boolean
+     */
+    protected $randomAnswers = FALSE;
+
+
 	/**
 	 * Image
 	 *
@@ -138,14 +146,14 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     /**
     * Min answers
     *
-    * @var boolean
+    * @var int
 	 */
 	protected $minAnswers = 0 ;
 
     /**
      * Max answers
      *
-     * @var boolean
+     * @var int
      */
     protected $maxAnswers = 0 ;
 
@@ -477,11 +485,55 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the answers
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $answers
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage|array $answers
 	 */
 	public function getAnswers() {
-		return $this->answers;
+        if ($this->isRandomAnswers()){
+            $answers = $this->answers->toArray();
+            shuffle($answers);
+            return $answers;
+        } else {
+            return $this->answers;
+        }
 	}
+
+    /**
+     * @return bool
+     */
+    public function isRandomAnswers(): bool
+    {
+        return $this->randomAnswers;
+    }
+
+    /**
+     * @param bool $randomAnswers
+     */
+    public function setRandomAnswers(bool $randomAnswers): void
+    {
+        $this->randomAnswers = $randomAnswers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMaxAnswers()
+    {
+        return $this->maxAnswers;
+    }
+
+
+
+    /**
+     * Returns the answer count
+     *
+     * @return int
+     */
+    public function getAnswerCount() {
+        if ($this->answers ) {
+            return count($this->answers);
+        }
+        return 0 ;
+    }
 
 	/**
 	 * Sets the answers
@@ -565,15 +617,15 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
     /**
-     * @return bool
+     * @return int
      */
-    public function isMinAnswers()
+    public function getMinAnswers()
     {
         return $this->minAnswers;
     }
 
     /**
-     * @param bool $minAnswers
+     * @param int $minAnswers
      */
     public function setMinAnswers($minAnswers)
     {
@@ -581,15 +633,15 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     }
 
     /**
-     * @return bool
+     * @return int
      */
-    public function isMaxAnswers()
+    public function getMaxAnswers()
     {
         return $this->maxAnswers;
     }
 
     /**
-     * @param bool $maxAnswers
+     * @param int $maxAnswers
      */
     public function setMaxAnswers($maxAnswers)
     {
