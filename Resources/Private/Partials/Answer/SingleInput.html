@@ -44,42 +44,50 @@
 	/*
 	 * Checks the Answer for the type of the chosen validation
 	 */
-	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>").blur( function() {
+	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>")
+		.on( "input" , function() {
 		var a_id = <f:format.raw>{answer.uid}</f:format.raw>;
 		var q_id = <f:format.raw>{question.uid}</f:format.raw>;
 		var val = jQuery(this).val();
 		var this_id = jQuery(this).attr('id');
-		jQuery.ajax({
-			type: "GET",
-			url: 'index.php',
-			data: 'type=2667&tx_kequestionnaire_questionnaire[type]=AnswerValidation&tx_kequestionnaire_questionnaire[arguments][answerUid]='+a_id+'&tx_kequestionnaire_questionnaire[arguments][value]='+val,
-			async: false,
-			success: function(data){
-				xdata = jQuery.parseJSON(jQuery.trim(data));
 
-				jQuery("#keqAnswerError"+a_id).val(xdata.error);
-				jQuery("#"+this_id+"info").html(xdata.info);
-				if(jQuery("#keqAnswerError"+a_id).length > 0) {
-					jQuery("html, body").animate({
-						scrollTop: jQuery("#"+this_id+"info").offset().top -100
-					}, 700);
+		if ( val.length > 6 ) {
+			jQuery.ajax({
+				type: "GET",
+				url: 'index.php',
+				data: 'type=2667&tx_kequestionnaire_questionnaire[type]=AnswerValidation&tx_kequestionnaire_questionnaire[arguments][answerUid]='+a_id+'&tx_kequestionnaire_questionnaire[arguments][value]='+val,
+
+				success: function(xdata){
+					// xdata = jQuery.parseJSON(jQuery.trim(data));
+
+					jQuery("#keqAnswerError"+a_id).val(xdata.error);
+					jQuery("#"+this_id+"info").html(xdata.info);
+					if(jQuery("#keqAnswerError"+a_id).length > 0) {
+						jQuery("html, body").animate({
+							scrollTop: jQuery("#"+this_id+"info").offset().top -100
+						}, 700);
+					}
+
+					/*
+					 *	if question property "must_be_correct" was set additionally,
+					 *	there will be a second "error"-marker-field (related to the question),
+					 *	which has to be adjusted.
+					 */
+					if(jQuery("#keqAnswerErrorQ"+q_id).length > 0) {
+						jQuery("#keqAnswerErrorQ"+q_id).val(xdata.error);
+					}
+
+					checkAnswerErrors();
+				},
+				error: function(x,y,z){
+					alert('An error has occurred:\n' + x + '\n' + y + '\n' + z);
 				}
-
-				/*
-				 *	if question property "must_be_correct" was set additionally,
-				 *	there will be a second "error"-marker-field (related to the question),
-				 *	which has to be adjusted.
-				 */
-				if(jQuery("#keqAnswerErrorQ"+q_id).length > 0) {
-					jQuery("#keqAnswerErrorQ"+q_id).val(xdata.error);
-				}
-
-				checkAnswerErrors();
-			},
-			error: function(x,y,z){
-				alert('An error has occurred:\n' + x + '\n' + y + '\n' + z);
+			});
+		} else {
+			if(jQuery("#keqAnswerErrorQ"+q_id).length > 0) {
+				jQuery("#keqAnswerErrorQ"+q_id).val( 1 );
 			}
-		});
+		}
 	});
 	</ke:JavaScript>
 </f:if>

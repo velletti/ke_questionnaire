@@ -85,6 +85,8 @@
 			<label index="tx_kequestionnaire_domain_model_answer.validation_type.numeric">Numeric</label>
 			<label index="tx_kequestionnaire_domain_model_answer.validation_type.integer">Integer</label>
 			<label index="tx_kequestionnaire_domain_model_answer.validation_type.date">Date</label>
+			<label index="tx_kequestionnaire_domain_model_answer.validation_type.string">String</label>
+			<label index="tx_kequestionnaire_domain_model_answer.validation_type.string2chars">String with at least 2 chars</label>
 			<label index="tx_kequestionnaire_domain_model_answer.validation_type.email">E-Mail</label>
 			<label index="tx_kequestionnaire_domain_model_answer.validation_type.compareText">Text comparison</label>
 			<label index="tx_kequestionnaire_domain_model_answer.validation_type.keywords">Keywords</label>

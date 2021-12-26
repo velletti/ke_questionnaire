@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Ajax;
+use Egulias\EmailValidator\Exception\InvalidEmail;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,30 +38,13 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
 class AnswerValidation extends \Kennziffer\KeQuestionnaire\Ajax\AbstractAjax {
 
 	/**
-	 * answerRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository
-	 */
-	protected $answerRepository;
-
-	/**
 	 * lokalization
 	 *
 	 * @var \Kennziffer\KeQuestionnaire\Utility\Localization
 	 */
 	protected $localization;	
 	
-	
-	/**
-	 * injectAnswerRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\answerRepository $answerRepository
-	 * @return void
-	 */
-	public function injectAnswerRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $answerRepository) {
-		$this->answerRepository = $answerRepository;
-	}
-	
+
 	/**
 	 * injectAnswerRepository
 	 *
@@ -75,33 +62,107 @@ class AnswerValidation extends \Kennziffer\KeQuestionnaire\Ajax\AbstractAjax {
 	 * @return string In most cases JSON
 	 */
 	public function processAjaxRequest(array $arguments) {
-		/* @var $answer \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput */
-		$answer = $this->answerRepository->findByUid($arguments['answerUid']);
-		if($answer === NULL) return '';
-		// the validation Array should contain
-		// error => 0 no error / 1 error
-		// info => textmessage to be displayed
-		$validation = array();
-		
-		//in the typoscript settings you can define the pattern for the validation types
-		//example: 
-		// validation {
-		//		date = d.m.Y                
-		//		numeric = ,
-		//		email = name@domain.end
-		//	}
-        $answer->pattern = $this->settings['answer']['validation'][$answer->getValidationType()];                
-		if ($answer->isValid($arguments['value'])){
+        $isValid = false ;
+        // the validation Array should contain
+        // error => 0 no error / 1 error
+        // info => textmessage to be displayed
+        $validation = array();
+
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $queryBuilder = $connectionPool->getConnectionForTable('tx_kequestionnaire_domain_model_answer')->createQueryBuilder();
+        $queryBuilder->select('validation_type') ->from('tx_kequestionnaire_domain_model_answer') ;
+        $expr = $queryBuilder->expr();
+        $queryBuilder->where( $expr->eq('uid',
+            $queryBuilder->createNamedParameter($arguments['answerUid'],
+                \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) ) ;
+        $response = $queryBuilder->execute()->fetchAssociative();
+
+
+
+        if ( $response ) {
+		    $validationType = $response['validation_type'] ;
+
+            if ( !$this->settings['answer']['validation'] ) {
+                $this->settings['answer']['validation'] = [
+                    "date" => "d.m.Y" , "numeric" => "," , "email" => "name@domain.end" , "string" => "1 char" ,  "string2char" => "2 chars or more" , ] ;
+            }
+            $pattern = $this->settings['answer']['validation'][$response['validation_type']];
+
+            switch($validationType) {
+                case "email":
+                    try {
+                        if ( GeneralUtility::validEmail($arguments['value']) ) {
+                            if (filter_var($arguments['value'], FILTER_VALIDATE_EMAIL)) {
+                                $isValid = true;
+                            }
+                        }
+                    } catch (InvalidEmail $invalid) {
+                        $isValid = false ;
+                    }
+
+                    break;
+
+                case "date":
+                    if( strpos( $pattern , ".")) {
+                        $split = "." ;
+                    } else {
+                        $split = "-" ;
+                    }
+                    $dateArray =  GeneralUtility::trimExplode($split , $arguments['value'] , true) ;
+
+                    switch($pattern) {
+                        case "d-m-Y" :
+                        case "d.m.Y" :
+                            $isValid = checkdate( $dateArray[1] , $dateArray[0] , $dateArray[2] ) ;
+                            break;
+
+                        case "m-d-Y" :
+                        case "m.d.Y" :
+                            $isValid = checkdate( $dateArray[0] , $dateArray[1] , $dateArray[2] ) ;
+                            break;
+
+                        case "Y-m-d" :
+                        case "Y.m.d" :
+                            $isValid = checkdate( $dateArray[1] , $dateArray[2] , $dateArray[0] ) ;
+                            break;
+                    }
+
+                    break ;
+
+                case "numeric":
+                    if( is_numeric( $arguments['value'] )) {
+                        $isValid = true;
+                    }
+                    break ;
+                case "string":
+                    $isValid = ( strlen( $arguments['value'] ) > 0 )  ;
+                    break ;
+
+                case "string2chars":
+                    $isValid = ( strlen( $arguments['value'] ) > 1 )  ;
+                    break ;
+
+            }
+
+        }
+
+        if( !$this->localization ) {
+            $this->localization = GeneralUtility::makeInstance( "Kennziffer\\KeQuestionnaire\\Utility\\Localization" ) ;
+        }
+
+		if ($isValid){
 			$validation['error'] = 0;
 			$validation['info'] = '';
 		} else {
 			$validation['error'] = 1;
-			$validation['info'] = $this->localization->translate('answerValidation.' . $answer->getValidationType()).' '.$this->settings['answer']['validation'][$answer->getValidationType()];
+			$validation['info'] = $this->localization->translate('answerValidation.' . $response['validation_type'] ) .' ' . $pattern ;
 		}
 		
 		$json = $this->convertValueToJson($validation);
 		return trim($json);
 	}
+
 
 }
 ?>

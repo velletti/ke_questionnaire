@@ -98,6 +98,34 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 
 
+    /**
+     * ValidationType
+     *
+     * @var string
+     */
+    protected $validationType;
+
+    /**
+     * ValidationText
+     *
+     * @var string
+     */
+    protected $validationText;
+
+    /**
+     * ValidationKeysAmount
+     *
+     * @var integer
+     */
+    protected $validationKeysAmount;
+
+    /**
+     * ComparisonText
+     *
+     * @var string
+     */
+    protected $comparisonText;
+
 	/**
 	 * Returns the type
 	 *
@@ -201,7 +229,105 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getIsCorrectAnswer() {
 		return $this->isCorrectAnswer;
 	}
-	
+
+
+    /**
+     * Returns the validationType
+     *
+     * @return string $validationType
+     */
+    public function getValidationType() {
+        return $this->validationType;
+    }
+
+    /**
+     * Sets the validationType
+     *
+     * @param string $validationType
+     * @return void
+     */
+    public function setValidationType($validationType) {
+        $this->validationType = $validationType;
+    }
+
+    /**
+     * Returns the validationText
+     *
+     * @return string $validationText
+     */
+    public function getValidationText() {
+        return $this->validationText;
+    }
+
+    /**
+     * Sets the validationText
+     *
+     * @param string $validationText
+     * @return void
+     */
+    public function setValidationText($validationText) {
+        $this->validationText = $validationText;
+    }
+
+    /**
+     * Returns the validationKeysAmount
+     *
+     * @return integer $validationKeysAmount
+     */
+    public function getValidationKeysAmount() {
+        return $this->validationKeysAmount;
+    }
+
+    /**
+     * Sets the validationKeysAmount
+     *
+     * @param integer $validationKeysAmount
+     * @return void
+     */
+    public function setValidationKeysAmount($validationKeysAmount) {
+        $this->validationKeysAmount = $validationKeysAmount;
+    }
+
+    /**
+     * Returns the comparitionText
+     *
+     * @return string $comparisonText
+     */
+    public function getComparisonText() {
+        return $this->comparisonText;
+    }
+
+    /**
+     * Sets the comparisonText
+     *
+     * @param string $comparisonText
+     * @return void
+     */
+    public function setComparisonText($comparisonText) {
+        $this->comparisonText = $comparisonText;
+    }
+
+    /**
+     * Checks if the value is valid for this answer
+     *
+     * @param string $value value
+     * @return boolean
+     */
+    public function isValid(string $value){
+        if ($value){
+            $class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
+            if (class_exists($class)) {
+                $objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager;
+                $validator = $objectManager->get($class);
+                if ($validator instanceof \Kennziffer\KeQuestionnaire\Validation\AbstractValidation) {
+                    /* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
+                    return $validator->isValid($value, $this);
+                } else return false;
+            } else return false;
+        } else return true;
+    }
+
+
 	/**
 	 * Returns the isCorrectAnswer
 	 *

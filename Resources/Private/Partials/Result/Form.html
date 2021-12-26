@@ -5,7 +5,7 @@
 <f:if condition="{settings.navigationType} != 'none'">
 	<f:render partial="Questionnaire/NavigationType_{settings.navigationType}" arguments="{questionnaire: questionnaire, result: newResult}"/>
 </f:if>
-	<f:form action="create" controller="Result" objectName="newResult" object="{newResult}" method="post" class="keq_questionnaire_form" noCacheHash="true">
+	<f:form action="create" controller="Result" objectName="newResult" object="{newResult}" method="post" additionalParams="{page: questionnaire.page}"  class="keq_questionnaire_form" noCacheHash="true">
                 <f:if condition="{settings.additionalParameters}">
                     <f:form.hidden property="addParameter" value="{newResult.addParameter}" />
                 </f:if>

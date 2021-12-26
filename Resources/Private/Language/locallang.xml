@@ -63,7 +63,8 @@
 			<label index="answerValidation.numeric">Only numeric values allowed. Number divider: </label>
 			<label index="answerValidation.integer">Only integer values allowed</label>
 			<label index="answerValidation.date">Only date values allowed. Please use the following format:</label>
-			<label index="answerValidation.email">Only valid e-mail addresses allowed</label>
+			<label index="answerValidation.string">Must be a string</label>
+			<label index="answerValidation.string2chars">Must be a string with at least 2 chars</label>
 			<label index="answerValidation.compareText">Please enter the correct text</label>
 			<label index="answerValidation.keywords">You need to match different keywords in your text</label>
 

@@ -116,14 +116,14 @@ class SingleSelect extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 
 		return $values;
 	}
-    
-	/**
-	 * Checks if the value is valid for this answer
-	 *
-	 * @param string $value value
-	 * @return boolean
-	 */
-	public function isValid($value){
+
+    /**
+     * Checks if the value is valid for this answer
+     *
+     * @param string $value value
+     * @return boolean
+     */
+	public function isValid(string $value){
 		$class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
 		if (class_exists($class)) {
 			$objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager;

@@ -20,13 +20,13 @@ keqAjaxResponse {
 		pluginName = Questionnaire
 		vendorName = Kennziffer
 		controller = Ajax
-		action = test
+		action = ajax
 		switchableControllerActions {
 			Ajax {
 				1 = ajax
 			}
 		}
-		settings =< plugin.tx_kequestionnaire.settings
-		persistence =< plugin.tx_kequestionnaire.persistence
+		settings < plugin.tx_kequestionnaire.settings
+		persistence < plugin.tx_kequestionnaire.persistence
 	}
 }
