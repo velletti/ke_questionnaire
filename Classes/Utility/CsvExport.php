@@ -516,12 +516,17 @@ class CsvExport {
 		if ($this->getShowAText()) {
 			$qL[] = '';
 		}		
-		
-		foreach ($this->results as $result){
-			foreach ($result->getQuestions() as $rquestion){
-				if ($rquestion->getQuestion()->getUid() == $question->getUid()) $qL[] = $rquestion->getPoints();
-			}			
-		}		
+		if( $this->results && $question ) {
+            foreach ($this->results as $result){
+                if ( $result->getQuestions() ) {
+                    foreach ($result->getQuestions() as $rquestion){
+                        if ($rquestion && $rquestion->getQuestion() && $rquestion->getQuestion()->getUid() == $question->getUid()) $qL[] = $rquestion->getPoints();
+                    }
+                }
+
+            }
+        }
+
 		return $qL;
 	}
 	
