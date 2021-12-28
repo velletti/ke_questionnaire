@@ -405,6 +405,39 @@ class CsvExport {
 			$header .= $result['uid'];
 		}
 		$header.= $this->newline;
+
+        if ($this->getShowQText()) $header .= $this->getSeparator();
+        $header .= $this->getSeparator();
+        $header .= 'AuthCode';
+        $header .= $this->getSeparator();
+        if ($this->getShowAText()) $header .= $this->getSeparator();
+        foreach ($this->resultsRaw as $result){
+            $header .= $this->getSeparator();
+            $header .= $result['auth_code'];
+        }
+        $header.= $this->newline;
+
+        if ($this->getShowQText()) $header .= $this->getSeparator();
+        $header .= $this->getSeparator();
+        $header .= 'FeUser ID';
+        $header .= $this->getSeparator();
+        if ($this->getShowAText()) $header .= $this->getSeparator();
+        foreach ($this->resultsRaw as $result){
+            $header .= $this->getSeparator();
+            $header .= $result['fe_user'];
+        }
+        $header.= $this->newline;
+
+        if ($this->getShowQText()) $header .= $this->getSeparator();
+        $header .= $this->getSeparator();
+        $header .= 'finished';
+        $header .= $this->getSeparator();
+        if ($this->getShowAText()) $header .= $this->getSeparator();
+        foreach ($this->resultsRaw as $result){
+            $header .= $this->getSeparator();
+            $header .= date( "d.m. H:i" ,  $result['finished'] );
+        }
+        $header.= $this->newline;
 		
 		return $header;
 	}

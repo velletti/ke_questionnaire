@@ -297,11 +297,13 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      * @return void
      */
     public function removeAnswers() {
-        foreach ($this->getAnswers() as $rAnswer){
-           $this->removeAnswer($rAnswer);
+        if($this->getAnswers()) {
+            foreach ($this->getAnswers()->toArray() as $rAnswer){
+
+                $this->removeAnswer($rAnswer);
+            }
         }
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-        $persistenceManager->persistAll();
+
     }
     
     /**

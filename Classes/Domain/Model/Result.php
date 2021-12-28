@@ -602,7 +602,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * check the points for the result object
 	 * @param boolean $reducePointsforWrongAnswers
-	 * @return void
+	 * @return array
 	 */
 	public function calculatePoints($reducePointsforWrongAnswers=false)
     {
@@ -694,12 +694,8 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
         $this->setPoints($pointsForResult);
         $debug[] = "set Max Points total " . $maxPoints ;
         $this->setMaxPoints($maxPoints);
-        if ($pointsForResult > 0 && 1 == 2) {
-            echo "<pre>" ;
-            var_dump( $debug);
-            echo "</pre>" ;
-            die;
-        }
+
+        return $debug ;
 	}	
         
         /**

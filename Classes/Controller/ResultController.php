@@ -233,9 +233,10 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 				$this->request->setArgument('newResult',$result);
 			}
 		}
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 
 
-		//if the result is not new create the clone of the stored before it is updated
+        //if the result is not new create the clone of the stored before it is updated
 		//if the old-result is not stored, given answers of other pages will be deleted
         if( is_array( $this->temp_result )) {
             /** @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $answerRepository */
@@ -243,9 +244,13 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
             $answerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository');
             $resultAnswerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository');
             if (array_key_exists('__identity' , $this->temp_result ) && $this->temp_result['__identity'] > 0) {
+
                 $debug = [] ;
                 /** @var  $result Result */
                 $result = $this->resultRepository->findByUid($this->temp_result['__identity']);
+                if ($result) {
+                    $this->oldResult = clone $result;
+                }
                 if (array_key_exists('questions' , $this->temp_result ) && count( $this->temp_result['questions']) > 0)  {
                     if( $result->getQuestions() ) {
                         /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultQuestion */
@@ -257,10 +262,17 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                                     if($formquestion['question'] == $resultQuestion->getQuestion()->getUid() ) {
                                         // first remove all old answers for this Question!
                                         $resultQuestion->removeAnswers();
+
+
+                                        $resultQuestion->setPoints(0);
+                                        $resultQuestion->setMaxPoints(0);
+
+                                        $persistenceManager->persistAll();
+
                                         $debug[] = var_export( $formquestion , true );
 
                                         foreach( $formquestion['answers'] as $formAnswer) {
-                                            if( $formAnswer['value'] || $formAnswer['answer'] ) {
+                                             if( $formAnswer['value'] || $formAnswer['answer'] ) {
                                                 $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
                                                 /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer$resultAnswer */
                                                 $resultAnswer = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
@@ -275,12 +287,17 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 
                                                 if( $answer->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton") {
                                                     $resultAnswer->setValue( $formAnswer['answer']);
-                                                    $resultAnswer->setValue( $formAnswer['value']);
                                                 } else {
                                                     $resultAnswer->setValue( $formAnswer['value']);
                                                 }
 
-
+                                                $oldResultAnswer = $resultAnswerRepository->findForResultQuestionAndAnswerRaw(
+                                                    $resultQuestion->getUid() ,
+                                                    $answer->getUid() ,
+                                                false ) ;
+                                                if( $oldResultAnswer && $oldResultAnswer->getFirst() instanceof  \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer) {
+                                                    $resultAnswerRepository->remove($oldResultAnswer->getFirst() ) ;
+                                                }
 
                                                 $resultAnswer->setAnswer($answer);
 
@@ -301,9 +318,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 
                 }
                 if ($result) {
-                    $this->oldResult = clone $result;
                     $this->resultRepository->update($result) ;
-                    $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
                     $persistenceManager->persistAll();
                 }
 
@@ -354,9 +369,11 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
         //rework the result so all given answers to all questions (not only current page) are stored
 		$result = $this->getSavedAndMergedResult($newResult);
 		//calculate the points of the questions and the result
-		$result->calculatePoints($this->settings['reducePointsforWrongAnswers']);
+		$debug = $result->calculatePoints($this->settings['reducePointsforWrongAnswers']);
+
 		$this->resultRepository->update($result);
-		
+
+
 		$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 		$persistenceManager->persistAll();
 		
@@ -538,13 +555,14 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		$dbResult = $this->oldResult;
 		if ($dbResult) $updatedResult = $this->addQuestionToDbResult($formResult, $dbResult);
 		else $updatedResult = $formResult;
+
 		$updatedResult->setPoints($updatedResult->getPoints() + $formResult->getPoints());
 		$updatedResult->setMaxPoints($updatedResult->getMaxPoints() + $formResult->getMaxPoints());
 		//check the result
 		$result = $this->modifyResultBeforeSave($updatedResult);
 		$this->resultRepository->update($result);
 		
-                $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 		$persistenceManager->persistAll();
 				
 		return $result;

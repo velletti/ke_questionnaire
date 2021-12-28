@@ -49,16 +49,17 @@ class ResultAnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	/**
 	 * get a raw result => no object, only array
 	 */
-	public function findForResultQuestionAndAnswerRaw($questionId,$answerId) {
+	public function findForResultQuestionAndAnswerRaw($questionId,$answerId , $returnRaw = true ) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$constraint = $query->equals('resultquestion', $questionId);
+		$constraints[] = $query->equals('resultquestion', $questionId);
+		$constraints[] = $query->equals('answer', $answerId) ;
+
         $constraint = $query->logicalAnd(	
-			$query->equals('answer', $answerId),
-			$constraint
+			$constraints
 		);
 		$query->matching($constraint);
-		return $query->execute(true);
+		return $query->execute($returnRaw);
 	}
 	
 	/**
