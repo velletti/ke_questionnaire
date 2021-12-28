@@ -654,7 +654,11 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
                     if ($pointsForQuestion < 0) {
                         $pointsForQuestion = 0;
                     }
+                    $debug[] = "Points for this question  : " . $pointsForQuestion;
                     $pointsForResult += $pointsForQuestion;
+                    $debug[] = "----" ;
+                    $debug[] = "Current total Points  : " . $pointsForResult;
+                    $debug[] = "----" ;
                 }
 
                 //set the points for this questions
@@ -663,10 +667,12 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
                 //maxPoints are the maximum points for all the questions already part of this result
                 $maxPoints += $resultQuestion->getMaxPoints();
+
                 //if there are groups of questions, thex need to be calculated
                 $groupPoints += $pointsForQuestion;
                 //maximum points for this group
                 $maxGroupPoints += $resultQuestion->getMaxPoints();
+
                 //check the matrix type, relevant for calculation
                 $resultQuestion = $this->checkMatrixType($resultQuestion);
 
@@ -682,14 +688,18 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
                 }
             }
         }
+
+        $debug[] = "--------" ;
+        $debug[] = "set result Points total " . $pointsForResult ;
+        $this->setPoints($pointsForResult);
+        $debug[] = "set Max Points total " . $maxPoints ;
+        $this->setMaxPoints($maxPoints);
         if ($pointsForResult > 0 && 1 == 2) {
             echo "<pre>" ;
             var_dump( $debug);
             echo "</pre>" ;
             die;
         }
-		$this->setPoints($pointsForResult);
-		$this->setMaxPoints($maxPoints);			
 	}	
         
         /**
