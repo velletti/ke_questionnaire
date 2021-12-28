@@ -152,7 +152,9 @@ CREATE TABLE tx_kequestionnaire_domain_model_answer (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l10n_parent,sys_language_uid)
+	KEY language (l10n_parent,sys_language_uid),
+	KEY question (question),
+
 
 );
 
@@ -170,7 +172,7 @@ CREATE TABLE tx_kequestionnaire_domain_model_result (
 	max_points int(11) DEFAULT '0' NOT NULL,
 	fe_user int(11) DEFAULT '0' NOT NULL,
 	auth_code int(11) DEFAULT '0' NOT NULL,
-        add_parameter varchar(255) DEFAULT '' NOT NULL,
+    add_parameter varchar(255) DEFAULT '' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -199,7 +201,8 @@ CREATE TABLE tx_kequestionnaire_domain_model_result (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l10n_parent,sys_language_uid)
+	KEY language (l10n_parent,sys_language_uid),
+	KEY questions (questions),
 
 );
 
@@ -212,7 +215,6 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultquestion (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	result int(11) unsigned DEFAULT '0' NOT NULL,
-
 	answers int(11) unsigned DEFAULT '0' NOT NULL,
 	question int(11) unsigned DEFAULT '0',
 	points int(11) DEFAULT '0' NOT NULL,
@@ -246,7 +248,12 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultquestion (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l10n_parent,sys_language_uid)
+	KEY language (l10n_parent,sys_language_uid),
+	KEY pidquestion (pid,question),
+	KEY question (question),
+	KEY answers (answers),
+	KEY pidresult (pid,result),
+	KEY result (result),
 
 );
 
@@ -259,7 +266,6 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultanswer (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	resultquestion int(11) unsigned DEFAULT '0' NOT NULL,
-
 	answer int(11) unsigned DEFAULT '0',
 	value text NULL DEFAULT NULL,
 	col varchar(255) DEFAULT '' NOT NULL,
@@ -295,7 +301,9 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultanswer (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l10n_parent,sys_language_uid)
+	KEY language (l10n_parent,sys_language_uid),
+	KEY answer (answer),
+	KEY resultquestion (resultquestion),
 
 );
 
@@ -343,33 +351,6 @@ CREATE TABLE tx_kequestionnaire_domain_model_range (
 
 );
 
-#
-# Table structure for table 'tx_kequestionnaire_domain_model_answer'
-#
-CREATE TABLE tx_kequestionnaire_domain_model_answer (
-
-	question  int(11) unsigned DEFAULT '0' NOT NULL,
-
-);
-
-#
-# Table structure for table 'tx_kequestionnaire_domain_model_resultanswer'
-#
-CREATE TABLE tx_kequestionnaire_domain_model_resultanswer (
-
-	resultquestion  int(11) unsigned DEFAULT '0' NOT NULL,
-
-);
-
-#
-# Table structure for table 'tx_kequestionnaire_domain_model_resultquestion'
-#
-CREATE TABLE tx_kequestionnaire_domain_model_resultquestion (
-
-	result  int(11) unsigned DEFAULT '0' NOT NULL,
-
-);
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 #
 # Table structure for table 'tx_kequestionnaire_domain_model_authcode'
@@ -413,7 +394,8 @@ CREATE TABLE tx_kequestionnaire_domain_model_authcode (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l10n_parent,sys_language_uid)
+	KEY language (l10n_parent,sys_language_uid),
+	KEY auth_code (auth_code),
 
 );
 
