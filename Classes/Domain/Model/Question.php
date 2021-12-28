@@ -518,7 +518,7 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      */
     public function isMaxAnswers()
     {
-        return $this->maxAnswers;
+        return $this->maxAnswers > 0 ;
     }
 
 

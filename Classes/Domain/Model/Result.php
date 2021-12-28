@@ -501,7 +501,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param integer $points
 	 * @return void
 	 */
-	public function setPoints($points) {
+	public function setPoints(int $points) {
 		$this->points = $points;
 	}
 
@@ -520,7 +520,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param integer $maxPoints
 	 * @return void
 	 */
-	public function setMaxPoints($maxPoints) {
+	public function setMaxPoints(int $maxPoints) {
 		$this->maxPoints = $maxPoints;
 	}
 	
@@ -580,7 +580,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the calculated Average
 	 *
-	 * @param boolean $calculateAll
+	 * @param boolean $all
 	 * @return integer $average
 	 */
 	public function getAverage($all = false) {
@@ -604,83 +604,90 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param boolean $reducePointsforWrongAnswers
 	 * @return void
 	 */
-	public function calculatePoints($reducePointsforWrongAnswers=false) {
-		$maxPoints = 0;
-		$pointsForResult = 0;
-		$group = NULL;
-		$groupPoints = 0;
-		$maxGroupPoints = 0;
-		$userId = $GLOBALS['TSFE']->fe_user->user['uid'] ? $GLOBALS['TSFE']->fe_user->user['uid'] : 0 ;
-		/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
-		//count for all questions in result
-        $debug = [] ;
-		foreach ($this->getQuestions() as $resultQuestion) {
-				if ($resultQuestion->getQuestion()){
-                    $debug[] = "resultQuestion ID: " . $resultQuestion->getUid() ;
-						// check for point calculation
-						$pointsForQuestion = 0;
-						$calcPoints = 0;
-						$wrongAnswersForQuestion = 0;
-						$givenAnswersForQuestion = 0;
-						/* @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
-						if (count($resultQuestion->getAnswers()) > 0){
-                            $debug[] = "result Answers: " . count($resultQuestion->getAnswers()) ;
-							//calculate for each answer
-							foreach ($resultQuestion->getAnswers() as $resultAnswer) {
-                                $debug[] = "result Answer ID: " . $resultAnswer->getUid()  ;
-                                $givenAnswersForQuestion++ ;
-                                if ($resultAnswer->getAnswer()){
-                                    $debug[] = "result Answer  : " . $resultAnswer->getValue()  ;
-                                    $debug[] = "result Answer get Points : " . $resultAnswer->getPoints()  ;
-                                    $calcPoints = $resultAnswer->getPoints();
-                                    if( $calcPoints > 0 ) {
-                                        $pointsForQuestion += $calcPoints;
-                                    } else {
-                                        $wrongAnswersForQuestion ++ ;
-                                    }
-
-                                }
-                                $resultAnswer->setFeCruserId($userId);
-							}
-                            if( $resultQuestion->getQuestion()->isMaxAnswers()  || $reducePointsforWrongAnswers  ) {
-                                if ( $wrongAnswersForQuestion > 0 ) {
-                                    $pointsForQuestion = round( $pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion ) / 2 ) ,0) ;
-                                }
+	public function calculatePoints($reducePointsforWrongAnswers=false)
+    {
+        $maxPoints = 0;
+        $pointsForResult = 0;
+        $group = NULL;
+        $groupPoints = 0;
+        $maxGroupPoints = 0;
+        $userId = $GLOBALS['TSFE']->fe_user->user['uid'] ? $GLOBALS['TSFE']->fe_user->user['uid'] : 0;
+        /* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
+        //count for all questions in result
+        $debug = [];
+        foreach ($this->getQuestions() as $resultQuestion) {
+            if ($resultQuestion->getQuestion()) {
+                $debug[] = "resultQuestion ID: " . $resultQuestion->getUid();
+                // check for point calculation
+                $pointsForQuestion = 0;
+                $calcPoints = 0;
+                $wrongAnswersForQuestion = 0;
+                $givenAnswersForQuestion = 0;
+                /* @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
+                if (count($resultQuestion->getAnswers()) > 0) {
+                    $debug[] = "result Answers: " . count($resultQuestion->getAnswers());
+                    //calculate for each answer
+                    foreach ($resultQuestion->getAnswers() as $resultAnswer) {
+                        $debug[] = "result Answer ID: " . $resultAnswer->getUid();
+                        $givenAnswersForQuestion++;
+                        if ($resultAnswer->getAnswer()) {
+                            $debug[] = "result Answer value : " . $resultAnswer->getValue();
+                            $debug[] = "result Answer to get possible Points : " . $resultAnswer->getPoints();
+                            $calcPoints = $resultAnswer->getPoints();
+                            $debug[] = "calulated Points " . $calcPoints;
+                            if ($calcPoints > 0) {
+                                $pointsForQuestion += $calcPoints;
+                            } else {
+                                $wrongAnswersForQuestion++;
                             }
-							if( $pointsForQuestion < 0 ) {
-                                $pointsForQuestion = 0 ;
-                            }
-                            $pointsForResult += $pointsForQuestion;
-						}
 
-						//set the points for this questions
-						$resultQuestion->setPoints($pointsForQuestion);
-						$resultQuestion->setFeCruserId($userId);
+                        }
+                        $resultAnswer->setFeCruserId($userId);
+                    }
+                    if ($resultQuestion->getQuestion()->isMaxAnswers() && $reducePointsforWrongAnswers) {
+                        if ($wrongAnswersForQuestion > 0) {
 
-						//maxPoints are the maximum points for all the questions already part of this result
-						$maxPoints += $resultQuestion->getMaxPoints();
-						//if there are groups of questions, thex need to be calculated
-						$groupPoints += $pointsForQuestion;
-						//maximum points for this group
-						$maxGroupPoints += $resultQuestion->getMaxPoints();
-						//check the matrix type, relevant for calculation
-						$resultQuestion = $this->checkMatrixType($resultQuestion);
+                            $pointsForQuestion = round($pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion) / 2), 0);
+                            $debug[] = "reduced  to : " . $pointsForQuestion;
+                        }
+                    }
+                    if ($pointsForQuestion < 0) {
+                        $pointsForQuestion = 0;
+                    }
+                    $pointsForResult += $pointsForQuestion;
+                }
 
-						if ($group AND $groupPoints > 0) {
-								$group->setPoints($groupPoints);
-								$group->setMaxPoints($maxGroupPoints);
-						}
-						//check Group
-						if($resultQuestion->getQuestion() instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group) {					
-								$group = $resultQuestion;
-								$groupPoints = 0;
-								$maxGroupPoints = 0;
-						}					
-				}
-		}
-        // echo "<pre>" ;
-        // var_dump( $debug);
-        // die;
+                //set the points for this questions
+                $resultQuestion->setPoints($pointsForQuestion);
+                $resultQuestion->setFeCruserId($userId);
+
+                //maxPoints are the maximum points for all the questions already part of this result
+                $maxPoints += $resultQuestion->getMaxPoints();
+                //if there are groups of questions, thex need to be calculated
+                $groupPoints += $pointsForQuestion;
+                //maximum points for this group
+                $maxGroupPoints += $resultQuestion->getMaxPoints();
+                //check the matrix type, relevant for calculation
+                $resultQuestion = $this->checkMatrixType($resultQuestion);
+
+                if ($group and $groupPoints > 0) {
+                    $group->setPoints($groupPoints);
+                    $group->setMaxPoints($maxGroupPoints);
+                }
+                //check Group
+                if ($resultQuestion->getQuestion() instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group) {
+                    $group = $resultQuestion;
+                    $groupPoints = 0;
+                    $maxGroupPoints = 0;
+                }
+            }
+        }
+        if ($pointsForResult > 0 && 1 == 2) {
+            echo "<pre>" ;
+            var_dump( $debug);
+            echo "</pre>" ;
+            die;
+        }
 		$this->setPoints($pointsForResult);
 		$this->setMaxPoints($maxPoints);			
 	}	
