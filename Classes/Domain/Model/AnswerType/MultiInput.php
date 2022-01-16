@@ -90,4 +90,3 @@ class MultiInput extends \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Sin
 	}
 
 }
-?>

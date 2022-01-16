@@ -126,6 +126,63 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      */
     protected $comparisonText;
 
+
+    /**
+     * Width
+     *
+     * @var integer
+     */
+    protected $width;
+
+    /**
+     * Height
+     *
+     * @var integer
+     */
+    protected $height;
+
+
+
+
+
+    /**
+     * Returns the width
+     *
+     * @return integer $width
+     */
+    public function getWidth() {
+        return $this->width;
+    }
+
+    /**
+     * Sets the width
+     *
+     * @param integer $width
+     * @return void
+     */
+    public function setWidth($width) {
+        $this->width = $width;
+    }
+
+    /**
+     * Returns the height
+     *
+     * @return integer $height
+     */
+    public function getHeight() {
+        return $this->height;
+    }
+
+    /**
+     * Sets the height
+     *
+     * @param integer $height
+     * @return void
+     */
+    public function setHeight($height) {
+        $this->height = $height;
+    }
+
 	/**
 	 * Returns the type
 	 *
