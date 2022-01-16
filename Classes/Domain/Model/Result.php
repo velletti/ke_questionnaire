@@ -651,7 +651,7 @@ class Result extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
                             $debug[] = "reduced  to : " . $pointsForQuestion;
                         }
                     }
-                    if ($pointsForQuestion < 0) {
+                    if ($pointsForQuestion < 0 && $reducePointsforWrongAnswers ) {
                         $pointsForQuestion = 0;
                     }
                     $debug[] = "Points for this question  : " . $pointsForQuestion;
