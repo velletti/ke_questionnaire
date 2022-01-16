@@ -95,6 +95,12 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      */
     protected $randomAnswers = FALSE;
 
+    /**
+     * Column Count
+     *
+     * @var integer
+     */
+    protected $columnCount;
 
 	/**
 	 * Image
@@ -367,6 +373,32 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setHelpText($helpText) {
 		$this->helpText = $helpText;
 	}
+
+    /**
+     * @return int
+     */
+    public function getColumnCount(): int
+    {
+        return $this->columnCount;
+    }
+
+    /**
+     * @param int $columnCount
+     */
+    public function setColumnCount(int $columnCount): void
+    {
+        $this->columnCount = $columnCount;
+    }
+
+    /**
+     * Returns the columnPercentage
+     *
+     * @return integer $columnPercent
+     */
+    public function getColumnPercent() {
+        return round(100 / $this->columnCount ) ;
+    }
+
 
 	/**
 	 * Returns the image
