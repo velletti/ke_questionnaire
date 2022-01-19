@@ -308,12 +308,14 @@ class Questionnaire extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     /**
 	 * Returns the questions
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $questions
+	 * @return object $questions
 	 */
 	public function getSelectQuestions() {
 		$qStorage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
-		foreach ($this->getQuestions() as $question){
-			if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question) {
+		/** @var Question $question */
+        foreach ($this->getQuestions() as $question){
+			if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question
+            || $question->getShortType() == 'Question' ) {
 				$qStorage->attach($question);
 			}
 		}
@@ -324,12 +326,16 @@ class Questionnaire extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the questions
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $questions
+	 * @return object $questions
 	 */
 	public function getNavigationQuestions() {
 		$qStorage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($this->questions as $question){
-			if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question OR $question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group) {
+			if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question
+                || $question->getShortType() == 'Question'
+                || $question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group
+                || $question->getShortType() == 'Group'
+            ) {
 				$qStorage->attach($question);
 			}
 		}
