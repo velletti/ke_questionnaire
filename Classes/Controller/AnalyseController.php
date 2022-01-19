@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -74,13 +76,20 @@ class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendC
     public function questionsAction($storage = false, $plugin = false) {
         if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
-		
+
+		/** @var Questionnaire $questionnaire */
         $questionnaire = $this->questionnaireRepository->findByUid($this->plugin['uid']);
         $questions = $this->questionRepository->findAllForPidtoExport($questionnaire->getStoragePid());
+        $debug["plugin uid"] = $this->plugin['uid'] ;
+        $debug["pid"] = $questionnaire->getStoragePid() ;
+        $debug["question count"] = $questions->count() ;
+
 		// if a question is selected, create the analysis for this question
 		// else select the first keq-element of type question for analysis
         if ($this->request->hasArgument('question')){
+
             $q_id = $this->request->getArgument('question');
+            $debug["question id"] =  $q_id ;
             $question = $this->questionRepository->findByUidFree($q_id);
         } else {
 			foreach ($questions as $q){
@@ -98,6 +107,7 @@ class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendC
         $this->view->assign('question',$question);
         $this->view->assign('plugin',$questionnaire);
         $this->view->assign('counter',$this->countParticipations());
+        $this->view->assign('debug',$debug);
     }
     
     /**
