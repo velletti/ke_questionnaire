@@ -698,7 +698,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 			if ($this->settings['accessType'] == 'free'){				
 				$counted = $this->resultRepository->findAll()->count();
 			} elseif ($this->settings['accessType'] == 'feUser') {
-				$counted = $this->resultRepository->findByFeUser($this->user)->count();
+				$counted = $this->resultRepository->findFinishedResultsByUser($this->user)->count();
 			} elseif ($this->settings['accessType'] == 'authCode') {
 				$counted = $this->resultRepository->findByAuthCode($this->authCode->getUid())->count();
 			}

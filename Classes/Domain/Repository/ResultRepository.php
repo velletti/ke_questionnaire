@@ -55,6 +55,24 @@ class ResultRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			$query->greaterThan('finished', 0)
 		)->execute();
 	}
+
+    /**
+     * find all finished results
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface All finished results
+     */
+    public function findFinishedResultsByUser( $FeUser ) {
+        $query = $this->createQuery();
+
+        return $query->matching(
+            $query->logicalAnd( [
+            $query->greaterThan('finished', 0) ,
+            $query->equals('FeUser', intval($FeUser ) )
+                    ]
+            )
+        )->execute();
+    }
+
 	
 	/**
 	 * find all results for pid
