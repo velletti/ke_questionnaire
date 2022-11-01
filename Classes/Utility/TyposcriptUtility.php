@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
+
 class TyposcriptUtility{
 
 	/**
@@ -27,14 +30,14 @@ class TyposcriptUtility{
 	public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '' , $conditions = false , $getConstants = false  ) {
 
         /**
-         * @var $pageRepository \FluidTYPO3\Vhs\Service\PageService
+         * @var $rootlineService RootlineUtility
          * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
          */
-        $pageService =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('FluidTYPO3\Vhs\Service\PageService');
+        $rootlineService =  GeneralUtility::makeInstance(RootlineUtility::class , [$pageUid ]);
 
-        $rootLine = $pageService->getRootLine($pageUid);
+        $rootLine = $rootlineService->get() ;
 
-		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
+		$extendedTemplateService = GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
 
 		$extendedTemplateService->tt_track = 0;
 		// $extendedTemplateService->init();
