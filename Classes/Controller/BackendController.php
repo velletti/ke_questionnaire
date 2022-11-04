@@ -104,7 +104,9 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		if ($this->request->hasArgument('pluginUid')) $this->plugin = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $this->request->getArgument('pluginUid'));
 		//create the flexform-data for this questionnaire
 
-		if ($this->plugin['pi_flexform']) $this->pluginFF = $this->flexFormService->convertFlexFormContentToArray($this->plugin['pi_flexform']);
+		if ($this->plugin['pi_flexform']) {
+            $this->pluginFF = $this->flexFormService->convertFlexFormContentToArray($this->plugin['pi_flexform']);
+        }
 
 		//merge the settings
         // 2021 : in LTS 9 this->settings is not set ?? We need to load settings from Typoscript
@@ -117,15 +119,22 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
          }
         // merge loaded TS with $his->settings .. (or initialize $this->settings with loaded $tsSettings
 
-        if (is_array($tsSettings) AND is_array($this->settings)) $this->settings = array_merge($this->settings,$tsSettings );
-        else $this->settings = $tsSettings ;
+        if (is_array($tsSettings) AND is_array($this->settings)) {
+            $this->settings = array_merge($this->settings,$tsSettings );
+        } else {
+            $this->settings = $tsSettings ;
+        }
 
         // now merge with any settings in Flexform .. Or just load from Previous settings array
-        if (is_array($this->pluginFF['settings']) AND is_array($this->settings)) $this->pluginFF['settings'] = array_merge($this->settings,$this->pluginFF['settings']);
-		else $this->pluginFF['settings'] = $this->settings;
+        if (is_array($this->pluginFF['settings']) AND is_array($this->settings)) {
+            $this->pluginFF['settings'] = array_merge($this->settings,$this->pluginFF['settings']);
+        } else {
+            if ( is_array($this->settings)) {
+                $this->pluginFF['settings'] = $this->settings;
+            }
+        }
+        $this->plugin['ffdata'] = $this->pluginFF ;
 
-
-		$this->plugin['ffdata'] = $this->pluginFF;
 		//get the first page given in the plugin data, this is the storage pid
 		$pids = explode(',',$this->plugin['pages']);
 		$this->storagePid = $pids[0];
@@ -244,10 +253,11 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		//create the preview with the plugin or standard-texts
 		$preview = array();
 		$this->view->assign('authCode',array('authCode'=>'AUTHCODE'));
-		$preview['subject'] = ($this->plugin['ffdata']['settings']['email']['invite']['subject']?$this->plugin['ffdata']['settings']['email']['invite']['subject']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.subject', $this->extensionName));
-		$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']?$this->plugin['ffdata']['settings']['email']['invite']['text']['before']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.before', $this->extensionName)));
-		$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName)));
+		$preview['subject'] = ($this->plugin['ffdata']['settings']['email']['invite']['subject']) ? $this->plugin['ffdata']['settings']['email']['invite']['subject']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.subject', $this->extensionName) ;
+		$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']) ? $this->plugin['ffdata']['settings']['email']['invite']['text']['before']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.before', $this->extensionName));
+		$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']) ?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName));
 		$this->view->assign('text',$text);
+
 		// $preview['body'] = trim($this->view->render('CreatedMail'));
 		
 		$this->view->assign('preview', $preview);		
