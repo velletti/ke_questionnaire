@@ -386,15 +386,7 @@
 							</config>
 						</TCEforms>
 					</settings.email.invite.emails>
-					<settings.email.reminder.subject>
-						<TCEforms>
-							<label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.email.reminder.subject</label>
-							<config>
-								<type>user</type>
-								<userFunc>Kennziffer\KeQuestionnaire\Utility\PremiumInfo->showInfo</userFunc>
-							</config>
-						</TCEforms>
-					</settings.email.reminder.subject>
+
 				</el>
 			</ROOT>
 		</email>
