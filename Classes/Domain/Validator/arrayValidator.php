@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Validator;
+
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +32,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Validator;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class arrayValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator  {
+class arrayValidator extends AbstractValidator  {
 	
 	/**
 	* validate

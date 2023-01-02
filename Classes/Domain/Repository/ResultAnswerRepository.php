@@ -23,6 +23,10 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 
 /**
@@ -32,7 +36,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ResultAnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class ResultAnswerRepository extends Repository {
 	/**
 	 * get a raw result => no object, only array
 	 */
@@ -89,10 +93,10 @@ class ResultAnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 	
 	/** 
-	 * count given answers
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 */
-	public function countResultAnswersForAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer){
+  * count given answers
+  * @param Answer $answer
+  */
+ public function countResultAnswersForAnswer(Answer $answer){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
@@ -102,27 +106,24 @@ class ResultAnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 	
 	/** 
-	 * count given answers
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 */
-	public function countResultAnswersForAnswerAndValue(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer){
+  * count given answers
+  * @param Answer $answer
+  */
+ public function countResultAnswersForAnswerAndValue(Answer $answer){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd(
-				$query->equals('answer', $answer),
-				$query->equals('value', $answer->getUid())
-		));
+		$query->matching($query->logicalAnd([$query->equals('answer', $answer), $query->equals('value', $answer->getUid())]));
 		
 		return $query->count();
 	}
 	
 	/** 
-	 * getspecific Result Answer
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 */
-	public function getResultAnswersForQuestionAndResult(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question, \Kennziffer\KeQuestionnaire\Domain\Model\Result $result){
+  * getspecific Result Answer
+  * @param Question $question
+  * @param Result $result
+  */
+ public function getResultAnswersForQuestionAndResult(Question $question, Result $result){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
@@ -132,71 +133,71 @@ class ResultAnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 	
 	/**
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $row
-	 * @param string $value
-	 * @return integer
-	 */
-	public function countResultAnswersForRowAndValue(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $row, $value){
+  *
+  * @param Answer $row
+  * @param string $value
+  * @return integer
+  */
+ public function countResultAnswersForRowAndValue(Answer $row, $value){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd($query->equals('answer', $row),$query->equals('value',$value)));
+		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('value',$value)]));
 		
 		return $query->count();
 	}
 	
 	/**
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $row
-	 * @param string $value
-	 * @return integer
-	 */
-	public function countResultAnswersForRowAndCol(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $row, $value){
+  *
+  * @param Answer $row
+  * @param string $value
+  * @return integer
+  */
+ public function countResultAnswersForRowAndCol(Answer $row, $value){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd($query->equals('answer', $row),$query->equals('col',$value)));
+		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('col',$value)]));
 		
 		return $query->count();
 	}
 	
 	/**
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $row
-	 * @param string $value
-	 * @return integer
-	 */
-	public function getResultAnswersForRowAndCol(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $row, $value){
+  *
+  * @param Answer $row
+  * @param string $value
+  * @return integer
+  */
+ public function getResultAnswersForRowAndCol(Answer $row, $value){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd($query->equals('answer', $row),$query->equals('col',$value)));
+		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('col',$value)]));
 		
 		return $query->execute();
 	}
 	
 	/**
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $row
-	 * @param string $value
-	 * @return integer
-	 */
-	public function getResultAnswersForRowAndColRaw(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $row, $value){
+  *
+  * @param Answer $row
+  * @param string $value
+  * @return integer
+  */
+ public function getResultAnswersForRowAndColRaw(Answer $row, $value){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 
-		$query->matching($query->logicalAnd($query->equals('answer', $row),$query->equals('col',$value)));
+		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('col',$value)]));
 		
 		return $query->execute(true);
 	}
 
 	/**
-	 * get related result answers to answer
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-	 */
-	public function getResultAnswersForAnswer(Answer $answer){
+  * get related result answers to answer
+  * @param Answer $answer
+  * @return array|QueryResultInterface
+  */
+ public function getResultAnswersForAnswer(Answer $answer){
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 

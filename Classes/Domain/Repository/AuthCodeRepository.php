@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
+
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +32,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class AuthCodeRepository extends Repository {
 
 	/**
 	 * find authcodes for a pid
@@ -58,7 +59,7 @@ class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$pid_cond = $query->equals('pid', $pid);
 		$code_cond = $query->equals('auth_code',$code);
-		$query->matching($query->logicalAnd($pid_cond,$code_cond));
+		$query->matching($query->logicalAnd([$pid_cond, $code_cond]));
 		return $query->execute();
 	}
 	

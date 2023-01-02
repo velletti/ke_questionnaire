@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
+
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +32,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class QuestionnaireRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class QuestionnaireRepository extends Repository {
        
        /**
         * find all ke_questionnaires
@@ -42,10 +43,7 @@ class QuestionnaireRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
            $query = $this->createQuery();
            $query->getQuerySettings()->setRespectStoragePage(FALSE);
            
-           $constraint = $query->logicalAnd(
-                        $query->equals('ctype','list'),
-                        $query->equals('list_type','kequestionnaire_questionnaire')
-                   );
+           $constraint = $query->logicalAnd([$query->equals('ctype','list'), $query->equals('list_type','kequestionnaire_questionnaire')]);
            $query->matching($constraint);
            $query->setOrderings([ "header" => "ASC" ]) ;
 
@@ -62,16 +60,7 @@ class QuestionnaireRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
            $query = $this->createQuery();
            $query->getQuerySettings()->setRespectStoragePage(FALSE);
            
-           $constraint = $query->logicalOr(
-				   $query->equals('pages',$storagePid),
-				   $query->logicalOr(
-						   $query->like('pages', $storagePid.',%'),
-						   $query->logicalOr(
-								   $query->like('pages', '%,'.$storagePid),
-								   $query->like('pages', '%,'.$storagePid.',%')
-								   )
-						   )
-				   );
+           $constraint = $query->logicalOr([$query->equals('pages',$storagePid), $query->logicalOr([$query->like('pages', $storagePid.',%'), $query->logicalOr([$query->like('pages', '%,'.$storagePid), $query->like('pages', '%,'.$storagePid.',%')])])]);
 				   
            $query->matching($constraint);
            

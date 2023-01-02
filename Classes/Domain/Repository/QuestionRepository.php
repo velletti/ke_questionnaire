@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
+
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +27,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,22 +34,22 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class QuestionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class QuestionRepository extends Repository {
 
 	/**
 	 * @var array
 	 */
 	protected $defaultOrderings = array(
-		'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+		'sorting' => QueryInterface::ORDER_ASCENDING
 	);
 	
 	/**
-	 * find all questions for pid
-	 * 
-	 * @param integer $pid
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array Query  Result
-	 */
-	public function findAllForPid($pid) {
+  * find all questions for pid
+  *
+  * @param integer $pid
+  * @return QueryResultInterface|array Query  Result
+  */
+ public function findAllForPid($pid) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->matching($query->equals('pid', $pid));
@@ -57,7 +60,7 @@ class QuestionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
      * find all questions for pid
      *
      * @param integer $pid
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array Query  Result
+     * @return QueryResultInterface|array Query  Result
      */
     public function findAllForPidtoExport($pid) {
         $query = $this->createQuery();

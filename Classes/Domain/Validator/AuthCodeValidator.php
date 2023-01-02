@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Validator;
+
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,13 +33,13 @@ namespace Kennziffer\KeQuestionnaire\Domain\Validator;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AuthCodeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator  {
+class AuthCodeValidator extends AbstractValidator  {
 	
 	/**
 	* validate
 	*/
 	public function isValid($result) {
-		if (!$result instanceof \Kennziffer\KeQuestionnaire\Domain\Model\AuthCode) {
+		if (!$result instanceof AuthCode) {
 			$this->addError('The given Object is not a KeQ-AuthCode.', 1262341470);
 			return FALSE;
 		}

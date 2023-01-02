@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /***************************************************************
@@ -33,22 +37,22 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class AnswerRepository extends Repository {
 	
 	/**
 	 * @var array
 	 */
 	protected $defaultOrderings = array(
-		'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+		'sorting' => QueryInterface::ORDER_ASCENDING
 	);
 	
 	/**
-	 * find all answers for question
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @return QueryResultInterface Result
-	 */
-	public function findByQuestion(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question) {
+  * find all answers for question
+  *
+  * @param Question $question
+  * @return QueryResultInterface Result
+  */
+ public function findByQuestion(Question $question) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectSysLanguage(TRUE);
 		if ($question->getLocalizedUid()){
@@ -62,12 +66,12 @@ class AnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 	
 	/**
-	 * find all results for pid
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @return QueryResultInterface Result
-	 */
-	public function findByQuestionWithoutPid(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question) {
+  * find all results for pid
+  *
+  * @param Question $question
+  * @return QueryResultInterface Result
+  */
+ public function findByQuestionWithoutPid(Question $question) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
@@ -76,12 +80,12 @@ class AnswerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 	
 	/**
-	 * find all results for pid
-	 * 
-	 * @param integer $pid
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\Answer Result
-	 */
-	public function findByUidFree($uid) {
+  * find all results for pid
+  *
+  * @param integer $pid
+  * @return Answer Result
+  */
+ public function findByUidFree($uid) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->matching($query->equals('uid', $uid));

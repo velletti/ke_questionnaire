@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Validator\QuestionType;
+
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Validator\QuestionType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,13 +33,13 @@ namespace Kennziffer\KeQuestionnaire\Domain\Validator\QuestionType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GroupValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator  {
+class GroupValidator extends AbstractValidator  {
 	
 	/**
 	* validate
 	*/
 	public function isValid($result) {
-		if (!$result instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group) {
+		if (!$result instanceof Group) {
 			$this->addError('The given Object is not a KeQ-QuestionType-Group.', 1262341470);
 			return FALSE;
 		}
