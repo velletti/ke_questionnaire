@@ -3,19 +3,19 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Kennziffer.'.'ke_questionnaire',
+    'KeQuestionnaire',
     'Questionnaire',
     'KeQ Inserts a questionnaire'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Kennziffer.'.'ke_questionnaire',
+    'KeQuestionnaire',
     'QList',
     'KeQ List of questionnaires'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Kennziffer.'.'ke_questionnaire',
+    'KeQuestionnaire',
     'View',
     'KeQ FeView of Participations'
 );

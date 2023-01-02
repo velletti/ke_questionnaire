@@ -11,7 +11,6 @@ return array(
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'dividers2tabs' => TRUE,
         'sortby' => 'sorting',
         'type' => 'type',
         'thumbnail' => 'image',
@@ -29,11 +28,8 @@ return array(
         'searchFields' => 'title,show_title,text,help_text,image,image_position,is_mandatory,must_be_correct,answers,',
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/question.svg'
     ),
-    'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, show_title, text, help_text, image, image_position, is_mandatory, must_be_correct, answers, dependancies, to_page, direct_jump, javascript, only_js',
-    ),
     'types' => array(
-        'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, type, title, show_title, text;;4;richtext[], image;;3, is_mandatory;;2,template,--div--;LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.answers,answers,random_answers,column_count,max_answers,min_answers,--div--;LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.dependancies,dependancies,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+        'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question' => array('showitem' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,type,title,show_title,text,--palette--;;4,image,--palette--;;3,is_mandatory,--palette--;;2,template,--div--;LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.answers,answers,random_answers,column_count,max_answers,min_answers,--div--;LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_question.dependancies,dependancies,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime'),
         'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, type, title'),
         'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Html' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, type, title, text'),
         'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Text' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, type, title, text,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
@@ -64,7 +60,6 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -102,13 +97,13 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ) ,
+                ),
+                'renderType' => 'inputDateTime' ,
             ),
         ),
         'endtime' => array(
@@ -117,13 +112,13 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ) ,
+                ),
+                'renderType' => 'inputDateTime' ,
             ),
         ),
         'type' => array(
@@ -223,7 +218,8 @@ return array(
                     'appearance' => array(
                         'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
                     ),
-                    'foreign_types' => array(
+                    'maxitems' => 1,
+                    'overrideChildTca' => ['types' => array(
                         '0' => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
@@ -241,8 +237,7 @@ return array(
                         ),
 
 
-                    ),
-                    'maxitems' => 1
+                    )]
                 ),
                 "jpg,jpeg,gif,png"
             ),

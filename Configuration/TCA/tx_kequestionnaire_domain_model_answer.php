@@ -12,7 +12,6 @@ return array(
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'dividers2tabs' => TRUE,
         'sortby' => 'sorting',
         'type' => 'type',
         'thumbnail' => 'image',
@@ -29,9 +28,6 @@ return array(
         ),
         'searchFields' => 'title,value,text,is_correct_answer,',
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/answer.svg'
-    ),
-    'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, text, points, is_correct_answer',
     ),
     'types' => array(
         'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, type, title, text, points, is_correct_answer, show_textfield,template,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
@@ -76,7 +72,6 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -114,13 +109,13 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ) ,
+                ),
+                'renderType' => 'inputDateTime' ,
             ),
         ),
         'endtime' => array(
@@ -129,10 +124,10 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
+                'renderType' => 'inputDateTime',
             ),
         ),
         'type' => array(
@@ -410,19 +405,7 @@ return array(
                 'cols' => 40,
                 'rows' => 3,
                 'eval' => 'trim',
-                'wizards' => array(
-                    '_PADDING' => 1,
-                    '_VERTICAL' => 1,
-                    'edit' => array(
-                        'type' => 'popup',
-                        'title' => 'Create Image Area Coordinates',
-                        'module' => array(
-                            'name' => 'wizard_imageAreaSelect',
-                        ),
-                        'icon' => 'EXT:ke_questionnaire/Resources/Public/Icons/imageAreaSelectWizard.png',
-                        'JSopenParams' => 'height=800,width=900,status=0,menubar=0,scrollbars=1',
-                    ),
-                ),
+                'fieldControl' => ['editPopup' => ['disabled' => false, 'options' => ['title' => 'Create Image Area Coordinates']]],
             ),
         ),
         'area_index' => array(
@@ -615,12 +598,7 @@ return array(
         'template' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.template',
-            'config' => array(
-                'type' => 'group',
-                'internal_type' => 'file',
-                'size' => 1,
-                'maxitems' => 1
-            ),
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('template', ['maxitems' => 1]),
         ),
         'add_clones' => array(
             'exclude' => 0,

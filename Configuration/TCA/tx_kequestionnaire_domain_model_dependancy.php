@@ -11,7 +11,6 @@ return array(
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'fe_cruser_id' => 'fe_cruser_id',
-        'dividers2tabs' => TRUE,
         'versioningWS' => TRUE,
         'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
@@ -25,10 +24,6 @@ return array(
         ),
         'searchFields' => 'answer,',
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/dependancy.svg'
-    ),
-
-    'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, answer',
     ),
     'types' => array(
         '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, relation, answer,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
@@ -53,7 +48,6 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -91,13 +85,13 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ) ,
+                ),
+                'renderType' => 'inputDateTime' ,
             ),
         ),
         'endtime' => array(
@@ -106,13 +100,13 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ) ,
+                ),
+                'renderType' => 'inputDateTime' ,
             ),
         ),
         'answer' => array(
