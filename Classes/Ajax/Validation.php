@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Ajax;
+
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,22 +32,22 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Validation extends \Kennziffer\KeQuestionnaire\Ajax\AbstractAjax {
+class Validation extends AbstractAjax {
 
 	/**
-	 * questionRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository
-	 */
-	protected $questionRepository;
+  * questionRepository
+  *
+  * @var QuestionRepository
+  */
+ protected $questionRepository;
 
 	/**
-	 * injectQuestionRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository
-	 * @return void
-	 */
-	public function injectQuestionRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository) {
+  * injectQuestionRepository
+  *
+  * @param QuestionRepository $questionRepository
+  * @return void
+  */
+ public function injectQuestionRepository(QuestionRepository $questionRepository) {
 		$this->questionRepository = $questionRepository;
 	}
 

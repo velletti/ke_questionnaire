@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Ajax;
+
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This class exists in the TER version to enable the signal/slot functionality needed for the autoSave-Function in the premium Version
  *
@@ -31,20 +32,20 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AutoSave extends \Kennziffer\KeQuestionnaire\Ajax\AbstractAjax {
+class AutoSave extends AbstractAjax {
 	
     /**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
+  * @var Dispatcher
+  */
+ protected $signalSlotDispatcher;
     
     /**
-	 * inject signal slots
-	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 * @return void
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+  * inject signal slots
+  *
+  * @param Dispatcher $signalSlotDispatcher
+  * @return void
+  */
+ public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
 			$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
     

@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Ajax;
+use Kennziffer\KeQuestionnaire\Utility\Localization;
+use TYPO3\CMS\Core\Database\Connection;
 use Egulias\EmailValidator\Exception\InvalidEmail;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,23 +37,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AnswerValidation extends \Kennziffer\KeQuestionnaire\Ajax\AbstractAjax {
+class AnswerValidation extends AbstractAjax {
 
 	/**
-	 * lokalization
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Utility\Localization
-	 */
-	protected $localization;	
+  * lokalization
+  *
+  * @var Localization
+  */
+ protected $localization;	
 	
 
 	/**
-	 * injectAnswerRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\Localization $localization
-	 * @return void
-	 */
-	public function injectLocalization(\Kennziffer\KeQuestionnaire\Utility\Localization $localization) {
+  * injectAnswerRepository
+  *
+  * @param Localization $localization
+  * @return void
+  */
+ public function injectLocalization(Localization $localization) {
 		$this->localization = $localization;
 	}
 		
@@ -75,7 +77,7 @@ class AnswerValidation extends \Kennziffer\KeQuestionnaire\Ajax\AbstractAjax {
         $expr = $queryBuilder->expr();
         $queryBuilder->where( $expr->eq('uid',
             $queryBuilder->createNamedParameter($arguments['answerUid'],
-                \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) ) ;
+                Connection::PARAM_INT)) ) ;
         $response = $queryBuilder->execute()->fetchAssociative();
 
 
