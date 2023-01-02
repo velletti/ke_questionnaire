@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +32,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Slider extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
+class Slider extends Answer {
 	
 	/**
 	 * pdfType

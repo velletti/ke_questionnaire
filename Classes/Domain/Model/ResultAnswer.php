@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +33,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ResultAnswer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class ResultAnswer extends AbstractEntity {
 
 	/**
 	 * FeCruserId
@@ -41,18 +43,18 @@ class ResultAnswer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $feCruserId;
 
 	/**
-	 * Answer
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\Answer
-	 */
-	protected $answer;
+  * Answer
+  *
+  * @var Answer
+  */
+ protected $answer;
 
 	/**
-	 * Resultquestion
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion
-	 */
-	protected $resultquestion;
+  * Resultquestion
+  *
+  * @var ResultQuestion
+  */
+ protected $resultquestion;
 
 	/**
 	 * Value
@@ -138,21 +140,21 @@ class ResultAnswer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Returns the answer
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 */
-	public function getAnswer() {
+  * Returns the answer
+  *
+  * @return Answer $answer
+  */
+ public function getAnswer() {
 		return $this->answer;
 	}
 
 	/**
-	 * Sets the answer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 * @return void
-	 */
-	public function setAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer) {
+  * Sets the answer
+  *
+  * @param Answer $answer
+  * @return void
+  */
+ public function setAnswer(Answer $answer) {
 		$this->answer = $answer;
 
 		// radio buttons need some special part here. This is a templating problem.
@@ -165,21 +167,21 @@ class ResultAnswer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Returns the resultquestion
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultquestion
-	 */
-	public function getResultquestion() {
+  * Returns the resultquestion
+  *
+  * @return ResultQuestion $resultquestion
+  */
+ public function getResultquestion() {
 		return $this->resultquestion;
 	}
 
 	/**
-	 * Sets the resultquestion
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultquestion
-	 * @return void
-	 */
-	public function setResultquestion(\Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultquestion) {
+  * Sets the resultquestion
+  *
+  * @param ResultQuestion $resultquestion
+  * @return void
+  */
+ public function setResultquestion(ResultQuestion $resultquestion) {
 		$this->resultquestion = $resultquestion;
 	}
 
@@ -239,8 +241,8 @@ class ResultAnswer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 				array_unique($correctAnswersUids);
 				sort($correctAnswersUids);
 
-				/** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer> $resultAnswers */
-				$resultAnswers = $this->getResultquestion()->getAnswers();
+				/** @var ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer> $resultAnswers */
+    $resultAnswers = $this->getResultquestion()->getAnswers();
 				$resultAnswerUids = array();
 				foreach($resultAnswers as $resultAnswer){
 					/** @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */

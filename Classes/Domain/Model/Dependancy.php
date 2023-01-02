@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,28 +33,28 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Dependancy extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Dependancy extends AbstractEntity {
 
 	/**
-	 * answer
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\Answer
-	 */
-	protected $answer;
+  * answer
+  *
+  * @var Answer
+  */
+ protected $answer;
     
     /**
-	 * question
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\Question
-	 */
-	protected $question;
+  * question
+  *
+  * @var Question
+  */
+ protected $question;
 	
 	/**
-	 * dquestion
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\Question
-	 */
-	protected $dquestion;
+  * dquestion
+  *
+  * @var Question
+  */
+ protected $dquestion;
     
     /**
 	 * relation
@@ -62,32 +64,32 @@ class Dependancy extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $relation;
     
     /**
-	 * Returns the answer
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 */
-	public function getAnswer() {
+  * Returns the answer
+  *
+  * @return Answer $answer
+  */
+ public function getAnswer() {
 		return $this->answer;
 	}
 
 	/**
-	 * Sets the answer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 * @return void
-	 */
-	public function setAnswer($answer) {
+  * Sets the answer
+  *
+  * @param Answer $answer
+  * @return void
+  */
+ public function setAnswer($answer) {
 		$this->answer = $answer;
 	}
 	
 	/**
-	 * Returns the question
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 */
-	public function getQuestion() {
+  * Returns the question
+  *
+  * @return Question $question
+  */
+ public function getQuestion() {
         if (!$this->question){
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 			$q_rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
             $this->question = $q_rep->findByUid($this->answer->getQuestion());
         }
@@ -95,31 +97,31 @@ class Dependancy extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Sets the question
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @return void
-	 */
-	public function setQuestion($question) {
+  * Sets the question
+  *
+  * @param Question $question
+  * @return void
+  */
+ public function setQuestion($question) {
 		$this->question = $question;
 	}
     
     /**
-	 * Returns the dQuestion
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\Question $dQuestion
-	 */
-	public function getDQuestion() {
+  * Returns the dQuestion
+  *
+  * @return Question $dQuestion
+  */
+ public function getDQuestion() {
 		return $this->dQuestion;
 	}
 
 	/**
-	 * Sets the dQuestion
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $dQuestion
-	 * @return void
-	 */
-	public function setDQuestion($dQuestion) {
+  * Sets the dQuestion
+  *
+  * @param Question $dQuestion
+  * @return void
+  */
+ public function setDQuestion($dQuestion) {
 		$this->dQuestion = $dQuestion;
 	}
     

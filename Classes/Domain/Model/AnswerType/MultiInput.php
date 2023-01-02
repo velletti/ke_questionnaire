@@ -31,7 +31,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class MultiInput extends \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput {
+class MultiInput extends SingleInput {
 
 	/**
 	 * Width

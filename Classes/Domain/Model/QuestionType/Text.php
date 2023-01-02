@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,6 +32,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Text extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
+class Text extends Question {
 }
 ?>

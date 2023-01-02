@@ -1,5 +1,11 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +29,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,23 +36,23 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ClozeText extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
+class ClozeText extends Answer {
 	
 	/**
-	 * Terms
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 */
-	protected $terms;
+  * Terms
+  *
+  * @var ObjectStorage<Answer>
+  * @Lazy
+  */
+ protected $terms;
 	
 	/**
-	 * WordPositions
-	 *
-	 * @var array
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 */
-	protected $wordPositions;
+  * WordPositions
+  *
+  * @var array
+  * @Lazy
+  */
+ protected $wordPositions;
 	
 	/**
 	 * __construct
@@ -58,16 +63,16 @@ class ClozeText extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	}
 
 	/**
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question
-	 * @param boolean $useRepository
-	 * @return array Array containing the word positions
-	 */
-	public function getTerms(\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question, $useRepository = false) {
-		$this->terms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+  *
+  * @param Question $question
+  * @param boolean $useRepository
+  * @return array Array containing the word positions
+  */
+ public function getTerms(Question $question, $useRepository = false) {
+		$this->terms = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		if ($useRepository){
 			//Aus dem Repository holen, nicht aus der Frage, da sonst zuordnungen verschwinden
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 			$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 			$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 			$querySettings->setRespectStoragePage(FALSE);
@@ -78,7 +83,7 @@ class ClozeText extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 			$answers = $question->getAnswers();
 		}
 		foreach ($answers as $answer) {
-			if ($answer instanceof \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTerm){
+			if ($answer instanceof ClozeTerm){
 				$this->terms->attach($answer);
 			}
 		}
@@ -87,11 +92,11 @@ class ClozeText extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	}
 	
 	/**
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question
-	 * @return array Array containing the word positions
-	 */
-	public function getWordPositions(\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question) {
+  *
+  * @param Question $question
+  * @return array Array containing the word positions
+  */
+ public function getWordPositions(Question $question) {
 		/* @var $answer \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTerm */
 		foreach ($this->getTerms($question, true) as $answer) {
 			$pos = $answer->getWordPosition($this->getText());
@@ -165,7 +170,7 @@ class ClozeText extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	 * @return string
 	 */
 	public function getCsvLine(array $results, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $options = array()) {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->setRespectStoragePage(FALSE);

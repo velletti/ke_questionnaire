@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +32,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class SemanticDifferential extends \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Slider {
+class SemanticDifferential extends Slider {
 
     /**
 	 * pdfType
@@ -206,12 +207,12 @@ class SemanticDifferential extends \Kennziffer\KeQuestionnaire\Domain\Model\Answ
 	}
 	
 	/**
-	 * Returns the points
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $resultAnswer
-	 * @return string $points
-	 */
-	public function getPoints(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $resultAnswer = NULL) {
+  * Returns the points
+  *
+  * @param ResultAnswer $resultAnswer
+  * @return string $points
+  */
+ public function getPoints(ResultAnswer $resultAnswer = NULL) {
 		$points = 0;
 		if ($this->getPointsIncrease() > 0){
 			$steps = $this->getSteps();

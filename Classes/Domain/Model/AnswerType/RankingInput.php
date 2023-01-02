@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +27,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +34,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class RankingInput extends \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSequence{
+class RankingInput extends DDAreaSequence{
     /**
 	 * pdfType
 	 *
@@ -40,14 +43,14 @@ class RankingInput extends \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\D
 	protected $pdfType = 'normal';
 	
 	/**
-	 * Get the Ranking-Order as string
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * 
-	 * @return string line for Analysis
-	 */
-	public function getRankingLine (\Kennziffer\KeQuestionnaire\Domain\Model\Result $result, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question){		
+  * Get the Ranking-Order as string
+  *
+  * @param Result $result
+  * @param Question $question
+  *
+  * @return string line for Analysis
+  */
+ public function getRankingLine (Result $result, Question $question){		
 		$line = array();
 		
 		$terms = $this->getTerms($question, $result);
@@ -58,19 +61,19 @@ class RankingInput extends \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\D
 	}
 	
 	/**
-	 * Gets the Images
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
-     * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @return array
-	 */
-	public function getTerms($question, $result){
+  * Gets the Images
+  *
+  * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
+  * @param Result $result
+  * @return array
+  */
+ public function getTerms($question, $result){
 		$terms = array();
 		
 		// workaround for pointer in question, so all following answer-objects are rendered.
 		$addIt = false;
         $type = '';
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$repRQ = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		$repRQA = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');

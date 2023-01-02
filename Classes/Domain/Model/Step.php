@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +32,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Step extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Step extends AbstractEntity {
 
 	/**
 	 * Type

@@ -1,5 +1,12 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +30,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +37,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Question extends AbstractEntity {
 
 	/**
 	 * Type
@@ -55,11 +61,11 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $page;
 	
 	/**
-	 * Group
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group
-	 */
-	protected $group;
+  * Group
+  *
+  * @var Group
+  */
+ protected $group;
 
 	/**
 	 * Title
@@ -103,11 +109,11 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     protected $columnCount;
 
 	/**
-	 * Image
-	 *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
-	 */
-	protected $image = null;
+  * Image
+  *
+  * @var FileReference
+  */
+ protected $image = null;
 
 
 	/**
@@ -132,22 +138,22 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $mustBeCorrect = FALSE;
 
 	/**
-	 * Answers
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
-	 */
-	protected $answers;
+  * Answers
+  *
+  * @var ObjectStorage<Answer>
+  * @Lazy
+  * @Cascade("remove")
+  */
+ protected $answers;
     
     /**
-	 * Dependancies
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Dependancy>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
-	 */
-	protected $dependancies;
+  * Dependancies
+  *
+  * @var ObjectStorage<Dependancy>
+  * @Lazy
+  * @Cascade("remove")
+  */
+ protected $dependancies;
 
     /**
     * Min answers
@@ -197,10 +203,10 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->answers = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->dependancies = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->answers = new ObjectStorage();
+		$this->dependancies = new ObjectStorage();
 
-        $this->image = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->image = new ObjectStorage();
 	}
 	
 	/**
@@ -280,21 +286,21 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Returns the group
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group $group
-	 */
-	public function getGroup() {
+  * Returns the group
+  *
+  * @return Group $group
+  */
+ public function getGroup() {
 		return $this->group;
 	}
 
 	/**
-	 * Sets the group
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group $group
-	 * @return void
-	 */
-	public function setGroup($group) {
+  * Sets the group
+  *
+  * @param Group $group
+  * @return void
+  */
+ public function setGroup($group) {
 		$this->group = $group;
 	}
 
@@ -401,21 +407,21 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 
 	/**
-	 * Returns the image
-	 *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $image
-	 */
-	public function getImage() {
+  * Returns the image
+  *
+  * @return FileReference $image
+  */
+ public function getImage() {
 		return $this->image;
 	}
 
 	/**
-	 * Sets the image
-	 *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference  $image
-	 * @return void
-	 */
-	public function setImage(\TYPO3\CMS\Extbase\Domain\Model\FileReference $image) {
+  * Sets the image
+  *
+  * @param FileReference $image
+  * @return void
+  */
+ public function setImage(FileReference $image) {
 		$this->image = $image;
 	}
 
@@ -495,31 +501,31 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Adds a Answer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 * @return void
-	 */
-	public function addAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer) {
+  * Adds a Answer
+  *
+  * @param Answer $answer
+  * @return void
+  */
+ public function addAnswer(Answer $answer) {
 		$this->answers->attach($answer);
 	}
 
 	/**
-	 * Removes a Answer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answerToRemove The Answer to be removed
-	 * @return void
-	 */
-	public function removeAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $answerToRemove) {
+  * Removes a Answer
+  *
+  * @param Answer $answerToRemove The Answer to be removed
+  * @return void
+  */
+ public function removeAnswer(Answer $answerToRemove) {
 		$this->answers->detach($answerToRemove);
 	}
 
 	/**
-	 * Returns the answers
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage|array $answers
-	 */
-	public function getAnswers() {
+  * Returns the answers
+  *
+  * @return ObjectStorage|array $answers
+  */
+ public function getAnswers() {
         if ($this->isRandomAnswers()){
             $answers = $this->answers->toArray();
             shuffle($answers);
@@ -568,51 +574,51 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     }
 
 	/**
-	 * Sets the answers
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $answers
-	 * @return void
-	 */
-	public function setAnswers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $answers) {
+  * Sets the answers
+  *
+  * @param ObjectStorage $answers
+  * @return void
+  */
+ public function setAnswers(ObjectStorage $answers) {
 		$this->answers = $answers;
 	}
     
     /**
-	 * Adds a Dependancy
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Dependancy $dependancy
-	 * @return void
-	 */
-	public function addDependancy(\Kennziffer\KeQuestionnaire\Domain\Model\Dependancy $dependancy) {
+  * Adds a Dependancy
+  *
+  * @param Dependancy $dependancy
+  * @return void
+  */
+ public function addDependancy(Dependancy $dependancy) {
 		$this->dependancies->attach($dependancy);
 	}
 
 	/**
-	 * Removes a Dependancy
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Dependancy $dependancyToRemove The Dependancy to be removed
-	 * @return void
-	 */
-	public function removeDependancy(\Kennziffer\KeQuestionnaire\Domain\Model\Dependancy $dependancyToRemove) {
+  * Removes a Dependancy
+  *
+  * @param Dependancy $dependancyToRemove The Dependancy to be removed
+  * @return void
+  */
+ public function removeDependancy(Dependancy $dependancyToRemove) {
 		$this->dependancies->detach($dependancyToRemove);
 	}
 
 	/**
-	 * Returns the dependancies
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $dependancies
-	 */
-	public function getDependancies() {
+  * Returns the dependancies
+  *
+  * @return ObjectStorage $dependancies
+  */
+ public function getDependancies() {
 		return $this->dependancies;
 	}
 
 	/**
-	 * Sets the dependancies
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $dependancies
-	 * @return void
-	 */
-	public function setDependancies(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $dependancies) {
+  * Sets the dependancies
+  *
+  * @param ObjectStorage $dependancies
+  * @return void
+  */
+ public function setDependancies(ObjectStorage $dependancies) {
 		$this->dependancies = $dependancies;
 	}
     
@@ -702,11 +708,11 @@ class Question extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @return boolean
-	 */
-	public function fullfillsDependancies(\Kennziffer\KeQuestionnaire\Domain\Model\Result $result){
+  *
+  * @param Result $result
+  * @return boolean
+  */
+ public function fullfillsDependancies(Result $result){
 		if ($this->isDependant()){
 			$full = false;
 			$fullcount = 0;

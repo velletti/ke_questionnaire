@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+use TYPO3\CMS\Core\SingletonInterface;
+use Kennziffer\KeQuestionnaire\Exception;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
+class ExtConf implements SingletonInterface {
 
 	/**
 	 * Enable FeUser Marker
@@ -112,7 +114,7 @@ class ExtConf implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		} else {
-			throw new \Kennziffer\KeQuestionnaire\Exception('saveExtConf', 1349685793);
+			throw new Exception('saveExtConf', 1349685793);
 		}
         if(ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')) {
             $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_questionnaire_premium');

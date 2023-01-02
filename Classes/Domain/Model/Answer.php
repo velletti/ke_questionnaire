@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Kennziffer\KeQuestionnaire\Validation\AbstractValidation;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +28,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * base Type for answers
  *
@@ -31,7 +35,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Answer extends AbstractEntity {
 
 	/**
 	 * Type
@@ -241,11 +245,11 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Returns the points
-     * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $resultAnswer
-	 * @return string $points
-	 */
-	public function getPoints(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $resultAnswer = NULL) {
+  * Returns the points
+  * @param ResultAnswer $resultAnswer
+  * @return string $points
+  */
+ public function getPoints(ResultAnswer $resultAnswer = NULL) {
 		return $this->points;
 	}
 
@@ -374,9 +378,9 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
         if ($value){
             $class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
             if (class_exists($class)) {
-                $objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager;
+                $objectManager = new ObjectManager;
                 $validator = $objectManager->get($class);
-                if ($validator instanceof \Kennziffer\KeQuestionnaire\Validation\AbstractValidation) {
+                if ($validator instanceof AbstractValidation) {
                     /* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
                     return $validator->isValid($value, $this);
                 } else return false;
@@ -413,12 +417,12 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Create the header of the line
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param array options
-	 * @return string
-	 */
-	public function getCsvLineHeader(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $options = array()) {
+  * Create the header of the line
+  * @param Question $question
+  * @param array options
+  * @return string
+  */
+ public function getCsvLineHeader(Question $question, $options = array()) {
 		$aL = array();
 		$addL = array();
 		$hasAddL = false;
@@ -439,16 +443,16 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Create the data of the Csv Line
-	 * @param array $results
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param array options
-	 * @return string
-	 */
-	public function getCsvLineValues(array $results, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $options = array()) {
+  * Create the data of the Csv Line
+  * @param array $results
+  * @param Question $question
+  * @param array options
+  * @return string
+  */
+ public function getCsvLineValues(array $results, Question $question, $options = array()) {
 		$line = '';
 		//for each results get the values
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$repRA = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
         $repRQ = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		foreach ($results as $result){
@@ -494,13 +498,13 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Create the whole Csv Line
-	 * @param array $results
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param array options
-	 * @return string
-	 */
-	public function getCsvLine(array $results, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $options = array()) {
+  * Create the whole Csv Line
+  * @param array $results
+  * @param Question $question
+  * @param array options
+  * @return string
+  */
+ public function getCsvLine(array $results, Question $question, $options = array()) {
 		
 		$line = $this->getCsvLineHeader($question, $options);
 		$line .= $this->getCsvLineValues($results, $question, $options);
@@ -509,12 +513,12 @@ class Answer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * return the Value shown in the Csv Export
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $rAnswer
-	 * @param array $options
-	 * @return string
-	 */
-	public function getCsvValue(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $rAnswer, $options = array()){
+  * return the Value shown in the Csv Export
+  * @param ResultAnswer $rAnswer
+  * @param array $options
+  * @return string
+  */
+ public function getCsvValue(ResultAnswer $rAnswer, $options = array()){
 		return $rAnswer->getValue();
 	}
         

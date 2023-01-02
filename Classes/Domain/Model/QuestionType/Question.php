@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
+
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +28,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -76,12 +80,12 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	protected $mustBeCorrect = FALSE;
 
 	/**
-	 * Answers
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 */
-	protected $answers;
+  * Answers
+  *
+  * @var ObjectStorage<Answer>
+  * @Lazy
+  */
+ protected $answers;
 	
 	/**
 	 * random answers
@@ -202,7 +206,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 */
 	public function getIsMandatory() {
 		// Check if one answer is a DataPrivacy. If yes, the the question is always mandatory
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestion($this);
 		foreach ($answers as $answer){
@@ -259,31 +263,31 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	}
 
 	/**
-	 * Adds a Answer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer
-	 * @return void
-	 */
-	public function addAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer) {
+  * Adds a Answer
+  *
+  * @param Answer $answer
+  * @return void
+  */
+ public function addAnswer(Answer $answer) {
 		$this->answers->attach($answer);
 	}
 
 	/**
-	 * Removes a Answer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answerToRemove The Answer to be removed
-	 * @return void
-	 */
-	public function removeAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $answerToRemove) {
+  * Removes a Answer
+  *
+  * @param Answer $answerToRemove The Answer to be removed
+  * @return void
+  */
+ public function removeAnswer(Answer $answerToRemove) {
 		$this->answers->detach($answerToRemove);
 	}
 
 	/**
-	 * Returns the answers
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer> $answers
-	 */
-	public function getAnswers() {
+  * Returns the answers
+  *
+  * @return ObjectStorage<Answer> $answers
+  */
+ public function getAnswers() {
 		if ($this->isRandomAnswers()){
 			$answers = $this->answers->toArray();
 			shuffle($answers);
@@ -294,12 +298,12 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	}
 
 	/**
-	 * Sets the answers
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer> $answers
-	 * @return void
-	 */
-	public function setAnswers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $answers) {
+  * Sets the answers
+  *
+  * @param ObjectStorage<Answer> $answers
+  * @return void
+  */
+ public function setAnswers(ObjectStorage $answers) {
 		$this->answers = $answers;
 	}
 	

@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Kennziffer\KeQuestionnaire\Validation\AbstractValidation;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +27,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +34,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class SingleInput extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
+class SingleInput extends Answer {
 
 	/**
 	 * Width
@@ -278,9 +281,9 @@ class SingleInput extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 		if ($value){
 			$class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
 			if (class_exists($class)) {
-				$objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager;
+				$objectManager = new ObjectManager;
 				$validator = $objectManager->get($class);
-				if ($validator instanceof \Kennziffer\KeQuestionnaire\Validation\AbstractValidation) {
+				if ($validator instanceof AbstractValidation) {
 					/* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
 					return $validator->isValid($value, $this);
 				} else return false;

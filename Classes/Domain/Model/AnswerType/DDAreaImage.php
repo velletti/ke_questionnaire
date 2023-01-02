@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +27,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +34,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DDAreaImage extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
+class DDAreaImage extends Answer {
 	/**
 	 * pdfType
 	 *
@@ -182,13 +185,13 @@ class DDAreaImage extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	}
 	
 	/**
-	 * check of all pics are in the correct area
-	 * 
-	 * @param array $resultAnswers
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @return boolean
-	 */
-	public function imagesCorrectPlaced($resultAnswers, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question){
+  * check of all pics are in the correct area
+  *
+  * @param array $resultAnswers
+  * @param Question $question
+  * @return boolean
+  */
+ public function imagesCorrectPlaced($resultAnswers, Question $question){
 		foreach ($resultAnswers as $answer){
 			$counter = 0;
 			$matched = 0;
@@ -198,7 +201,7 @@ class DDAreaImage extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 			}
 			if ($counter > 0 AND $counter == $matched) return true;
 		}
-		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump(array(
+		DebuggerUtility::var_dump(array(
 			$counter, $matched
 		), 'result');
 		return false;

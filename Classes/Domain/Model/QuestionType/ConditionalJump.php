@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Kennziffer\KeQuestionnaire\Domain\Model\Dependancy;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +28,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,15 +35,15 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ConditionalJump extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
+class ConditionalJump extends Question {
 
 	/**
-	 * Dependancies
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Dependancy>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 */
-	protected $dependancies;
+  * Dependancies
+  *
+  * @var ObjectStorage<Dependancy>
+  * @Lazy
+  */
+ protected $dependancies;
     
     /**
 	 * toPage

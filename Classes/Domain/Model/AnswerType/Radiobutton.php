@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +33,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Radiobutton extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
+class Radiobutton extends Answer {
 	/**
 	 * shows an Input field after the answer
 	 *
@@ -59,12 +61,12 @@ class Radiobutton extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	}
 	
 	/**
-	 * return the Value shown in the Csv Export
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $rAnswer
-	 * @param array $options
-	 * @return string
-	 */
-	public function getCsvValue(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $rAnswer, $options = array()){
+  * return the Value shown in the Csv Export
+  * @param ResultAnswer $rAnswer
+  * @param array $options
+  * @return string
+  */
+ public function getCsvValue(ResultAnswer $rAnswer, $options = array()){
 		if ($rAnswer->getValue() == $this->getUid()) {// OR $rAnswer->getCol() == $this->getUid()){
 			return $options['marker'];
 		} else {

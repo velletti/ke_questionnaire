@@ -1,5 +1,11 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +29,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,14 +36,14 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class MatrixHeader extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
+class MatrixHeader extends Answer {
 	/**
-	 * Cols
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 */
-	protected $cols;
+  * Cols
+  *
+  * @var ObjectStorage<Answer>
+  * @Lazy
+  */
+ protected $cols;
 	
 	/**
 	 * MaxAnswers
@@ -70,42 +75,42 @@ class MatrixHeader extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	}
 
 	/**
-	 * Adds a Col
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $col
-	 * @return void
-	 */
-	public function addCol(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $col) {
+  * Adds a Col
+  *
+  * @param Answer $col
+  * @return void
+  */
+ public function addCol(Answer $col) {
 		$this->cols->attach($col);
 	}
 
 	/**
-	 * Removes a Col
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Answer $colToRemove The Col to be removed
-	 * @return void
-	 */
-	public function removeCol(\Kennziffer\KeQuestionnaire\Domain\Model\Answer $colToRemove) {
+  * Removes a Col
+  *
+  * @param Answer $colToRemove The Col to be removed
+  * @return void
+  */
+ public function removeCol(Answer $colToRemove) {
 		$this->cols->detach($colToRemove);
 	}
 
 	/**
-	 * Returns the cols
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer> $cols
-	 */
-	public function getCols() {
+  * Returns the cols
+  *
+  * @return ObjectStorage<Answer> $cols
+  */
+ public function getCols() {
 		$cols = $this->cols;
 		return $cols;
 	}
 
 	/**
-	 * Sets the cols
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Answer> $cols
-	 * @return void
-	 */
-	public function setCols(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $cols) {
+  * Sets the cols
+  *
+  * @param ObjectStorage<Answer> $cols
+  * @return void
+  */
+ public function setCols(ObjectStorage $cols) {
 		$this->cols = $cols;
 	}
 	
@@ -148,13 +153,13 @@ class MatrixHeader extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	}
 	
 	/**
-	 * Create the whole Csv Line
-	 * @param array $results
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param array options
-	 * @return string
-	 */
-	public function getCsvLine(array $results, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $options = array()) {
+  * Create the whole Csv Line
+  * @param array $results
+  * @param Question $question
+  * @param array options
+  * @return string
+  */
+ public function getCsvLine(array $results, Question $question, $options = array()) {
 		if ($options['rows']) $rows = $options['rows'];
 		else $rows = $this->getRows($question);
 		$line = '';
@@ -203,12 +208,12 @@ class MatrixHeader extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 	}
 	
 	/**
-	 * Create the header of the line
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param array options
-	 * @return string
-	 */
-	public function getCsvLineHeader(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $options = array()) {
+  * Create the header of the line
+  * @param Question $question
+  * @param array options
+  * @return string
+  */
+ public function getCsvLineHeader(Question $question, $options = array()) {
 		if ($options['rows']) $rows = $options['rows'];
 		else $rows = $this->getRows($question);
 		$line = '';
@@ -245,15 +250,15 @@ class MatrixHeader extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 
 
         /**
-	 * Create the data of the Csv Line
-	 * @param array $results
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param array options
-	 * @param array oldArray
-	 * @param integer counter
-	 * @return string
-	 */
-	public function getCsvLineValues(array $results, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $options = array()) {
+  * Create the data of the Csv Line
+  * @param array $results
+  * @param Question $question
+  * @param array options
+  * @param array oldArray
+  * @param integer counter
+  * @return string
+  */
+ public function getCsvLineValues(array $results, Question $question, $options = array()) {
 		if ($options['rows']) $rows = $options['rows'];
 		else $rows = $this->getRows($question);
 		$line = '';
@@ -302,7 +307,7 @@ class MatrixHeader extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
 		// workaround for pointer in question, so all following answer-objects are rendered.
 		$addIt = false;
 		//$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestionWithoutPid($question);
 		
@@ -323,9 +328,9 @@ class MatrixHeader extends \Kennziffer\KeQuestionnaire\Domain\Model\Answer {
     
     /**
      * get clone-Row
-     * 
+     *
      * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the rows are in
-     * @return \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow $row
+     * @return MatrixRow $row
      */
     public function getCloneableRow(\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question){
         $rows = $this->getRows($question);

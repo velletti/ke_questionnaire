@@ -31,7 +31,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Checkbox extends \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton {
+class Checkbox extends Radiobutton {
 	/**
 	 * Returns the saveType
 	 *

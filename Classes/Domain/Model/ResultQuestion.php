@@ -1,7 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
-use TYPO3\CMS\Fluid\Core\Exception;
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@ use TYPO3\CMS\Fluid\Core\Exception;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class ResultQuestion extends AbstractEntity {
 
 	/**
 	 * FeCruserId
@@ -50,19 +52,19 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     protected $page;
 
 	/**
-	 * Answers
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
-	 */
-	protected $answers;
+  * Answers
+  *
+  * @var ObjectStorage<ResultAnswer>
+  * @Cascade("remove")
+  */
+ protected $answers;
 
 	/**
-	 * question
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\Question
-	 */
-	protected $question;
+  * question
+  *
+  * @var Question
+  */
+ protected $question;
 
 	/**
 	 * Points
@@ -112,7 +114,7 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->answers = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->answers = new ObjectStorage();
 	}
 
 
@@ -168,12 +170,12 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Checks the ResultAnswers if existent 
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer> $answers
-	 * @return void
-	 */
-	public function checkAnswers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $answers) {
+  * Checks the ResultAnswers if existent 
+  *
+  * @param ObjectStorage<ResultAnswer> $answers
+  * @return void
+  */
+ public function checkAnswers(ObjectStorage $answers) {
 		foreach ($this->getAnswers() as $answer){
 			$this->checkAnswer($answers, $answer);
 		}
@@ -195,13 +197,13 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Check the Answer in the saving-Process
-	 * the saveType dertermines if the answers is replaced or the value is replaced. Matrix Answers are worked differently
-	 * 
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $answers
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $resultAnswer
-	 */
-	public function checkAnswer($answers, &$resultAnswer){
+  * Check the Answer in the saving-Process
+  * the saveType dertermines if the answers is replaced or the value is replaced. Matrix Answers are worked differently
+  *
+  * @param ObjectStorage $answers
+  * @param ResultAnswer $resultAnswer
+  */
+ public function checkAnswer($answers, &$resultAnswer){
 		if ($resultAnswer->getAnswer()){
 			switch ($resultAnswer->getAnswer()->getSaveType()){
 				case 'replaceAnswer':
@@ -240,22 +242,22 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Adds a ResultAnswer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $answer
-	 * @return void
-	 */
-	public function addAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $answer) {
+  * Adds a ResultAnswer
+  *
+  * @param ResultAnswer $answer
+  * @return void
+  */
+ public function addAnswer(ResultAnswer $answer) {
 		$this->answers->attach($answer);
 	}
 
 	/**
-	 * Removes a ResultAnswer
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $answerToRemove The ResultAnswer to be removed
-	 * @return void
-	 */
-	public function removeAnswer(\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer $answerToRemove) {
+  * Removes a ResultAnswer
+  *
+  * @param ResultAnswer $answerToRemove The ResultAnswer to be removed
+  * @return void
+  */
+ public function removeAnswer(ResultAnswer $answerToRemove) {
 	    try {
             $this->answers->detach($answerToRemove);
         } catch(\Exception $e){
@@ -264,11 +266,11 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Returns the answers
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer> $answers
-	 */
-	public function getAnswers() {
+  * Returns the answers
+  *
+  * @return ObjectStorage<ResultAnswer> $answers
+  */
+ public function getAnswers() {
 		return $this->answers;
 	}
 	
@@ -286,7 +288,7 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$rAnswer->setClone(0);
 			$rAnswer->setCloneTitle('');
 		}
-		$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+		$persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 		$persistenceManager->persistAll();
 	}
 
@@ -323,31 +325,31 @@ class ResultQuestion extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Sets the answers
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer> $answers
-	 * @return void
-	 */
-	public function setAnswers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $answers) {
+  * Sets the answers
+  *
+  * @param ObjectStorage<ResultAnswer> $answers
+  * @return void
+  */
+ public function setAnswers(ObjectStorage $answers) {
 		$this->answers = $answers;
 	}
 
 	/**
-	 * Returns the question
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 */
-	public function getQuestion() {
+  * Returns the question
+  *
+  * @return Question $question
+  */
+ public function getQuestion() {
 		return $this->question;
 	}
 
 	/**
-	 * Sets the question
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @return void
-	 */
-	public function setQuestion(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question) {
+  * Sets the question
+  *
+  * @param Question $question
+  * @return void
+  */
+ public function setQuestion(Question $question) {
 		$this->question = $question;
 	}
 

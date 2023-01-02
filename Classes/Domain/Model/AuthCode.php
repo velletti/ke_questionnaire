@@ -1,5 +1,12 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
+use FriendsOfTYPO3\TtAddress\Domain\Model\Address;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +30,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +37,7 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class AuthCode extends AbstractEntity {
 
 	/**
 	 * AuthCode
@@ -48,26 +54,26 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $email;
 	
 	/**
-	 * Participations
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\Result>
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 */
-	protected $participations;
+  * Participations
+  *
+  * @var ObjectStorage<Result>
+  * @Lazy
+  */
+ protected $participations;
         
         /**
-	 * FeUser
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
-	 */
-	protected $feUser;
+  * FeUser
+  * @Lazy
+  * @var FrontendUser
+  */
+ protected $feUser;
         
         /**
-	 * TtAddress
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
-	 * @var \FriendsOfTYPO3\TtAddress\Domain\Model\Address
-	 */
-	protected $ttAddress;
+  * TtAddress
+  * @Lazy
+  * @var Address
+  */
+ protected $ttAddress;
         
         /**
 	 * lastreminder
@@ -137,7 +143,7 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function generateAuthCode($length = 10, $pid){
 		//get the existent authcodes so no duplicates are created
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$ac_rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
 		// Generate authcode
 		$loop = 1;
@@ -173,11 +179,11 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Returns the results
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $results
-	 */
-	public function getParticipations() {
+  * Returns the results
+  *
+  * @return ObjectStorage $results
+  */
+ public function getParticipations() {
 		return $this->participations;
 	}
         
@@ -186,7 +192,7 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getAndLoadParticipations() {
             if (!$this->participations ){
-                    $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+                    $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
                     $rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
                     $this->participations = $rep->findForAuthCode($this);
             }
@@ -194,40 +200,40 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
         
         /**
-	 * Setter for feUser
-	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser feUser
-	 * @return void
-	 */
-	public function setFeUser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser) {
+  * Setter for feUser
+  *
+  * @param FrontendUser $feUser feUser
+  * @return void
+  */
+ public function setFeUser(FrontendUser $feUser) {
 		$this->feUser = $feUser;
 	}
 
 	/**
-	 * Getter for feUser
-	 *
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser feUser
-	 */
-	public function getFeUser() {
+  * Getter for feUser
+  *
+  * @return FrontendUser feUser
+  */
+ public function getFeUser() {
 		return $this->feUser;
 	}
         
         /**
-	 * Setter for ttAddress
-	 *
-	 * @param \FriendsOfTYPO3\TtAddress\Domain\Model\Address $ttAddress ttAddress
-	 * @return void
-	 */
-	public function setTtAddress(\FriendsOfTYPO3\TtAddress\Domain\Model\Address $ttAddress) {
+  * Setter for ttAddress
+  *
+  * @param Address $ttAddress ttAddress
+  * @return void
+  */
+ public function setTtAddress(Address $ttAddress) {
 		$this->ttAddress = $ttAddress;
 	}
 
 	/**
-	 * Getter for ttAddress
-	 *
-	 * @return \FriendsOfTYPO3\TtAddress\Domain\Model\Address ttAddress
-	 */
-	public function getTtAddress() {
+  * Getter for ttAddress
+  *
+  * @return Address ttAddress
+  */
+ public function getTtAddress() {
 		return $this->ttAddress;
 	}
         
