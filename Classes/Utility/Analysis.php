@@ -23,6 +23,10 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
 
@@ -35,21 +39,21 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
  */
 class Analysis {	
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\jqPlot
-	 */
-	protected $jqPlot;
+  * @var jqPlot
+  */
+ protected $jqPlot;
 	
 	/**
-	 * lokalization
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Utility\Localization
-	 */
-	protected $localization;
+  * lokalization
+  *
+  * @var Localization
+  */
+ protected $localization;
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
+  * @var Dispatcher
+  */
+ protected $signalSlotDispatcher;
 	
 	/**
 	 * @var array
@@ -66,53 +70,53 @@ class Analysis {
 	}
 	
 	/**
-	 * inject jqPlot
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\JqPlot $jqPlot
-	 */
-	public function injectJqPlot(\Kennziffer\KeQuestionnaire\Utility\JqPlot $jqPlot) {
+  * inject jqPlot
+  *
+  * @param JqPlot $jqPlot
+  */
+ public function injectJqPlot(JqPlot $jqPlot) {
 		$this->jqPlot = $jqPlot;
 	}
 	
 	/**
-	 * inject Localization
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\Localization $localization
-	 * @return void
-	 */
-	public function injectLocalization(\Kennziffer\KeQuestionnaire\Utility\Localization $localization) {
+  * inject Localization
+  *
+  * @param Localization $localization
+  * @return void
+  */
+ public function injectLocalization(Localization $localization) {
 		$this->localization = $localization;
 	}
 	
 	/**
-	 * inject signal slots
-	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 * @return void
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+  * inject signal slots
+  *
+  * @param Dispatcher $signalSlotDispatcher
+  * @return void
+  */
+ public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
 			$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 		
 	
 	/**
-	 * create Participation Analysis
-	 * 
-	 * @param array $results
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire
-	 */
-	public function createParticipationAnalysis($results, \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire){
+  * create Participation Analysis
+  *
+  * @param array $results
+  * @param Questionnaire $questionnaire
+  */
+ public function createParticipationAnalysis($results, Questionnaire $questionnaire){
 		$data = $this->createParticipationData($results);
 		return $this->jqPlot->createLineChart('participation_chart_'.$questionnaire->getUid(), $data);
 	}
     
     /**
      * create Question Analysis
-     * 
-     * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
+     *
+     * @param Question $question
      * @param array $results
      */
-    public function createQuestionAnalysis(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $results) {
+    public function createQuestionAnalysis(Question $question, $results) {
 		$charts = array();
 		//create Data and Chart for all participations
         $adata = $this->createQuestionDataArray('all', $question, $results);
@@ -124,14 +128,14 @@ class Analysis {
     }
 	
 	/**
-	 * Create the Charts for the Data
-	 * 
-	 * @param string $type
-	 * @param array $data
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @return array
-	 */
-	private function createChartWithData($type, $data, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question){
+  * Create the Charts for the Data
+  *
+  * @param string $type
+  * @param array $data
+  * @param Question $question
+  * @return array
+  */
+ private function createChartWithData($type, $data, Question $question){
 		$charts = '';
 		$divs = '';
 		// the created data is the basis for the type of chart created
@@ -298,14 +302,14 @@ class Analysis {
 	
 	/**
      * create data array
-     * 
+     *
      * @param string $type
-     * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
+     * @param Question $question
      * @param array $results
      */
-    public function createQuestionDataArray($type, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $results){
+    public function createQuestionDataArray($type, Question $question, $results){
 		$answers = array();
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$resultQuestionRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		$resultAnswerRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
 		

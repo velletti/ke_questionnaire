@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -36,7 +37,7 @@ class PremiumInfo {
 	 * @return string show string
 	 */
 	public function showInfo() {
-		return '<i>'.\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('premiuminfo.standard', 'ke_questionnaire').'</i>';
+		return '<i>'.LocalizationUtility::translate('premiuminfo.standard', 'ke_questionnaire').'</i>';
 	}
 	
 	/**
@@ -44,7 +45,7 @@ class PremiumInfo {
 	 * @return string show string
 	 */
 	public function showText($content) {
-		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($content['fieldConf']['config']['text'], $content['fieldConf']['config']['extension']);
+		return LocalizationUtility::translate($content['fieldConf']['config']['text'], $content['fieldConf']['config']['extension']);
 	}
 }
 ?>

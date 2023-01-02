@@ -23,7 +23,8 @@ namespace Kennziffer\KeQuestionnaire\Reports;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Reports\StatusProviderInterface;
+use TYPO3\CMS\Reports\Status;
 use Kennziffer\KeQuestionnaire\Exception;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -36,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class FileAccessReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
+class FileAccessReport implements StatusProviderInterface {
 	/**
 	 * @var string
 	 */
@@ -94,25 +95,25 @@ class FileAccessReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.ok'),
 				'',
-				\TYPO3\CMS\Reports\Status::OK
+				Status::OK
 			),
 			'writeFail' => array(
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning.details'),
-				\TYPO3\CMS\Reports\Status::WARNING
+				Status::WARNING
 			),
 			'tmpFileReadable' => array(
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.error'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.error.explanation'),
-				\TYPO3\CMS\Reports\Status::ERROR
+				Status::ERROR
 			),
 			'unknownErrorCheckingTmpFile' => array(
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning.unknown'),
-				\TYPO3\CMS\Reports\Status::WARNING
+				Status::WARNING
 			)
 		);
 	}

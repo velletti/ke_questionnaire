@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -102,7 +103,7 @@ class Localization {
 		$key = $path . ':' . $key;
 
 		// get translation
-		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'keQuestionnaire', $arguments);
+		return LocalizationUtility::translate($key, 'keQuestionnaire', $arguments);
 	}
 }
 ?>

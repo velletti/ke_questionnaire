@@ -1,5 +1,14 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +32,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -51,10 +59,10 @@ class CsvExport {
 	protected $singleMarker;
 	
 	/**
-	 * results
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult 
-	 */
-	protected $results;
+  * results
+  * @var QueryResult 
+  */
+ protected $results;
         
         /**
 	 * resultsRaw
@@ -63,32 +71,32 @@ class CsvExport {
 	protected $resultsRaw;
 	
 	/**
-	 * questionRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository
-	 */
-	protected $questionRepository;
+  * questionRepository
+  *
+  * @var QuestionRepository
+  */
+ protected $questionRepository;
 	
 	/**
-	 * resultRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository
-	 */
-	protected $resultRepository;
+  * resultRepository
+  *
+  * @var ResultRepository
+  */
+ protected $resultRepository;
 	
 	/**
-	 * resultQuestionRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository
-	 */
-	protected $resultQuestionRepository;
+  * resultQuestionRepository
+  *
+  * @var ResultQuestionRepository
+  */
+ protected $resultQuestionRepository;
 	
 	/**
-	 * resultAnswerRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository
-	 */
-	protected $resultAnswerRepository;
+  * resultAnswerRepository
+  *
+  * @var ResultAnswerRepository
+  */
+ protected $resultAnswerRepository;
 	
 	/**
 	 * show Question Text
@@ -121,58 +129,58 @@ class CsvExport {
 	var $newline = "\n";
         
         /**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
+  * @var Dispatcher
+  */
+ protected $signalSlotDispatcher;
 	
 	
 	/**
-	 * injectQuestionRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository
-	 * @return void
-	 */
-	public function injectQuestionRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository) {
+  * injectQuestionRepository
+  *
+  * @param QuestionRepository $questionRepository
+  * @return void
+  */
+ public function injectQuestionRepository(QuestionRepository $questionRepository) {
 		$this->questionRepository = $questionRepository;
 	}
 	
 	/**
-	 * injectResultRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository
-	 * @return void
-	 */
-	public function injectResultRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository) {
+  * injectResultRepository
+  *
+  * @param ResultRepository $resultRepository
+  * @return void
+  */
+ public function injectResultRepository(ResultRepository $resultRepository) {
 		$this->resultRepository = $resultRepository;
 	}
 	
 	/**
-	 * injectResultQuestionRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository
-	 * @return void
-	 */
-	public function injectResultQuestionRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository) {
+  * injectResultQuestionRepository
+  *
+  * @param ResultQuestionRepository $resultQuestionRepository
+  * @return void
+  */
+ public function injectResultQuestionRepository(ResultQuestionRepository $resultQuestionRepository) {
 		$this->resultQuestionRepository = $resultQuestionRepository;
 	}
 	
 	/**
-	 * injectResultAnswerRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository
-	 * @return void
-	 */
-	public function injectResultAnswerRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository) {
+  * injectResultAnswerRepository
+  *
+  * @param ResultAnswerRepository $resultAnswerRepository
+  * @return void
+  */
+ public function injectResultAnswerRepository(ResultAnswerRepository $resultAnswerRepository) {
 		$this->resultAnswerRepository = $resultAnswerRepository;
 	}
         
         /**
-	 * inject signal slots
-	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 * @return void
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+  * inject signal slots
+  *
+  * @param Dispatcher $signalSlotDispatcher
+  * @return void
+  */
+ public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
 		$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 	
@@ -226,18 +234,18 @@ class CsvExport {
 	}
 	
 	/**
-	 * Getter Separator
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult 
-	 */
-	public function getResults(){
+  * Getter Separator
+  * @return QueryResult 
+  */
+ public function getResults(){
 		return $this->results;
 	}
 	
 	/**
-	 * Setter Results
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult  $results
-	 */
-	public function setResults(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult  $results){
+  * Setter Results
+  * @param QueryResult $results
+  */
+ public function setResults(QueryResult  $results){
 		$this->results = $results;
 	}
         
@@ -533,13 +541,13 @@ class CsvExport {
 	}	
 	
 	/**
-	 * create the header infos
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param array $qL
-	 * @return string
-	 */
-	protected function createQuestionPointsLine(\Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $qL){
+  * create the header infos
+  *
+  * @param Question $question
+  * @param array $qL
+  * @return string
+  */
+ protected function createQuestionPointsLine(Question $question, $qL){
 		$qL[] = 'Points';
 		if ($this->getShowQText()) $emptyFields = 1;
 		else $emptyFields = 0;
@@ -581,8 +589,8 @@ class CsvExport {
 				$questionLine = implode($this->separator,$qL).$this->newline;
 				$lines .= $questionLine;
 				
-				/** @var \Kennziffer\KeQuestionnaire\Domain\Model\Answer $answer */
-				foreach ($question->getAnswers() as $answer){
+				/** @var Answer $answer */
+    foreach ($question->getAnswers() as $answer){
 					if ($answer->exportInCsv()){
 						$options = array();
 						$options['marker'] = $this->getSingleMarker();

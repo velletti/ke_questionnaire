@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use Kennziffer\KeQuestionnaire\Domain\Model\Range;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -35,7 +40,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class RangeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RangeViewHelper extends AbstractViewHelper {
 
     /**
      * @var boolean
@@ -122,14 +127,14 @@ class RangeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelp
 	}	
 	
 	/**
-	 * get the Ranges
-	 * 
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
-	 */
-	private function collectRanges(){
+  * get the Ranges
+  *
+  * @return QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
+  */
+ private function collectRanges(){
 		$all_ranges = $this->getRanges();
 		if ( is_object($all_ranges) ||is_array($all_ranges)) {
-            /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Range $range */
+            /** @var Range $range */
             foreach ($all_ranges as $range){
                 if ($this->result->getPoints() >= $range->getPointsFrom() AND $this->result->getPoints() <= $range->getPointsUntil()){
                     $this->ranges[$range->getUid()] = $range;
@@ -145,19 +150,19 @@ class RangeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelp
 	}
 	
 	/**
-	 * get the Ranges
-	 * 
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
-	 */
-	private function getRanges(){
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+  * get the Ranges
+  *
+  * @return QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
+  */
+ private function getRanges(){
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$this->contentObj = $this->configurationManager->getContentObject();
 		$uid = $this->contentObj->data['uid'] ;
 
 		$this->questionnaire = $this->questionnaire->loadFullObject($this->contentObj->data['uid']);
-		/** @var \Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository $rep */
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\RangeRepository');
+		/** @var RangeRepository $rep */
+  $rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\RangeRepository');
 		
 		$ranges = $rep->findForPid($this->questionnaire->getStoragePid());
 		return $ranges;

@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Core\Environment;
 
 /***************************************************************
@@ -33,7 +34,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class JavaScriptFileViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class JavaScriptFileViewHelper extends AbstractViewHelper {
 
     /**
      * @var boolean

@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\ConditionalJump;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 
@@ -34,7 +35,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Result;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ConditionalJumpViewHelper  extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ConditionalJumpViewHelper  extends AbstractViewHelper {
 
 
     /**
@@ -48,9 +49,8 @@ class ConditionalJumpViewHelper  extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstr
     protected $escapeOutput = false;
 
     /**
-     * @var \Kennziffer\KeQuestionnaire\ViewHelpers\JavaScriptViewHelper
+     * @var JavaScriptViewHelper
      */
-
     public $jsViewhelper ;
 
     /** * Constructor *

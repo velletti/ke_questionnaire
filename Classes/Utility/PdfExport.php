@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Core\Environment;
 
 /***************************************************************
@@ -26,7 +28,7 @@ use TYPO3\CMS\Core\Core\Environment;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 //require_once(Environment::getPublicPath() . '/'.'typo3conf/ext/ke_questionnaire/Resources/Private/Tcpdf/tcpdf.php');
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ke_questionnaire').'Classes/Lib/Mpdf/mpdf.php');
+require_once(ExtensionManagementUtility::extPath('ke_questionnaire').'Classes/Lib/Mpdf/mpdf.php');
 
 /**
  *
@@ -71,9 +73,9 @@ Allow from 127.0.0.1
 	Allow from all
 </FilesMatch>';
         $htaccessFileAndPath = Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/.htaccess';
-        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($htaccessFileAndPath, $htaccess);        
+        GeneralUtility::writeFileToTypo3tempDir($htaccessFileAndPath, $htaccess);        
         $htaccessFileAndPath = Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/pdf/.htaccess';
-        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($htaccessFileAndPath, $htaccess);        
+        GeneralUtility::writeFileToTypo3tempDir($htaccessFileAndPath, $htaccess);        
     }
 }
 

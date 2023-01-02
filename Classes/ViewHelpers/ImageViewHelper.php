@@ -23,7 +23,7 @@ namespace Kennziffer\KeQuestionnaire\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 
@@ -54,16 +54,16 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
         parent::initializeArguments();
     }
 	/**
-	 * Resizes a given image (if required) and renders the respective img tag
-	 *
-	 * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4164427
-	 *
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
-	 * @return string Rendered tag
-	 */
-	public function render() {
+  * Resizes a given image (if required) and renders the respective img tag
+  *
+  * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4164427
+  *
+  * @throws Exception
+  * @return string Rendered tag
+  */
+ public function render() {
         if ((is_null($this->arguments['src']) && is_null($this->arguments['image'])) || (!is_null($this->arguments['src']) && !is_null($this->arguments['image']))) {
-            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284106);
+            throw new Exception('You must either specify a string src or a File object.', 1382284106);
         }
         try {
             $image = $this->imageService->getImage($this->arguments['src'], $this->arguments['image'], $this->arguments['treatIdAsReference']);

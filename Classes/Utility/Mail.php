@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+
+use TYPO3\CMS\Core\Mail\MailMessage;
+use Kennziffer\KeQuestionnaire\Domain\Model\ExtConf;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Kennziffer\KeQuestionnaire\Exception;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +28,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -34,37 +38,37 @@ namespace Kennziffer\KeQuestionnaire\Utility;
 class Mail {
 
 	/**
-	 * SwiftMailer
-	 *
-	 * @var \TYPO3\CMS\Core\Mail\MailMessage
-	 */
-	protected $message = NULL;
+  * SwiftMailer
+  *
+  * @var MailMessage
+  */
+ protected $message = NULL;
 
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf
-	 */
-	protected $extConf;
+  * @var ExtConf
+  */
+ protected $extConf;
 
 
 
 
 
 	/**
-	 * inject swift message
-	 *
-	 * @param \TYPO3\CMS\Core\Mail\MailMessage $message
-	 * @return void
-	 */
-	public function injectSwiftMessage(\TYPO3\CMS\Core\Mail\MailMessage $message) {
+  * inject swift message
+  *
+  * @param MailMessage $message
+  * @return void
+  */
+ public function injectSwiftMessage(MailMessage $message) {
 		$this->message = $message;
 	}
 
 	/**
-	 * inject extConf
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf
-	 */
-	public function injectExtConf(\Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf) {
+  * inject extConf
+  *
+  * @param ExtConf $extConf
+  */
+ public function injectExtConf(ExtConf $extConf) {
 		$this->extConf = $extConf;
 	}
 
@@ -188,7 +192,7 @@ class Mail {
 	public function sendMail() {
 		if($this->validateMessage()) {
 			$number = $this->message->send();
-			$this->message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+			$this->message = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 			return $number;
 		} else return 0;
 	}
@@ -211,7 +215,7 @@ class Mail {
 				// second: try to get an alternative mail address and sender name from INSTALL_TOOL
 				if (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])) {
 					// third: no email address found. EXIT
-					throw new \Kennziffer\KeQuestionnaire\Exception('mailNoFrom', 1349702098);
+					throw new Exception('mailNoFrom', 1349702098);
 				} else {
 					if (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])) {
 						$this->setFrom($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']);
@@ -222,13 +226,13 @@ class Mail {
 			}
 		}
 		if(count($this->getReceivers()) === 0) {
-			throw new \Kennziffer\KeQuestionnaire\Exception('mailNoReceivers', 1349702831);
+			throw new Exception('mailNoReceivers', 1349702831);
 		}
 		if(!$this->getSubject()) {
-			throw new \Kennziffer\KeQuestionnaire\Exception('mailNoSubject', 1349702835);
+			throw new Exception('mailNoSubject', 1349702835);
 		}
 		if(!$this->getBody()) {
-			throw new \Kennziffer\KeQuestionnaire\Exception('mailNoBody', 1349702840);
+			throw new Exception('mailNoBody', 1349702840);
 		}
 		return true;
 	}

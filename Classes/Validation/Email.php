@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Validation;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -43,7 +44,7 @@ class Email extends AbstractValidation {
 	public function isValid($value, $model) {
 		// the email validator of extbase does not work with german umlauts
 		// that's why we work with \TYPO3\CMS\Core\Utility\GeneralUtility
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($value);
+		return GeneralUtility::validEmail($value);
 	}
 
 }

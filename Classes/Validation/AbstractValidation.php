@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Validation;
+
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -34,18 +35,18 @@ namespace Kennziffer\KeQuestionnaire\Validation;
 abstract class AbstractValidation {
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	protected $objectManager;
+  * @var ObjectManagerInterface
+  */
+ protected $objectManager;
 	
 	
 	/**
-	 * Injects the object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+  * Injects the object manager
+  *
+  * @param ObjectManagerInterface $objectManager
+  * @return void
+  */
+ public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 	

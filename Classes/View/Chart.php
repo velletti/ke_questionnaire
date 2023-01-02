@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\View;
+
+use TYPO3\CMS\Fluid\View\AbstractTemplateView;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +28,6 @@ namespace Kennziffer\KeQuestionnaire\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +35,7 @@ namespace Kennziffer\KeQuestionnaire\View;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
+class Chart extends AbstractTemplateView {
 
 	/**
 	 * Source code of the Fluid template
@@ -68,14 +72,14 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 * @param tslib_cObj $contentObject The current cObject. If NULL a new instance will be created
 	 */
 	public function __construct(tslib_cObj $contentObject = NULL) {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('extbase')) {
+		if (!ExtensionManagementUtility::isLoaded('extbase')) {
 			return 'In the current version you still need to have Extbase installed in order to use the Fluid Standalone view!';
 		}
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
 
 		$configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
 		if ($contentObject === NULL) {
-			$contentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+			$contentObject = GeneralUtility::makeInstance('tslib_cObj');
 		}
 		$configurationManager->setContentObject($contentObject);
 
@@ -83,8 +87,8 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$this->setRenderingContext($this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext'));
 
 		$request = $this->objectManager->get('Tx_Extbase_MVC_Web_Request');
-		$request->setRequestURI(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-		$request->setBaseURI(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+		$request->setRequestURI(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseURI(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 
 		$uriBuilder = $this->objectManager->get('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$uriBuilder->setRequest($request);
@@ -182,7 +186,7 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 */
 	public function getLayoutRootPath() {
 		if ($this->layoutRootPath === NULL && $this->templatePathAndFilename === NULL) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('No layout root path has been specified. Use setLayoutRootPath().', 1288091419);
+			throw new InvalidTemplateResourceException('No layout root path has been specified. Use setLayoutRootPath().', 1288091419);
 		}
 		if ($this->layoutRootPath === NULL) {
 			$this->layoutRootPath = dirname($this->templatePathAndFilename) . '/Layouts';
@@ -209,7 +213,7 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 */
 	public function getPartialRootPath() {
 		if ($this->partialRootPath === NULL && $this->templatePathAndFilename === NULL) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('No partial root path has been specified. Use setPartialRootPath().', 1288094511);
+			throw new InvalidTemplateResourceException('No partial root path has been specified. Use setPartialRootPath().', 1288094511);
 		}
 		if ($this->partialRootPath === NULL) {
 			$this->partialRootPath = dirname($this->templatePathAndFilename) . '/Partials';
@@ -227,7 +231,7 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		try {
 			$this->getTemplateSource();
 			return TRUE;
-		} catch (\TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException $e) {
+		} catch (InvalidTemplateResourceException $e) {
 			return FALSE;
 		}
 	}
@@ -255,19 +259,19 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	}
 
 	/**
-	 * Returns the Fluid template source code
-	 *
-	 * @param string $actionName Name of the action. This argument is not used in this view!
-	 * @return string Fluid template source
-	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
-	 */
-	protected function getTemplateSource($actionName = NULL) {
+  * Returns the Fluid template source code
+  *
+  * @param string $actionName Name of the action. This argument is not used in this view!
+  * @return string Fluid template source
+  * @throws InvalidTemplateResourceException
+  */
+ protected function getTemplateSource($actionName = NULL) {
 		if ($this->templateSource === NULL && $this->templatePathAndFilename === NULL) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('No template has been specified. Use either setTemplateSource() or setTemplatePathAndFilename().', 1288085266);
+			throw new InvalidTemplateResourceException('No template has been specified. Use either setTemplateSource() or setTemplatePathAndFilename().', 1288085266);
 		}
 		if ($this->templateSource === NULL) {
 			if (!file_exists($this->templatePathAndFilename)) {
-				throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Template could not be found at "' . $this->templatePathAndFilename . '".', 1288087061);
+				throw new InvalidTemplateResourceException('Template could not be found at "' . $this->templatePathAndFilename . '".', 1288087061);
 			}
 			$this->templateSource = file_get_contents($this->templatePathAndFilename);
 		}
@@ -288,50 +292,50 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	}
 
 	/**
-	 * Resolves the path and file name of the layout file, based on
-	 * $this->getLayoutRootPath() and request format and returns the file contents
-	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
-	 * @return string contents of the layout file if it was found
-	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
-	 */
-	protected function getLayoutSource($layoutName = 'Default') {
+  * Resolves the path and file name of the layout file, based on
+  * $this->getLayoutRootPath() and request format and returns the file contents
+  *
+  * @param string $layoutName Name of the layout to use. If none given, use "Default"
+  * @return string contents of the layout file if it was found
+  * @throws InvalidTemplateResourceException
+  */
+ protected function getLayoutSource($layoutName = 'Default') {
 		$layoutPathAndFilename = $this->getLayoutPathAndFilename($layoutName);
 		$layoutSource = file_get_contents($layoutPathAndFilename);
 		if ($layoutSource === FALSE) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('"' . $layoutPathAndFilename . '" is not a valid template resource URI.', 1312215888);
+			throw new InvalidTemplateResourceException('"' . $layoutPathAndFilename . '" is not a valid template resource URI.', 1312215888);
 		}
 		return $layoutSource;
 	}
 
 	/**
-	 * Resolve the path and file name of the layout file, based on
-	 * $this->getLayoutRootPath() and request format
-	 *
-	 * In case a layout has already been set with setLayoutPathAndFilename(),
-	 * this method returns that path, otherwise a path and filename will be
-	 * resolved using the layoutPathAndFilenamePattern.
-	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
-	 * @return string Path and filename of layout files
-	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
-	 */
-	protected function getLayoutPathAndFilename($layoutName = 'Default') {
+  * Resolve the path and file name of the layout file, based on
+  * $this->getLayoutRootPath() and request format
+  *
+  * In case a layout has already been set with setLayoutPathAndFilename(),
+  * this method returns that path, otherwise a path and filename will be
+  * resolved using the layoutPathAndFilenamePattern.
+  *
+  * @param string $layoutName Name of the layout to use. If none given, use "Default"
+  * @return string Path and filename of layout files
+  * @throws InvalidTemplateResourceException
+  */
+ protected function getLayoutPathAndFilename($layoutName = 'Default') {
 		$layoutRootPath = $this->getLayoutRootPath();
 
 
 		if (!is_dir($layoutRootPath)) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Layout root path "' . $layoutRootPath . '" does not exist.', 1288092521);
+			throw new InvalidTemplateResourceException('Layout root path "' . $layoutRootPath . '" does not exist.', 1288092521);
 		}
 		$possibleLayoutPaths = array();
-		$possibleLayoutPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName . '.' . $this->getRequest()->getFormat());
-		$possibleLayoutPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName);
+		$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName . '.' . $this->getRequest()->getFormat());
+		$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName);
 		foreach($possibleLayoutPaths as $layoutPathAndFilename) {
 			if (file_exists($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Could not load layout file. Tried following paths: "' . implode('", "', $possibleLayoutPaths) . '".', 1288092555);
+		throw new InvalidTemplateResourceException('Could not load layout file. Tried following paths: "' . implode('", "', $possibleLayoutPaths) . '".', 1288092555);
 	}
 
 	/**
@@ -348,43 +352,43 @@ class Chart extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	}
 
 	/**
-	 * Resolves the path and file name of the partial file, based on
-	 * $this->getPartialRootPath() and request format and returns the file contents
-	 *
-	 * @param string $partialName The name of the partial
-	 * @return string contents of the layout file if it was found
-	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
-	 */
-	protected function getPartialSource($partialName) {
+  * Resolves the path and file name of the partial file, based on
+  * $this->getPartialRootPath() and request format and returns the file contents
+  *
+  * @param string $partialName The name of the partial
+  * @return string contents of the layout file if it was found
+  * @throws InvalidTemplateResourceException
+  */
+ protected function getPartialSource($partialName) {
 		$partialPathAndFilename = $this->getPartialPathAndFilename($partialName);
 		$partialSource = file_get_contents($partialPathAndFilename);
 		if ($partialSource === FALSE) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('"' . $partialPathAndFilename . '" is not a valid template resource URI.', 1257246929);
+			throw new InvalidTemplateResourceException('"' . $partialPathAndFilename . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $partialSource;
 	}
 
 	/**
-	 * Resolve the partial path and filename based on $this->getPartialRootPath() and request format
-	 *
-	 * @param string $partialName The name of the partial
-	 * @return string the full path which should be used. The path definitely exists.
-	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
-	 */
-	protected function getPartialPathAndFilename($partialName) {
+  * Resolve the partial path and filename based on $this->getPartialRootPath() and request format
+  *
+  * @param string $partialName The name of the partial
+  * @return string the full path which should be used. The path definitely exists.
+  * @throws InvalidTemplateResourceException
+  */
+ protected function getPartialPathAndFilename($partialName) {
 		$partialRootPath = $this->getPartialRootPath();
 		if (!is_dir($partialRootPath)) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Partial root path "' . $partialRootPath . '" does not exist.', 1288094648);
+			throw new InvalidTemplateResourceException('Partial root path "' . $partialRootPath . '" does not exist.', 1288094648);
 		}
 		$possiblePartialPaths = array();
-		$possiblePartialPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName . '.' . $this->getRequest()->getFormat());
-		$possiblePartialPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName);
+		$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName . '.' . $this->getRequest()->getFormat());
+		$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName);
 		foreach($possiblePartialPaths as $partialPathAndFilename) {
 			if (file_exists($partialPathAndFilename)) {
 				return $partialPathAndFilename;
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Could not load partial file. Tried following paths: "' . implode('", "', $possiblePartialPaths) . '".', 1288092555);
+		throw new InvalidTemplateResourceException('Could not load partial file. Tried following paths: "' . implode('", "', $possiblePartialPaths) . '".', 1288092555);
 	}
 
 	/**

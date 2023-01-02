@@ -1,5 +1,11 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Object;
+
+use TYPO3\CMS\Extbase\Object\Container\Container;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use Kennziffer\KeQuestionnaire\Exception;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +29,6 @@ namespace Kennziffer\KeQuestionnaire\Object;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -34,46 +39,46 @@ namespace Kennziffer\KeQuestionnaire\Object;
 class DataMapper {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\Container\Container
-	 */
-	protected $objectContainer;
+  * @var Container
+  */
+ protected $objectContainer;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected $objectManager;
+  * @var ObjectManager
+  */
+ protected $objectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 */
-	protected $reflectionService;
+  * @var ReflectionService
+  */
+ protected $reflectionService;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
-	 */
-	protected $validatorResolver;
+  * @var ValidatorResolver
+  */
+ protected $validatorResolver;
 
 
 
 
 
 	/**
-	 * injects the object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+  * injects the object manager
+  *
+  * @param ObjectManager $objectManager
+  * @return void
+  */
+ public function injectObjectManager(ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * Injects object container
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer
-	 * @return void
-	 */
-	public function injectObjectContainer(\TYPO3\CMS\Extbase\Object\Container\Container $objectContainer) {
+  * Injects object container
+  *
+  * @param Container $objectContainer
+  * @return void
+  */
+ public function injectObjectContainer(Container $objectContainer) {
 		$this->objectContainer = $objectContainer;
 	}
 
@@ -83,7 +88,7 @@ class DataMapper {
 	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+	public function injectReflectionService(ReflectionService $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
@@ -93,7 +98,7 @@ class DataMapper {
 	 * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver
 	 * @return void
 	 */
-	public function injectValidatorResolver(\TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver) {
+	public function injectValidatorResolver(ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
 	}
 	
@@ -185,7 +190,7 @@ class DataMapper {
 							'code' => $error->getFirstError()->getCode(),
 							'message' => $error->getFirstError()->getMessage(),
 						);
-						throw new \Kennziffer\KeQuestionnaire\Exception('dataMapperValidation', 1354704589, $errorMessage);
+						throw new Exception('dataMapperValidation', 1354704589, $errorMessage);
 					}
 				}
 				$object->$method($propertyValue);

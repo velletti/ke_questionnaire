@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader;
 use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
@@ -35,7 +36,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GetCloneableMatrixRowViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class GetCloneableMatrixRowViewHelper extends AbstractViewHelper {
 
     /**
      * @var boolean

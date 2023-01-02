@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -33,15 +34,15 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  */
 class JqPlot {
 	/**
-	 * getChart
-	 * 
-	 * @param string $type
-	 * @param array $dataArray
-	 * @param string $divId
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-     * @param array $labels
-	 */
-	public function getChart($type, $divId, $dataArray, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question = NULL, $labels = NULL){
+  * getChart
+  *
+  * @param string $type
+  * @param array $dataArray
+  * @param string $divId
+  * @param Question $question
+  * @param array $labels
+  */
+ public function getChart($type, $divId, $dataArray, Question $question = NULL, $labels = NULL){
 		switch ($type) {
             case 'lines': return $this->createLineChart($divId, $dataArray);
 				break;
@@ -139,15 +140,15 @@ class JqPlot {
 	}
 	
 	/**
-	 * create bar
-	 * 
-	 * @param string $type
-     * @param array $values
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-     * @param array $labels
-	 * @return string $chart
-	 */
-	public function createSingleBarChart($type, $values, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question, $labels = false){
+  * create bar
+  *
+  * @param string $type
+  * @param array $values
+  * @param Question $question
+  * @param array $labels
+  * @return string $chart
+  */
+ public function createSingleBarChart($type, $values, Question $question, $labels = false){
 		if (is_array($values)){
 			ksort($values);
 			$counter = 0;
@@ -205,14 +206,14 @@ class JqPlot {
        
     /**
      * create pie
-     * 
-	 * @param string $type
+     *
+     * @param string $type
      * @param array $values
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Question $question
-	 * @param boolean $absoulteValues
-	 * @return string $chart
+     * @param Question $question
+     * @param boolean $absoulteValues
+     * @return string $chart
      */
-    public function createPieChart($type, $values, \Kennziffer\KeQuestionnaire\Domain\Model\Question $question = NULL, $absoluteValues = false){
+    public function createPieChart($type, $values, Question $question = NULL, $absoluteValues = false){
 
         $data = '[';
         foreach ($values as $key => $answer){

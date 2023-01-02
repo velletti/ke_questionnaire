@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
 
@@ -34,7 +36,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DdImageViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DdImageViewHelper extends AbstractViewHelper {
 
     /**
      * @var boolean
@@ -62,25 +64,24 @@ class DdImageViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHe
 	 *
 	 * @return string
 	 */
-	public function render($answer,$question,$as) {
-
-        /** @var Question $question */
-        $question = $this->arguments['question'] ;
-
-        /** @var Answer $answer */
-        $answer = $this->arguments['answer'] ;
-        $as = $this->arguments['as'] ;
-
-		$images = $this->getImages($question, $answer);
-		
-		$templateVariableContainer = $this->renderingContext->getVariableProvider();
-		if ($question === NULL) {
-			return '';
-		}
-		
-		shuffle($images);
-        $output =  '' ;
-        foreach ($images as $nr => $element){
+	public function render()
+ {
+     $answer = $this->arguments['answer'];
+     $question = $this->arguments['question'];
+     $as = $this->arguments['as'];
+     /** @var Question $question */
+     $question = $this->arguments['question'] ;
+     /** @var Answer $answer */
+     $answer = $this->arguments['answer'] ;
+     $as = $this->arguments['as'] ;
+     $images = $this->getImages($question, $answer);
+     $templateVariableContainer = $this->renderingContext->getVariableProvider();
+     if ($question === NULL) {
+   			return '';
+   		}
+     shuffle($images);
+     $output =  '' ;
+     foreach ($images as $nr => $element){
 			$temp = array();
 			$temp['counter'] = $nr+1;
 			$temp['image'] = $element;
@@ -88,21 +89,21 @@ class DdImageViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHe
 			$output .= $this->renderChildren();
 			$templateVariableContainer->remove($as);
 		}
-		return $output;
-	}
+     return $output;
+ }
 	
 	/**
-	 * Gets the Images
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question $question the terms are in
-	 * @return array
-	 */
-	public function getImages($question, $header){
+  * Gets the Images
+  *
+  * @param Question $question the terms are in
+  * @return array
+  */
+ public function getImages($question, $header){
 		$terms = array();
 		
 		// workaround for pointer in question, so all following answer-objects are rendered.
 		$addIt = false;
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestion($question);
 		//$answers = $question->getAnswers();

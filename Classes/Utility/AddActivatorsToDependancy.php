@@ -1,5 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +28,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * creates the Select-Values for the Dependancy-Select in Backend
  *
@@ -34,16 +38,16 @@ namespace Kennziffer\KeQuestionnaire\Utility;
 class AddActivatorsToDependancy {
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected $objectManager;
+  * @var ObjectManager
+  */
+ protected $objectManager;
 
 	/**
-	 * questionRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository
-	 */
-	protected $questionRepository;
+  * questionRepository
+  *
+  * @var QuestionRepository
+  */
+ protected $questionRepository;
     
     /**
 	 * add items to the select box for activating answers
@@ -86,14 +90,14 @@ class AddActivatorsToDependancy {
 	}
     
     /**
-	 * get the Questions for the questionnaire
-	 * 
-	 * @param integer $storagePid
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult 
-	 */
-	private function getQuestions($storagePid) {
+  * get the Questions for the questionnaire
+  *
+  * @param integer $storagePid
+  * @return QueryResult 
+  */
+ private function getQuestions($storagePid) {
         //$this->questionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->questionRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
 		$questions = $this->questionRepository->findAllForPid($storagePid);
 		

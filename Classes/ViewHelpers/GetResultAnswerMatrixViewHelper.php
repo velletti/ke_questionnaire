@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 
 /***************************************************************
@@ -33,7 +34,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Result;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GetResultAnswerMatrixViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class GetResultAnswerMatrixViewHelper extends AbstractViewHelper {
 
 
     /**

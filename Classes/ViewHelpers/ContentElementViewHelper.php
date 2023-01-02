@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -36,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ContentElementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ContentElementViewHelper extends AbstractViewHelper {
 
     /**
      * @var boolean
@@ -49,14 +52,14 @@ class ContentElementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstrac
     protected $escapeOutput = false;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
+  * @var ConfigurationManagerInterface
+  */
+ protected $configurationManager;
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer Object
-	 */
-	protected $cObj;
+  * @var ContentObjectRenderer Object
+  */
+ protected $cObj;
 
 
     /** * Constructor *
@@ -118,12 +121,12 @@ class ContentElementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstrac
     }
 
 	/**
-	 * Injects the Configuration Manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	*/
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+  * Injects the Configuration Manager
+  *
+  * @param ConfigurationManagerInterface $configurationManager
+  * @return void
+  */
+ public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->cObj = $this->configurationManager->getContentObject();
 	}

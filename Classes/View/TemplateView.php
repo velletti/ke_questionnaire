@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\View;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /***************************************************************
@@ -64,17 +65,17 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\TemplateView {
 		}
 		/** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
 		$actionRequest = $this->controllerContext->getRequest();
-		return array(str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern));
+		return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern));
 	}
 	
 	/**
-	 * Resolve the partial path and filename based on $this->partialPathAndFilenamePattern.
-	 *
-	 * @param string $partialName The name of the partial
-	 * @return string the full path which should be used. The path definitely exists.
-	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
-	 */
-	protected function getPartialPathAndFilename($partialName) {
+  * Resolve the partial path and filename based on $this->partialPathAndFilenamePattern.
+  *
+  * @param string $partialName The name of the partial
+  * @return string the full path which should be used. The path definitely exists.
+  * @throws InvalidTemplateResourceException
+  */
+ protected function getPartialPathAndFilename($partialName) {
         $paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
 		foreach ($paths as &$partialPathAndFilename) {
 			$partialPathAndFilename = $this->resolveFileNamePath(str_replace('@partial', $partialName, $partialPathAndFilename));			
@@ -105,7 +106,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\TemplateView {
 		}
 		/** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
 		$actionRequest = $this->controllerContext->getRequest();
-		return array(str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern));
+		return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern));
 	}
 	
 	

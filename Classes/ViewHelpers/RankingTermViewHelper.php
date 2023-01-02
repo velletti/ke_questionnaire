@@ -1,5 +1,11 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
@@ -35,7 +41,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Result;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class RankingTermViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RankingTermViewHelper extends AbstractViewHelper {
 
     /**
      * @var boolean
@@ -48,7 +54,7 @@ class RankingTermViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVi
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -65,43 +71,37 @@ class RankingTermViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVi
     }
 
 	/**
-	 * Adds the needed Javascript-File to Additional Header Data
-	 *
-	 * @param Answer $answer Answer to be rendered
-	 * @param Question $question the images are in
-	 * @param string $as The name of the iteration variable
-     * @param Result $result
-	 * @return string
-	 */
-	public function render($answer,$question,$as,$result=NULL) {
-
-        /** @var Result $result */
-        $result = $this->arguments['result'] ;
-
-        /** @var Question $question */
-        $question = $this->arguments['question'] ;
-
-        /** @var Answer $answer */
-        $answer = $this->arguments['answer'] ;
-
-        $as = $this->arguments['as'] ;
-
-		$terms = $this->getTerms($question, $answer, $result);
-		
-		$templateVariableContainer = $this->renderingContext->getVariableProvider();
-		if ($question === NULL) {
-			return '';
-		}
-		
-		//shuffle($images);
-        $output =  '' ;
-		foreach ($terms as $nr => $element){
-			$templateVariableContainer->add($as, $element);
-			$output .= $this->renderChildren();
-			$templateVariableContainer->remove($as);
-		}
-		return $output;
-	}
+  * Adds the needed Javascript-File to Additional Header Data
+  *
+  * @return string
+  */
+ public function render()
+ {
+     $answer = $this->arguments['answer'];
+     $question = $this->arguments['question'];
+     $as = $this->arguments['as'];
+     $result = $this->arguments['result'];
+     /** @var Result $result */
+     $result = $this->arguments['result'] ;
+     /** @var Question $question */
+     $question = $this->arguments['question'] ;
+     /** @var Answer $answer */
+     $answer = $this->arguments['answer'] ;
+     $as = $this->arguments['as'] ;
+     $terms = $this->getTerms($question, $answer, $result);
+     $templateVariableContainer = $this->renderingContext->getVariableProvider();
+     if ($question === NULL) {
+   			return '';
+   		}
+     //shuffle($images);
+     $output =  '' ;
+     foreach ($terms as $nr => $element){
+   			$templateVariableContainer->add($as, $element);
+   			$output .= $this->renderChildren();
+   			$templateVariableContainer->remove($as);
+   		}
+     return $output;
+ }
 	
 	/**
 	 * Gets the Images
@@ -116,14 +116,14 @@ class RankingTermViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVi
 		// workaround for pointer in question, so all following answer-objects are rendered.
 		$addIt = false;
         $type = '';
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		/** @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $rep */
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		/** @var AnswerRepository $rep */
+  $rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestion($question);
 		
 		$ranswers = array();
         if ($result){
-            /** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion> $rquestion */
+            /** @var ObjectStorage<ResultQuestion> $rquestion */
             foreach ($result->getQuestions() as $rquestion){
 
                 if ($rquestion->getQuestion()->getUid() == $question->getUid()){

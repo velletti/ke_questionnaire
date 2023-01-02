@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
 
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -114,13 +115,18 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @var integer
 	 */
 	protected $minAnswers;
+    /**
+     * @var ObjectManager
+     */
+    private $objectManager;
 
-	/**
+    /**
 	 * __construct
 	 *
 	 * @return void
 	 */
 	public function __construct() {
+
 	}
 
 	/**
@@ -128,7 +134,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string $text
 	 */
-	public function getText() {
+	public function getText(): string
+    {
 		return $this->text;
 	}
 
@@ -147,7 +154,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string $helpText
 	 */
-	public function getHelpText() {
+	public function getHelpText(): string
+    {
 		return $this->helpText;
 	}
 
@@ -166,7 +174,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string $image
 	 */
-	public function getImage() {
+	public function getImage(): string
+    {
 		return $this->image;
 	}
 
@@ -185,7 +194,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string $imagePosition
 	 */
-	public function getImagePosition() {
+	public function getImagePosition(): string
+    {
 		return $this->imagePosition;
 	}
 
@@ -204,7 +214,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean $isMandatory
 	 */
-	public function getIsMandatory() {
+	public function getIsMandatory(): bool
+    {
 		// Check if one answer is a DataPrivacy. If yes, the the question is always mandatory
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
@@ -230,7 +241,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean
 	 */
-	public function isIsMandatory() {
+	public function isIsMandatory(): bool
+    {
 		return $this->getIsMandatory();
 	}
 
@@ -239,7 +251,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean $mustBeCorrect
 	 */
-	public function getMustBeCorrect() {
+	public function getMustBeCorrect(): bool
+    {
 		return $this->mustBeCorrect;
 	}
 
@@ -258,7 +271,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean
 	 */
-	public function isMustBeCorrect() {
+	public function isMustBeCorrect(): bool
+    {
 		return $this->getMustBeCorrect();
 	}
 
@@ -312,7 +326,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean $randomAnswers
 	 */
-	public function getRandomAnswers() {
+	public function getRandomAnswers(): bool
+    {
 		return $this->randomAnswers;
 	}
 
@@ -322,7 +337,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param boolean $randomAnswers
 	 * @return void
 	 */
-	public function setRandomAnswers($randomAnswers) {
+	public function setRandomAnswers(bool $randomAnswers):void
+    {
 		$this->randomAnswers = $randomAnswers;
 	}
 
@@ -331,7 +347,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean
 	 */
-	public function isRandomAnswers() {
+	public function isRandomAnswers():bool
+    {
 		return $this->getRandomAnswers();
 	}
 	
@@ -340,7 +357,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $columnCount
 	 */
-	public function getColumnCount() {
+	public function getColumnCount(): int
+    {
 		return $this->columnCount;
 	}
 	
@@ -359,7 +377,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param integer $columnCount
 	 * @return void
 	 */
-	public function setColumnCount($columnCount) {
+	public function setColumnCount(int $columnCount):void
+    {
 		$this->columnCount = $columnCount;
 	}
 	
@@ -368,7 +387,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $maxAnswers
 	 */
-	public function getMaxAnswers() {
+	public function getMaxAnswers(): int
+    {
 		return $this->maxAnswers;
 	}
 
@@ -387,7 +407,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $minAnswers
 	 */
-	public function getMinAnswers() {
+	public function getMinAnswers(): int
+    {
 		return $this->minAnswers;
 	}
 
@@ -406,7 +427,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $maxPoints
 	 */
-	public function getMaxPoints() {
+	public function getMaxPoints(): int
+    {
 		$max = 0;		
                 
 		foreach ($this->getAnswers() as $answer){
@@ -426,4 +448,3 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	}
 
 }
-?>

@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
@@ -37,7 +38,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DdAreaExportViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DdAreaExportViewHelper extends AbstractViewHelper {
 
 
     /**
@@ -95,18 +96,18 @@ class DdAreaExportViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractV
 	}
 	
 	/**
-	 * Create the output-image
-	 * 
-	 * @param string $main main-image
-	 * @param array $images d&d images
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param Question $question the images are in
-	 * @param DDAreaImage $answer Answer to be rendered
-     * @return string
-	 */
-	private function createExportImage($main,
+  * Create the output-image
+  *
+  * @param string $main main-image
+  * @param array $images d&d images
+  * @param Result $result
+  * @param Question $question the images are in
+  * @param DDAreaImage $answer Answer to be rendered
+  * @return string
+  */
+ private function createExportImage($main,
                                        array $images,
-                                       \Kennziffer\KeQuestionnaire\Domain\Model\Result$result,
+                                       Result$result,
                                        Question $question,
                                        DDAreaImage $answer){
 		$width = 0;
@@ -192,14 +193,14 @@ class DdAreaExportViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractV
 	}
 	
 	/**
-	 * Returns a requested question from result record
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @param integer $questionUid
-	 * @param integer $answerUid
-	 * @return
-	 */
-	public function getResultAnswer($result, $questionUid, $answerUid) {
+  * Returns a requested question from result record
+  *
+  * @param Result $result
+  * @param integer $questionUid
+  * @param integer $answerUid
+  * @return
+  */
+ public function getResultAnswer($result, $questionUid, $answerUid) {
 		$resultQuestions = $result->getQuestions();
 		/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 		foreach ($resultQuestions as $resultQuestion) {

@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
 
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper ;
 /***************************************************************
  *  Copyright notice
@@ -33,7 +36,7 @@ use \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper ;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper {
+class RenderPartialViewHelper extends RenderViewHelper {
 
     /**
      * @var boolean
@@ -47,9 +50,9 @@ class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHe
 
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	protected $objectManager;
+  * @var ObjectManagerInterface
+  */
+ protected $objectManager;
 	
 	/**
 	 * @var array
@@ -57,12 +60,12 @@ class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHe
 	var $oldPaths = array();
 
 	/**
-	 * Injects the object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+  * Injects the object manager
+  *
+  * @param ObjectManagerInterface $objectManager
+  * @return void
+  */
+ public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -128,12 +131,12 @@ class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHe
 	}
     
         /**
-	 * Set partial root path by controller context
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-	 * @return void
-	 */
-	protected function setPartialRootPathFromCC(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
+  * Set partial root path by controller context
+  *
+  * @param ControllerContext $controllerContext
+  * @return void
+  */
+ protected function setPartialRootPathFromCC(ControllerContext $controllerContext) {
 		$this->viewHelperVariableContainer->getView()->setPartialRootPath(
 			$this->getPartialRootPath($controllerContext)
 		);
@@ -145,20 +148,20 @@ class RenderPartialViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHe
 	 * @return void
 	 */
 	protected function resetPartialRootPath() {
-		$this->setPartialRootPathFromCC($this->controllerContext);
+		$this->setPartialRootPathFromCC($this->renderingContext->getControllerContext());
 	}
     
     /**
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-	 * @return mixed
-	 */
-	protected function getPartialRootPath(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
+  * @param ControllerContext $controllerContext
+  * @return mixed
+  */
+ protected function getPartialRootPath(ControllerContext $controllerContext) {
 		if (count($this->oldPaths) > 0){
 			$partialRootPath = $this->oldPaths[0];
 		} else {
 			$partialRootPath = str_replace(
 				'@packageResourcesPath',
-				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/',
+				ExtensionManagementUtility::extPath($controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/',
 				'@packageResourcesPath/Private/Partials'
 			);
 		}

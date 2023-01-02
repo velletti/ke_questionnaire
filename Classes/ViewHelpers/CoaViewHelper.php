@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -35,7 +38,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class CoaViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CoaViewHelper extends AbstractViewHelper {
 
 
     /**
@@ -63,9 +66,9 @@ class CoaViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 	protected $typoScriptSetup;
 
 	/**
-	 * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
-	 */
-	protected $typoScriptParser;
+  * @var TypoScriptParser
+  */
+ protected $typoScriptParser;
 
 	/**
 	 * @var	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
@@ -73,28 +76,28 @@ class CoaViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 	protected $tsfeBackup;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
+  * @var ConfigurationManagerInterface
+  */
+ protected $configurationManager;
 
 
 
 
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+  * @param ConfigurationManagerInterface $configurationManager
+  * @return void
+  */
+ public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$this->typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $typoScriptParser
-	 * @return void
-	 */
-	public function injectTypoScriptParser(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $typoScriptParser) {
+  * @param TypoScriptParser $typoScriptParser
+  * @return void
+  */
+ public function injectTypoScriptParser(TypoScriptParser $typoScriptParser) {
 		$this->typoScriptParser = $typoScriptParser;
 	}
 

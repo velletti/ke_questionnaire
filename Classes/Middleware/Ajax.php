@@ -2,6 +2,7 @@
 
 namespace Kennziffer\KeQuestionnaire\Middleware;
 
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -17,10 +18,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Ajax implements MiddlewareInterface
 {
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Server\RequestHandlerInterface $handler
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws InvalidExtensionNameException
      */
     public function process(
         ServerRequestInterface $request,

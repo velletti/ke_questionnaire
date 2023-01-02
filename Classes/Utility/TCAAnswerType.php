@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -58,7 +60,7 @@ class TCAAnswerType {
 		//if more than one answer is found => more depth than question->answer
 		//get the base element
 		if (count($uids) > 1){
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 			$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 			//baseElement for is the last element before the newly added
 			$baseElement = $rep->findByUid($uids[count($uids)-2]);
@@ -73,17 +75,17 @@ class TCAAnswerType {
 				// - SingleSelect
 				case 'MatrixHeader':
 					$params['items'] = array(
-						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton', 0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.Radiobutton', 'ke_questionnaire')),
-						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox', 0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.Checkbox', 'ke_questionnaire')),
-						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput', 0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.SingleInput', 'ke_questionnaire')),
-						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect', 0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.SingleSelect', 'ke_questionnaire'))
+						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton', 0 => LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.Radiobutton', 'ke_questionnaire')),
+						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox', 0 => LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.Checkbox', 'ke_questionnaire')),
+						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput', 0 => LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.SingleInput', 'ke_questionnaire')),
+						array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect', 0 => LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.SingleSelect', 'ke_questionnaire'))
 					);
 					break;
 				//ExtendendMatrixHeader can only show
 				// - MatrixHeader
 				case 'ExtendedMatrixHeader':
 						$params['items'] = array(
-                            array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader', 0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.MatrixHeader', 'ke_questionnaire')),
+                            array(1 => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader', 0 => LocalizationUtility::translate('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_answer.type.MatrixHeader', 'ke_questionnaire')),
 						);
                         $params['default'] = 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\MatrixHeader';
 					break;

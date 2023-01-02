@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Validation;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@ namespace Kennziffer\KeQuestionnaire\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -42,7 +43,7 @@ class Keywords extends AbstractValidation {
 	 */
 	public function isValid($value, $model) {
 		/* @var $additionalInformations \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput */
-		$keywords = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $model->getValidationText());
+		$keywords = GeneralUtility::trimExplode(',', $model->getValidationText());
 		$keyword_counter = 0;
 		$to_match = $model->getValidationKeysAmount();
 		if ($to_match > count($keywords)) $to_match = count($keywords);
