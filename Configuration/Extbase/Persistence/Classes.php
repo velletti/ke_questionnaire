@@ -89,9 +89,10 @@ return [
     ],
 
 
-    \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\AbstractAnswerType::class => [
-        'tableName' => 'tx_kequestionnaire_domain_model_answer',
-    ],
+    //   \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\AbstractAnswerType::class => [
+    //       'tableName' => 'tx_kequestionnaire_domain_model_answer',
+    //   ],
+
     \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton::class => [
         'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton',
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
