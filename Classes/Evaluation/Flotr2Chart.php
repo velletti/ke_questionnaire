@@ -31,7 +31,7 @@ namespace Kennziffer\KeQuestionnaire\Evaluation;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Flotr2Chart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
+class Flotr2Chart extends AbstractChart {
 
 	/**
 	 * this var will be used for template path generation
@@ -60,7 +60,7 @@ class Flotr2Chart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
 	 */
 	public function getDataForPie() {
 		switch($this->getRenderChart()) {
-			case \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface::FINISHED:
+			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
 				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
 				$dataChart = array(
@@ -90,7 +90,7 @@ class Flotr2Chart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
 	 */
 	public function getDataForColumn() {
 		switch($this->getRenderChart()) {
-			case \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface::FINISHED:
+			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
 				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
 				$dataChart = array(
@@ -108,7 +108,7 @@ class Flotr2Chart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
 					),
 				);
 				break;
-			case \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface::COMPARE_POINTS:
+			case RenderChartInterface::COMPARE_POINTS:
 				$results = $this->resultRepository->findAll();
 				$counter = 1;
 				/* @var $userResultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */

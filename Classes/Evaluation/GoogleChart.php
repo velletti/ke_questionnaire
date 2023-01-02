@@ -31,7 +31,7 @@ namespace Kennziffer\KeQuestionnaire\Evaluation;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class GoogleChart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
+class GoogleChart extends AbstractChart {
 
 	/**
 	 * this var will be used for template path generation
@@ -60,7 +60,7 @@ class GoogleChart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
 	 */
 	public function getDataForPie() {
 		switch($this->getRenderChart()) {
-			case \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface::FINISHED:
+			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
 				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
 				$dataChart = array(
@@ -81,7 +81,7 @@ class GoogleChart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
 	 */
 	public function getDataForColumn() {
 		switch($this->getRenderChart()) {
-			case \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface::FINISHED:
+			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
 				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
 				$dataChart = array(
@@ -90,7 +90,7 @@ class GoogleChart extends \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart {
 					array('Not Finished', $amountOfNotFinishedResults)
 				);
 				break;
-			case \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface::COMPARE_POINTS:
+			case RenderChartInterface::COMPARE_POINTS:
 				$dataChart[] = array(
 					'Title',
 					'Your own points',

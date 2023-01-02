@@ -1,5 +1,12 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Evaluation;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
+use Kennziffer\KeQuestionnaire\View\Chart;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +30,6 @@ namespace Kennziffer\KeQuestionnaire\Evaluation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +37,7 @@ namespace Kennziffer\KeQuestionnaire\Evaluation;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AbstractChart implements \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface {
+class AbstractChart implements RenderChartInterface {
 
 	/**
 	 * this var will be used for template path generation
@@ -41,37 +47,37 @@ class AbstractChart implements \Kennziffer\KeQuestionnaire\Evaluation\RenderChar
 	protected $libraryName = '';
 
 	/**
-	 * the current result of the user
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\Result
-	 */
-	protected $result = NULL;
+  * the current result of the user
+  *
+  * @var Result
+  */
+ protected $result = NULL;
 
 	/**
-	 * resultRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository
-	 */
-	protected $resultRepository;
+  * resultRepository
+  *
+  * @var ResultRepository
+  */
+ protected $resultRepository;
 
 	/**
-	 * resultQuestionRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository
-	 */
-	protected $resultQuestionRepository;
+  * resultQuestionRepository
+  *
+  * @var ResultQuestionRepository
+  */
+ protected $resultQuestionRepository;
 
 	/**
-	 * resultAnswerRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository
-	 */
-	protected $resultAnswerRepository;
+  * resultAnswerRepository
+  *
+  * @var ResultAnswerRepository
+  */
+ protected $resultAnswerRepository;
 
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\View\Chart
-	 */
-	protected $view = NULL;
+  * @var Chart
+  */
+ protected $view = NULL;
 
 	/**
 	 * cObj
@@ -85,14 +91,14 @@ class AbstractChart implements \Kennziffer\KeQuestionnaire\Evaluation\RenderChar
 	 *
 	 * @var string
 	 */
-	protected $renderChart = \Kennziffer\KeQuestionnaire\Evaluation\RenderChartInterface::FINISHED;
+	protected $renderChart = RenderChartInterface::FINISHED;
 
 	/**
 	 * chartType
 	 *
 	 * @var string
 	 */
-	protected $chartType = \Kennziffer\KeQuestionnaire\Evaluation\RChartTypeInterface::PIE;
+	protected $chartType = RChartTypeInterface::PIE;
 
 	/**
 	 * settings
@@ -134,32 +140,32 @@ class AbstractChart implements \Kennziffer\KeQuestionnaire\Evaluation\RenderChar
 
 
 	/**
-	 * injectResultRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository
-	 * @return void
-	 */
-	public function injectResultRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository) {
+  * injectResultRepository
+  *
+  * @param ResultRepository $resultRepository
+  * @return void
+  */
+ public function injectResultRepository(ResultRepository $resultRepository) {
 		$this->resultRepository = $resultRepository;
 	}
 
 	/**
-	 * injectResultQuestionRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultRepository
-	 * @return void
-	 */
-	public function injectResultQuestionRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository) {
+  * injectResultQuestionRepository
+  *
+  * @param ResultQuestionRepository $resultRepository
+  * @return void
+  */
+ public function injectResultQuestionRepository(ResultQuestionRepository $resultQuestionRepository) {
 		$this->resultQuestionRepository = $resultQuestionRepository;
 	}
 
 	/**
-	 * injectResultAnswerRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository
-	 * @return void
-	 */
-	public function injectResultAnswerRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository) {
+  * injectResultAnswerRepository
+  *
+  * @param ResultAnswerRepository $resultAnswerRepository
+  * @return void
+  */
+ public function injectResultAnswerRepository(ResultAnswerRepository $resultAnswerRepository) {
 		$this->resultAnswerRepository = $resultAnswerRepository;
 	}
 
@@ -218,21 +224,21 @@ class AbstractChart implements \Kennziffer\KeQuestionnaire\Evaluation\RenderChar
 	}
 
 	/**
-	 * Get the result
-	 *
-	 * @return \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 */
-	public function getResult() {
+  * Get the result
+  *
+  * @return Result $result
+  */
+ public function getResult() {
 		return $this->result;
 	}
 
 	/**
-	 * Set the result
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 * @return void
-	 */
-	public function setResult(\Kennziffer\KeQuestionnaire\Domain\Model\Result $result) {
+  * Set the result
+  *
+  * @param Result $result
+  * @return void
+  */
+ public function setResult(Result $result) {
 		$this->result = $result;
 	}
 
@@ -380,7 +386,7 @@ class AbstractChart implements \Kennziffer\KeQuestionnaire\Evaluation\RenderChar
 	 * @return string
 	 */
 	public function getHeaderJs() {
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ke_questionnaire');
+		$extPath = ExtensionManagementUtility::extPath('ke_questionnaire');
 		$path = 'Resources/Private/Templates/Evaluation/' . $this->getLibraryName() . '/' . $this->getChartType() . '.html';
 		$this->view->setTemplatePathAndFilename($extPath . $path);
 		$this->view->assign('containerId', $this->getContainerId());
