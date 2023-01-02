@@ -87,10 +87,9 @@ return [
         'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\TypoScriptPath',
         'tableName' => 'tx_kequestionnaire_domain_model_question',
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\Answer::class => [
-        'subclasses' => ['Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTerm' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTerm', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSequence' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSequence', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSimpleScale' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSimpleScale', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDImage' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDImage', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingTerm' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingTerm', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingInput', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingOrder' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingOrder', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingSelect' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingSelect', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Slider' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Slider', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SemanticDifferential' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SemanticDifferential', 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DataPrivacy' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DataPrivacy'],
-    ],
-    'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\AbstractAnswerType' => [
+
+
+    \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\AbstractAnswerType::class => [
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
     ],
     \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton::class => [
@@ -176,6 +175,30 @@ return [
     \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DataPrivacy::class => [
         'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DataPrivacy',
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
+    ],
+    \Kennziffer\KeQuestionnaire\Domain\Model\Answer::class => [
+        'subclasses' => [
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTerm' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTerm',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSequence' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSequence',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSimpleScale' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaSimpleScale',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDImage' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDImage',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingTerm' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingTerm',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingInput',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingOrder' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingOrder',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingSelect' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\RankingSelect',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixRow',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Slider' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Slider',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SemanticDifferential' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SemanticDifferential',
+            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DataPrivacy' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DataPrivacy'],
     ],
 
 ];
