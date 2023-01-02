@@ -1,32 +1,32 @@
 [request.getQueryParams()] && [request.getQueryParams()['type'] == '2667'] || [getTSFE().type == 2667]
-    page.typeNum = 2667
-[END]
+page.typeNum = 2667
+[global]
 keqAjaxResponse = PAGE
 keqAjaxResponse {
-	typeNum = 2667
-	headerData >
-	config {
-		no_cache = 1
-		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:text/plain; charset=utf-8
-		xhtml_cleaning = 0
-		admPanel = 0
-		debug = 0
-	}
-	10 = USER_INT
-	10 {
-		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-		extensionName = KeQuestionnaire
-		pluginName = Questionnaire
-		vendorName = Kennziffer
-		controller = Ajax
-		action = ajax
-		switchableControllerActions {
-			Ajax {
-				1 = ajax
-			}
-		}
-		settings < plugin.tx_kequestionnaire.settings
-		persistence < plugin.tx_kequestionnaire.persistence
-	}
+    typeNum = 2667
+    headerData >
+    config {
+        no_cache = 1
+        disableAllHeaderCode = 1
+        additionalHeaders.10.header = Content-type:text/plain; charset=utf-8
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+    10 = USER_INT
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = KeQuestionnaire
+        pluginName = Questionnaire
+        vendorName = Kennziffer
+        controller = Ajax
+        action = ajax
+        switchableControllerActions {
+            Ajax {
+                1 = ajax
+            }
+        }
+        settings < plugin.tx_kequestionnaire.settings
+        persistence < plugin.tx_kequestionnaire.persistence
+    }
 }

@@ -9,7 +9,7 @@ plugin.tx_kequestionnaire {
 	}
 	persistence {
 		# cat=plugin.tx_kequestionnaire//a; type=string; label=Default storage PID
-		storagePid =
+		storagePid = 
 	}
 	settings {
 		# cat=plugin.tx_kequestionnaire//a; type=options[Compare points=comparePoints,Finished=finished]; label=How to render the chart
