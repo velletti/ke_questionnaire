@@ -1,5 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +27,6 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This Class renders the valuation charts
  *
@@ -31,30 +34,30 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class PointRangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class PointRangeController extends ActionController {
 
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository
-	 */
-	protected $rangeRepository;
+  * @var RangeRepository
+  */
+ protected $rangeRepository;
 	
 	/**
-	 * inject range repository
-	 * 
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository $rangeRepository
-	 * @return void
-	 */
-	public function injectRangeRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository $rangeRepository) {
+  * inject range repository
+  *
+  * @param RangeRepository $rangeRepository
+  * @return void
+  */
+ public function injectRangeRepository(RangeRepository $rangeRepository) {
 		$this->rangeRepository = $rangeRepository;
 	}
 	
 	/**
-	 * action show text for range
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult A fresh new result object
-	 * @return void
-	 */
-	public function showTextAction(\Kennziffer\KeQuestionnaire\Domain\Model\Result $result) {
+  * action show text for range
+  *
+  * @param Result $newResult A fresh new result object
+  * @return void
+  */
+ public function showTextAction(Result $result) {
 		$ranges = $this->rangeRepository->findAll();
 		if ($ranges !== NULL) {
 			/* @var $range \Kennziffer\KeQuestionnaire\Domain\Model\Range */

@@ -2,6 +2,9 @@
 // Deprecated since 7.6, needed for 6.2, will be removed with 8
 namespace Kennziffer\KeQuestionnaire\Controller\Wizard\ImageAreaSelectWizard;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Image Area Select Wizard
  */
@@ -14,7 +17,7 @@ class ImageAreaSelectWizard {
 	 */
 	function init()	{
 			// Setting GET vars (used in frameset script):
-		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P',1);
+		$this->P = GeneralUtility::_GP('P',1);
 
 			// Setting GET vars (used in colorpicker script):
 		$this->currentValue = $this->P['currentValue'];
@@ -48,13 +51,13 @@ class ImageAreaSelectWizard {
 	 */
 	protected function indexAction() {
 		/** @var $view tx_form_View_Wizard_Wizard */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\View\\ImageAreaSelectWizard');
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ke_questionnaire');
+		$view = GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\View\\ImageAreaSelectWizard');
+		$extPath = ExtensionManagementUtility::extPath('ke_questionnaire');
 		$path = 'Resources/Private/Templates/Wizards/ImageAreaSelect.html';
 		$view->setTemplatePathAndFilename($extPath.$path);
 		$view->setLayoutRootPath($extPath . 'Resources/Private/Layouts');
 		
-		$answer = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($this->P['table'],$this->P['uid']);
+		$answer = BackendUtility::getRecord($this->P['table'],$this->P['uid']);
 		$view->assign('answer',$answer);
 		$view->assign('baseUri',$view->getRequest()->getBaseUri());
 		$view->assign('P',$this->P);
@@ -63,5 +66,5 @@ class ImageAreaSelectWizard {
 	}
 }
 
-$wizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Controller\\Wizard\\ImageAreaSelectWizard\\ImageAreaSelectWizard');
+$wizard = GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Controller\\Wizard\\ImageAreaSelectWizard\\ImageAreaSelectWizard');
 $wizard->dispatch();

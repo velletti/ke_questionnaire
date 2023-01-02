@@ -23,7 +23,7 @@ namespace Kennziffer\KeQuestionnaire\Controller\Wizard;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController {
+class ImageAreaSelectController extends AbstractWizardController {
     /**
      * Wizard parameters, coming from FormEngine linking to the wizard.
      *
@@ -168,7 +168,7 @@ class ImageAreaSelectController extends \TYPO3\CMS\Backend\Controller\Wizard\Abs
     
     public function main(ServerRequestInterface $request)
     {		
-		$baseurl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+		$baseurl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         if ($this->docTemplatelose) {
             return $this->closeWindow;
         } else {    

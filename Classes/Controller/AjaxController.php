@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This Class renders the valuation charts
  *
@@ -31,17 +33,17 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AjaxController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class AjaxController extends ActionController {
 
 	/**
-	 * action ajax
-	 *
-	 * @param string $type Which Ajax Object has to be called
-	 * @param array $arguments If you want, you can add some arguments to your object
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $arguments
-	 * @return string In most cases JSON
-	 */
-	public function ajaxAction($type, $arguments = array()) {
+  * action ajax
+  *
+  * @param string $type Which Ajax Object has to be called
+  * @param array $arguments If you want, you can add some arguments to your object
+  * @IgnoreValidation
+  * @return string In most cases JSON
+  */
+ public function ajaxAction($type, $arguments = array()) {
 		$requestedClassName = 'Kennziffer\\KeQuestionnaire\\Ajax\\' . $type;
 		if (class_exists($requestedClassName)) {
 			$object = $this->objectManager->get($requestedClassName);

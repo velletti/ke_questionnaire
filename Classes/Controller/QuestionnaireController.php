@@ -1,5 +1,13 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use Kennziffer\KeQuestionnaire\Utility\Mail;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Kennziffer\KeQuestionnaire\ValidationAbstractValidation;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +31,6 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,7 +38,7 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class QuestionnaireController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class QuestionnaireController extends ActionController {
     /**
 	 * The current view, as resolved by resolveView()
 	 *
@@ -41,67 +48,67 @@ class QuestionnaireController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	var $view = NULL;
         
     /**
-	 * questionnaireRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository
-	 */
-	protected $questionnaireRepository;
+  * questionnaireRepository
+  *
+  * @var QuestionnaireRepository
+  */
+ protected $questionnaireRepository;
 	
 	/**
-	 * authCodeRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository
-	 */
-	protected $authCodeRepository;
+  * authCodeRepository
+  *
+  * @var AuthCodeRepository
+  */
+ protected $authCodeRepository;
 	
 	/**
-	 * resultRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository
-	 */
-	protected $resultRepository;
+  * resultRepository
+  *
+  * @var ResultRepository
+  */
+ protected $resultRepository;
 	
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	protected $mailSender;
+  * @var Mail
+  */
+ protected $mailSender;
     
     /**
-	 * injectQuestionnaireRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository
-	 * @return void
-	 */
-	public function injectQuestionnaireRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository) {
+  * injectQuestionnaireRepository
+  *
+  * @param QuestionnaireRepository $questionnaireRepository
+  * @return void
+  */
+ public function injectQuestionnaireRepository(QuestionnaireRepository $questionnaireRepository) {
 		$this->questionnaireRepository = $questionnaireRepository;
 	}
 	
 	/**
-	 * injectAuthCodeRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository
-	 * @return void
-	 */
-	public function injectAuthCodeRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository) {
+  * injectAuthCodeRepository
+  *
+  * @param AuthCodeRepository $authCodeRepository
+  * @return void
+  */
+ public function injectAuthCodeRepository(AuthCodeRepository $authCodeRepository) {
 		$this->authCodeRepository = $authCodeRepository;
 	}
 	
 	/**
-	 * injectResultRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository
-	 * @return void
-	 */
-	public function injectResultRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository) {
+  * injectResultRepository
+  *
+  * @param ResultRepository $resultRepository
+  * @return void
+  */
+ public function injectResultRepository(ResultRepository $resultRepository) {
 		$this->resultRepository = $resultRepository;
 	}
 	
 	/**
-	 * inject mailSender
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\Mail $mail
-	 */
-	public function injectMail(\Kennziffer\KeQuestionnaire\Utility\Mail $mail) {
+  * inject mailSender
+  *
+  * @param Mail $mail
+  */
+ public function injectMail(Mail $mail) {
 		$this->mailSender = $mail;
 	}
 
@@ -134,9 +141,9 @@ class QuestionnaireController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	public function isValidEmail($value){
 		$class = 'Kennziffer\\KeQuestionnaire\\Validation\\Email';
 		if (class_exists($class)) {
-			$objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager;
+			$objectManager = new ObjectManager;
 			$validator = $objectManager->get($class);
-			if ($validator instanceof \Kennziffer\KeQuestionnaire\ValidationAbstractValidation) {
+			if ($validator instanceof ValidationAbstractValidation) {
 				/* @var $validator \Kennziffer\KeQuestionnaire\ValidationAbstractValidation */
 				return $validator->isValid($value, $this);
 			} else return false;

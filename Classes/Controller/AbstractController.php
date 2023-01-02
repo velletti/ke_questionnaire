@@ -1,5 +1,21 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
+use Kennziffer\KeQuestionnaire\Domain\Model\ExtConf;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use Kennziffer\KeQuestionnaire\Utility\Localization;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +39,6 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,150 +46,150 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class AbstractController extends ActionController {
 
 	/**
-	 * resultRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository
-	 */
-	protected $resultRepository;
+  * resultRepository
+  *
+  * @var ResultRepository
+  */
+ protected $resultRepository;
 
 	/**
-	 * questionRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository
-	 */
-	var $questionRepository;
+  * questionRepository
+  *
+  * @var QuestionRepository
+  */
+ var $questionRepository;
     
     /**
-	 * questionnaireRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository
-	 */
-	protected $questionnaireRepository;
+  * questionnaireRepository
+  *
+  * @var QuestionnaireRepository
+  */
+ protected $questionnaireRepository;
 	
 	/**
-	 * authCodeRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository
-	 */
-	var $authCodeRepository;
+  * authCodeRepository
+  *
+  * @var AuthCodeRepository
+  */
+ var $authCodeRepository;
 
 	/**
-	 * questionnaire
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire
-	 */
-	var $questionnaire;
+  * questionnaire
+  *
+  * @var Questionnaire
+  */
+ var $questionnaire;
 
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf
-	 */
-	protected $extConf;
+  * @var ExtConf
+  */
+ protected $extConf;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
+  * @var Dispatcher
+  */
+ protected $signalSlotDispatcher;
 
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\Localization
-	 */
-	protected $localization;
+  * @var Localization
+  */
+ protected $localization;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-	 */
-	protected $steps;
+  * @var ObjectStorage
+  */
+ protected $steps;
 
 
 	/**
-	 * injectResultRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository
-	 * @return void
-	 */
-	public function injectResultRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository) {
+  * injectResultRepository
+  *
+  * @param ResultRepository $resultRepository
+  * @return void
+  */
+ public function injectResultRepository(ResultRepository $resultRepository) {
 		$this->resultRepository = $resultRepository;
 	}
 
 	/**
-	 * injectQuestionRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository
-	 * @return void
-	 */
-	public function injectQuestionRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository) {
+  * injectQuestionRepository
+  *
+  * @param QuestionRepository $questionRepository
+  * @return void
+  */
+ public function injectQuestionRepository(QuestionRepository $questionRepository) {
 		$this->questionRepository = $questionRepository;
 	}
 	
 	/**
-	 * injectAuthCodeRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository
-	 * @return void
-	 */
-	public function injectAuthCodeRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository) {
+  * injectAuthCodeRepository
+  *
+  * @param AuthCodeRepository $authCodeRepository
+  * @return void
+  */
+ public function injectAuthCodeRepository(AuthCodeRepository $authCodeRepository) {
 		$this->authCodeRepository = $authCodeRepository;
 	}
 
 	/**
-	 * injectQuestionnaire
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire
-	 * @return void
-	 */
-	public function injectQuestionnaire(\Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire) {
+  * injectQuestionnaire
+  *
+  * @param Questionnaire $questionnaire
+  * @return void
+  */
+ public function injectQuestionnaire(Questionnaire $questionnaire) {
 		$this->questionnaire = $questionnaire;
 	}
     
     /**
-	 * injectQuestionnaireRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository
-	 * @return void
-	 */
-	public function injectQuestionnaireRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository) {
+  * injectQuestionnaireRepository
+  *
+  * @param QuestionnaireRepository $questionnaireRepository
+  * @return void
+  */
+ public function injectQuestionnaireRepository(QuestionnaireRepository $questionnaireRepository) {
 		$this->questionnaireRepository = $questionnaireRepository;
 	}
 
 	/**
-	 * inject extConf
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf
-	 * @return void
-	 */
-	public function injectExtConf(\Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf) {
+  * inject extConf
+  *
+  * @param ExtConf $extConf
+  * @return void
+  */
+ public function injectExtConf(ExtConf $extConf) {
 		$this->extConf = $extConf;
 	}
 
 	/**
-	 * inject signal slots
-	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 * @return void
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+  * inject signal slots
+  *
+  * @param Dispatcher $signalSlotDispatcher
+  * @return void
+  */
+ public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
 			$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 
 	/**
-	 * inject localization
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\Localization $extConf
-	 */
-	public function injectLocalization(\Kennziffer\KeQuestionnaire\Utility\Localization $localization) {
+  * inject localization
+  *
+  * @param Localization $extConf
+  */
+ public function injectLocalization(Localization $localization) {
 		$this->localization = $localization;
 	}
 
 	/**
-	 * inject steps
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $steps
-	 * @return void
-	 */
-	public function injectSteps(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $steps) {
+  * inject steps
+  *
+  * @param ObjectStorage $steps
+  * @return void
+  */
+ public function injectSteps(ObjectStorage $steps) {
 			$this->steps = $steps;
 	}
 
@@ -185,21 +200,21 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $defaultViewObjectName = 'Kennziffer\\KeQuestionnaire\\View\\TemplateView';
 		
 	/**
-	 * set the BasePartialRootPath for all Controllers extending this one
-	 * 
-	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-	 * @return void
-	 */
-	protected function setViewConfiguration(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
+  * set the BasePartialRootPath for all Controllers extending this one
+  *
+  * @param ViewInterface $view
+  * @return void
+  */
+ protected function setViewConfiguration(ViewInterface $view) {
 		parent::setViewConfiguration($view);
 		// Template Path Override
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		
 		//check if there is a different Path in the base configuration
 		if (isset($extbaseFrameworkConfiguration['view']['basePartialRootPath'])
 			&& strlen($extbaseFrameworkConfiguration['view']['basePartialRootPath']) > 0
 			&& method_exists($view, 'setBasePartialRootPath')) {
-			$view->setBasePartialRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['basePartialRootPath']));
+			$view->setBasePartialRootPath(GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['basePartialRootPath']));
 		}
 	}
 
@@ -225,12 +240,12 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
-	 * initializes the view with additional placeholders/markers
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-	 * @return void
-	 */
-	public function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
+  * initializes the view with additional placeholders/markers
+  *
+  * @param ViewInterface $view
+  * @return void
+  */
+ public function initializeView(ViewInterface $view) {
 		if($this->extConf->getEnableFeUserMarker() && is_array($GLOBALS['TSFE']->fe_user->user)) {
 			$view->assign('feUser', $GLOBALS['TSFE']->fe_user->user);
 		}
@@ -256,7 +271,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @param integer $severity optional severity code. One of the \TYPO3\CMS\Core\Messaging\FlashMessage constants
 	 * @return void
 	 */
-	public function addNewFlashMessage($action, $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK) {
+	public function addNewFlashMessage($action, $severity = AbstractMessage::OK) {
 		$messageLocallangKey = sprintf('flashmessage.%s.%s', $this->request->getControllerName(), $action);
 		$localizedMessage = $this->translate($messageLocallangKey, '[' . $messageLocallangKey . ']');
 		$titleLocallangKey = sprintf('%s.title', $messageLocallangKey);
@@ -281,16 +296,16 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
-	 * calls the next step as defined in TS (plugin.kequestionnaire.steps)
-	 * Sample:
-	 * - open questionnaire
-	 * - logging
-	 * - mailing
-	 * - Evaluation
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $result
-	 */
-	protected function nextStep(\Kennziffer\KeQuestionnaire\Domain\Model\Result $result) {
+  * calls the next step as defined in TS (plugin.kequestionnaire.steps)
+  * Sample:
+  * - open questionnaire
+  * - logging
+  * - mailing
+  * - Evaluation
+  *
+  * @param Result $result
+  */
+ protected function nextStep(Result $result) {
 		// get current environment vars
 		$action = $this->request->getControllerActionName();
 		$controller = $this->request->getControllerName();

@@ -1,5 +1,12 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use Kennziffer\KeQuestionnaire\Utility\CsvExport;
+use Kennziffer\KeQuestionnaire\Utility\BackendTsfe;
+use Kennziffer\KeQuestionnaire\Utility\PdfExport;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,19 +41,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendController {
+class ExportController extends  BackendController {
 	
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\CsvExport
-	 */
-	protected $csvExport;
+  * @var CsvExport
+  */
+ protected $csvExport;
 	
 	/**
-	 * inject csvExport
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\CsvExport $csvExport
-	 */
-	public function injectCsvExport(\Kennziffer\KeQuestionnaire\Utility\CsvExport $csvExport) {
+  * inject csvExport
+  *
+  * @param CsvExport $csvExport
+  */
+ public function injectCsvExport(CsvExport $csvExport) {
 		$this->csvExport = $csvExport;
 	}
 
@@ -55,16 +62,16 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 
 	
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\BackendTsfe
-	 */
-	protected $backendTsfe;
+  * @var BackendTsfe
+  */
+ protected $backendTsfe;
 	
 	/**
-	 * inject backendTsfe
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\BackendTsfe $backendTsfe
-	 */
-	public function injectBackendTsfe(\Kennziffer\KeQuestionnaire\Utility\BackendTsfe $backendTsfe) {
+  * inject backendTsfe
+  *
+  * @param BackendTsfe $backendTsfe
+  */
+ public function injectBackendTsfe(BackendTsfe $backendTsfe) {
 		$this->backendTsfe = $backendTsfe;
 	}
     /**
@@ -77,7 +84,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
         try {
             if( class_exists("Kennziffer\\KeQuestionnaire\\Utility\\PdfExport")) {
                 /**
-                 * @param \Kennziffer\KeQuestionnaire\Utility\PdfExport $pdfExport
+                 * @param PdfExport $pdfExport
                  */
                 $this->pdfExport = GeneralUtility::makeInstance("Kennziffer\\KeQuestionnaire\\Utility\\PdfExport") ;
 
@@ -97,14 +104,14 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	}
 	
 	/**
-	 * CSV Action
-	 * display for csv export
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function csvAction($storage = false, $plugin = false) {
+  * CSV Action
+  * display for csv export
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function csvAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		//count all the participations for display in header
@@ -267,14 +274,14 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	}
 	
 	/**
-	 * CSV Result Based Action
-	 * display for csv export
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function csvRbAction($storage = false, $plugin = false) {
+  * CSV Result Based Action
+  * display for csv export
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function csvRbAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		//count all the participations for display in header
@@ -396,13 +403,13 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	
     
     /**
-	 * PDF Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function pdfAction($storage = false, $plugin = false) {
+  * PDF Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function pdfAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		
@@ -412,13 +419,13 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	}
 	
 	/**
-	 * Download CSV Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function downloadCsvAction($storage = false, $plugin = false) {
+  * Download CSV Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function downloadCsvAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 
@@ -451,13 +458,13 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	}
 	
 	/**
-	 * Download CSV Result Based Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function downloadCsvRbAction($storage = false, $plugin = false) {
+  * Download CSV Result Based Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function downloadCsvRbAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		
@@ -488,13 +495,13 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	}
 	
 	/**
-	 * Download CSV Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function downloadAuthCodesCsvAction($storage = false, $plugin = false) {
+  * Download CSV Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function downloadAuthCodesCsvAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		
@@ -525,7 +532,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	private function iniCsvExport(){
 		$csvdata = '';
 		
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')){
+		if (ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')){
 			$this->csvExport = $this->objectManager->get('Kennziffer\KeQuestionnairePremium\Utility\CsvExport');
 			
 			if ($this->request->hasArgument('averagePoints')) $this->csvExport->setAveragePoints($this->request->getArgument('averagePoints'));
@@ -554,19 +561,19 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 	}
     
     /**
-	 * Download PDF Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function downloadPdfAction($storage = false, $plugin = false) {
+  * Download PDF Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function downloadPdfAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		//check the pdf type 
         if ($this->request->hasArgument('pdfType')) $pdfType = $this->request->getArgument('pdfType');
         else $pdfType = 'empty';
-        
+
         switch ($pdfType){
 			//only questions
             case 'empty':
@@ -597,7 +604,7 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
 		$requestedPage = 0;		
 		
 		if ($this->request->hasArgument('questionnaire')){
-			$this->plugin = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content',$this->request->getArgument('questionnaire'));
+			$this->plugin = BackendUtility::getRecord('tt_content',$this->request->getArgument('questionnaire'));
 		}
 		
 		//the tsfe data is needed
@@ -636,13 +643,13 @@ class ExportController extends  \Kennziffer\KeQuestionnaire\Controller\BackendCo
     }
 
 	/**
-	 * get the Questions for the questionnaire
-	 * 
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
-	 */
-	private function getQuestions($plugin) {
+  * get the Questions for the questionnaire
+  *
+  * @param array $plugin
+  * @IgnoreValidation
+  * @return QueryResultInterface|array
+  */
+ private function getQuestions($plugin) {
 		$pids = explode(',',$plugin['pages']);
 		$storagePid = $pids[0];
 		

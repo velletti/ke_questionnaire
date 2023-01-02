@@ -1,5 +1,14 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use Kennziffer\KeQuestionnaire\Utility\Mail;
+use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
 use Jve\JveTemplate\Utility\TypoScriptUtility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +45,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\AbstractController {
+class BackendController extends  AbstractController {
 	/**
 	 * The current view, as resolved by resolveView()
 	 *
@@ -61,9 +70,9 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	protected $pluginFF;
 	
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	var $mailSender;
+  * @var Mail
+  */
+ var $mailSender;
 
     /**
      * @var string
@@ -71,26 +80,26 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	var $extensionName = "ke_questionnaire" ;
 	
 	/**
-	 * @var \TYPO3\CMS\Core\Service\FlexFormService
-	*/
+     * @var FlexFormService
+     */
     protected $flexFormService;
 
 
 	/**
-     * @param \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
+     * @param FlexFormService $flexFormService
      * @return void
      */
-    public function injectFlexFormService(\TYPO3\CMS\Core\Service\FlexFormService $flexFormService) {
+    public function injectFlexFormService(FlexFormService $flexFormService) {
 
         $this->flexFormService = $flexFormService;
     }
 	
 	/**
-	 * inject mailSender
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\Mail $mail
-	 */
-	public function injectMail(\Kennziffer\KeQuestionnaire\Utility\Mail $mail) {
+  * inject mailSender
+  *
+  * @param Mail $mail
+  */
+ public function injectMail(Mail $mail) {
 		$this->mailSender = $mail;
 	}
 	
@@ -101,7 +110,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 
 		parent::initializeAction();
 		//the plugin selected in the be
-		if ($this->request->hasArgument('pluginUid')) $this->plugin = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $this->request->getArgument('pluginUid'));
+		if ($this->request->hasArgument('pluginUid')) $this->plugin = BackendUtility::getRecord('tt_content', $this->request->getArgument('pluginUid'));
 		//create the flexform-data for this questionnaire
 
 		if ($this->plugin['pi_flexform']) {
@@ -148,31 +157,31 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	}
 	
 	/**
-	 * AuthCode Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function authCodesAction($storage = false, $plugin = false) {
+  * AuthCode Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function authCodesAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		//get the authCodes for this plugin
 		$authCodes = $this->authCodeRepository->findAllForPid($this->storagePid);
 		$this->view->assign('authCodes',$authCodes);		
 		$this->view->assign('plugin',$this->plugin);
-                
+
                 //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->extConf, 'extConf');
 	}
 	
 	/**
-	 * AuthCode Simple Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function authCodesSimpleAction($storage = false, $plugin = false) {
+  * AuthCode Simple Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function authCodesSimpleAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		
@@ -180,14 +189,14 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	}
 	
 	/**
-	 * AuthCode Mail Action
-	 * Action to send the mails for the authcodes
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function authCodesMailAction($storage = false, $plugin = false) {
+  * AuthCode Mail Action
+  * Action to send the mails for the authcodes
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function authCodesMailAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		
@@ -221,13 +230,13 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		$addresses = false;
         if ( $this->extConf->isEnableAuthCode2ttAddress() ) {
             //check if extension is installed
-            if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
+            if(ExtensionManagementUtility::isLoaded('tt_address')) {
 
-                /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+                /** @var ConnectionPool $connectionPool */
                 $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
 
 
-                /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+                /** @var QueryBuilder $queryBuilder */
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_address') ;
                 $res  = $queryBuilder ->select('*' ) ->from('tt_address')
                     ->orderBy("name" , "ASC")
@@ -253,9 +262,9 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		//create the preview with the plugin or standard-texts
 		$preview = array();
 		$this->view->assign('authCode',array('authCode'=>'AUTHCODE'));
-		$preview['subject'] = ($this->plugin['ffdata']['settings']['email']['invite']['subject']) ? $this->plugin['ffdata']['settings']['email']['invite']['subject']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.subject', $this->extensionName) ;
-		$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']) ? $this->plugin['ffdata']['settings']['email']['invite']['text']['before']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.before', $this->extensionName));
-		$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']) ?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName));
+		$preview['subject'] = ($this->plugin['ffdata']['settings']['email']['invite']['subject']) ? $this->plugin['ffdata']['settings']['email']['invite']['subject']:LocalizationUtility::translate('mail.standard.subject', $this->request->getControllerExtensionName()) ;
+		$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']) ? $this->plugin['ffdata']['settings']['email']['invite']['text']['before']:LocalizationUtility::translate('mail.standard.text.before', $this->request->getControllerExtensionName()));
+		$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']) ?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:LocalizationUtility::translate('mail.standard.text.after', $this->request->getControllerExtensionName()));
 		$this->view->assign('text',$text);
 
 		// $preview['body'] = trim($this->view->render('CreatedMail'));
@@ -275,8 +284,8 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 
 		//create the codes and store them in the storagepid of the plugin
 		for ($i = 0; $i < $amount; $i++){
-		    /** @var \Kennziffer\KeQuestionnaire\Domain\Model\AuthCode $newAuthCode */
-			$newAuthCode = GeneralUtility::makeInstance( 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
+		    /** @var AuthCode $newAuthCode */
+   $newAuthCode = GeneralUtility::makeInstance( 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
 
 			$newAuthCode->generateAuthCode($codeLength,$this->storagePid);
 			$newAuthCode->setPid($this->storagePid);
@@ -316,7 +325,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 			$add = $this->request->getArgument('feusers');
 			if (is_array($add)){
 				foreach ($add as $mail){
-					$mail = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('fe_user',$mail);
+					$mail = BackendUtility::getRecord('fe_user',$mail);
                                         $mail['sourcetype'] = 'feuser';
 					$emails[] = $mail;
 				}
@@ -335,7 +344,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 			$add = $this->request->getArgument('ttaddress');
 			if (is_array($add)){
 				foreach ($add as $mail){
-					$mail = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_address',$mail);
+					$mail = BackendUtility::getRecord('tt_address',$mail);
                                         $mail['sourcetype'] = 'ttaddress';
 					$email = $mail;
 					$emails[] = $mail;
@@ -350,7 +359,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		foreach ($emails as $mail){
 			if ($mail['email'] != '' && GeneralUtility::validEmail($mail['email'])){
 				//create the authcode
-                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\AuthCode $newAuthCode */
+                /** @var AuthCode $newAuthCode */
                 $newAuthCode = GeneralUtility::makeInstance( 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
 
                 $newAuthCode->generateAuthCode($codeLength,$this->storagePid);
@@ -378,10 +387,10 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 				$this->authCodeRepository->add($newAuthCode);
 				//add mail data to view
 				$this->view->assign('authCode',$newAuthCode);
-				$subject = ($this->plugin['ffdata']['settings']['email']['invite']['subject']?$this->plugin['ffdata']['settings']['email']['invite']['subject']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.subject', $this->extensionName));
-				$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']?$this->plugin['ffdata']['settings']['email']['invite']['text']['before']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.before', $this->extensionName)));
+				$subject = ($this->plugin['ffdata']['settings']['email']['invite']['subject']?$this->plugin['ffdata']['settings']['email']['invite']['subject']:LocalizationUtility::translate('mail.standard.subject', $this->request->getControllerExtensionName()));
+				$text['before'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['before']?$this->plugin['ffdata']['settings']['email']['invite']['text']['before']:LocalizationUtility::translate('mail.standard.text.before', $this->request->getControllerExtensionName())));
 
-				$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.standard.text.after', $this->extensionName)));
+				$text['after'] = trim(($this->plugin['ffdata']['settings']['email']['invite']['text']['after']?$this->plugin['ffdata']['settings']['email']['invite']['text']['after']:LocalizationUtility::translate('mail.standard.text.after', $this->request->getControllerExtensionName())));
 
 
                 foreach ($mail as $field => $value){
@@ -422,7 +431,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 		$mails = array();
 		
 		foreach ($fe_groups as $uid){
-			$group = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('fe_groups',$uid);
+			$group = BackendUtility::getRecord('fe_groups',$uid);
 			$userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
 			$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 			$querySettings->setRespectStoragePage(FALSE);
@@ -431,7 +440,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 			foreach ($user as $use){				
 				foreach ($use->getUsergroup() as $ugroup){
 					if ($uid == $ugroup->getUid() AND $use->getEmail()){
-						$mails[$use->getUid()] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('fe_users',$use->getUid());
+						$mails[$use->getUid()] = BackendUtility::getRecord('fe_users',$use->getUid());
 					}
 				}
 			}			
@@ -473,19 +482,19 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	}
         
         /**
-	 * AuthCode Reminder Action
-	 * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
-	 */
-	public function authCodesRemindAction($storage = false, $plugin = false) {
+  * AuthCode Reminder Action
+  *
+  * @param integer $storage
+  * @param array $plugin
+  * @IgnoreValidation
+  */
+ public function authCodesRemindAction($storage = false, $plugin = false) {
 		if ($storage) $this->storagePid = $storage;
 		if ($plugin) $this->plugin = $plugin;
 		
 		$this->view->assign('plugin',$this->plugin);
                 //SignalSlot for Action
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'authCodesRemindAction', array($this,$this->storagePid,$this->extensionName));
+                $this->signalSlotDispatcher->dispatch(__CLASS__, 'authCodesRemindAction', array($this,$this->storagePid,$this->request->getControllerExtensionName()));
 	}
         
         /**
@@ -494,7 +503,7 @@ class BackendController extends  \Kennziffer\KeQuestionnaire\Controller\Abstract
 	public function remindAndMailAuthCodesAction() {
             $this->view->assign('plugin',$this->plugin);
 		//SignalSlot for Action
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'remindAndMailAuthCodesAction', array($this,$this->request,$this->extensionName));
+                $this->signalSlotDispatcher->dispatch(__CLASS__, 'remindAndMailAuthCodesAction', array($this,$this->request,$this->request->getControllerExtensionName()));
                 
 		//forward to standard-action
 		$this->forward('authCodes');

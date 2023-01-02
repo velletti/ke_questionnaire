@@ -1,5 +1,11 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use Kennziffer\KeQuestionnaire\Evaluation\AbstractChart;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +29,6 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This Class renders the valuation charts
  *
@@ -31,12 +36,12 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class EvaluationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class EvaluationController extends ActionController {
 
 	/**
-	 * @var \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart
-	 */
-	protected $chartClass;
+  * @var AbstractChart
+  */
+ protected $chartClass;
 
 
 
@@ -50,27 +55,27 @@ class EvaluationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	public function initializeAction() {
 		$class = $this->settings['chart']['class'];
 		$this->chartClass = $this->objectManager->get($class);
-		if (!$this->chartClass instanceof \Kennziffer\KeQuestionnaire\Evaluation\AbstractChart) {
+		if (!$this->chartClass instanceof AbstractChart) {
 			$this->chartClass = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Evaluation\\GoogleChart');
 		}
 		$this->chartClass->setSettings($this->settings);
 
 		$chartLibraryPath = $this->chartClass->getChartLibraryPath();
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile($chartLibraryPath);
+		GeneralUtility::makeInstance(PageRenderer::class)->addJsFile($chartLibraryPath);
 	}
 
 	/**
-	 * action show
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Model\Result $newResult A fresh new result object
-	 * @return void
-	 */
-	public function showAction(\Kennziffer\KeQuestionnaire\Domain\Model\Result $result) {
+  * action show
+  *
+  * @param Result $newResult A fresh new result object
+  * @return void
+  */
+ public function showAction(Result $result) {
 		$this->chartClass->setResult($result);
 		$this->chartClass->setRenderChart($this->settings['chart']['renderChart']);
 		$this->chartClass->setChartType($this->settings['chart']['chartType']);
 		$js = $this->chartClass->getHeaderJs();
-		$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode('chartLibrary', $js);
+		GeneralUtility::makeInstance(PageRenderer::class)->addJsInlineCode('chartLibrary', $js);
 
 		$this->view->assign('chart', $this->chartClass->getChartContainer());
 	}

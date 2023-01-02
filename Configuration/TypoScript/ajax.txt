@@ -1,5 +1,5 @@
 [request.getQueryParams()] && [request.getQueryParams()['type'] == '2667'] || [getTSFE().type == 2667]
-page.typeNum = 2667
+    page.typeNum = 2667
 [global]
 keqAjaxResponse = PAGE
 keqAjaxResponse {

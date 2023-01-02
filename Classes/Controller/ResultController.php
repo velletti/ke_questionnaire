@@ -1,5 +1,20 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +51,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractController {
+class ResultController extends AbstractController {
 	
 	/**
 	 * The current view, as resolved by resolveView()
@@ -56,12 +71,12 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	var $userUid = 0 ;
 	
 	/**
-	 * injectQuestionnaireRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository
-	 * @return void
-	 */
-	public function injectQuestionnaireRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository) {
+  * injectQuestionnaireRepository
+  *
+  * @param QuestionnaireRepository $questionnaireRepository
+  * @return void
+  */
+ public function injectQuestionnaireRepository(QuestionnaireRepository $questionnaireRepository) {
 		$this->questionnaireRepository = $questionnaireRepository;
 	}
 	
@@ -102,17 +117,17 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	}
 
     /**
-     * Displays a form for saving a new questionnaire
-     *
-     * @param Result $newResult A fresh new result object
-     * @param integer $requestedPage after checking the questions of currentPage redirect to this page
-     *
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $newResult
-     * @return void
-     */
-	public function newAction(Result $newResult = NULL, $requestedPage = 0) {
+  * Displays a form for saving a new questionnaire
+  *
+  * @param Result $newResult A fresh new result object
+  * @param integer $requestedPage after checking the questions of currentPage redirect to this page
+  *
+  * @throws InvalidSlotException
+  * @throws InvalidSlotReturnException
+  * @IgnoreValidation
+  * @return void
+  */
+ public function newAction(Result $newResult = NULL, $requestedPage = 0) {
 		if ($newResult == NULL) { // workaround for fluid bug ##5636
 		    /** @var Result $newResult */
 			$newResult = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\Result');
@@ -172,7 +187,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                 $questions = $this->questionnaire->getQuestionsForPage($page) ;
                 if( $questions) {
                     foreach ($questions as $question) {
-                        /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultQuestion */
+                        /** @var ResultQuestion $resultQuestion */
                         $resultQuestion = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion');
                         $resultQuestion->setQuestion($question);
                         $resultQuestion->setPage($page);
@@ -184,7 +199,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 
             // Propertimapping in LTS 9 is not Working correctly with old Model. AND it is needed again to be changed in LTS 10
             $this->resultRepository->add($newResult) ;
-            $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+            $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
             $persistenceManager->persistAll();
 
         }
@@ -208,7 +223,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	public function setStoragePid($storagePid) {
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		//fallback to current pid if no storagePid is defined
-        $configuration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$currentPid['persistence']['storagePid'] = $storagePid;
 		$configurationManager->setConfiguration(array_merge($configuration, $currentPid));
 	}
@@ -233,14 +248,14 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 				$this->request->setArgument('newResult',$result);
 			}
 		}
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 
 
         //if the result is not new create the clone of the stored before it is updated
 		//if the old-result is not stored, given answers of other pages will be deleted
         if( is_array( $this->temp_result )) {
             /** @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $answerRepository */
-            /** @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository */
+            /** @var ResultAnswerRepository $resultAnswerRepository */
             $answerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository');
             $resultAnswerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository');
             if (array_key_exists('__identity' , $this->temp_result ) && $this->temp_result['__identity'] > 0) {
@@ -253,7 +268,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                 }
                 if (array_key_exists('questions' , $this->temp_result ) && count( $this->temp_result['questions']) > 0)  {
                     if( $result->getQuestions() ) {
-                        /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultQuestion */
+                        /** @var ResultQuestion $resultQuestion */
                         foreach ($result->getQuestions()  as $resultQuestion) {
                             if( $this->temp_result['questions'] ) {
 
@@ -274,7 +289,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                                         foreach( $formquestion['answers'] as $formAnswer) {
                                              if( $formAnswer['value'] || $formAnswer['answer'] ) {
                                                 $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
-                                                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer$resultAnswer */
+                                                /** @var ResultAnswer $resultAnswer */
                                                 $resultAnswer = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
                                                 $resultAnswer->setPid($result->getPid()) ;
                                                 $resultAnswer->setResultquestion($resultQuestion);
@@ -295,7 +310,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                                                     $resultQuestion->getUid() ,
                                                     $answer->getUid() ,
                                                 false ) ;
-                                                if( $oldResultAnswer && $oldResultAnswer->getFirst() instanceof  \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer) {
+                                                if( $oldResultAnswer && $oldResultAnswer->getFirst() instanceof  ResultAnswer) {
                                                     $resultAnswerRepository->remove($oldResultAnswer->getFirst() ) ;
                                                 }
 
@@ -329,20 +344,20 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 
 
     /**
-     * Creates a new questionnaire
-     *
-     * @param integer $currentPage check, validate and save the results of this page
-     * @param integer $requestedPage after checking the questions of currentPage redirect to this page
-     * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $newResult
-     */
-	public function createAction( $currentPage, $requestedPage) {
+  * Creates a new questionnaire
+  *
+  * @param integer $currentPage check, validate and save the results of this page
+  * @param integer $requestedPage after checking the questions of currentPage redirect to this page
+  * @return void
+  * @throws StopActionException
+  * @throws UnsupportedRequestTypeException
+  * @throws IllegalObjectTypeException
+  * @throws UnknownObjectException
+  * @throws InvalidSlotException
+  * @throws InvalidSlotReturnException
+  * @IgnoreValidation
+  */
+ public function createAction( $currentPage, $requestedPage) {
 	    /** @var Result $newResult */
 	    $newResult = $this->newResult ;
                 //requestedPage => next Page to be shown
@@ -374,7 +389,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		$this->resultRepository->update($result);
 
 
-		$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+		$persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 		$persistenceManager->persistAll();
 		
 		$this->resultRepository->clearRATable();
@@ -448,7 +463,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	 */
 	public function showAction(Result $result = NULL) {
 		if (!$result) {
-			$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('feView.noResultError' ), \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('feView.noResultErrorTitle' ), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$this->addFlashMessage(LocalizationUtility::translate('feView.noResultError' ), LocalizationUtility::translate('feView.noResultErrorTitle' ), AbstractMessage::WARNING);
 		} else {
 			$questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
 			$this->view->assign('questionnaire', $questionnaire[0]);
@@ -538,7 +553,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 			$formResult->checkMatrixType($rquestion);
 		}
        
-		$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+		$persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 		$persistenceManager->persistAll();
 		
 		return $formResult;
@@ -562,7 +577,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 		$result = $this->modifyResultBeforeSave($updatedResult);
 		$this->resultRepository->update($result);
 		
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 		$persistenceManager->persistAll();
 				
 		return $result;
@@ -631,12 +646,12 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
     }
 	
 	/**
-	 * Action to show the FeUser-Access Error
-	 *
-     * @param \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire
-	 * @return void
-	 */
-	public function dependancyAccessAction(\Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire) {
+  * Action to show the FeUser-Access Error
+  *
+  * @param Questionnaire $questionnaire
+  * @return void
+  */
+ public function dependancyAccessAction(Questionnaire $questionnaire) {
 		$this->view->assign('questionnaire',$questionnaire);
 	}
 	
@@ -656,7 +671,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                                     $this->authCode->setFirstactive(time());                                    
                                     $this->authCodeRepository->update($this->authCode);
                                     
-                                    $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+                                    $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
                                     $persistenceManager->persistAll();
                                 }
 				return true;
@@ -670,7 +685,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
                                     $this->authCode->setFirstactive(time());                                    
                                     $this->authCodeRepository->update($this->authCode);
                                     
-                                    $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+                                    $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
                                     $persistenceManager->persistAll();
                                 }
 				return true;
@@ -742,13 +757,13 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
 	}
 	
 	/**
-	 * Action to show the End Page of the questionnaire
-	 *
-	 * @param Result $result
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $result
-	 * @return void
-	 */
-	public function endAction(Result $result = NULL) {
+  * Action to show the End Page of the questionnaire
+  *
+  * @param Result $result
+  * @IgnoreValidation
+  * @return void
+  */
+ public function endAction(Result $result = NULL) {
 		if (!$result) $result = $this->resultRepository->findByUid($this->request->getArgument('result'));
 		$questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
 		
@@ -780,7 +795,7 @@ class ResultController extends \Kennziffer\KeQuestionnaire\Controller\AbstractCo
             $randomQuestionsMax = $this->settings['randomQuestionsMax'] ;
             foreach ($pages as $page => $questions ) {
 
-                $pageStorage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+                $pageStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
                 shuffle($questions);
 
                 $i = 0 ;

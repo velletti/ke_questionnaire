@@ -1,5 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+use Kennziffer\KeQuestionnaire\Utility\Analysis;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 
 /***************************************************************
@@ -33,19 +35,19 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendController {
+class AnalyseController extends  BackendController {
 	
     /**
-	 * @var \Kennziffer\KeQuestionnaire\Utility\Analysis
-	 */
-	protected $analysis;
+  * @var Analysis
+  */
+ protected $analysis;
 	
 	/**
-	 * inject analysis
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Utility\Analysis $analysis
-	 */
-	public function injectAnalysis(\Kennziffer\KeQuestionnaire\Utility\Analysis $analysis) {
+  * inject analysis
+  *
+  * @param Analysis $analysis
+  */
+ public function injectAnalysis(Analysis $analysis) {
 		$this->analysis = $analysis;
 	}
     
@@ -68,10 +70,10 @@ class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendC
 	
     /**
      * action analyse questions
-     * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
+     *
+     * @param integer $storage
+     * @param array $plugin
+     * @IgnoreValidation
      */
     public function questionsAction($storage = false, $plugin = false) {
         if ($storage) $this->storagePid = $storage;
@@ -112,10 +114,10 @@ class AnalyseController extends  \Kennziffer\KeQuestionnaire\Controller\BackendC
     
     /**
      * Shows the general anlysis: participation amount and date linechart
-     * 
-	 * @param integer $storage
-	 * @param array $plugin
-	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $plugin
+     *
+     * @param integer $storage
+     * @param array $plugin
+     * @IgnoreValidation
      */
     public function generalAction($storage = false, $plugin = false) {
         if ($storage) $this->storagePid = $storage;

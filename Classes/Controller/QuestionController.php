@@ -1,5 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
+
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +26,6 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
  *
@@ -31,22 +33,22 @@ namespace Kennziffer\KeQuestionnaire\Controller;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class QuestionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class QuestionController extends ActionController {
 
 	/**
-	 * questionRepository
-	 *
-	 * @var \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository
-	 */
-	protected $questionRepository;
+  * questionRepository
+  *
+  * @var QuestionRepository
+  */
+ protected $questionRepository;
 
 	/**
-	 * injectQuestionRepository
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository
-	 * @return void
-	 */
-	public function injectQuestionRepository(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository) {
+  * injectQuestionRepository
+  *
+  * @param QuestionRepository $questionRepository
+  * @return void
+  */
+ public function injectQuestionRepository(QuestionRepository $questionRepository) {
 		$this->questionRepository = $questionRepository;
 	}
 
