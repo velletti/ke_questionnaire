@@ -1,0 +1,93 @@
+{namespace ke=Kennziffer\KeQuestionnaire\ViewHelpers}
+<f:alias map="{resultAnswer: '{ke:getResultAnswer(result: newResult, questionUid: question.uid, answerUid: answer.uid)}'}">
+	<div class="keqAnswerWrap keqAnswerSingleInput">
+		<f:form.hidden name="newResult[questions][{question.uid}][answers][{answer.uid}][answer]" value="{answer.uid}" />
+		<f:form.hidden name="answerErrors[]" id="keqAnswerError{answer.uid}" value="0" />
+		<div class="answerInfo" id="keq{question.uid}a{answer.uid}info"></div>
+
+		<f:if condition="{answer.preText}"><label>{answer.preText}</label></f:if>
+		<div><f:form.textfield id="keq{question.uid}a{answer.uid}" name="newResult[questions][{question.uid}][answers][{answer.uid}][value]" value="{f:if(condition: resultAnswer.value, then: resultAnswer.value, else: answer.inText)}" style="width:{f:if(condition: answer.width, then: answer.width, else: '30')}em" maxlength="{f:if(condition: answer.maxChars, then: answer.maxChars, else: '255')}" /></div>
+		<f:if condition="{answer.postText}"><div class="postText">{answer.postText}</div></f:if>
+	</div>
+</f:alias>
+<ke:JavaScript>
+	/*
+	 * Checks the Answer for the inside Text and replaces it with zero if focused
+	 */
+	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>").focus( function() {
+		if(this.value=='<f:format.raw>{answer.inText}</f:format.raw>') this.value='';
+	});
+</ke:JavaScript>
+<f:if condition="{question.isMandatory}">
+<ke:JavaScript>
+	/*
+	 * When the length of all input field values is > 0
+	 */
+	jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>" ).on( "change", function() {
+		check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>();
+	});
+	check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw> = function() {
+		var length = 0;
+		jQuery("#keq<f:format.raw>{question.uid}</f:format.raw> input[type=text]").each(function(){
+			length += jQuery(this).val().length;
+		});
+		if (length > 0) jQuery("#keqMandatory<f:format.raw>{question.uid}</f:format.raw>").val(0);
+		else jQuery("#keqMandatory<f:format.raw>{question.uid}</f:format.raw>").val(1);
+		checkMandatory();
+	}
+	check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>();
+</ke:JavaScript>
+</f:if>
+<!-- Javascript to check the Validationtypes for the InputField-->
+<f:if condition="{answer.validationType}">
+	<ke:JavaScript>
+	/*
+	 * Checks the Answer for the type of the chosen validation
+	 */
+	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>")
+		.on( "input" , function() {
+		var a_id = <f:format.raw>{answer.uid}</f:format.raw>;
+		var q_id = <f:format.raw>{question.uid}</f:format.raw>;
+		var val = jQuery(this).val();
+		var this_id = jQuery(this).attr('id');
+
+		if ( val.length > 6 ) {
+			jQuery.ajax({
+				type: "GET",
+				url: 'index.php',
+				data: 'type=2667&tx_kequestionnaire_questionnaire[type]=AnswerValidation&tx_kequestionnaire_questionnaire[arguments][answerUid]='+a_id+'&tx_kequestionnaire_questionnaire[arguments][value]='+val,
+
+				success: function(xdata){
+					// xdata = jQuery.parseJSON(jQuery.trim(data));
+
+					jQuery("#keqAnswerError"+a_id).val(xdata.error);
+					jQuery("#"+this_id+"info").html(xdata.info);
+					if(jQuery("#keqAnswerError"+a_id).length > 0) {
+						jQuery("html, body").animate({
+							scrollTop: jQuery("#"+this_id+"info").offset().top -100
+						}, 700);
+					}
+
+					/*
+					 *	if question property "must_be_correct" was set additionally,
+					 *	there will be a second "error"-marker-field (related to the question),
+					 *	which has to be adjusted.
+					 */
+					if(jQuery("#keqAnswerErrorQ"+q_id).length > 0) {
+						jQuery("#keqAnswerErrorQ"+q_id).val(xdata.error);
+					}
+
+					checkAnswerErrors();
+				},
+				error: function(x,y,z){
+					alert('An error has occurred:\n' + x + '\n' + y + '\n' + z);
+				}
+			});
+		} else {
+			if(jQuery("#keqAnswerErrorQ"+q_id).length > 0) {
+				jQuery("#keqAnswerErrorQ"+q_id).val( 1 );
+			}
+		}
+	});
+	</ke:JavaScript>
+</f:if>
