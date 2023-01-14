@@ -76,7 +76,7 @@ if (TYPO3_MODE === 'BE'){
 	
     // Hauptmodul erstellen
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.'ke_questionnaire',            # Extension-Key
+		'KeQuestionnaire',            # Extension-Key
 		$mainModuleName,				   # Kategorie
 		'',								   # Modulname
 		'',                                # Position
@@ -89,7 +89,7 @@ if (TYPO3_MODE === 'BE'){
 	
     // Authcode Backend Modul der Extension
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.'ke_questionnaire',                  # Extension-Key
+		'KeQuestionnaire',                  # Extension-Key
 		$mainModuleName,		   # Kategorie
 		'Authcode',				   # Modulname
 		'',                                # Position
@@ -103,7 +103,7 @@ if (TYPO3_MODE === 'BE'){
 	
 	// Export Backend Modul der Extension
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.'ke_questionnaire',                  # Extension-Key
+		'KeQuestionnaire',                  # Extension-Key
 		$mainModuleName,		   # Kategorie
 		'Export',				   # Modulname
 		'',                                # Position
@@ -116,7 +116,7 @@ if (TYPO3_MODE === 'BE'){
     
     // Analyse Backend Modul der Extension
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'Kennziffer.'.'ke_questionnaire',                  # Extension-Key
+		'KeQuestionnaire',                  # Extension-Key
 		$mainModuleName,		   # Kategorie
 		'Analyse',				   # Modulname
 		'',                                # Position

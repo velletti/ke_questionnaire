@@ -1,45 +1,45 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
 	die ('Access denied.');
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Kennziffer.'.'ke_questionnaire',
+	'KeQuestionnaire',
 	'Questionnaire',
 	array(
-		'Result' => 'new,create,show,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,end',
-		'Mailing' => 'mail',
-		'Evaluation' => 'show',
-		'PointRange' => 'showText',
-		'Question' => 'list',
-		'Ajax' => 'test',
-		'Export' => 'downloadPdf',
+        Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'new,create,show,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,end',
+        Kennziffer\KeQuestionnaire\Controller\MailingController::class => 'mail',
+        Kennziffer\KeQuestionnaire\Controller\EvaluationController::class => 'show',
+		Kennziffer\KeQuestionnaire\Controller\PointRangeController::class => 'showText',
+		Kennziffer\KeQuestionnaire\Controller\QuestionController::class => 'list',
+		Kennziffer\KeQuestionnaire\Controller\AjaxController::class => 'test',
+		Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	),
 	// non-cacheable actions
 	array(
-		'Result' => 'new,create',
-		'Mailing' => '',
-		'Evaluation' => '',
-		'PointRange' => '',
-		'Question' => '',
-		'Ajax' => 'test',
-		'Export' => 'downloadPdf',
+        Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'new,create',
+		Kennziffer\KeQuestionnaire\Controller\MailingController::class => '',
+		Kennziffer\KeQuestionnaire\Controller\EvaluationController::class => '',
+		Kennziffer\KeQuestionnaire\Controller\PointRangeController::class => '',
+		Kennziffer\KeQuestionnaire\Controller\QuestionController::class => '',
+		Kennziffer\KeQuestionnaire\Controller\AjaxController::class => 'test',
+		Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	)
 );
 
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Kennziffer.'.'ke_questionnaire',
+	'KeQuestionnaire',
 	'QList',
 	array(
-		'Questionnaire' => 'list',
-                'Export' => 'downloadPdf',
+        Kennziffer\KeQuestionnaire\Controller\QuestionnaireController::class => 'list',
+        Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	),
 	// non-cacheable actions
 	array(
-		'Questionnaire' => 'list',
-                'Export' => 'downloadPdf',
+        Kennziffer\KeQuestionnaire\Controller\QuestionnaireController::class => 'list',
+        Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	)
 );
 
@@ -47,23 +47,23 @@ if (!defined('TYPO3_MODE')) {
 	'Kennziffer.'.'ke_questionnaire',
 	'View',
 	array(
-		'Result' => 'show',
+        Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'show',
 	),
 	// non-cacheable actions
 	array(
-		'Result' => 'show',
+        Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'show',
 	)
 );
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Kennziffer.'.'ke_questionnaire',
+    'KeQuestionnaire',
     'Be',
     array(
-        'Backend' =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
-        'Export'  => 'downloadPdf, pdf, downloadAuthCodesCsv'
+        Kennziffer\KeQuestionnaire\Controller\BackendController::class =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
+        Kennziffer\KeQuestionnaire\Controller\ExportController::class  => 'downloadPdf, pdf, downloadAuthCodesCsv'
     ),
     // non-cacheable actions
     array(
-        'Backend' =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
-        'Export'  => 'downloadPdf, pdf, downloadAuthCodesCsv'
+        Kennziffer\KeQuestionnaire\Controller\BackendController::class =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
+        Kennziffer\KeQuestionnaire\Controller\ExportController::class  => 'downloadPdf, pdf, downloadAuthCodesCsv'
     )
 );
