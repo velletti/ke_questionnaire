@@ -1,5 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
 	die ('Access denied.');
 }
 
@@ -51,40 +51,18 @@ $pluginSignature5 = strtolower($extensionName) . '_view';
 if (TYPO3_MODE === 'BE'){
    $mainModuleName = 'keQuestionnaireBe';
    
-	//Register Image Area Select Wizard
-   // Deprecated since 7.6, needed for 6.2, will be removed with 8
-	// \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-    //     'wizard_imageAreaSelect',
-    //     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/Wizard/ImageAreaSelectWizard/'
-    //  );
- 
-    // Hack damit das Modul direkt nach dem Web Modul erscheint
-    // die Angabe der $position in addModule() funktioniert hier leider nicht
-    /*
-    if (!isset($TBE_MODULES[$mainModuleName])) {
-        $temp_TBE_MODULES = array();
-        foreach($TBE_MODULES as $key => $val) {
-            if($key == 'web') {
-                $temp_TBE_MODULES[$key] = $val;
-                $temp_TBE_MODULES[$mainModuleName] = '';
-            } else {
-                $temp_TBE_MODULES[$key] = $val;
-            }
-        }
-        $TBE_MODULES = $temp_TBE_MODULES;
-    }*/
-	
+
     // Hauptmodul erstellen
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'KeQuestionnaire',            # Extension-Key
 		$mainModuleName,				   # Kategorie
 		'',								   # Modulname
 		'',                                # Position
-		Array ( ),     # Controller
-		Array (	'access' => 'user,group',  # Konfiguration
-				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod.xml',
-		)
+		[],     # Controller
+		[  	'access' => 'user,group',  # Konfiguration
+            'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
+            'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod.xml',
+		]
 	);
 	
     // Authcode Backend Modul der Extension
@@ -93,7 +71,7 @@ if (TYPO3_MODE === 'BE'){
 		$mainModuleName,		   # Kategorie
 		'Authcode',				   # Modulname
 		'',                                # Position
-		Array ( 'Backend' => 'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
+		Array ( \Kennziffer\KeQuestionnaire\Controller\BackendController::class  => 'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
 				'Export'  => 'downloadPdf, pdf, downloadAuthCodesCsv'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
 				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
@@ -107,7 +85,7 @@ if (TYPO3_MODE === 'BE'){
 		$mainModuleName,		   # Kategorie
 		'Export',				   # Modulname
 		'',                                # Position
-		Array ( 'Export' => 'index,csv,csvRb,downloadCsv,downloadCsvRb,pdf,downloadPdf,csvInterval,csvRbInterval,csvCheckInterval,downloadCsvInterval'),     # Controller
+		Array ( \Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'index,csv,csvRb,downloadCsv,downloadCsvRb,pdf,downloadPdf,csvInterval,csvRbInterval,csvCheckInterval,downloadCsvInterval'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
 				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
 				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_export.xml',
@@ -120,7 +98,7 @@ if (TYPO3_MODE === 'BE'){
 		$mainModuleName,		   # Kategorie
 		'Analyse',				   # Modulname
 		'',                                # Position
-		Array ( 'Analyse' => 'index,questions,general'),     # Controller
+		Array ( \Kennziffer\KeQuestionnaire\Controller\AnalyseController::class=> 'index,questions,general'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
 				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
 				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_analyse.xml',

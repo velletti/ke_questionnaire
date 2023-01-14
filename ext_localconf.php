@@ -44,7 +44,7 @@ if (!defined('TYPO3')) {
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Kennziffer.'.'ke_questionnaire',
+	'KeQuestionnaire',
 	'View',
 	array(
         Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'show',

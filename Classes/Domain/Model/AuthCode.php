@@ -164,7 +164,7 @@ class AuthCode extends AbstractEntity {
 
             for($i=0; $i<$length; $i++)
             {
-                $key .= $inputs{mt_rand(0,count($inputs)-1)};
+                $key .= $inputs[mt_rand(0,count($inputs)-1)];
                 if( round(($i+1)/($length/2),0) == ($i+1)/($length/2) ) {
                     $key .= "-" ;
                 }
