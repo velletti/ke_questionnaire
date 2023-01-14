@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723212" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:06:52Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="type.description" resname="type.description"  approved="yes">
+				<source>Choose how to render this answer</source>
+				<target>Wie soll diese Antwort gerendert werden</target>
+			</trans-unit>
+			<trans-unit id="title.description" resname="title.description"  approved="yes">
+				<source>This title is a short description of this answer and is displayed as identifier in the list module by default</source>
+				<target>Dieser Titel ist eine Kurzbeschreibung für diese Antwort und wird auch im Listen-Modul angezeigt, um die Antwort schneller auffinden zu können</target>
+			</trans-unit>
+			<trans-unit id="points.description" resname="points.description"  approved="yes">
+				<source>You can set points for this answer, which in the end add up with points of other answers</source>
+				<target>Sie können dieser Antwort Punkte zuweisen, die dann am Ende der Umfrage aufaddiert werden</target>
+			</trans-unit>
+			<trans-unit id="text.description" resname="text.description"  approved="yes">
+				<source>This is the answer text the participant sees in the frontend</source>
+				<target>Diesen Text sieht der Teilnehmer als Antworttext im Frontend</target>
+			</trans-unit>
+			<trans-unit id="is_correct_answer.description" resname="is_correct_answer.description"  approved="yes">
+				<source>Define if this is the correct answer</source>
+				<target>Handelt es sich bei der aktuellen Antwort um die richtige?</target>
+			</trans-unit>
+			<trans-unit id="validation_type.description" resname="validation_type.description"  approved="yes">
+				<source>You can set a validation type to check the user input</source>
+				<target>Sie können einen Validierungstyp auswählen, um die Antwort des Nutzers prüfen zu lassen</target>
+			</trans-unit>
+			<trans-unit id="validation_text.description" resname="validation_text.description"  approved="yes">
+				<source>Text or keywords (comma separated) to compare to the answer of the participant</source>
+				<target>Text oder Schlagwörter (bitte Komma-separiert eingeben) zur Validierung der Antwort</target>
+			</trans-unit>
+			<trans-unit id="validation_keys_amount.description" resname="validation_keys_amount.description"  approved="yes">
+				<source>Number of keywords that must be met in the answer. If value is 0, all keywords must be met</source>
+				<target>Anzahl der Schlagwörter, die in der Antwort vorkommen müssen. Wenn der Wert 0 ist, müssen alle Schlagwörter vorkommen.</target>
+			</trans-unit>
+			<trans-unit id="cloze_position.description" resname="cloze_position.description"  approved="yes">
+				<source>Count the appearances of the given term and define which one should be replaced. Example: Within the cloze test the term &quot;internet&quot; appears two times. You want the participant to replace the second term only. Thus you set the value to 2. Standard is: 1</source>
+				<target>Zählen Sie die Vorkommen des aktuellen Begriffs und geben Sie an, welcher davon ersetzt werden soll. Beispiel: Im Lückentext kommt zweimal das Wort &quot;Internet&quot; vor, das zweite Vorkommen soll ersetzt werden. Also muss hier der Wert 2 eingetragen werden. Standard ist: 1</target>
+			</trans-unit>
+			<trans-unit id="coords.description" resname="coords.description"  approved="yes">
+				<source>The answer must be saved with an image before you can use the wizard!!!&lt;br&gt;Coordinates for Baloontext: Coordinates of the input on the image, Coordinates for Drag&amp;Drop: Coordinates for Dropdown Areas&lt;br&gt;If you add a title after the last coordinate in the line, separate it with a comma and it will be shown in the D&amp;D area.</source>
+				<target>Die Antwort muss mit einem Bild gespeichert werden, bevor sie den Wizard benutzten können!&lt;br&gt;Koordinaten Ballontext: Koordinaten des Inputfelds auf dem Bild, Koordinaten Drag&amp;Drop: Koordinaten der Dropbereiche&lt;br&gt;Wenn sie nach der letzten Koordinate der Zeile einen Titel nach einem weiteren Komma hinzufügen, wird dieser im D&amp;D Bereich angezeigt.</target>
+			</trans-unit>
+			<trans-unit id="select_values.description" resname="select_values.description"  approved="yes">
+				<source>Values for the select box&lt;br&gt;Please use the following format:&lt;br&gt;one select entry per line&lt;br&gt;value:shown text&lt;br&gt;If value and shown text should be the same, you only need to enter the value without following :</source>
+				<target>Werte der Select Box&lt;br&gt;Bitte beachten sie folgendes Format:&lt;br&gt;Ein Select-Eintrag pro Zeile&lt;br&gt;Wert:angezeigter Text&lt;br&gt;Wenn Wert und Anzeige gleich sein sollen, tragen sie nur den Wert ohne folgendes : ein</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

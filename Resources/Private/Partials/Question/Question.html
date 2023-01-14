@@ -57,7 +57,7 @@
                    case "checkbox": 
                    case "radio": 
                                    jQuery(answer).removeAttr('checked');
-                                   jQuery('#'+idy+"info").html('<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:maxAnswers" /> '+max);
+                                   jQuery('#'+idy+"info").html('<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xlf:maxAnswers" /> '+max);
                            break;
                    default:
                            break;
@@ -95,7 +95,7 @@
 			case "checkbox": 
 			case "radio": 
 					jQuery("#keqAnswerErrorQ"+idy).val(1);
-					jQuery('#keq'+idy+"info").html('<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:minAnswers" /> '+min);
+					jQuery('#keq'+idy+"info").html('<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xlf:minAnswers" /> '+min);
 					checkAnswerErrors();
 				break;
 			default:

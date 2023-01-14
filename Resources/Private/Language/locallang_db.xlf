@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723235" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:07:15Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="tx_kequestionnaire_domain_model_question" resname="tx_kequestionnaire_domain_model_question" >
+				<source>KeQ-Contentelement</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type" resname="tx_kequestionnaire_domain_model_question.type" >
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.Question" resname="tx_kequestionnaire_domain_model_question.type.I.Question" >
+				<source>Question</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.PageBreak" resname="tx_kequestionnaire_domain_model_question.type.I.PageBreak" >
+				<source>Pagebreak</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.Html" resname="tx_kequestionnaire_domain_model_question.type.I.Html" >
+				<source>HTML</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.Text" resname="tx_kequestionnaire_domain_model_question.type.I.Text" >
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.TypoScript" resname="tx_kequestionnaire_domain_model_question.type.I.TypoScript" >
+				<source>TypoScript</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.TypoScriptPath" resname="tx_kequestionnaire_domain_model_question.type.I.TypoScriptPath" >
+				<source>TypoScript Objectpath (lib.*)</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.Typo3Content" resname="tx_kequestionnaire_domain_model_question.type.I.Typo3Content" >
+				<source>TYPO3 Content</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.Group" resname="tx_kequestionnaire_domain_model_question.type.I.Group" >
+				<source>Group</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.ConditionalJump" resname="tx_kequestionnaire_domain_model_question.type.I.ConditionalJump" >
+				<source>Conditional Behaviour</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.PlausiCheck" resname="tx_kequestionnaire_domain_model_question.type.I.PlausiCheck" >
+				<source>Plausibility Check</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.title" resname="tx_kequestionnaire_domain_model_question.title" >
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.show_title" resname="tx_kequestionnaire_domain_model_question.show_title" >
+				<source>Show Title</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.text" resname="tx_kequestionnaire_domain_model_question.text" >
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.help_text" resname="tx_kequestionnaire_domain_model_question.help_text" >
+				<source>Help Text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image" resname="tx_kequestionnaire_domain_model_question.image" >
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position" resname="tx_kequestionnaire_domain_model_question.image_position" >
+				<source>Image Position</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.1" resname="tx_kequestionnaire_domain_model_question.image_position.I.1" >
+				<source>Top</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.2" resname="tx_kequestionnaire_domain_model_question.image_position.I.2" >
+				<source>Right</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.3" resname="tx_kequestionnaire_domain_model_question.image_position.I.3" >
+				<source>Left</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.4" resname="tx_kequestionnaire_domain_model_question.image_position.I.4" >
+				<source>Bottom</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.is_mandatory" resname="tx_kequestionnaire_domain_model_question.is_mandatory" >
+				<source>Is Mandatory</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.must_be_correct" resname="tx_kequestionnaire_domain_model_question.must_be_correct" >
+				<source>Must Be Correct</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.answers" resname="tx_kequestionnaire_domain_model_question.answers" >
+				<source>Answers</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.random_answers" resname="tx_kequestionnaire_domain_model_question.random_answers" >
+				<source>Random order of answers</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.column_count" resname="tx_kequestionnaire_domain_model_question.column_count" >
+				<source>Number of columns the answers are shown in</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.max_answers" resname="tx_kequestionnaire_domain_model_question.max_answers" >
+				<source>Maximum number of answers to be given in this question</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.min_answers" resname="tx_kequestionnaire_domain_model_question.min_answers" >
+				<source>Minimum number of answers needed for this question</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.content_id" resname="tx_kequestionnaire_domain_model_question.content_id" >
+				<source>TYPO3 ContentElement</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.dependancies" resname="tx_kequestionnaire_domain_model_question.dependancies" >
+				<source>Dependancies</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.to_page" resname="tx_kequestionnaire_domain_model_question.to_page" >
+				<source>Redirect-page</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.direct_jump" resname="tx_kequestionnaire_domain_model_question.direct_jump" >
+				<source>Jump as soon as the condition is reached</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.javascript" resname="tx_kequestionnaire_domain_model_question.javascript" >
+				<source>Javascript to be executed, instead or before the jump</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.only_js" resname="tx_kequestionnaire_domain_model_question.only_js" >
+				<source>Only execute this Javascript</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.css" resname="tx_kequestionnaire_domain_model_question.css" >
+				<source>CSS used for this question</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.template" resname="tx_kequestionnaire_domain_model_question.template" >
+				<source>Template used for this question</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer" resname="tx_kequestionnaire_domain_model_answer" >
+				<source>Answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type" resname="tx_kequestionnaire_domain_model_answer.type" >
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.Radiobutton" resname="tx_kequestionnaire_domain_model_answer.type.Radiobutton" >
+				<source>Radiobutton</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.Checkbox" resname="tx_kequestionnaire_domain_model_answer.type.Checkbox" >
+				<source>Checkbox</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.SingleInput" resname="tx_kequestionnaire_domain_model_answer.type.SingleInput" >
+				<source>Textline</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.MultiInput" resname="tx_kequestionnaire_domain_model_answer.type.MultiInput" >
+				<source>Textbox</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.SingleSelect" resname="tx_kequestionnaire_domain_model_answer.type.SingleSelect" >
+				<source>Select box</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.ClozeText" resname="tx_kequestionnaire_domain_model_answer.type.ClozeText" >
+				<source>Cloze text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.ClozeTextDD" resname="tx_kequestionnaire_domain_model_answer.type.ClozeTextDD" >
+				<source>Drag&amp;drop cloze text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.ClozeTerm" resname="tx_kequestionnaire_domain_model_answer.type.ClozeTerm" >
+				<source>Term to be replaced in cloze text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.Baloon" resname="tx_kequestionnaire_domain_model_answer.type.Baloon" >
+				<source>Baloontext</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.DDAreaImage" resname="tx_kequestionnaire_domain_model_answer.type.DDAreaImage" >
+				<source>Drag&amp;drop drop-area as image</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.DDAreaSequence" resname="tx_kequestionnaire_domain_model_answer.type.DDAreaSequence" >
+				<source>Drag&amp;drop drop-area as sequence</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.DDAreaSimpleScale" resname="tx_kequestionnaire_domain_model_answer.type.DDAreaSimpleScale" >
+				<source>Drag&amp;drop drop-area as one-dimensional scale</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.DDImage" resname="tx_kequestionnaire_domain_model_answer.type.DDImage" >
+				<source>Drag&amp;drop single draggable image/term</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.MatrixHeader" resname="tx_kequestionnaire_domain_model_answer.type.MatrixHeader" >
+				<source>Matrix header</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.ExtendedMatrixHeader" resname="tx_kequestionnaire_domain_model_answer.type.ExtendedMatrixHeader" >
+				<source>Extended matrix header</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.MatrixRow" resname="tx_kequestionnaire_domain_model_answer.type.MatrixRow" >
+				<source>Matrix row</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.Slider" resname="tx_kequestionnaire_domain_model_answer.type.Slider" >
+				<source>Slider</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.SemanticDifferential" resname="tx_kequestionnaire_domain_model_answer.type.SemanticDifferential" >
+				<source>Semantic differential</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.DataPrivacy" resname="tx_kequestionnaire_domain_model_answer.type.DataPrivacy" >
+				<source>Data privacy statement</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.Avatar" resname="tx_kequestionnaire_domain_model_answer.type.Avatar" >
+				<source>Avatar builder</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.RankingInput" resname="tx_kequestionnaire_domain_model_answer.type.RankingInput" >
+				<source>Ranking with input fields</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.RankingOrder" resname="tx_kequestionnaire_domain_model_answer.type.RankingOrder" >
+				<source>Ranking with sortable order</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.RankingSelect" resname="tx_kequestionnaire_domain_model_answer.type.RankingSelect" >
+				<source>Ranking with select boxes</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type.RankingTerm" resname="tx_kequestionnaire_domain_model_answer.type.RankingTerm" >
+				<source>Ranking single term/image to be ranked</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.title" resname="tx_kequestionnaire_domain_model_answer.title" >
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.points" resname="tx_kequestionnaire_domain_model_answer.points" >
+				<source>Points</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.text" resname="tx_kequestionnaire_domain_model_answer.text" >
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.is_correct_answer" resname="tx_kequestionnaire_domain_model_answer.is_correct_answer" >
+				<source>Is correct answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.width" resname="tx_kequestionnaire_domain_model_answer.width" >
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.height" resname="tx_kequestionnaire_domain_model_answer.height" >
+				<source>Height</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.pre_text" resname="tx_kequestionnaire_domain_model_answer.pre_text" >
+				<source>Text before inputfield</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.in_text" resname="tx_kequestionnaire_domain_model_answer.in_text" >
+				<source>Text inside inputfield</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.post_text" resname="tx_kequestionnaire_domain_model_answer.post_text" >
+				<source>Text after inputfield</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.max_chars" resname="tx_kequestionnaire_domain_model_answer.max_chars" >
+				<source>Maximum characters in inputfield</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type" resname="tx_kequestionnaire_domain_model_answer.validation_type" >
+				<source>Validation type</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.none" resname="tx_kequestionnaire_domain_model_answer.validation_type.none" >
+				<source>None</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.numeric" resname="tx_kequestionnaire_domain_model_answer.validation_type.numeric" >
+				<source>Numeric</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.integer" resname="tx_kequestionnaire_domain_model_answer.validation_type.integer" >
+				<source>Integer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.date" resname="tx_kequestionnaire_domain_model_answer.validation_type.date" >
+				<source>Date</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.string" resname="tx_kequestionnaire_domain_model_answer.validation_type.string" >
+				<source>String</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.string2chars" resname="tx_kequestionnaire_domain_model_answer.validation_type.string2chars" >
+				<source>String with at least 2 chars</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.email" resname="tx_kequestionnaire_domain_model_answer.validation_type.email" >
+				<source>E-Mail</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.compareText" resname="tx_kequestionnaire_domain_model_answer.validation_type.compareText" >
+				<source>Text comparison</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_type.keywords" resname="tx_kequestionnaire_domain_model_answer.validation_type.keywords" >
+				<source>Keywords</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_text" resname="tx_kequestionnaire_domain_model_answer.validation_text" >
+				<source>Validation against</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.validation_keys_amount" resname="tx_kequestionnaire_domain_model_answer.validation_keys_amount" >
+				<source>Number of keywords to meet, 0 means all</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.comparison_text" resname="tx_kequestionnaire_domain_model_answer.comparison_text" >
+				<source>Text to compare the user input with/correct answer for comparision</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.cloze_position" resname="tx_kequestionnaire_domain_model_answer.cloze_position" >
+				<source>Appearance of term inside cloze text, count the apperances of this term</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.cloze_add_terms" resname="tx_kequestionnaire_domain_model_answer.cloze_add_terms" >
+				<source>Additional terms for drag&amp;drop cloze text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.image" resname="tx_kequestionnaire_domain_model_answer.image" >
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.coords" resname="tx_kequestionnaire_domain_model_answer.coords" >
+				<source>Coordinates</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.area_index" resname="tx_kequestionnaire_domain_model_answer.area_index" >
+				<source>Correct area/sequence position for drag&amp;drop items</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.area_highlight" resname="tx_kequestionnaire_domain_model_answer.area_highlight" >
+				<source>Highlight drop-area for mouse-over</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.cols" resname="tx_kequestionnaire_domain_model_answer.cols" >
+				<source>Columns</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.show_textfield" resname="tx_kequestionnaire_domain_model_answer.show_textfield" >
+				<source>Show textfield after answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.max_answers" resname="tx_kequestionnaire_domain_model_answer.max_answers" >
+				<source>Maximum answers allowed</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.min_answers" resname="tx_kequestionnaire_domain_model_answer.min_answers" >
+				<source>Minimum answers needed</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.select_values" resname="tx_kequestionnaire_domain_model_answer.select_values" >
+				<source>Values for the select box</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.left_label" resname="tx_kequestionnaire_domain_model_answer.left_label" >
+				<source>Left label</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.right_label" resname="tx_kequestionnaire_domain_model_answer.right_label" >
+				<source>Right label</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.min_value" resname="tx_kequestionnaire_domain_model_answer.min_value" >
+				<source>Minimum value</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.max_value" resname="tx_kequestionnaire_domain_model_answer.max_value" >
+				<source>Maximum value</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.slider_increment" resname="tx_kequestionnaire_domain_model_answer.slider_increment" >
+				<source>Increment</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.show_steps" resname="tx_kequestionnaire_domain_model_answer.show_steps" >
+				<source>Show labels above selection</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.step_labels" resname="tx_kequestionnaire_domain_model_answer.step_labels" >
+				<source>Alternative labels, please separate with comma</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.avatar_parts" resname="tx_kequestionnaire_domain_model_answer.avatar_parts" >
+				<source>Avatar part definitions</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.source_dir" resname="tx_kequestionnaire_domain_model_answer.source_dir" >
+				<source>Avatar source directory</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.destination_dir" resname="tx_kequestionnaire_domain_model_answer.destination_dir" >
+				<source>Avatar destination directory</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.feuser_field" resname="tx_kequestionnaire_domain_model_answer.feuser_field" >
+				<source>Frontend-User field the result is saved in</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.template" resname="tx_kequestionnaire_domain_model_answer.template" >
+				<source>Template used for this answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.add_clones" resname="tx_kequestionnaire_domain_model_answer.add_clones" >
+				<source>Allow user to add clones of the last matrix row</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.title_line" resname="tx_kequestionnaire_domain_model_answer.title_line" >
+				<source>Show matrix row as title line: no input fields</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.points_start" resname="tx_kequestionnaire_domain_model_answer.points_start" >
+				<source>start value of Points</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.points_increase" resname="tx_kequestionnaire_domain_model_answer.points_increase" >
+				<source>increase value of Points per Step</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion" resname="tx_kequestionnaire_domain_model_resultquestion" >
+				<source>Question result</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion.answers" resname="tx_kequestionnaire_domain_model_resultquestion.answers" >
+				<source>Answers</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion.question" resname="tx_kequestionnaire_domain_model_resultquestion.question" >
+				<source>Question</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion.points" resname="tx_kequestionnaire_domain_model_resultquestion.points" >
+				<source>Collected points</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer" resname="tx_kequestionnaire_domain_model_resultanswer" >
+				<source>Question Answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.answer" resname="tx_kequestionnaire_domain_model_resultanswer.answer" >
+				<source>Answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.value" resname="tx_kequestionnaire_domain_model_resultanswer.value" >
+				<source>Value</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.col" resname="tx_kequestionnaire_domain_model_resultanswer.col" >
+				<source>Column</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.clone" resname="tx_kequestionnaire_domain_model_resultanswer.clone" >
+				<source>Clone</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.clone_title" resname="tx_kequestionnaire_domain_model_resultanswer.clone_title" >
+				<source>Title of Clone</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.additional_value" resname="tx_kequestionnaire_domain_model_resultanswer.additional_value" >
+				<source>Additional Value</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result" resname="tx_kequestionnaire_domain_model_result" >
+				<source>Result</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.finished" resname="tx_kequestionnaire_domain_model_result.finished" >
+				<source>Finished</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.questions" resname="tx_kequestionnaire_domain_model_result.questions" >
+				<source>Questions</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.points" resname="tx_kequestionnaire_domain_model_result.points" >
+				<source>Collected points</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.max_points" resname="tx_kequestionnaire_domain_model_result.max_points" >
+				<source>Maximum of reachable points</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.fe_user" resname="tx_kequestionnaire_domain_model_result.fe_user" >
+				<source>Frontend-User connected to this result</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.auth_code" resname="tx_kequestionnaire_domain_model_result.auth_code" >
+				<source>Authentication code connected to this result</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_range" resname="tx_kequestionnaire_domain_model_range" >
+				<source>Points range</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_range.title" resname="tx_kequestionnaire_domain_model_range.title" >
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_range.text" resname="tx_kequestionnaire_domain_model_range.text" >
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_range.points_from" resname="tx_kequestionnaire_domain_model_range.points_from" >
+				<source>Points from</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_range.points_until" resname="tx_kequestionnaire_domain_model_range.points_until" >
+				<source>Points until</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode" resname="tx_kequestionnaire_domain_model_authcode" >
+				<source>AuthCodeAuthentication code</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.auth_code" resname="tx_kequestionnaire_domain_model_authcode.auth_code" >
+				<source>Authentication code</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.email" resname="tx_kequestionnaire_domain_model_authcode.email" >
+				<source>E-mail</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.lastreminder" resname="tx_kequestionnaire_domain_model_authcode.lastreminder" >
+				<source>Last time a reminder mail was send</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.firstactive" resname="tx_kequestionnaire_domain_model_authcode.firstactive" >
+				<source>First time the authCode was used</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy" resname="tx_kequestionnaire_domain_model_dependancy" >
+				<source>Dependancy</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.answer" resname="tx_kequestionnaire_domain_model_dependancy.answer" >
+				<source>Actvating answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation" resname="tx_kequestionnaire_domain_model_dependancy.relation" >
+				<source>Relation type</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.none" resname="tx_kequestionnaire_domain_model_dependancy.relation.none" >
+				<source>None</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.and" resname="tx_kequestionnaire_domain_model_dependancy.relation.and" >
+				<source>AND</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.or" resname="tx_kequestionnaire_domain_model_dependancy.relation.or" >
+				<source>OR</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.not" resname="tx_kequestionnaire_domain_model_dependancy.relation.not" >
+				<source>NOT</source>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.dquestion" resname="tx_kequestionnaire_domain_model_dependancy.dquestion" >
+				<source>Dependant question</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

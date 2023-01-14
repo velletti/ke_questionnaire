@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723375" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:09:35Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="sheet.basics" resname="sheet.basics"  approved="yes">
+				<source>Basics</source>
+				<target>Basis</target>
+			</trans-unit>
+			<trans-unit id="settings.templates" resname="settings.templates"  approved="yes">
+				<source>Templates</source>
+				<target>Templates</target>
+			</trans-unit>
+			<trans-unit id="settings.questionnaires" resname="settings.questionnaires"  approved="yes">
+				<source>Considered questionnaires</source>
+				<target>Zu berücksichtigende Fragebögen</target>
+			</trans-unit>
+			<trans-unit id="settings.redirectTo" resname="settings.redirectTo"  approved="yes">
+				<source>Redirect after authentication code reclaim</source>
+				<target>Weiterleitung nach Anforderung eines Authentification Codes</target>
+			</trans-unit>
+			<trans-unit id="settings.singleView" resname="settings.singleView"  approved="yes">
+				<source>Plug-In where a single participation can be viewed. If set, the shown participations in list will be linked.</source>
+				<target>Seite, auf der die Teilnahme angesehen werden kann. Wenn gesetzt, werden alle in der Liste aufgeführten Teilnahmen mit dieser Seite verlinkt</target>
+			</trans-unit>
+			<trans-unit id="sheet.access" resname="sheet.access"  approved="yes">
+				<source>Access</source>
+				<target>Zugriff</target>
+			</trans-unit>
+			<trans-unit id="settings.accessType" resname="settings.accessType"  approved="yes">
+				<source>Access type</source>
+				<target>Zugriffstyp</target>
+			</trans-unit>
+			<trans-unit id="settings.accessType.free" resname="settings.accessType.free"  approved="yes">
+				<source>Unlimited</source>
+				<target>Frei</target>
+			</trans-unit>
+			<trans-unit id="settings.accessType.feUser" resname="settings.accessType.feUser"  approved="yes">
+				<source>Frontend-User</source>
+				<target>Frontend-User</target>
+			</trans-unit>
+			<trans-unit id="settings.accessType.authCode" resname="settings.accessType.authCode"  approved="yes">
+				<source>Authentication code</source>
+				<target>Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="settings.participations.max" resname="settings.participations.max"  approved="yes">
+				<source>Number of maximum participations</source>
+				<target>Anzahl maximaler Teilnahmen</target>
+			</trans-unit>
+			<trans-unit id="settings.restart" resname="settings.restart"  approved="yes">
+				<source>Users will restart questionnaire with their last, unfinished participation.</source>
+				<target>Bei Neuaufnahme des Fragebogens starten die Teilnehmer mit der letzten, nicht abgeschlossenen Teilnahme.</target>
+			</trans-unit>
+			<trans-unit id="settings.neverFinish" resname="settings.neverFinish"  approved="yes">
+				<source>Users will have only one participation wich is never finished.</source>
+				<target>Die Teilnahme des Nutzer wird nie beendet.</target>
+			</trans-unit>
+			<trans-unit id="settings.additionalParameters" resname="settings.additionalParameters"  approved="yes">
+				<source>Additional Parameters for the URL given to call the questionnaire. Will be exported in CSV</source>
+				<target>Zusätzlicher Parameter, der in der URL mitgegeben werden kann und in CSV exportiert wird</target>
+			</trans-unit>
+			<trans-unit id="sheet.layout" resname="sheet.layout"  approved="yes">
+				<source>Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering" resname="settings.questionNumbering"  approved="yes">
+				<source>Automatic numbering of questions</source>
+				<target>Fragen automatisch nummerieren</target>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.none" resname="settings.questionNumbering.none"  approved="yes">
+				<source>None</source>
+				<target>Nein</target>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.all" resname="settings.questionNumbering.all"  approved="yes">
+				<source>Number all elements</source>
+				<target>Alle Elemente nummerieren</target>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.grouped" resname="settings.questionNumbering.grouped"  approved="yes">
+				<source>Number all elements in groups</source>
+				<target>Alle Elemente in Gruppen nummerieren</target>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.questions" resname="settings.questionNumbering.questions"  approved="yes">
+				<source>Number all questions</source>
+				<target>Alle Fragen Nummerieren</target>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.undependantQuestions" resname="settings.questionNumbering.undependantQuestions"  approved="yes">
+				<source>Number only independant questions</source>
+				<target>Nur unabhängige Fragen nummerieren</target>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.groupedQuestions" resname="settings.questionNumbering.groupedQuestions"  approved="yes">
+				<source>Number questions in groups</source>
+				<target>Alle Fragen in Gruppen nummerieren</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType" resname="settings.navigationType"  approved="yes">
+				<source>Additional navigation</source>
+				<target>Zusätzliche Navigation</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.none" resname="settings.navigationType.none"  approved="yes">
+				<source>None</source>
+				<target>Keine</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.display" resname="settings.navigationType.display"  approved="yes">
+				<source>Display overview</source>
+				<target>Überblick</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.displayStatus" resname="settings.navigationType.displayStatus"  approved="yes">
+				<source>Display overview with status</source>
+				<target>Überblick mit Status</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.pages" resname="settings.navigationType.pages"  approved="yes">
+				<source>Display page-navigation</source>
+				<target>Seitennavigation</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.navigate" resname="settings.navigationType.navigate"  approved="yes">
+				<source>Display overview with navigation</source>
+				<target>Überblick mit Navigation</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.navigateStatus" resname="settings.navigationType.navigateStatus"  approved="yes">
+				<source>Display overview with navigation and status</source>
+				<target>Überblick mit Navigation und Status</target>
+			</trans-unit>
+			<trans-unit id="settings.showProgressBar" resname="settings.showProgressBar"  approved="yes">
+				<source>Show progress bar</source>
+				<target>Fortschrittsbalken anzeigen</target>
+			</trans-unit>
+			<trans-unit id="settings.showParticipated" resname="settings.showParticipated"  approved="yes">
+				<source>Mark if user participated</source>
+				<target>Markieren, wenn der Nutzer bereits teilgenommen hat</target>
+			</trans-unit>
+			<trans-unit id="settings.showParticipations" resname="settings.showParticipations"  approved="yes">
+				<source>Show participations of user</source>
+				<target>Teilnahmen der Nutzer anzeigen</target>
+			</trans-unit>
+			<trans-unit id="settings.hidePoints" resname="settings.hidePoints"  approved="yes">
+				<source>Hide Points at conclusion page</source>
+				<target>Punkteanzeige auf der Abschlusseite verbergen</target>
+			</trans-unit>
+			<trans-unit id="settings.listType" resname="settings.listType"  approved="yes">
+				<source>List Type</source>
+				<target>List Typ</target>
+			</trans-unit>
+			<trans-unit id="settings.listType.all" resname="settings.listType.all"  approved="yes">
+				<source>All/Selected questionnaires</source>
+				<target>Alle/Ausgewählte Fragebögen</target>
+			</trans-unit>
+			<trans-unit id="settings.listType.used" resname="settings.listType.used"  approved="yes">
+				<source>Questionnaires submitted by user</source>
+				<target>Fragebögen, an denen der Nutzer bereits teilgenommen hat</target>
+			</trans-unit>
+			<trans-unit id="settings.listType.unused" resname="settings.listType.unused"  approved="yes">
+				<source>Questionnaires NOT yet submitted by user</source>
+				<target>Fragebögen, an denen der Nutzer NOCH NICHT teilgenommen hat</target>
+			</trans-unit>
+			<trans-unit id="sheet.texts" resname="sheet.texts"  approved="yes">
+				<source>Texts</source>
+				<target>Texte</target>
+			</trans-unit>
+			<trans-unit id="settings.description" resname="settings.description"  approved="yes">
+				<source>Description before questionnaire starts</source>
+				<target>Beschreibung des Fragebogens vor Beginn der Teilnahme</target>
+			</trans-unit>
+			<trans-unit id="settings.descriptionlinktext" resname="settings.descriptionlinktext"  approved="yes">
+				<source>Text for hyperlink starting the questionnaire</source>
+				<target>Linktext zum Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="settings.endText" resname="settings.endText"  approved="yes">
+				<source>Text after questionnaire was submitted</source>
+				<target>Text nach abgeschlossener Teilnahme</target>
+			</trans-unit>
+			<trans-unit id="sheet.behaviour" resname="sheet.behaviour"  approved="yes">
+				<source>Behaviour</source>
+				<target>Verhalten</target>
+			</trans-unit>
+			<trans-unit id="settings.redirectFinished" resname="settings.redirectFinished"  approved="yes">
+				<source>Redirect-page after submitting the questionnaire</source>
+				<target>Weiterleitung, wenn die Beantwortung beendet wurde</target>
+			</trans-unit>
+			<trans-unit id="settings.dependancy.questionnaire" resname="settings.dependancy.questionnaire"  approved="yes">
+				<source>Dependancy: required submitted questionnaire</source>
+				<target>Abhängigkeit: benötigt abgeschlossenen Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="settings.dependancy.points" resname="settings.dependancy.points"  approved="yes">
+				<source>Dependancy: required points in questionnaire, if 0 it only needs to be finished</source>
+				<target>Abhängigkeit: benötigte Anzahl von Punkten im Fragebogen, wenn 0, reicht eine beendete Beantwortung</target>
+			</trans-unit>
+			<trans-unit id="settings.ajaxAutoSave" resname="settings.ajaxAutoSave"  approved="yes">
+				<source>Automatic Saving of Answers with Ajax (only for logged-in Fe-User)</source>
+				<target>Automatische Speicherung der Antworten per Ajax (nur für eingeloggte FE-User möglich)</target>
+			</trans-unit>
+			<trans-unit id="sheet.email" resname="sheet.email"  approved="yes">
+				<source>E-mail Settings</source>
+				<target>E-Mail-Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.mail" resname="settings.email.sender.mail"  approved="yes">
+				<source>Sender E-mail address</source>
+				<target>Absender-Adresse für E-Mails</target>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.name" resname="settings.email.sender.name"  approved="yes">
+				<source>Sender name</source>
+				<target>Absender-Name für E-Mails</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.subject" resname="settings.email.invite.subject"  approved="yes">
+				<source>Invitation: Subject</source>
+				<target>Einladung: Betreff der Einladungs-Mail</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.before" resname="settings.email.invite.text.before"  approved="yes">
+				<source>Invitation: Text before authentication code</source>
+				<target>Einladung: Text vor dem Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.after" resname="settings.email.invite.text.after"  approved="yes">
+				<source>Invitation: Text after authentication code</source>
+				<target>Einladung: Text nach dem Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.emails" resname="settings.email.invite.emails"  approved="yes">
+				<source>Invitation: Standard E-mail adresses of recipients for invitation (comma-separated)</source>
+				<target>Einladung: Standard E-Mail-Adressen der Empfänger, die für der Einladung berücksichtigt werden (komma-separiert)</target>
+			</trans-unit>
+			<trans-unit id="settings.showCorrectQuotaPie" resname="settings.showCorrectQuotaPie"  approved="yes">
+				<source>Show a pie chart on the conclusion page of the questionnaire. Showing the ration of correct/incorrect answered questions</source>
+				<target>Anzeige eines Tortendiagrams auf der Abschlusseite des Fragebogens, welches das Verhältnis richtig/falsch beantworteter Fragen darstellt</target>
+			</trans-unit>
+			<trans-unit id="settings.showAverage" resname="settings.showAverage"  approved="yes">
+				<source>Show the average reached points of all answered point-giving questions on the conclusion page of the questionnare. Calculation only with answered questions.</source>
+				<target>Anzeige des Durchschnittswertes der erreichten Punktzahl auf Basis der beantworteten Fragen, mit denen Punkte erzielt werden können. Die Berechnung erfolgt nur mit beantworteten Fragen.</target>
+			</trans-unit>
+			<trans-unit id="settings.PDFdownload" resname="settings.PDFdownload"  approved="yes">
+				<source>Enable PDF-Downloads at the Conclusion Page of the Questionnaire</source>
+				<target>PDF-Downloads auf der Abschlussseite des Fragebogens aktivieren</target>
+			</trans-unit>
+			<trans-unit id="settings.email.reminder.subject" resname="settings.email.reminder.subject"  approved="yes">
+				<source>Reminder Emails for AuthCode Invitations: Subject</source>
+				<target>Erinnerungs Emails für AuthCode Einladungen: Subject</target>
+			</trans-unit>
+			<trans-unit id="settings.showGroupPoints" resname="settings.showGroupPoints"  approved="yes">
+				<source>Show the reached points per Assessment Group on the conclusion page</source>
+				<target>Anzeige der erreichten Punktzahl pro Bewertungsgruppe auf der Abschlusseite des Fragebogens</target>
+			</trans-unit>
+			<trans-unit id="settings.showGroupCorrectAnswers" resname="settings.showGroupCorrectAnswers"  approved="yes">
+				<source>Show the correct/incorrect answered Questions per Assessment Group on the conclusion page</source>
+				<target>Anzeige der korrekt/nicht korrekt beantworteten Fragen auf der Abschlusseite des Fragebogens</target>
+			</trans-unit>
+			<trans-unit id="settings.randomQuestions" resname="settings.randomQuestions" xml:space="preserve" approved="yes">
+				<source>
+				Enable random selection of questions for a single Page/Questionaire
+			</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="settings.randomQuestionsMax" resname="settings.randomQuestionsMax" xml:space="preserve" approved="yes">
+				<source>
+				If random is enabled, maximum number of questions for each page
+			</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="settings.maxSeconds" resname="settings.maxSeconds" xml:space="preserve" approved="yes">
+				<source>
+				Enable Timers Feature: Max time for whole Questionaire in seconds
+			</source>
+				<target/>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

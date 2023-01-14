@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723217" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:06:57Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="type.alttitle" resname="type.alttitle"  approved="yes">
+				<source>Contenttype</source>
+				<target>Inhaltstyp</target>
+			</trans-unit>
+			<trans-unit id="title.alttitle" resname="title.alttitle"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="title.description" resname="title.description"  approved="yes">
+				<source>If the text is empty, the title will be displayed</source>
+				<target>Wenn das Feld &quot;Fragetext&quot; leer ist, wird das Feld &quot;Titel&quot; angezeigt.</target>
+			</trans-unit>
+			<trans-unit id="title.details" resname="title.details"  approved="yes">
+				<source>The title field is used in exports. It should be self-explanatory. This field cannot be styled and is limited to 160 chars.</source>
+				<target>Der Titel wird in den Datenexporten zur Bezeichnung der Frage verwendet, daher sollte er selbstsprechend sein. Das Feld &quot;Titel&quot; kann nicht formatiert werden und ist auf 160 Zeichen beschränkt.</target>
+			</trans-unit>
+			<trans-unit id="show_title.alttitle" resname="show_title.alttitle"  approved="yes">
+				<source>Show title?</source>
+				<target>Titel anzeigen?</target>
+			</trans-unit>
+			<trans-unit id="show_title.description" resname="show_title.description"  approved="yes">
+				<source>Shows the title in the questionnaire, even if the text is filled.</source>
+				<target>Sofern im Fragetext ebenfalls Text steht, kann hiermit verhindert werden, dass der Fragetext den Titel überschreibt. Durch Wahl dieser Option wird die Frage mit Titel + Fragetext dargestellt.</target>
+			</trans-unit>
+			<trans-unit id="text.alttitle" resname="text.alttitle"  approved="yes">
+				<source>Text</source>
+				<target>Fragetext</target>
+			</trans-unit>
+			<trans-unit id="text.description" resname="text.description"  approved="yes">
+				<source>Feel free to style your text with the RTE given possibilities.</source>
+				<target>Freitextfeld, in das Ihr Fragentext geschrieben werden kann. Umfang und Formatierung des Fragetextes kann im Editor frei bestimmt werden.</target>
+			</trans-unit>
+			<trans-unit id="help_text.alttitle" resname="help_text.alttitle"  approved="yes">
+				<source>Helptext</source>
+				<target>Hilfetext</target>
+			</trans-unit>
+			<trans-unit id="help_text.description" resname="help_text.description"  approved="yes">
+				<source>If you enter some text here, a help-icon appears in the frontend, which via mouseover opens a hover box with the given text.</source>
+				<target>Wenn hier etwas hinterlegt ist, wird das Hilfe-Icon hinter der Frage im Frontend dargestellt. Der Hilfetext erscheint bei MouseOver.</target>
+			</trans-unit>
+			<trans-unit id="image.alttitle" resname="image.alttitle"  approved="yes">
+				<source>Image</source>
+				<target>Bild</target>
+			</trans-unit>
+			<trans-unit id="image.description" resname="image.description"  approved="yes">
+				<source>You can select an additional picture for this element.</source>
+				<target>Der Frage kann ein Bild zugewiesen werden.</target>
+			</trans-unit>
+			<trans-unit id="image_position.alttitle" resname="image_position.alttitle"  approved="yes">
+				<source>Image-position</source>
+				<target>Bild-Position</target>
+			</trans-unit>
+			<trans-unit id="image_position.description" resname="image_position.description"  approved="yes">
+				<source>Position of the image in relation to title and/or text.</source>
+				<target>Die Positionen des Bildes im Bezug zum Fragetext.</target>
+			</trans-unit>
+			<trans-unit id="is_mandatory.alttitle" resname="is_mandatory.alttitle"  approved="yes">
+				<source>Mandatory question?</source>
+				<target>Pflichtfrage?</target>
+			</trans-unit>
+			<trans-unit id="is_mandatory.description" resname="is_mandatory.description"  approved="yes">
+				<source>The user won't be able to continue the questionnaire, unless an answer is given.</source>
+				<target>Wenn diese Option gewählt ist, kann der Nutzer den Fragebogen nicht absenden oder auf die
+			nächste Seite wechseln, bevor die Frage beantwortet wurde.</target>
+			</trans-unit>
+			<trans-unit id="must_be_correct.alttitle" resname="must_be_correct.alttitle"  approved="yes">
+				<source>Needs to be answered correctly?</source>
+				<target>Muss die Frage korrekt beantwortet sein, um fort zu fahren?</target>
+			</trans-unit>
+			<trans-unit id="must_be_correct.description" resname="must_be_correct.description"  approved="yes">
+				<source>The user won't be able to continue the questionnaire, unless this question is answered correctly.</source>
+				<target>Der Nutzer soll nur dann mit dem Fragebogen fortfahren können, wenn er die Frage richtig
+			beantwortet hat. Dies ist nur bei geschlossenen Fragen möglich.</target>
+			</trans-unit>
+			<trans-unit id="random_answers.description" resname="random_answers.description"  approved="yes">
+				<source>Show the answers in random order, the following answer-types will appear as one answer: matrix, drag-n-drop, cloze text</source>
+				<target>Darstellung der Antworten in zufälliger Reihenfolge.&lt;br&gt;Folgende Antworten werden hier als eine Antwort interpretiert: Matrix-Fragen, Drag-n-Drop Fragen, Lückentexte</target>
+			</trans-unit>
+			<trans-unit id="column_count.description" resname="column_count.description"  approved="yes">
+				<source>Number of columns the answers are displayed in. The following answer-types will appear as one answer: matrix, drag-n-drop, cloze text</source>
+				<target>Darstellung der Antworten in Spalten.&lt;br&gt;Folgende Antworten werden hier als eine Antwort interpretiert: Matrix-Fragen, Drag-n-Drop Fragen, Lückentexte</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

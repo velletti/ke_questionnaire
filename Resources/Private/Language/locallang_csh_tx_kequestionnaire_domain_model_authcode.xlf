@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723372" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:09:32Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="auth_code.description" resname="auth_code.description" >
+				<source>Generated Authentication Code for the participation</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

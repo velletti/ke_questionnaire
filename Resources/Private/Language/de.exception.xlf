@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723441" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:10:41Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="saveExtConf" resname="saveExtConf"  approved="yes">
+				<source>The extConf array is empty. Please go to the extension manager, choose extension &quot;ke_questionnaire&quot;, switch to tab &quot;Configuration&quot; and click the button &quot;Update&quot; at the bottom.</source>
+				<target>Das extConf Array ist leer. Bitte gehen Sie in den Extensionmanager, wählen Sie die Extension &quot;ke_questionnaire&quot; aus, gehen Sie auf den Tab &quot;Konfiguration&quot; und klicken Sie unten auf den Button &quot;Aktualisieren&quot;. Nach einem Clear Cache sollte dieser Fehler nicht mehr auftreten.</target>
+			</trans-unit>
+			<trans-unit id="mailNoFrom" resname="mailNoFrom"  approved="yes">
+				<source>There is no e-mail address for FROM defined. Please go to extension manager, search for &quot;ke_questionnaire&quot;, tab &quot;Configuration&quot;, selectbox &quot;Mail&quot; and add an e-mail address for FROM.</source>
+				<target>Es wurde keine E-Mail-Adresse für FROM hinterlegt. Bitte gehen Sie in den Extensionmanager, wählen Sie die Extension &quot;ke_questionnaire&quot; aus, gehen Sie auf den Tab &quot;Konfiguration&quot;, wechseln Sie mit Hilfe der Selectbox auf &quot;Mail&quot; und tragen Sie für FROM eine E-Mail-Adresse ein.</target>
+			</trans-unit>
+			<trans-unit id="mailNoReceivers" resname="mailNoReceivers"  approved="yes">
+				<source>There are no recipients defined. Please check configuration. Maybe there is no e-mail address defined for given user.</source>
+				<target>Es wurden keine Empfänger gefunden. Bitte überpfüfen Sie die Konfiguration. Möglicherweise wurde dem Benutzerdatensatz keine E-Mail-Adresse hinterlegt.</target>
+			</trans-unit>
+			<trans-unit id="mailNoSubject" resname="mailNoSubject"  approved="yes">
+				<source>There is no subject defined. Please check configuration or go to extension manager, search for &quot;ke_questionnaire&quot;, tab &quot;Configuration&quot;, selectbox &quot;Mail&quot; and add a global subject for all mails.</source>
+				<target>Es wurde kein Betreff angegeben. Bitte überprüfen Sie die Konfiguration oder gehen Sie in den Extensionmanager, wählen Sie die Extension &quot;ke_questionnaire&quot; aus, gehen Sie auf den Tab &quot;Konfiguration&quot;, wechseln Sie mit Hilfe der Selectbox auf &quot;Mail&quot; und tragen Sie dort einen globalen Betreff für alle Mailings ein.</target>
+			</trans-unit>
+			<trans-unit id="mailNoBody" resname="mailNoBody"  approved="yes">
+				<source>There is no body defined. Please check configuration. Maybe the templates can't be found.</source>
+				<target>Es wurde kein Mailinhalt gefunden. Bitte überprüfen Sie Ihre Konfiguration. Möglicherweise stimmen die Pfade zu Ihren Templates nicht.</target>
+			</trans-unit>
+			<trans-unit id="dataMapperValidation" resname="dataMapperValidation"  approved="yes">
+				<source>While mapping an array $row to object &quot;%s&quot; the validation process throws an error on property: %s with following error message: %d - %s</source>
+				<target>Während dem Abbilden eines Arrays $row auf das Objekt &quot;%s&quot; hat der Validierungsprozess einen Fehler bei der Eigenschaft: %s gefunden. Folgende Fehlermeldung wurde mitgeliefert: %d - %s</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

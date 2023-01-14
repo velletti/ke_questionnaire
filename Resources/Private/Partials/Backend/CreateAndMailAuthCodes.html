@@ -4,36 +4,36 @@
 <f:form action="createAndMailAuthCodes" controller="Backend" method="post">
 	<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
 	<br />
-	<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.createLabel" />: <br />
+	<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.createLabel" />: <br />
 	<div class="tabs">
 		<!-- Radio button and lable for #tab-content1 -->
 		<input type="radio" name="tabs" id="tab1" checked >
 		<label for="tab1">
-			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.tabEmail" />
+			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.tabEmail" />
 		</label>
 
 		<f:if condition="{ke:premiumLoaded()}">
 			<!-- Radio button and lable for #tab-content2 -->
 			<input type="radio" name="tabs" id="tab2">
 			<label for="tab2">
-				<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.tabFeUser" />
+				<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.tabFeUser" />
 			</label>
 			<!-- Radio button and lable for #tab-content4 -->
 			<input type="radio" name="tabs" id="tab4">
 			<label for="tab4">
-				<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.tabFeUserGroup" />
+				<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.tabFeUserGroup" />
 			</label>
 		</f:if>
 		<!-- Radio button and lable for #tab-content3 -->
 		<input type="radio" name="tabs" id="tab3">
 		<label for="tab3">
-			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.tabTtAddress" />
+			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.tabTtAddress" />
 		</label>
 		<div id="tab-content1" class="tab-content">
-			<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.tabEmail" /></h3>
+			<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.tabEmail" /></h3>
 			<p>
 			<p>
-				<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.emailLabel" />: <br />
+				<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.emailLabel" />: <br />
 			</p>
 			<p><f:form.textarea name="emails" rows="10" cols="50" value="{plugin.ffdata.settings.email.invite.emails}"/><br /></p>
 			</p>
@@ -41,9 +41,9 @@
 
 		<f:if condition="{ke:premiumLoaded()}">
 			<div id="tab-content4" class="tab-content">
-				<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.tabFeUserGroup" /></h3>
+				<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.tabFeUserGroup" /></h3>
 				<p>
-					<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.feuserGroupLabel" />: <br />
+					<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.feuserGroupLabel" />: <br />
 				</p>
 				<p>
 				<ul class="keq-be-50-list">
@@ -59,9 +59,9 @@
 
 	</div>
 	<br style="clear: both;" />
-	<f:form.submit value="{f:translate(key: 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.createSubmit')}" />
+	<f:form.submit value="{f:translate(key: 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.createSubmit')}" />
 	<hr />
-	<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.viewMail" />: <br />
+	<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.viewMail" />: <br />
 	<br />
 	<div class="mailPreview">
 		<b>Subject:</b> {preview.subject}<br /><br />
@@ -79,7 +79,7 @@
 							                     parameters: {tx_kequestionnaire_kequestionnairebe_kequestionnaireauthcode: {pluginUid: '{plugin.uid}' ,
 							                     controller: 'Backend' ,
 							                     action: 'authCodesMail'}})}" >
-			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xml:editPlugin" />
+			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:editPlugin" />
 		</be:link.editRecord>
 	</b>
 </f:form>

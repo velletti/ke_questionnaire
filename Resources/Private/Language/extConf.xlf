@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723444" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:10:44Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="enableFeUserMarker" resname="enableFeUserMarker" >
+				<source>Enable Frontent-User Marker: If this feature is enabled an additional marker {feUser} will be available in all templates to access to current or given feUser-Record.</source>
+			</trans-unit>
+			<trans-unit id="emailAddress" resname="emailAddress" >
+				<source>Sender e-mail address: This is the e-mail address defined in the FROM part. You can overwrite it within the submodules.</source>
+			</trans-unit>
+			<trans-unit id="emailSender" resname="emailSender" >
+				<source>Sender name: Define a contact person here instead of &quot;Webmaster&quot;. You can overwrite this within the submodules.</source>
+			</trans-unit>
+			<trans-unit id="emailSubject" resname="emailSubject" >
+				<source>Subject: This is a global subject. If required, you can overwrite it. It is used in case you forget to define a subject in submodules.</source>
+			</trans-unit>
+			<trans-unit id="csvExportInterval" resname="csvExportInterval" >
+				<source>Interval for Export: Amount of participations for the export. If the amount is higher than this, the export will be generated with ajax.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

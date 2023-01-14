@@ -5,7 +5,7 @@
 		<f:if condition="{question.page} == {questionnaire.page}">
 			<f:then>
 				<li style="font-weight: bold;">
-					<span class="quest_number">{question.numbering}</span><p>{question.title} <f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:navigation.onPage" /> {question.page}</p>
+					<span class="quest_number">{question.numbering}</span><p>{question.title} <f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xlf:navigation.onPage" /> {question.page}</p>
 					<ke:checkAnsweredQuestion question="{question}" result="{result}">
 						<f:image src="EXT:ke_questionnaire/Resources/Public/Images/check_label.png" alt="check" />
 					</ke:checkAnsweredQuestion>
@@ -13,7 +13,7 @@
 			</f:then>
 			<f:else>
 				<li>
-				    <a href="#" onclick="submitToPage({question.page});return false;"><span class="quest_number">{question.numbering}</span><p>{question.title} <f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:navigation.onPage" /> {question.page}</p></a>
+				    <a href="#" onclick="submitToPage({question.page});return false;"><span class="quest_number">{question.numbering}</span><p>{question.title} <f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xlf:navigation.onPage" /> {question.page}</p></a>
 					<ke:checkAnsweredQuestion question="{question}" result="{result}">
 						<f:image src="EXT:ke_questionnaire/Resources/Public/Images/check_label.png" alt="check" />
 					</ke:checkAnsweredQuestion>

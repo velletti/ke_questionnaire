@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723242" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:07:22Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab"  approved="yes">
+				<source>Analysis</source>
+				<target>Auswertung</target>
+			</trans-unit>
+			<trans-unit id="index_list_header" resname="index_list_header"  approved="yes">
+				<source>Please select a questionnaire for the Analyse Module</source>
+				<target>Bitte einen Fragebogen für das Auswertungs Modul auswählen</target>
+			</trans-unit>
+			<trans-unit id="header" resname="header"  approved="yes">
+				<source>Analyse data of the questionnaire </source>
+				<target>Auswertung der Daten des Fragebogens </target>
+			</trans-unit>
+			<trans-unit id="count" resname="count"  approved="yes">
+				<source>Finished/Total Participations: </source>
+				<target>Abgeschlossene/Gesamt Teilnahmen: </target>
+			</trans-unit>
+			<trans-unit id="list.header" resname="list.header"  approved="yes">
+				<source>Analyse data for the questionnaires</source>
+				<target>Datenanalyse für Fragebögen</target>
+			</trans-unit>
+			<trans-unit id="list.select" resname="list.select"  approved="yes">
+				<source>Select a questionnaire and an analysis type</source>
+				<target>Wählen Sie einen Fragebogen und einen Auswertungstyp</target>
+			</trans-unit>
+			<trans-unit id="list.types" resname="list.types"  approved="yes">
+				<source>Analysis types:</source>
+				<target>Auswertungstypen:</target>
+			</trans-unit>
+			<trans-unit id="questions.title" resname="questions.title"  approved="yes">
+				<source>Questions</source>
+				<target>Fragen</target>
+			</trans-unit>
+			<trans-unit id="questions.description" resname="questions.description" xml:space="preserve" approved="yes">
+				<source>
+				Analyse the answers to single questions
+			</source>
+				<target>
+				Antworten einer einzelnen Frage analysieren
+			</target>
+			</trans-unit>
+			<trans-unit id="general.title" resname="general.title"  approved="yes">
+				<source>General</source>
+				<target>Allgemein</target>
+			</trans-unit>
+			<trans-unit id="general.description" resname="general.description" xml:space="preserve" approved="yes">
+				<source>
+				Analyse the participations in general
+			</source>
+				<target>
+				Auswertung der Teilnahmen im Allgemeinen
+			</target>
+			</trans-unit>
+			<trans-unit id="menu.title" resname="menu.title"  approved="yes">
+				<source>Analyse actions:</source>
+				<target>Auswertungstypen:</target>
+			</trans-unit>
+			<trans-unit id="menu.questions" resname="menu.questions"  approved="yes">
+				<source>Question based</source>
+				<target>Fragen</target>
+			</trans-unit>
+			<trans-unit id="menu.general" resname="menu.general"  approved="yes">
+				<source>General</source>
+				<target>Allgemein</target>
+			</trans-unit>
+			<trans-unit id="selectQuestions.title" resname="selectQuestions.title"  approved="yes">
+				<source>Select a question to be analysed: </source>
+				<target>Wählen sie eine Frage für die Auswertung aus: </target>
+			</trans-unit>
+			<trans-unit id="questions.all" resname="questions.all"  approved="yes">
+				<source>Analysis of all participations</source>
+				<target>Auswertung aller Teilnahmen</target>
+			</trans-unit>
+			<trans-unit id="questions.finished" resname="questions.finished"  approved="yes">
+				<source>Analysis of finished participations only</source>
+				<target>Auswertung nur abgeschlossener Teilnahmen</target>
+			</trans-unit>
+			<trans-unit id="questionnaire.participations" resname="questionnaire.participations"  approved="yes">
+				<source>Analysis of participations</source>
+				<target>Auswertung von Teilnahmen</target>
+			</trans-unit>
+			<trans-unit id="points.title" resname="points.title"  approved="yes">
+				<source/>
+				<target>Erreichte Punktzahlen</target>
+			</trans-unit>
+			<trans-unit id="points.description" resname="points.description"  approved="yes">
+				<source/>
+				<target>
+				Auswertung der Teilnahmen nach erreichten Punktzahlen
+			</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

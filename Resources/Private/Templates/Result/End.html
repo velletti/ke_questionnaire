@@ -9,7 +9,7 @@
 			<f:format.html>{settings.endText}</f:format.html>
 		</f:then>
 		<f:else>
-			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:endText.standard" />
+			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xlf:endText.standard" />
 		</f:else>
 	</f:if>
 	<f:if condition="{settings.hidePoints} == 0">
@@ -22,11 +22,11 @@
 	</f:if>
 	<f:if condition="{settings.PDFdownload}">
 		<div class="keq_fePDFdownload">
-			<f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xml:PDFdownload.info" />
+			<f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xlf:PDFdownload.info" />
 			<ul>
 				<f:for each="{PDFdownload}" as="download">
 					<li>
-						<f:link.action target="_blank" action="downloadPdf" controller="Export" arguments="{questionnaire:questionnaire.uid,pdfType:download,selectedResult:result.uid}"><f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xml:PDFdownload.{download}" /></f:link.action>
+						<f:link.action target="_blank" action="downloadPdf" controller="Export" arguments="{questionnaire:questionnaire.uid,pdfType:download,selectedResult:result.uid}"><f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xlf:PDFdownload.{download}" /></f:link.action>
 					</li>
 				</f:for>
 			</ul>
@@ -43,7 +43,7 @@
 		<script type="text/javascript" src="{f:uri.resource(path:'jqPlot/plugins/jqplot.highlighter.min.js',extensionName:'ke_questionnaire')}"></script>
 	
 		<br /><br />
-		<div class="quotaChartHeader"><f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xml:quotaPie.title" /></div>
+		<div class="quotaChartHeader"><f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xlf:quotaPie.title" /></div>
 		<div id="chart_quotaPie" style="height:300px; width:500px;"></div>
 		<ke:JavaScript alwaysreplace="quotaPie">
 			//quotaPie_start

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723204" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:06:44Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="tx_kequestionnaire_domain_model_question" resname="tx_kequestionnaire_domain_model_question"  approved="yes">
+				<source>KeQ Content</source>
+				<target>KeQ Inhaltselement</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.type" resname="tx_kequestionnaire_domain_model_question.type"  approved="yes">
+				<source>Type</source>
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.title" resname="tx_kequestionnaire_domain_model_question.title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.show_title" resname="tx_kequestionnaire_domain_model_question.show_title"  approved="yes">
+				<source>Show title</source>
+				<target>Zeige Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.text" resname="tx_kequestionnaire_domain_model_question.text"  approved="yes">
+				<source>Text</source>
+				<target>Text</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.help_text" resname="tx_kequestionnaire_domain_model_question.help_text"  approved="yes">
+				<source>Help text</source>
+				<target>Hilfetext</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image" resname="tx_kequestionnaire_domain_model_question.image"  approved="yes">
+				<source>Image</source>
+				<target>Bild</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position" resname="tx_kequestionnaire_domain_model_question.image_position"  approved="yes">
+				<source>Image position</source>
+				<target>Bildposition</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.1" resname="tx_kequestionnaire_domain_model_question.image_position.I.1"  approved="yes">
+				<source>Top</source>
+				<target>Oben</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.2" resname="tx_kequestionnaire_domain_model_question.image_position.I.2"  approved="yes">
+				<source>Right</source>
+				<target>Rechts</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.3" resname="tx_kequestionnaire_domain_model_question.image_position.I.3"  approved="yes">
+				<source>Left</source>
+				<target>Links</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.image_position.I.4" resname="tx_kequestionnaire_domain_model_question.image_position.I.4"  approved="yes">
+				<source>Bottom</source>
+				<target>Unten</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.is_mandatory" resname="tx_kequestionnaire_domain_model_question.is_mandatory"  approved="yes">
+				<source>Is mandatory</source>
+				<target>Pflichtfeld</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.must_be_correct" resname="tx_kequestionnaire_domain_model_question.must_be_correct"  approved="yes">
+				<source>Should the question be answered correctly?</source>
+				<target>Muss die Frage korrekt beantwortet werden?</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.answers" resname="tx_kequestionnaire_domain_model_question.answers"  approved="yes">
+				<source>Answers</source>
+				<target>Antworten</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.conent_id" resname="tx_kequestionnaire_domain_model_question.conent_id"  approved="yes">
+				<source>TYPO3 ContentElement</source>
+				<target>Typo3 ContentElement</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_question.dependancies" resname="tx_kequestionnaire_domain_model_question.dependancies"  approved="yes">
+				<source>Dependancies</source>
+				<target>Abhängigkeiten</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer" resname="tx_kequestionnaire_domain_model_answer"  approved="yes">
+				<source>Answers</source>
+				<target>Antwort</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.type" resname="tx_kequestionnaire_domain_model_answer.type"  approved="yes">
+				<source>Type</source>
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.title" resname="tx_kequestionnaire_domain_model_answer.title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.points" resname="tx_kequestionnaire_domain_model_answer.points"  approved="yes">
+				<source>Points</source>
+				<target>Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.text" resname="tx_kequestionnaire_domain_model_answer.text"  approved="yes">
+				<source>Text</source>
+				<target>Text</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_answer.is_correct_answer" resname="tx_kequestionnaire_domain_model_answer.is_correct_answer"  approved="yes">
+				<source>Correct answer</source>
+				<target>Ist dies die korrekte Antwort?</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion" resname="tx_kequestionnaire_domain_model_resultquestion"  approved="yes">
+				<source>Resultquestions</source>
+				<target>Frageergebnis</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion.answers" resname="tx_kequestionnaire_domain_model_resultquestion.answers"  approved="yes">
+				<source>Answers</source>
+				<target>Antworten</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion.question" resname="tx_kequestionnaire_domain_model_resultquestion.question"  approved="yes">
+				<source>Question</source>
+				<target>Frage</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultquestion.points" resname="tx_kequestionnaire_domain_model_resultquestion.points"  approved="yes">
+				<source>Collected points</source>
+				<target>Gesammelte Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer" resname="tx_kequestionnaire_domain_model_resultanswer"  approved="yes">
+				<source>Resultanswers</source>
+				<target>Antwortergebnis der Fragen</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.answer" resname="tx_kequestionnaire_domain_model_resultanswer.answer"  approved="yes">
+				<source>Answer</source>
+				<target>Antwort</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.value" resname="tx_kequestionnaire_domain_model_resultanswer.value"  approved="yes">
+				<source>Value</source>
+				<target>Wert</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result" resname="tx_kequestionnaire_domain_model_result"  approved="yes">
+				<source>Results</source>
+				<target>Ergebnis</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.finished" resname="tx_kequestionnaire_domain_model_result.finished"  approved="yes">
+				<source>Finished</source>
+				<target>Abgeschlossen</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.questions" resname="tx_kequestionnaire_domain_model_result.questions"  approved="yes">
+				<source>Questions</source>
+				<target>Fragen</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.points" resname="tx_kequestionnaire_domain_model_result.points"  approved="yes">
+				<source>Collected points</source>
+				<target>Gesammelte Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_result.max_points" resname="tx_kequestionnaire_domain_model_result.max_points"  approved="yes">
+				<source>Maximum of reachable points</source>
+				<target>Maximal erreichbare Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode" resname="tx_kequestionnaire_domain_model_authcode"  approved="yes">
+				<source>Authentication Code</source>
+				<target>Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.auth_code" resname="tx_kequestionnaire_domain_model_authcode.auth_code"  approved="yes">
+				<source>Authentication Code</source>
+				<target>Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.email" resname="tx_kequestionnaire_domain_model_authcode.email"  approved="yes">
+				<source>E-Mail</source>
+				<target>E-Mail</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.lastreminder" resname="tx_kequestionnaire_domain_model_authcode.lastreminder"  approved="yes">
+				<source>Last time a reminder mail was send</source>
+				<target>Datum der letzten Erinnerung</target>
+			</trans-unit>
+			<trans-unit id="tx_kequestionnaire_domain_model_authcode.firstactive" resname="tx_kequestionnaire_domain_model_authcode.firstactive"  approved="yes">
+				<source>First time the authCode was used</source>
+				<target>Erster Aufruf des AuthCodes</target>
+			</trans-unit>
+			<trans-unit id="flashmessage.Result.mandatory" resname="flashmessage.Result.mandatory"  approved="yes">
+				<source>One of the questions was mandatory</source>
+				<target>Eine der Fragen ist eine Pflichtfrage</target>
+			</trans-unit>
+			<trans-unit id="flashmessage.Result.mustBeCorrect" resname="flashmessage.Result.mustBeCorrect"  approved="yes">
+				<source>One or more questions have to be answered correctly</source>
+				<target>Eine oder mehrere der Fragen müssen korrekt beantwortet werden</target>
+			</trans-unit>
+			<trans-unit id="prevPage" resname="prevPage"  approved="yes">
+				<source>Previous page</source>
+				<target>Vorige Seite</target>
+			</trans-unit>
+			<trans-unit id="nextPage" resname="nextPage"  approved="yes">
+				<source>Next page</source>
+				<target>Nächste Seite</target>
+			</trans-unit>
+			<trans-unit id="mandatory" resname="mandatory"  approved="yes">
+				<source>This question must be answered.</source>
+				<target>Diese Frage muss beantwortet werden.</target>
+			</trans-unit>
+			<trans-unit id="mustBeCorrect" resname="mustBeCorrect"  approved="yes">
+				<source>This question must be answered correctly.</source>
+				<target>Diese Frage muss korrekt beantwortet werden.</target>
+			</trans-unit>
+			<trans-unit id="submitKeq" resname="submitKeq"  approved="yes">
+				<source>Submit questionnaire</source>
+				<target>Umfrage absenden</target>
+			</trans-unit>
+			<trans-unit id="saveKeq" resname="saveKeq"  approved="yes">
+				<source>Save questionnaire</source>
+				<target>Umfrage abspeichern</target>
+			</trans-unit>
+			<trans-unit id="maxAnswers" resname="maxAnswers"  approved="yes">
+				<source>You reached the max answers allowed:</source>
+				<target>Die maximale Anzahl von möglichen Antworten wurde erreicht:</target>
+			</trans-unit>
+			<trans-unit id="minAnswers" resname="minAnswers"  approved="yes">
+				<source>Minimum answers needed:</source>
+				<target>Anzahl der mindestens zu gebenden Antworten:</target>
+			</trans-unit>
+			<trans-unit id="answerValidation.numeric" resname="answerValidation.numeric"  approved="yes">
+				<source>Only numeric values allowed. Number divider: </source>
+				<target>Es sind nur Zahlen erlaubt. Trennzeichen: </target>
+			</trans-unit>
+			<trans-unit id="answerValidation.integer" resname="answerValidation.integer"  approved="yes">
+				<source>Only integer values allowed</source>
+				<target>Es sind nur ganze Zahlen erlaubt.</target>
+			</trans-unit>
+			<trans-unit id="answerValidation.date" resname="answerValidation.date"  approved="yes">
+				<source>Only date values allowed. Please use the following format:</source>
+				<target>Nur Datumsangaben erlaubt. Bitte folgendes Format nutzen: </target>
+			</trans-unit>
+			<trans-unit id="answerValidation.string" resname="answerValidation.string"  approved="yes">
+				<source>Must be a string</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="answerValidation.string2chars" resname="answerValidation.string2chars"  approved="yes">
+				<source>Must be a string with at least 2 chars</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="answerValidation.compareText" resname="answerValidation.compareText"  approved="yes">
+				<source>Please enter the correct text</source>
+				<target>Bitte geben sie den korrekten Wortlaut ein.</target>
+			</trans-unit>
+			<trans-unit id="answerValidation.keywords" resname="answerValidation.keywords"  approved="yes">
+				<source>You need to match different keywords in your text</source>
+				<target>Es müssen bestimmte Schlagwörter im Text verwendet werden.</target>
+			</trans-unit>
+			<trans-unit id="wizard.setArea" resname="wizard.setArea"  approved="yes">
+				<source>Save area-coordinates</source>
+				<target>Bereichs-Koordinaten speichern</target>
+			</trans-unit>
+			<trans-unit id="wizard.closeWizard" resname="wizard.closeWizard"  approved="yes">
+				<source>Close Wizard</source>
+				<target>Wizard schliessen</target>
+			</trans-unit>
+			<trans-unit id="slider.selectedValue" resname="slider.selectedValue"  approved="yes">
+				<source>Selected value</source>
+				<target>Ausgewählter Wert</target>
+			</trans-unit>
+			<trans-unit id="endText.standard" resname="endText.standard"  approved="yes">
+				<source>Thank you for participating!</source>
+				<target>Vielen Dank für ihre Teilnahme!</target>
+			</trans-unit>
+			<trans-unit id="feUserAccess.info" resname="feUserAccess.info"  approved="yes">
+				<source>You need to be logged in to access this questionnaire.</source>
+				<target>Sie müssen eingeloggt sein, um an diesem Fragebogen teilnehmen zu können.</target>
+			</trans-unit>
+			<trans-unit id="maxParticipations.info" resname="maxParticipations.info"  approved="yes">
+				<source>The maximum number of participations for this questionnaire is reached.</source>
+				<target>Die maximale Anzahl an Teilnahmen für diesen Fragebogen ist erreicht.</target>
+			</trans-unit>
+			<trans-unit id="authCodeAccess.info" resname="authCodeAccess.info"  approved="yes">
+				<source>You need an Authentication Code to access this questionnaire. Please enter the Authentication Code in the input-field below.</source>
+				<target>Es wird ein Authentication Code benötigt, um an diesem Fragebogen teilnehmen zu können. Bitte tragen Sie Ihren Authentication Code in dem unten stehenden Eingabefeld ein.</target>
+			</trans-unit>
+			<trans-unit id="authCodeAccess.submit" resname="authCodeAccess.submit"  approved="yes">
+				<source>Submit Authentication Code</source>
+				<target>Authentication Code absenden</target>
+			</trans-unit>
+			<trans-unit id="dependancyAccess.info" resname="dependancyAccess.info"  approved="yes">
+				<source>You need to finish the following questionnaire: </source>
+				<target>Sie müssen erst die folgenden Fragebögen abschliessen: </target>
+			</trans-unit>
+			<trans-unit id="dependancyAccess.infoPoints" resname="dependancyAccess.infoPoints"  approved="yes">
+				<source>You need to finish the following questionnaire with a certain amount of points: </source>
+				<target>Sie müssen erst die folgenden Fragebögen mit entsprechender Punktzahl abschliessen: </target>
+			</trans-unit>
+			<trans-unit id="mail.standard.subject" resname="mail.standard.subject"  approved="yes">
+				<source>You were invited!</source>
+				<target>Sie wurden eingeladen!</target>
+			</trans-unit>
+			<trans-unit id="mail.standard.text.before" resname="mail.standard.text.before"  approved="yes">
+				<source>You were invited to answer a questionnaire. For access you will need the following Authentication Code:&lt;br&gt;</source>
+				<target>Sie wurden eingeladen an einem Fragebogen teilzunehmen. Um auf den Fragebogen zugreifen zu können benötigen Sie den folgenden Authentication Code:&lt;br&gt;</target>
+			</trans-unit>
+			<trans-unit id="mail.standard.text.after" resname="mail.standard.text.after"  approved="yes">
+				<source>&lt;br&gt;We would love to see you soon.&lt;br&gt;</source>
+				<target>&lt;br&gt;Wir freuen uns, Sie bald bei uns begrüßen zu dürfen.&lt;br&gt;&lt;br&gt;Sie können auch den folgenden Link nutzen:&lt;br&gt;</target>
+			</trans-unit>
+			<trans-unit id="mail.reminder.subject" resname="mail.reminder.subject"  approved="yes">
+				<source>Do you remember? You were invited!</source>
+				<target>Erinnern Sie sich? Sie wurden eingeladen!</target>
+			</trans-unit>
+			<trans-unit id="mail.reminder.text.before" resname="mail.reminder.text.before"  approved="yes">
+				<source>You were invited to answer a questionnaire but we found no participation, yet. For access you will need the following Authentication Code:&lt;br&gt;</source>
+				<target>Sie wurden eingeladen an einem Fragebogen teilzunehmen. Leider haben wir noch keine Teilnahme von Ihnen registrieren können. Um auf den Fragebogen zugreifen zu können benötigen Sie den folgenden Authentication Code:&lt;br&gt;</target>
+			</trans-unit>
+			<trans-unit id="mail.reminder.text.after" resname="mail.reminder.text.after"  approved="yes">
+				<source>&lt;br&gt;We would love to see you soon.&lt;br&gt;</source>
+				<target>&lt;br&gt;Wir freuen uns, Sie bald bei uns begrüßen zu dürfen.&lt;br&gt;&lt;br&gt;Sie können auch den folgenden Link nutzen:&lt;br&gt;</target>
+			</trans-unit>
+			<trans-unit id="qList.resultFrom" resname="qList.resultFrom"  approved="yes">
+				<source>Participation finished: </source>
+				<target>Abgeschlossene Teilnahmen: </target>
+			</trans-unit>
+			<trans-unit id="reclaimAuthcode.info" resname="reclaimAuthcode.info"  approved="yes">
+				<source>Please enter your E-mail address</source>
+				<target>Bitte tragen Sie ihre E-Mail-Adresse ein</target>
+			</trans-unit>
+			<trans-unit id="reclaimAuthcode.submit" resname="reclaimAuthcode.submit"  approved="yes">
+				<source>Reclaim Authentication Code</source>
+				<target>Authentication Code erneut anfordern</target>
+			</trans-unit>
+			<trans-unit id="reclaimAuthcode.send" resname="reclaimAuthcode.send"  approved="yes">
+				<source>An Authentication Code has been sent to your E-mail address</source>
+				<target>Eine E-Mail mit Ihrem Authentication Code wurde an Ihre E-Mail-Adresse versandt</target>
+			</trans-unit>
+			<trans-unit id="reclaimAuthcode.mailErrorText" resname="reclaimAuthcode.mailErrorText"  approved="yes">
+				<source>The E-mail address was not valid!</source>
+				<target>Die eingegebene E-Mail-Adresse war nicht korrekt!</target>
+			</trans-unit>
+			<trans-unit id="reclaimAuthcode.mailErrorTitle" resname="reclaimAuthcode.mailErrorTitle"  approved="yes">
+				<source>E-mail error</source>
+				<target>E-Mail-Fehler</target>
+			</trans-unit>
+			<trans-unit id="reclaimAuthcode.notFoundText" resname="reclaimAuthcode.notFoundText"  approved="yes">
+				<source>There is no open/unused Authentication Code for this E-mail!</source>
+				<target>Für diese E-Mail-Adresse ist kein offener/ungenutzter Authentication Code vorhanden!</target>
+			</trans-unit>
+			<trans-unit id="reclaimAuthcode.notFoundTitle" resname="reclaimAuthcode.notFoundTitle"  approved="yes">
+				<source>Authentication Code error</source>
+				<target>Authentication Code-Fehler</target>
+			</trans-unit>
+			<trans-unit id="participationChart.finished" resname="participationChart.finished"  approved="yes">
+				<source>Finished</source>
+				<target>Abgeschlossen</target>
+			</trans-unit>
+			<trans-unit id="participationChart.all" resname="participationChart.all"  approved="yes">
+				<source>All</source>
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="analysis.selectedQ.header" resname="analysis.selectedQ.header"  approved="yes">
+				<source>Analysis of Questionnaire</source>
+				<target>Analyse des Fragebogens</target>
+			</trans-unit>
+			<trans-unit id="analysis.analyseType" resname="analysis.analyseType"  approved="yes">
+				<source>Type of analysis</source>
+				<target>Typ der Analyse</target>
+			</trans-unit>
+			<trans-unit id="analysis.analyseType.general" resname="analysis.analyseType.general"  approved="yes">
+				<source>General</source>
+				<target>Allgemein</target>
+			</trans-unit>
+			<trans-unit id="analysis.analyseType.questions" resname="analysis.analyseType.questions"  approved="yes">
+				<source>Questions</source>
+				<target>Fragen</target>
+			</trans-unit>
+			<trans-unit id="analysis.questionSelect" resname="analysis.questionSelect"  approved="yes">
+				<source>Question</source>
+				<target>Frage</target>
+			</trans-unit>
+			<trans-unit id="feView.noResultError" resname="feView.noResultError"  approved="yes">
+				<source>No Participation selected</source>
+				<target>Keine Teilnahme ausgewählt</target>
+			</trans-unit>
+			<trans-unit id="navigation.onPage" resname="navigation.onPage"  approved="yes">
+				<source>on page</source>
+				<target>auf Seite </target>
+			</trans-unit>
+			<trans-unit id="navigation.page" resname="navigation.page"  approved="yes">
+				<source>page</source>
+				<target>Seite</target>
+			</trans-unit>
+			<trans-unit id="premiuminfo.standard" resname="premiuminfo.standard"  approved="yes">
+				<source>This is a premium option of ke_questionnaire</source>
+				<target>Diese Option steht Ihnen in der Premium-Version von ke_questionnaire zur verfügung</target>
+			</trans-unit>
+			<trans-unit id="report.fileAccess.title" resname="report.fileAccess.title"  approved="yes">
+				<source>ke_questionnaire: deny direct access to pdf-temp folder</source>
+				<target>ke_questionnaire: PDF-Tempordner muss lesegeschützt sein</target>
+			</trans-unit>
+			<trans-unit id="report.fileAccess.ok" resname="report.fileAccess.ok"  approved="yes">
+				<source>OK</source>
+				<target>OK</target>
+			</trans-unit>
+			<trans-unit id="report.fileAccess.error" resname="report.fileAccess.error"  approved="yes">
+				<source>pdf-temp folder is accessible</source>
+				<target>PDF-Ordner ist nicht lesegeschützt</target>
+			</trans-unit>
+			<trans-unit id="report.fileAccess.error.explanation" resname="report.fileAccess.error.explanation"  approved="yes">
+				<source>Please deny access to folder typo3temp/ke_questionnaire/pdf and its subfolders from the outside.</source>
+				<target>Bitte stellen Sie sicher, dass Dateien des Ordners typo3temp/ke_questionnaire/pdf, sowie sämtlicher Unterordner, nicht von außen gelesen werden können.</target>
+			</trans-unit>
+			<trans-unit id="report.fileAccess.warning" resname="report.fileAccess.warning"  approved="yes">
+				<source>not testable due to permissions</source>
+				<target>nicht prüfbar</target>
+			</trans-unit>
+			<trans-unit id="report.fileAccess.warning.details" resname="report.fileAccess.warning.details"  approved="yes">
+				<source>Could not create testfile in folder typo3temp/ke_questionnaire/pdf . Please deny access to folder typo3temp/ke_questionnaire/pdf and its subfolders from the outside manually.</source>
+				<target>Testdatei konnte im Ordner typo3temp/ke_questionnaire/pdf nicht erstellt werden. Bitte stellen Sie manuell sicher, dass Dateien des Ordners typo3temp/ke_questionnaire/pdf, sowie sämtlicher Unterordner, nicht von außen gelesen werden können.</target>
+			</trans-unit>
+			<trans-unit id="report.fileAccess.warning.unknown" resname="report.fileAccess.warning.unknown"  approved="yes">
+				<source>Unknown error. Please make sure typo3temp/ke_questionnaire/pdf cannot be accessed from the outside.</source>
+				<target>Unbekannter Fehler, bitte stellen Sie manuell sicher, dass die Inhalte des Ordners typo3temp/ke_questionnaire/pdf von außen nicht gelesen werden können.</target>
+			</trans-unit>
+			<trans-unit id="points.maxInfo" resname="points.maxInfo"  approved="yes">
+				<source>Maximum Points you could have achieved in this questionnaire: </source>
+				<target>Maximale Anzahl an Punkten, die in diesem Fragebogen zu erreichen waren: </target>
+			</trans-unit>
+			<trans-unit id="points.yourInfo" resname="points.yourInfo"  approved="yes">
+				<source>Points achieved in this questionnaire: </source>
+				<target>Erreichte Punktzahl in diesem Fragebogen: </target>
+			</trans-unit>
+			<trans-unit id="list.table.authCode" resname="list.table.authCode"  approved="yes">
+				<source>Authentication code</source>
+				<target>Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="list.table.email" resname="list.table.email"  approved="yes">
+				<source>E-mail</source>
+				<target>E-Mail</target>
+			</trans-unit>
+			<trans-unit id="list.table.sendDate" resname="list.table.sendDate"  approved="yes">
+				<source>send Date</source>
+				<target>Mail erhalten</target>
+			</trans-unit>
+			<trans-unit id="list.table.participations" resname="list.table.participations"  approved="yes">
+				<source>Participations</source>
+				<target>Teilnahmen</target>
+			</trans-unit>
+			<trans-unit id="list.table.startDate" resname="list.table.startDate"  approved="yes">
+				<source>Date started</source>
+				<target>Info gelesen</target>
+			</trans-unit>
+			<trans-unit id="list.table.finishedDate" resname="list.table.finishedDate"  approved="yes">
+				<source>Date finished</source>
+				<target>Teilnahme bestätigt</target>
+			</trans-unit>
+			<trans-unit id="list.table.lastreminder" resname="list.table.lastreminder"  approved="yes">
+				<source>last reminder</source>
+				<target>letzte Erinnerung</target>
+			</trans-unit>
+			<trans-unit id="list.table.firstactive" resname="list.table.firstactive"  approved="yes">
+				<source>first use</source>
+				<target>erster Aufruf</target>
+			</trans-unit>
+			<trans-unit id="answerValidation.email" resname="answerValidation.email"  approved="yes">
+				<source/>
+				<target>Es sind nur Email-Adressen erlaubt. Bitte folgendes Format nutzen: </target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

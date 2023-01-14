@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723217" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:06:57Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="type.alttitle" resname="type.alttitle" >
+				<source>Contenttype</source>
+			</trans-unit>
+			<trans-unit id="title.alttitle" resname="title.alttitle" >
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="title.description" resname="title.description" >
+				<source>If the text is empty, the title will be displayed</source>
+			</trans-unit>
+			<trans-unit id="title.details" resname="title.details" >
+				<source>The title field is used in exports. It should be self-explanatory. This field cannot be styled and is limited to 160 chars.</source>
+			</trans-unit>
+			<trans-unit id="show_title.alttitle" resname="show_title.alttitle" >
+				<source>Show title?</source>
+			</trans-unit>
+			<trans-unit id="show_title.description" resname="show_title.description" >
+				<source>Shows the title in the questionnaire, even if the text is filled.</source>
+			</trans-unit>
+			<trans-unit id="text.alttitle" resname="text.alttitle" >
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="text.description" resname="text.description" >
+				<source>Feel free to style your text with the RTE given possibilities.</source>
+			</trans-unit>
+			<trans-unit id="help_text.alttitle" resname="help_text.alttitle" >
+				<source>Helptext</source>
+			</trans-unit>
+			<trans-unit id="help_text.description" resname="help_text.description" >
+				<source>If you enter some text here, a help-icon appears in the frontend, which via mouseover opens a hover box with the given text.</source>
+			</trans-unit>
+			<trans-unit id="image.alttitle" resname="image.alttitle" >
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="image.description" resname="image.description" >
+				<source>You can select an additional picture for this element.</source>
+			</trans-unit>
+			<trans-unit id="image_position.alttitle" resname="image_position.alttitle" >
+				<source>Image-position</source>
+			</trans-unit>
+			<trans-unit id="image_position.description" resname="image_position.description" >
+				<source>Position of the image in relation to title and/or text.</source>
+			</trans-unit>
+			<trans-unit id="is_mandatory.alttitle" resname="is_mandatory.alttitle" >
+				<source>Mandatory question?</source>
+			</trans-unit>
+			<trans-unit id="is_mandatory.description" resname="is_mandatory.description" >
+				<source>The user won't be able to continue the questionnaire, unless an answer is given.</source>
+			</trans-unit>
+			<trans-unit id="must_be_correct.alttitle" resname="must_be_correct.alttitle" >
+				<source>Needs to be answered correctly?</source>
+			</trans-unit>
+			<trans-unit id="must_be_correct.description" resname="must_be_correct.description" >
+				<source>The user won't be able to continue the questionnaire, unless this question is answered correctly.</source>
+			</trans-unit>
+			<trans-unit id="random_answers.description" resname="random_answers.description" >
+				<source>Show the answers in random order, the following answer-types will appear as one answer: matrix, drag-n-drop, cloze text</source>
+			</trans-unit>
+			<trans-unit id="column_count.description" resname="column_count.description" >
+				<source>Number of columns the answers are displayed in. The following answer-types will appear as one answer: matrix, drag-n-drop, cloze text</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

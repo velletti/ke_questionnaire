@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723238" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:07:18Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" >
+				<source>Ke Questionnaire</source>
+			</trans-unit>
+			<trans-unit id="header" resname="header" >
+				<source>Ke Questionnaire Backend Modules</source>
+			</trans-unit>
+			<trans-unit id="selectOne" resname="selectOne" >
+				<source>Select one of the questionnaires listed in the Ke Questionnaire content tree</source>
+			</trans-unit>
+			<trans-unit id="editPlugin" resname="editPlugin" >
+				<source>Edit Questionnaire-plugin-data</source>
+			</trans-unit>
+			<trans-unit id="imageAreaSelectHeader" resname="imageAreaSelectHeader" >
+				<source>Select the Areas</source>
+			</trans-unit>
+			<trans-unit id="imageAreaSelectInfo" resname="imageAreaSelectInfo" >
+				<source>Just draw a rectangle on the image and press the save button to save an area. If you have selected all your areas, close the popup.</source>
+			</trans-unit>
+			<trans-unit id="imageAreaSelectSave" resname="imageAreaSelectSave" >
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="imageAreaSelectClose" resname="imageAreaSelectClose" >
+				<source>Close</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

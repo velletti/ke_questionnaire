@@ -7,11 +7,11 @@
 		<f:flashMessages />
 		<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/Backend-tabs.css')}">
 		<script type="text/javascript" src="{f:uri.resource(path:'Script/jquery-ui-1.11.4.min.js')}"></script>
-		<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:header" /> "{plugin.header}"</h3>
+		<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:header" /> "{plugin.header}"</h3>
 		<hr />
 		<f:render partial="Backend/AuthCodesMenu" arguments="{plugin:plugin}"/>
 		<hr />
-		<b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xml:mail.create" /></b><br />
+		<b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.create" /></b><br />
 		<f:render partial="Backend/CreateAndMailAuthCodes" arguments="{plugin:plugin,preview:preview, text:text, fegroups:fegroups, authCode:authCode , feusers:feusers,ttaddresses:ttaddresses}"/>
 		<hr />
 	</f:be.container>

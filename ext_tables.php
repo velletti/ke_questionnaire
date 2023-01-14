@@ -61,7 +61,7 @@ if (TYPO3_MODE === 'BE'){
 		[],     # Controller
 		[  	'access' => 'user,group',  # Konfiguration
             'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
-            'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod.xml',
+            'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod.xlf',
 		]
 	);
 	
@@ -75,7 +75,7 @@ if (TYPO3_MODE === 'BE'){
 				'Export'  => 'downloadPdf, pdf, downloadAuthCodesCsv'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
 				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_authcode.xml'
+				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_authcode.xlf'
 		)
 	);
 	
@@ -88,7 +88,7 @@ if (TYPO3_MODE === 'BE'){
 		Array ( \Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'index,csv,csvRb,downloadCsv,downloadCsvRb,pdf,downloadPdf,csvInterval,csvRbInterval,csvCheckInterval,downloadCsvInterval'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
 				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_export.xml',
+				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_export.xlf',
 		)
 	);
     
@@ -101,7 +101,7 @@ if (TYPO3_MODE === 'BE'){
 		Array ( \Kennziffer\KeQuestionnaire\Controller\AnalyseController::class=> 'index,questions,general'),     # Controller
 		Array (	'access' => 'user,group',  # Konfiguration
 				'icon'	 => 'EXT:'.'ke_questionnaire'.'/ext_icon.gif',
-				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_analyse.xml',
+				'labels' => 'LLL:EXT:'.'ke_questionnaire'.'/Resources/Private/Language/locallang_mod_analyse.xlf',
 		)
 	);  
 	

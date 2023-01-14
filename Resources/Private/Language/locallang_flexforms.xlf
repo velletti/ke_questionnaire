@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723375" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:09:35Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="sheet.basics" resname="sheet.basics" >
+				<source>Basics</source>
+			</trans-unit>
+			<trans-unit id="settings.templates" resname="settings.templates" >
+				<source>Templates</source>
+			</trans-unit>
+			<trans-unit id="settings.questionnaires" resname="settings.questionnaires" >
+				<source>Considered questionnaires</source>
+			</trans-unit>
+			<trans-unit id="settings.redirectTo" resname="settings.redirectTo" >
+				<source>Redirect after authentication code reclaim</source>
+			</trans-unit>
+			<trans-unit id="settings.singleView" resname="settings.singleView" >
+				<source>Plug-In where a single participation can be viewed. If set, the shown participations in list will be linked.</source>
+			</trans-unit>
+			<trans-unit id="sheet.access" resname="sheet.access" >
+				<source>Access</source>
+			</trans-unit>
+			<trans-unit id="settings.accessType" resname="settings.accessType" >
+				<source>Access type</source>
+			</trans-unit>
+			<trans-unit id="settings.accessType.free" resname="settings.accessType.free" >
+				<source>Unlimited</source>
+			</trans-unit>
+			<trans-unit id="settings.accessType.feUser" resname="settings.accessType.feUser" >
+				<source>Frontend-User</source>
+			</trans-unit>
+			<trans-unit id="settings.accessType.authCode" resname="settings.accessType.authCode" >
+				<source>Authentication code</source>
+			</trans-unit>
+			<trans-unit id="settings.participations.max" resname="settings.participations.max" >
+				<source>Number of maximum participations</source>
+			</trans-unit>
+			<trans-unit id="settings.restart" resname="settings.restart" >
+				<source>Users will restart questionnaire with their last, unfinished participation.</source>
+			</trans-unit>
+			<trans-unit id="settings.neverFinish" resname="settings.neverFinish" >
+				<source>Users will have only one participation wich is never finished.</source>
+			</trans-unit>
+			<trans-unit id="settings.additionalParameters" resname="settings.additionalParameters" >
+				<source>Additional Parameters for the URL given to call the questionnaire. Will be exported in CSV</source>
+			</trans-unit>
+			<trans-unit id="sheet.layout" resname="sheet.layout" >
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering" resname="settings.questionNumbering" >
+				<source>Automatic numbering of questions</source>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.none" resname="settings.questionNumbering.none" >
+				<source>None</source>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.all" resname="settings.questionNumbering.all" >
+				<source>Number all elements</source>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.grouped" resname="settings.questionNumbering.grouped" >
+				<source>Number all elements in groups</source>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.questions" resname="settings.questionNumbering.questions" >
+				<source>Number all questions</source>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.undependantQuestions" resname="settings.questionNumbering.undependantQuestions" >
+				<source>Number only independant questions</source>
+			</trans-unit>
+			<trans-unit id="settings.questionNumbering.groupedQuestions" resname="settings.questionNumbering.groupedQuestions" >
+				<source>Number questions in groups</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType" resname="settings.navigationType" >
+				<source>Additional navigation</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.none" resname="settings.navigationType.none" >
+				<source>None</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.display" resname="settings.navigationType.display" >
+				<source>Display overview</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.displayStatus" resname="settings.navigationType.displayStatus" >
+				<source>Display overview with status</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.pages" resname="settings.navigationType.pages" >
+				<source>Display page-navigation</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.navigate" resname="settings.navigationType.navigate" >
+				<source>Display overview with navigation</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.navigateStatus" resname="settings.navigationType.navigateStatus" >
+				<source>Display overview with navigation and status</source>
+			</trans-unit>
+			<trans-unit id="settings.showProgressBar" resname="settings.showProgressBar" >
+				<source>Show progress bar</source>
+			</trans-unit>
+			<trans-unit id="settings.showParticipated" resname="settings.showParticipated" >
+				<source>Mark if user participated</source>
+			</trans-unit>
+			<trans-unit id="settings.showParticipations" resname="settings.showParticipations" >
+				<source>Show participations of user</source>
+			</trans-unit>
+			<trans-unit id="settings.hidePoints" resname="settings.hidePoints" >
+				<source>Hide Points at conclusion page</source>
+			</trans-unit>
+			<trans-unit id="settings.listType" resname="settings.listType" >
+				<source>List Type</source>
+			</trans-unit>
+			<trans-unit id="settings.listType.all" resname="settings.listType.all" >
+				<source>All/Selected questionnaires</source>
+			</trans-unit>
+			<trans-unit id="settings.listType.used" resname="settings.listType.used" >
+				<source>Questionnaires submitted by user</source>
+			</trans-unit>
+			<trans-unit id="settings.listType.unused" resname="settings.listType.unused" >
+				<source>Questionnaires NOT yet submitted by user</source>
+			</trans-unit>
+			<trans-unit id="sheet.texts" resname="sheet.texts" >
+				<source>Texts</source>
+			</trans-unit>
+			<trans-unit id="settings.description" resname="settings.description" >
+				<source>Description before questionnaire starts</source>
+			</trans-unit>
+			<trans-unit id="settings.descriptionlinktext" resname="settings.descriptionlinktext" >
+				<source>Text for hyperlink starting the questionnaire</source>
+			</trans-unit>
+			<trans-unit id="settings.endText" resname="settings.endText" >
+				<source>Text after questionnaire was submitted</source>
+			</trans-unit>
+			<trans-unit id="sheet.behaviour" resname="sheet.behaviour" >
+				<source>Behaviour</source>
+			</trans-unit>
+			<trans-unit id="settings.redirectFinished" resname="settings.redirectFinished" >
+				<source>Redirect-page after submitting the questionnaire</source>
+			</trans-unit>
+			<trans-unit id="settings.dependancy.questionnaire" resname="settings.dependancy.questionnaire" >
+				<source>Dependancy: required submitted questionnaire</source>
+			</trans-unit>
+			<trans-unit id="settings.dependancy.points" resname="settings.dependancy.points" >
+				<source>Dependancy: required points in questionnaire, if 0 it only needs to be finished</source>
+			</trans-unit>
+			<trans-unit id="settings.ajaxAutoSave" resname="settings.ajaxAutoSave" >
+				<source>Automatic Saving of Answers with Ajax (only for logged-in Fe-User)</source>
+			</trans-unit>
+			<trans-unit id="sheet.email" resname="sheet.email" >
+				<source>E-mail Settings</source>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.mail" resname="settings.email.sender.mail" >
+				<source>Sender E-mail address</source>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.name" resname="settings.email.sender.name" >
+				<source>Sender name</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.subject" resname="settings.email.invite.subject" >
+				<source>Invitation: Subject</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.before" resname="settings.email.invite.text.before" >
+				<source>Invitation: Text before authentication code</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.after" resname="settings.email.invite.text.after" >
+				<source>Invitation: Text after authentication code</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.emails" resname="settings.email.invite.emails" >
+				<source>Invitation: Standard E-mail adresses of recipients for invitation (comma-separated)</source>
+			</trans-unit>
+			<trans-unit id="settings.showCorrectQuotaPie" resname="settings.showCorrectQuotaPie" >
+				<source>Show a pie chart on the conclusion page of the questionnaire. Showing the ration of correct/incorrect answered questions</source>
+			</trans-unit>
+			<trans-unit id="settings.showAverage" resname="settings.showAverage" >
+				<source>Show the average reached points of all answered point-giving questions on the conclusion page of the questionnare. Calculation only with answered questions.</source>
+			</trans-unit>
+			<trans-unit id="settings.PDFdownload" resname="settings.PDFdownload" >
+				<source>Enable PDF-Downloads at the Conclusion Page of the Questionnaire</source>
+			</trans-unit>
+			<trans-unit id="settings.email.reminder.subject" resname="settings.email.reminder.subject" >
+				<source>Reminder Emails for AuthCode Invitations: Subject</source>
+			</trans-unit>
+			<trans-unit id="settings.showGroupPoints" resname="settings.showGroupPoints" >
+				<source>Show the reached points per Assessment Group on the conclusion page</source>
+			</trans-unit>
+			<trans-unit id="settings.showGroupCorrectAnswers" resname="settings.showGroupCorrectAnswers" >
+				<source>Show the correct/incorrect answered Questions per Assessment Group on the conclusion page</source>
+			</trans-unit>
+			<trans-unit id="settings.randomQuestions" resname="settings.randomQuestions" xml:space="preserve">
+				<source>
+				Enable random selection of questions for a single Page/Questionaire
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.randomQuestionsMax" resname="settings.randomQuestionsMax" xml:space="preserve">
+				<source>
+				If random is enabled, maximum number of questions for each page
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.maxSeconds" resname="settings.maxSeconds" xml:space="preserve">
+				<source>
+				Enable Timers Feature: Max time for whole Questionaire in seconds
+			</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

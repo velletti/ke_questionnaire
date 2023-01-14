@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723251" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:07:31Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab"  approved="yes">
+				<source>Export</source>
+				<target>Export</target>
+			</trans-unit>
+			<trans-unit id="header" resname="header"  approved="yes">
+				<source>Export data for the questionnaire </source>
+				<target>Export der Daten für den Fragebogen </target>
+			</trans-unit>
+			<trans-unit id="index_list_header" resname="index_list_header"  approved="yes">
+				<source>Please select a questionnaire for the Export Module</source>
+				<target>Bitte einen Fragebogen für das Export Modul auswählen</target>
+			</trans-unit>
+			<trans-unit id="count" resname="count"  approved="yes">
+				<source>Finished/Total Participations: </source>
+				<target>Abgeschlossene/Gesamt Teilnahmen: </target>
+			</trans-unit>
+			<trans-unit id="list.header" resname="list.header"  approved="yes">
+				<source>Export data from the questionnaires</source>
+				<target>Export der Daten von den Fragebögen</target>
+			</trans-unit>
+			<trans-unit id="list.select" resname="list.select"  approved="yes">
+				<source>Select a questionnaire and an export type to download the data</source>
+				<target>Wählen Sie den Fragebogen und den Export-Typ aus, um die Daten herunterzuladen</target>
+			</trans-unit>
+			<trans-unit id="list.types" resname="list.types"  approved="yes">
+				<source>Export types:</source>
+				<target>Export-Typen:</target>
+			</trans-unit>
+			<trans-unit id="csvRb.title" resname="csvRb.title"  approved="yes">
+				<source>CSV / Table (Result Lines)</source>
+				<target>CSV / Tabelle (Ergebnis Zeilen)</target>
+			</trans-unit>
+			<trans-unit id="csvRb.description" resname="csvRb.description" xml:space="preserve" approved="yes">
+				<source>
+				Export the data as CSV (Comma-separated values) file. It can be used to import data into multiple programs like Libre Office Calc and MS Excel
+			</source>
+				<target>
+				Export der Daten als CSV (Comma-separated values)-Datei. Dieses Format kann genutzt werden, um die Daten in verschiedene Programme wie Libre Office Calc oder MS Excel zu importieren.
+			</target>
+			</trans-unit>
+			<trans-unit id="csv.title" resname="csv.title"  approved="yes">
+				<source>CSV / Table (Question Lines)</source>
+				<target>CSV / Tabelle (Fragen Zeilen)</target>
+			</trans-unit>
+			<trans-unit id="csv.description" resname="csv.description" xml:space="preserve" approved="yes">
+				<source>
+				Export the data as CSV (Comma-separated values) file. It can be used to import data into multiple programs like Libre Office Calc and MS Excel
+			</source>
+				<target>
+				Export der Daten als CSV (Comma-separated values)-Datei. Dieses Format kann genutzt werden, um die Daten in verschiedene Programme wie Libre Office Calc oder MS Excel zu importieren.
+			</target>
+			</trans-unit>
+			<trans-unit id="pdf.title" resname="pdf.title"  approved="yes">
+				<source>PDF</source>
+				<target>PDF</target>
+			</trans-unit>
+			<trans-unit id="pdf.description" resname="pdf.description" xml:space="preserve" approved="yes">
+				<source>
+				Export the questionnaire as PDF.
+			</source>
+				<target>
+				Export des Fragebogens als PDF.
+			</target>
+			</trans-unit>
+			<trans-unit id="menu.title" resname="menu.title"  approved="yes">
+				<source>Export actions:</source>
+				<target>Export-Arten:</target>
+			</trans-unit>
+			<trans-unit id="menu.csvRb" resname="menu.csvRb"  approved="yes">
+				<source>CSV Export (Result Lines)</source>
+				<target>CSV-Export (Ergebnis Zeilen)</target>
+			</trans-unit>
+			<trans-unit id="menu.csv" resname="menu.csv"  approved="yes">
+				<source>CSV Export (Question Lines)</source>
+				<target>CSV-Export (Fragen Zeilen)</target>
+			</trans-unit>
+			<trans-unit id="menu.pdf" resname="menu.pdf"  approved="yes">
+				<source>PDF Export</source>
+				<target>PDF-Export</target>
+			</trans-unit>
+			<trans-unit id="csv.download" resname="csv.download"  approved="yes">
+				<source>Download CSV</source>
+				<target>CSV herunterladen</target>
+			</trans-unit>
+			<trans-unit id="csv.options.title" resname="csv.options.title"  approved="yes">
+				<source>CSV-Download-Options</source>
+				<target>CSV-Download-Optionen</target>
+			</trans-unit>
+			<trans-unit id="csv.options.separator" resname="csv.options.separator"  approved="yes">
+				<source>Field separator</source>
+				<target>Feld-Trenner</target>
+			</trans-unit>
+			<trans-unit id="csv.options.text" resname="csv.options.text"  approved="yes">
+				<source>Text separator</source>
+				<target>Text-Marker</target>
+			</trans-unit>
+			<trans-unit id="csv.options.finished" resname="csv.options.finished"  approved="yes">
+				<source>Export only finished participations</source>
+				<target>Nur abgeschlossene Teilnahmen exportieren</target>
+			</trans-unit>
+			<trans-unit id="csv.options.totalPoints" resname="csv.options.totalPoints"  approved="yes">
+				<source>Export total reached points of participation</source>
+				<target>Erreichte Gesamtpunktzahl exportieren</target>
+			</trans-unit>
+			<trans-unit id="csv.options.questionPoints" resname="csv.options.questionPoints"  approved="yes">
+				<source>Export reached points of each question in participation</source>
+				<target>Erreichte Punktzahl pro Frage exportieren</target>
+			</trans-unit>
+			<trans-unit id="csv.options.singleMarker" resname="csv.options.singleMarker"  approved="yes">
+				<source>Marker for RadioButton and CheckBoxes answers</source>
+				<target>Markierung für RadioButton- oder Checkbox-Antworten</target>
+			</trans-unit>
+			<trans-unit id="csv.options.showQText" resname="csv.options.showQText"  approved="yes">
+				<source>Export the question-text</source>
+				<target>Den Fragetext mit exportieren</target>
+			</trans-unit>
+			<trans-unit id="csv.options.showAText" resname="csv.options.showAText"  approved="yes">
+				<source>Export the answer-text</source>
+				<target>Den Antworttext mit exportieren</target>
+			</trans-unit>
+			<trans-unit id="csv.options.encoding" resname="csv.options.encoding"  approved="yes">
+				<source>Charset-Encoding of the CSV-Data (Best use for Excel: latin1 / You can change the standard-encoding with typoscript)</source>
+				<target>Charset-Encoding für die CSV-Daten (Für Excel am besten: latin1 / Der Standard kann per TypoScript abgeändert werden)</target>
+			</trans-unit>
+			<trans-unit id="csv.options.exportInterval" resname="csv.options.exportInterval"  approved="yes">
+				<source>Export Interval</source>
+				<target>Export Interval</target>
+			</trans-unit>
+			<trans-unit id="csv.exportInterval.start" resname="csv.exportInterval.start"  approved="yes">
+				<source>Start generation of the CSV file</source>
+				<target>Erstellung der CSV Datei beginnen</target>
+			</trans-unit>
+			<trans-unit id="csv.exportInterval.partInfo" resname="csv.exportInterval.partInfo"  approved="yes">
+				<source>Processed Participations:</source>
+				<target>Abgearbeitete Datensätze:</target>
+			</trans-unit>
+			<trans-unit id="pdf.download" resname="pdf.download"  approved="yes">
+				<source>Download PDF</source>
+				<target>PDF herunterladen</target>
+			</trans-unit>
+			<trans-unit id="pdf.options.empty" resname="pdf.options.empty"  approved="yes">
+				<source>Empty questionnaire</source>
+				<target>Unausgefüllter Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="pdf.options.filled" resname="pdf.options.filled"  approved="yes">
+				<source>Filled questionnaire, you need to select a result to export</source>
+				<target>Ausgefüllter Fragebogen, hierfür müssen Sie eine Teilnahme auswählen</target>
+			</trans-unit>
+			<trans-unit id="pdf.options.compared" resname="pdf.options.compared"  approved="yes">
+				<source>Filled questionnaire with a comparison of the user-result with given values, you need to select a result to export</source>
+				<target>Ausgefüllter Fragebogen mit Vergleich der vorgegebenen Werte, Sie müssen eine Teilnahme auswählen</target>
+			</trans-unit>
+			<trans-unit id="results.counter.title" resname="results.counter.title"  approved="yes">
+				<source>Participations</source>
+				<target>Teilnahmen</target>
+			</trans-unit>
+			<trans-unit id="results.counter.all" resname="results.counter.all"  approved="yes">
+				<source>All</source>
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="results.counter.finished" resname="results.counter.finished"  approved="yes">
+				<source>Finished</source>
+				<target>Abgeschlossen</target>
+			</trans-unit>
+			<trans-unit id="results.counter.not" resname="results.counter.not"  approved="yes">
+				<source>Unfinished</source>
+				<target>Offen</target>
+			</trans-unit>
+			<trans-unit id="results.counter.connected" resname="results.counter.connected"  approved="yes">
+				<source>Connected</source>
+				<target>Verbunden</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723355" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:09:15Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" resname=".alttitle" >
+				<source>ke_questionnaire Options</source>
+			</trans-unit>
+			<trans-unit id="view.partialRootPath.alttitle" resname="view.partialRootPath.alttitle" >
+				<source>Template-partials to be used</source>
+			</trans-unit>
+			<trans-unit id="view.partialRootPath.description" resname="view.partialRootPath.description" xml:space="preserve">
+				<source>
+				Select a folder where your fluid-template-partials for this questionnaire are located&lt;br&gt;
+				You need to maintain the folder-structure of the &quot;Partial&quot;-directory. If a partial is not located in the given directory, the original ke_questionnaire-parital is used
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.accessType.alttitle" resname="settings.accessType.alttitle" >
+				<source>Access type granted to the questionnaire</source>
+			</trans-unit>
+			<trans-unit id="settings.accessType.description" resname="settings.accessType.description" xml:space="preserve">
+				<source>
+				- &quot;Unlimited&quot; =&gt; no access restriction&lt;br&gt;
+				- &quot;Frontend-User&quot; =&gt; Only logged in users are allowed to access the questionnaire &lt;br&gt;
+				- &quot;Authentication Code&quot; =&gt; Access with a generated Authentication Code allowed only &lt;br&gt;
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.participations.max.alttitle" resname="settings.participations.max.alttitle" >
+				<source>Number of maximum participations for this questionnaire</source>
+			</trans-unit>
+			<trans-unit id="settings.participations.max.description" resname="settings.participations.max.description" xml:space="preserve">
+				<source>
+				- Value of 0 means no maximum of submissions&lt;br&gt;
+				- If the access-type is &quot;Unlimited&quot;, this option will limit the total number of participations&lt;br&gt;
+				- If the access-Type is &quot;Frontend-User&quot; or &quot;Authentication Code&quot; it will limit the number of participations for each participant&lt;br&gt;
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.restart.alttitle" resname="settings.restart.alttitle" >
+				<source>Allow restart of the questionnaire</source>
+			</trans-unit>
+			<trans-unit id="settings.restart.description" resname="settings.restart.description" xml:space="preserve">
+				<source>
+				Allow the participant to restart the questionnaire, if he returns after aborting the participation.
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.redirectFinished.alttitle" resname="settings.redirectFinished.alttitle" >
+				<source>Redirect to</source>
+			</trans-unit>
+			<trans-unit id="settings.redirectFinished.description" resname="settings.redirectFinished.description" xml:space="preserve">
+				<source>
+				If flag is set, the participant won't see the text after submission of the questionnaire. He will be redirected to the selected page instead.
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.alttitle" resname="settings.navigationType.alttitle" >
+				<source>Navigation type</source>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.description" resname="settings.navigationType.description" xml:space="preserve">
+				<source>
+				- Standard =&gt; the user can navigate forwards and backwards through the questionnaire&lt;br&gt;
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.showProgressBar.alttitle" resname="settings.showProgressBar.alttitle" >
+				<source>Progress Bar</source>
+			</trans-unit>
+			<trans-unit id="settings.showProgressBar.description" resname="settings.showProgressBar.description" xml:space="preserve">
+				<source>
+				Displays a progress bar within the template of the questionnaire
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.mail.alttitle" resname="settings.email.sender.mail.alttitle" >
+				<source>Sender E-Mail-address</source>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.mail.description" resname="settings.email.sender.mail.description" xml:space="preserve">
+				<source>
+				Sender E-Mail-address used for invitations send via questionnaire
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.name.alttitle" resname="settings.email.sender.name.alttitle" >
+				<source>Sender name</source>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.name.description" resname="settings.email.sender.name.description" xml:space="preserve">
+				<source>
+				Displayed name of sender for E-Mails send via questionnaire
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.subbject.alttitle" resname="settings.email.invite.subbject.alttitle" >
+				<source>Subject for E-Mail-invitations</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.subject.description" resname="settings.email.invite.subject.description" xml:space="preserve">
+				<source>
+				Customize the subject of E-Mail-invitations
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.before.alttitle" resname="settings.email.invite.text.before.alttitle" >
+				<source>Invitation: Text before authentication code</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.before.description" resname="settings.email.invite.text.before.description" xml:space="preserve">
+				<source>
+				Text inserted in the E-Mail. The authentication code appears after this text
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.after.alttitle" resname="settings.email.invite.text.after.alttitle" >
+				<source>Invitation: Text after authentication code</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.after.description" resname="settings.email.invite.text.after.description" xml:space="preserve">
+				<source>
+				Text inserted in the E-Mail. The authentication code appears before this Text
+			</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.emails.alttitle" resname="settings.email.invite.emails.alttitle" >
+				<source>E-Mail-adresses of recipients of invitation</source>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.emails.description" resname="settings.email.invite.emails.description" xml:space="preserve">
+				<source>
+				List the E-Mail-addresses of the recipients in a comma-separated way to invite to the questionnaire&lt;br&gt;
+				The E-Mail-addresses are stored here and are used in the backend module for invitations
+			</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723355" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:09:15Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" resname=".alttitle"  approved="yes">
+				<source>ke_questionnaire Options</source>
+				<target>ke_questionnaire Optionen</target>
+			</trans-unit>
+			<trans-unit id="view.partialRootPath.alttitle" resname="view.partialRootPath.alttitle"  approved="yes">
+				<source>Template-partials to be used</source>
+				<target>Zu nutzende Template-Partials</target>
+			</trans-unit>
+			<trans-unit id="view.partialRootPath.description" resname="view.partialRootPath.description" xml:space="preserve" approved="yes">
+				<source>
+				Select a folder where your fluid-template-partials for this questionnaire are located&lt;br&gt;
+				You need to maintain the folder-structure of the &quot;Partial&quot;-directory. If a partial is not located in the given directory, the original ke_questionnaire-parital is used
+			</source>
+				<target>
+				Wählen Sie einen Ordner aus, in dem die Fluid-Partials für diesen Fragebogen abgelegt wurden&lt;br&gt;
+				Es ist notwendig, dass Sie die Ordner-Struktur des &quot;Partial&quot;-Ordners der Extension aufrecht erhalten. Ist ein Partial im angegebenen Verzeichnis nicht zu finden, wird das original ke_questionnaire-Partial verwendet
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.accessType.alttitle" resname="settings.accessType.alttitle"  approved="yes">
+				<source>Access type granted to the questionnaire</source>
+				<target>Zugriffstyp für den Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="settings.accessType.description" resname="settings.accessType.description" xml:space="preserve" approved="yes">
+				<source>
+				- &quot;Unlimited&quot; =&gt; no access restriction&lt;br&gt;
+				- &quot;Frontend-User&quot; =&gt; Only logged in users are allowed to access the questionnaire &lt;br&gt;
+				- &quot;Authentication Code&quot; =&gt; Access with a generated Authentication Code allowed only &lt;br&gt;
+			</source>
+				<target>
+				- &quot;Frei&quot; =&gt; keine Zugriffsbeschränkung&lt;br&gt;
+				- &quot;Frontend-User&quot; =&gt; Nur eingeloggte Frontend-User erhalten Zugriff zum Fragebogen &lt;br&gt;
+				- &quot;Authentication Code&quot; =&gt; nur mit einem durch das System generierten Authentication Code kann auf den Fragebogen zugegriffen werden &lt;br&gt;
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.participations.max.alttitle" resname="settings.participations.max.alttitle"  approved="yes">
+				<source>Number of maximum participations for this questionnaire</source>
+				<target>Maximale Teilnahmen am Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="settings.participations.max.description" resname="settings.participations.max.description" xml:space="preserve" approved="yes">
+				<source>
+				- Value of 0 means no maximum of submissions&lt;br&gt;
+				- If the access-type is &quot;Unlimited&quot;, this option will limit the total number of participations&lt;br&gt;
+				- If the access-Type is &quot;Frontend-User&quot; or &quot;Authentication Code&quot; it will limit the number of participations for each participant&lt;br&gt;
+			</source>
+				<target>
+				- Der Wert 0 bedeutet, dass die Anzahl unbeschränkt ist. &lt;br&gt;
+				- Falls der Zugriffstyp &quot;Frei&quot; ist, ist die Anzahl aller Teilnahmen auf den eingegebenen Wert beschränkt. &lt;br&gt;
+				- Bei Auswahl der Zugriffstypen &quot;Frontend-User&quot; oder &quot;Authentication Code&quot; wird die Anzahl der Teilnahmen für den einzelnen Frontend-User bzw. Authentications Code beschränkt. &lt;br&gt;
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.restart.alttitle" resname="settings.restart.alttitle"  approved="yes">
+				<source>Allow restart of the questionnaire</source>
+				<target>Neustart des Fragebogens erlauben</target>
+			</trans-unit>
+			<trans-unit id="settings.restart.description" resname="settings.restart.description" xml:space="preserve" approved="yes">
+				<source>
+				Allow the participant to restart the questionnaire, if he returns after aborting the participation.
+			</source>
+				<target>
+				Erlaubt es dem Nutzer, die Beantwortung des Fragebogens neu zu beginnen, wenn er nach einer abgebrochenen Teilnahme zurückkehrt.
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.redirectFinished.alttitle" resname="settings.redirectFinished.alttitle"  approved="yes">
+				<source>Redirect to</source>
+				<target>Umleiten nach</target>
+			</trans-unit>
+			<trans-unit id="settings.redirectFinished.description" resname="settings.redirectFinished.description" xml:space="preserve" approved="yes">
+				<source>
+				If flag is set, the participant won't see the text after submission of the questionnaire. He will be redirected to the selected page instead.
+			</source>
+				<target>
+				Wird an dieser Stelle eine Seite angegeben, wird dem Teilnehmer nach Beendigung des Fragebogens auf die ausgewählte Seite umgeleitet. Die Abschlusstextes wird dem Teilnehmer nicht angezeigt.
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.alttitle" resname="settings.navigationType.alttitle"  approved="yes">
+				<source>Navigation type</source>
+				<target>Navigationstyp</target>
+			</trans-unit>
+			<trans-unit id="settings.navigationType.description" resname="settings.navigationType.description" xml:space="preserve" approved="yes">
+				<source>
+				- Standard =&gt; the user can navigate forwards and backwards through the questionnaire&lt;br&gt;
+			</source>
+				<target>
+				- Keine =&gt; Es wird keine zusätzliche Navigation angezeigt&lt;br&gt;
+				- Übersicht =&gt; Es wird eine Übersicht zur besseren Orientierung angezeigt.&lt;br&gt;
+				- Übersicht mit Status =&gt; Es wird eine Übersicht zur Orientierung angezeigt, zusätzlich sind bereits beantwortete Fragen markiert&lt;br&gt;
+				- Seiten =&gt; Es wird eine Seitenübersicht mit Verlinkung zur jeweiligen Seite angezeigt&lt;br&gt;
+				- Navigation =&gt; Es wird eine Übersicht mit Verlinkung zu den jeweiligen Fragebogenseiten angezeigt&lt;br&gt;
+				- Navigation mit Status =&gt; Es wird eine Übersicht mit Verlinkung zu den jeweiligen Fragebogenseiten angezeigt, zusätzlich sind bereits beantwortete Fragen markiert&lt;br&gt;
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.showProgressBar.alttitle" resname="settings.showProgressBar.alttitle"  approved="yes">
+				<source>Progress Bar</source>
+				<target>Fortschrittsbalken</target>
+			</trans-unit>
+			<trans-unit id="settings.showProgressBar.description" resname="settings.showProgressBar.description" xml:space="preserve" approved="yes">
+				<source>
+				Displays a progress bar within the template of the questionnaire
+			</source>
+				<target>
+				Anzeige eines Fortschrittsbalkens
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.mail.alttitle" resname="settings.email.sender.mail.alttitle"  approved="yes">
+				<source>Sender E-Mail-address</source>
+				<target>Absender E-Mail-Adresse</target>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.mail.description" resname="settings.email.sender.mail.description" xml:space="preserve" approved="yes">
+				<source>
+				Sender E-Mail-address used for invitations send via questionnaire
+			</source>
+				<target>
+				E-Mail-Adresse, die als Absender für die Einladungs-E-Mails angezeigt werden soll.
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.name.alttitle" resname="settings.email.sender.name.alttitle"  approved="yes">
+				<source>Sender name</source>
+				<target>Name des Absenders</target>
+			</trans-unit>
+			<trans-unit id="settings.email.sender.name.description" resname="settings.email.sender.name.description" xml:space="preserve" approved="yes">
+				<source>
+				Displayed name of sender for E-Mails send via questionnaire
+			</source>
+				<target>
+				Name, der als Absender für die Einladungs-E-Mails an die Teilnehmer genutzt werden soll.
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.subbject.alttitle" resname="settings.email.invite.subbject.alttitle"  approved="yes">
+				<source>Subject for E-Mail-invitations</source>
+				<target>Betreff der Einladungs-E-Mails</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.subject.description" resname="settings.email.invite.subject.description" xml:space="preserve" approved="yes">
+				<source>
+				Customize the subject of E-Mail-invitations
+			</source>
+				<target>
+				Geben Sie den Text der Betreff-Zeile der Einladungs-E-Mail an
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.before.alttitle" resname="settings.email.invite.text.before.alttitle"  approved="yes">
+				<source>Invitation: Text before authentication code</source>
+				<target>Einladung: Text VOR dem Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.before.description" resname="settings.email.invite.text.before.description" xml:space="preserve" approved="yes">
+				<source>
+				Text inserted in the E-Mail. The authentication code appears after this text
+			</source>
+				<target>
+				Dieser Text wird vor dem generierten Authentication Code in der Einladungs-E-Mail ausgegeben
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.after.alttitle" resname="settings.email.invite.text.after.alttitle"  approved="yes">
+				<source>Invitation: Text after authentication code</source>
+				<target>Einladung: Text NACH dem Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.text.after.description" resname="settings.email.invite.text.after.description" xml:space="preserve" approved="yes">
+				<source>
+				Text inserted in the E-Mail. The authentication code appears before this Text
+			</source>
+				<target>
+				Dieser Text wird nach dem generierten Authentication Code in der Einladungs-E-Mail ausgegeben
+			</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.emails.alttitle" resname="settings.email.invite.emails.alttitle"  approved="yes">
+				<source>E-Mail-adresses of recipients of invitation</source>
+				<target>E-Mail-Adressen, die eingeladen werden sollen</target>
+			</trans-unit>
+			<trans-unit id="settings.email.invite.emails.description" resname="settings.email.invite.emails.description" xml:space="preserve" approved="yes">
+				<source>
+				List the E-Mail-addresses of the recipients in a comma-separated way to invite to the questionnaire&lt;br&gt;
+				The E-Mail-addresses are stored here and are used in the backend module for invitations
+			</source>
+				<target>
+				Geben Sie hier die E-Mail-Adressen kommasepariert ein, die bei der Einladung berücksichtig werden sollen&lt;br&gt;
+				Die E-Mail-Adressen werden hier gespeichert und im entsprechenden Backend-Modul verarbeitet.
+			</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

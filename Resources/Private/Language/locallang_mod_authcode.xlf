@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723245" source-language="en" datatype="plaintext" original="messages" date="2023-01-14T19:07:25Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" >
+				<source>Authentication codes</source>
+			</trans-unit>
+			<trans-unit id="index_list_header" resname="index_list_header" >
+				<source>Please select a questionnaire for the AuthenticationCode Module</source>
+			</trans-unit>
+			<trans-unit id="header" resname="header" >
+				<source>Authentication codes for the questionnaire </source>
+			</trans-unit>
+			<trans-unit id="count" resname="count" >
+				<source>Already existent: </source>
+			</trans-unit>
+			<trans-unit id="list.header" resname="list.header" >
+				<source>Authentication code creation for the questionnaires</source>
+			</trans-unit>
+			<trans-unit id="list.select" resname="list.select" >
+				<source>Select a questionnaire, select a creation type and create authentication codes</source>
+			</trans-unit>
+			<trans-unit id="list.types" resname="list.types" >
+				<source>Authentication code creation types:</source>
+			</trans-unit>
+			<trans-unit id="simple.title" resname="simple.title" >
+				<source>Create</source>
+			</trans-unit>
+			<trans-unit id="simple.description" resname="simple.description" xml:space="preserve">
+				<source>
+				Create authentification codes for the participants of a questionnaire.
+			</source>
+			</trans-unit>
+			<trans-unit id="mail.title" resname="mail.title" >
+				<source>Create and Mail</source>
+			</trans-unit>
+			<trans-unit id="mail.description" resname="mail.description" xml:space="preserve">
+				<source>
+				Create and send E-mails with authentification codes directly to potential participants.
+			</source>
+			</trans-unit>
+			<trans-unit id="menu.title" resname="menu.title" >
+				<source>Authentication code actions:</source>
+			</trans-unit>
+			<trans-unit id="menu.list" resname="menu.list" >
+				<source>List authentication codes</source>
+			</trans-unit>
+			<trans-unit id="menu.simple" resname="menu.simple" >
+				<source>Create authentication codes</source>
+			</trans-unit>
+			<trans-unit id="menu.mail" resname="menu.mail" >
+				<source>Create and mail authentication codes</source>
+			</trans-unit>
+			<trans-unit id="menu.remind" resname="menu.remind" >
+				<source>Send reminder mails for authentication codes</source>
+			</trans-unit>
+			<trans-unit id="codes.existing" resname="codes.existing" >
+				<source>The following authentication codes are stored for this questionnaire</source>
+			</trans-unit>
+			<trans-unit id="codes.none" resname="codes.none" >
+				<source>No authentication codes found</source>
+			</trans-unit>
+			<trans-unit id="codes.create" resname="codes.create" >
+				<source>Create new authentication codes for this questionnaire</source>
+			</trans-unit>
+			<trans-unit id="codes.createLabel" resname="codes.createLabel" >
+				<source>Number of authentication codes</source>
+			</trans-unit>
+			<trans-unit id="codes.createSubmit" resname="codes.createSubmit" >
+				<source>Create authentication codes</source>
+			</trans-unit>
+			<trans-unit id="codes.exportCSV" resname="codes.exportCSV" >
+				<source>Export authentication codes as CSV</source>
+			</trans-unit>
+			<trans-unit id="mail.create" resname="mail.create" >
+				<source>Create and E-mail authentication codes for this questionnaire</source>
+			</trans-unit>
+			<trans-unit id="mail.createLabel" resname="mail.createLabel" >
+				<source>You can enter a comma-separated Email-List or select from the registered Fe-Users / tt_address-entries (if tt_address is installed) </source>
+			</trans-unit>
+			<trans-unit id="mail.createSubmit" resname="mail.createSubmit" >
+				<source>Create and mail authentication codes</source>
+			</trans-unit>
+			<trans-unit id="mail.viewMail" resname="mail.viewMail" >
+				<source>This E-mail will be sent</source>
+			</trans-unit>
+			<trans-unit id="mail.directLink" resname="mail.directLink" >
+				<source>Direct link to questionnaire</source>
+			</trans-unit>
+			<trans-unit id="mail.tabEmail" resname="mail.tabEmail" >
+				<source>Email-List</source>
+			</trans-unit>
+			<trans-unit id="mail.emailLabel" resname="mail.emailLabel" >
+				<source>use a comma-separated list / there will be one authentication codes for each E-mail address</source>
+			</trans-unit>
+			<trans-unit id="mail.tabFeUser" resname="mail.tabFeUser" >
+				<source>FeUser</source>
+			</trans-unit>
+			<trans-unit id="mail.feuserLabel" resname="mail.feuserLabel" >
+				<source>please select the feUsers to be invited / there will be one authentication codes for each E-mail address. Only entries with email-adresses are selectable</source>
+			</trans-unit>
+			<trans-unit id="mail.tabFeUserGroup" resname="mail.tabFeUserGroup" >
+				<source>FeUser Groups</source>
+			</trans-unit>
+			<trans-unit id="mail.feuserGroupLabel" resname="mail.feuserGroupLabel" >
+				<source>please select the feUser-Group to be invited / there will be one authentication codes for each E-mail address. Only members of the group with valid e-mail-addresses will receive an invitation</source>
+			</trans-unit>
+			<trans-unit id="mail.tabTtAddress" resname="mail.tabTtAddress" >
+				<source>ttAddress</source>
+			</trans-unit>
+			<trans-unit id="mail.ttaddressLabel" resname="mail.ttaddressLabel" >
+				<source>please select the tt_address entries to be invited / there will be one authentication codes for each E-mail address. Only entries with email-adresses are selectable</source>
+			</trans-unit>
+			<trans-unit id="mail.noTtaddresses" resname="mail.noTtaddresses" >
+				<source>Sorry, no tt_address-entries found.</source>
+			</trans-unit>
+			<trans-unit id="mail.remind" resname="mail.remind" >
+				<source>Send reminder Emails for AuthCodes</source>
+			</trans-unit>
+			<trans-unit id="mail.remindSubmit" resname="mail.remindSubmit" >
+				<source>send reminder mail</source>
+			</trans-unit>
+			<trans-unit id="list.table.authCode" resname="list.table.authCode" >
+				<source>Authentication code</source>
+			</trans-unit>
+			<trans-unit id="list.table.email" resname="list.table.email" >
+				<source>E-mail</source>
+			</trans-unit>
+			<trans-unit id="list.table.sendDate" resname="list.table.sendDate" >
+				<source>send Date</source>
+			</trans-unit>
+			<trans-unit id="list.table.participations" resname="list.table.participations" >
+				<source>Participations</source>
+			</trans-unit>
+			<trans-unit id="list.table.startDate" resname="list.table.startDate" >
+				<source>Date started</source>
+			</trans-unit>
+			<trans-unit id="list.table.finishedDate" resname="list.table.finishedDate" >
+				<source>Date finished</source>
+			</trans-unit>
+			<trans-unit id="list.table.lastreminder" resname="list.table.lastreminder" >
+				<source>last reminder</source>
+			</trans-unit>
+			<trans-unit id="list.table.firstactive" resname="list.table.firstactive" >
+				<source>first use</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

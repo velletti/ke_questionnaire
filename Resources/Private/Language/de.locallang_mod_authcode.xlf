@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file t3:id="1673723245" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-01-14T19:07:25Z" product-name="ke_questionnaire">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab"  approved="yes">
+				<source>Authentication codes</source>
+				<target>Authentication Codes</target>
+			</trans-unit>
+			<trans-unit id="index_list_header" resname="index_list_header"  approved="yes">
+				<source>Please select a questionnaire for the AuthenticationCode Module</source>
+				<target>Bitte einen Fragebogen für das Authentication Codes Modul auswählen</target>
+			</trans-unit>
+			<trans-unit id="header" resname="header"  approved="yes">
+				<source>Authentication codes for the questionnaire </source>
+				<target>Authentication Codes für den Fragebogen </target>
+			</trans-unit>
+			<trans-unit id="count" resname="count"  approved="yes">
+				<source>Already existent: </source>
+				<target>Bereits angelegt: </target>
+			</trans-unit>
+			<trans-unit id="list.header" resname="list.header"  approved="yes">
+				<source>Authentication code creation for the questionnaires</source>
+				<target>Authentication Code-Erstellung für Fragebögen</target>
+			</trans-unit>
+			<trans-unit id="list.select" resname="list.select"  approved="yes">
+				<source>Select a questionnaire, select a creation type and create authentication codes</source>
+				<target>Wählen Sie einen Fragebogen und eine Bearbeitungstyp aus, um die Authentication Codes zu generieren</target>
+			</trans-unit>
+			<trans-unit id="list.types" resname="list.types"  approved="yes">
+				<source>Authentication code creation types:</source>
+				<target>Authentication Code Bearbeitungstypen:</target>
+			</trans-unit>
+			<trans-unit id="simple.title" resname="simple.title"  approved="yes">
+				<source>Create</source>
+				<target>Erstellen</target>
+			</trans-unit>
+			<trans-unit id="simple.description" resname="simple.description" xml:space="preserve" approved="yes">
+				<source>
+				Create authentification codes for the participants of a questionnaire.
+			</source>
+				<target>
+				Erstellen Sie Authentifizierungs-Codes für die Teilnahme an einem Fragebogen.
+			</target>
+			</trans-unit>
+			<trans-unit id="mail.title" resname="mail.title"  approved="yes">
+				<source>Create and Mail</source>
+				<target>Erstellen und versenden</target>
+			</trans-unit>
+			<trans-unit id="mail.description" resname="mail.description" xml:space="preserve" approved="yes">
+				<source>
+				Create and send E-mails with authentification codes directly to potential participants.
+			</source>
+				<target>
+				Erstellen Sie Authentifizierungs-Codes und versenden Sie diese direkt per E-Mail.
+			</target>
+			</trans-unit>
+			<trans-unit id="menu.title" resname="menu.title"  approved="yes">
+				<source>Authentication code actions:</source>
+				<target>Authentication Code Bearbeitung:</target>
+			</trans-unit>
+			<trans-unit id="menu.list" resname="menu.list"  approved="yes">
+				<source>List authentication codes</source>
+				<target>Authentication Codes auflisten</target>
+			</trans-unit>
+			<trans-unit id="menu.simple" resname="menu.simple"  approved="yes">
+				<source>Create authentication codes</source>
+				<target>Authentication Codes erstellen</target>
+			</trans-unit>
+			<trans-unit id="menu.mail" resname="menu.mail"  approved="yes">
+				<source>Create and mail authentication codes</source>
+				<target>Authentication Codes erstellen und versenden</target>
+			</trans-unit>
+			<trans-unit id="menu.remind" resname="menu.remind"  approved="yes">
+				<source>Send reminder mails for authentication codes</source>
+				<target>Erinnerungs-Emails für Authentication Codes versenden</target>
+			</trans-unit>
+			<trans-unit id="codes.existing" resname="codes.existing"  approved="yes">
+				<source>The following authentication codes are stored for this questionnaire</source>
+				<target>Die folgenden Authentication Codes sind für diesen Fragebogen gespeichert</target>
+			</trans-unit>
+			<trans-unit id="codes.none" resname="codes.none"  approved="yes">
+				<source>No authentication codes found</source>
+				<target>Keine Authentication Codes gefunden</target>
+			</trans-unit>
+			<trans-unit id="codes.create" resname="codes.create"  approved="yes">
+				<source>Create new authentication codes for this questionnaire</source>
+				<target>Erstellen Sie neue Authentication Codes für diesen Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="codes.createLabel" resname="codes.createLabel"  approved="yes">
+				<source>Number of authentication codes</source>
+				<target>Anzahl der Authentication Codes</target>
+			</trans-unit>
+			<trans-unit id="codes.createSubmit" resname="codes.createSubmit"  approved="yes">
+				<source>Create authentication codes</source>
+				<target>Authentication Codes erstellen</target>
+			</trans-unit>
+			<trans-unit id="codes.exportCSV" resname="codes.exportCSV"  approved="yes">
+				<source>Export authentication codes as CSV</source>
+				<target>Authentication Codes als CSV exportieren</target>
+			</trans-unit>
+			<trans-unit id="mail.create" resname="mail.create"  approved="yes">
+				<source>Create and E-mail authentication codes for this questionnaire</source>
+				<target>Erstellen und Versenden von Authentication Codes für diesen Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="mail.createLabel" resname="mail.createLabel"  approved="yes">
+				<source>You can enter a comma-separated Email-List or select from the registered Fe-Users / tt_address-entries (if tt_address is installed) </source>
+				<target>Es kann eine komma-separierte Liste von Emails eingetragen werden. Ebenso können Einträge aus den Bereichen FeUser und tt-Address(falls installiert) ausgewählt werden.</target>
+			</trans-unit>
+			<trans-unit id="mail.createSubmit" resname="mail.createSubmit"  approved="yes">
+				<source>Create and mail authentication codes</source>
+				<target>Authentication Codes erstellen und versenden</target>
+			</trans-unit>
+			<trans-unit id="mail.viewMail" resname="mail.viewMail"  approved="yes">
+				<source>This E-mail will be sent</source>
+				<target>Dieser E-Mail-Text wird verschickt</target>
+			</trans-unit>
+			<trans-unit id="mail.directLink" resname="mail.directLink"  approved="yes">
+				<source>Direct link to questionnaire</source>
+				<target>Direkter Link zum Fragebogen</target>
+			</trans-unit>
+			<trans-unit id="mail.tabEmail" resname="mail.tabEmail"  approved="yes">
+				<source>Email-List</source>
+				<target>Email-List</target>
+			</trans-unit>
+			<trans-unit id="mail.emailLabel" resname="mail.emailLabel"  approved="yes">
+				<source>use a comma-separated list / there will be one authentication codes for each E-mail address</source>
+				<target>Komma-Separierte Liste von Emails / Es wird ein AuthCode pro Email-Adresse generiert</target>
+			</trans-unit>
+			<trans-unit id="mail.tabFeUser" resname="mail.tabFeUser"  approved="yes">
+				<source>FeUser</source>
+				<target>FeUser</target>
+			</trans-unit>
+			<trans-unit id="mail.feuserLabel" resname="mail.feuserLabel"  approved="yes">
+				<source>please select the feUsers to be invited / there will be one authentication codes for each E-mail address. Only entries with email-adresses are selectable</source>
+				<target>Bitte FeUser auswählen / Es wird ein AuthCode pro Email generiert. Sie können nur Einträge mit hinterlegten Email-Adressen auswählen</target>
+			</trans-unit>
+			<trans-unit id="mail.tabFeUserGroup" resname="mail.tabFeUserGroup"  approved="yes">
+				<source>FeUser Groups</source>
+				<target>FeUser Groups</target>
+			</trans-unit>
+			<trans-unit id="mail.feuserGroupLabel" resname="mail.feuserGroupLabel"  approved="yes">
+				<source>please select the feUser-Group to be invited / there will be one authentication codes for each E-mail address. Only members of the group with valid e-mail-addresses will receive an invitation</source>
+				<target>Bitte FeUser auswählen / Es wird ein AuthCode pro Email generiert. Nur die Mitglieder der UserGroup, die eine Email hinterlegt haben bekommen eine Einladung zugesendet</target>
+			</trans-unit>
+			<trans-unit id="mail.tabTtAddress" resname="mail.tabTtAddress"  approved="yes">
+				<source>ttAddress</source>
+				<target>ttAddress</target>
+			</trans-unit>
+			<trans-unit id="mail.ttaddressLabel" resname="mail.ttaddressLabel"  approved="yes">
+				<source>please select the tt_address entries to be invited / there will be one authentication codes for each E-mail address. Only entries with email-adresses are selectable</source>
+				<target>Bitte tt-Address-Datensätze auswählen / Es wird ein AuthCode pro Email generiert. Sie können nur Einträge mit hinterlegten Email-Adressen auswählen</target>
+			</trans-unit>
+			<trans-unit id="mail.noTtaddresses" resname="mail.noTtaddresses"  approved="yes">
+				<source>Sorry, no tt_address-entries found.</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="mail.remind" resname="mail.remind"  approved="yes">
+				<source>Send reminder Emails for AuthCodes</source>
+				<target>Erinnerungs-Emails für AuthCodes versenden</target>
+			</trans-unit>
+			<trans-unit id="mail.remindSubmit" resname="mail.remindSubmit"  approved="yes">
+				<source>send reminder mail</source>
+				<target>Erinnerungs-Email abschicken</target>
+			</trans-unit>
+			<trans-unit id="list.table.authCode" resname="list.table.authCode"  approved="yes">
+				<source>Authentication code</source>
+				<target>Authentication Code</target>
+			</trans-unit>
+			<trans-unit id="list.table.email" resname="list.table.email"  approved="yes">
+				<source>E-mail</source>
+				<target>E-Mail</target>
+			</trans-unit>
+			<trans-unit id="list.table.sendDate" resname="list.table.sendDate"  approved="yes">
+				<source>send Date</source>
+				<target>Mail erhalten</target>
+			</trans-unit>
+			<trans-unit id="list.table.participations" resname="list.table.participations"  approved="yes">
+				<source>Participations</source>
+				<target>Teilnahmen</target>
+			</trans-unit>
+			<trans-unit id="list.table.startDate" resname="list.table.startDate"  approved="yes">
+				<source>Date started</source>
+				<target>Info gelesen</target>
+			</trans-unit>
+			<trans-unit id="list.table.finishedDate" resname="list.table.finishedDate"  approved="yes">
+				<source>Date finished</source>
+				<target>Teilnahme bestätigt</target>
+			</trans-unit>
+			<trans-unit id="list.table.lastreminder" resname="list.table.lastreminder"  approved="yes">
+				<source>last reminder</source>
+				<target>letzte Erinnerung</target>
+			</trans-unit>
+			<trans-unit id="list.table.firstactive" resname="list.table.firstactive"  approved="yes">
+				<source>first use</source>
+				<target>erster Aufruf</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
