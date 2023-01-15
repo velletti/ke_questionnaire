@@ -109,37 +109,53 @@ class BackendController extends  AbstractController {
 	public function initializeAction() {
 
 		parent::initializeAction();
+        $debug = [] ;
 		//the plugin selected in the be
-		if ($this->request->hasArgument('pluginUid')) $this->plugin = BackendUtility::getRecord('tt_content', $this->request->getArgument('pluginUid'));
+		if ($this->request->hasArgument('pluginUid')) {
+            $debug[__LINE__] = "PluginUid: " . $this->request->getArgument('pluginUid') ;
+            $this->plugin = BackendUtility::getRecord('tt_content', $this->request->getArgument('pluginUid'));
+        }
 		//create the flexform-data for this questionnaire
 
 		if ($this->plugin['pi_flexform']) {
+            $debug[__LINE__] = "pi_flexform: " . var_export( $this->plugin['pi_flexform'] , true ) ;
             $this->pluginFF = $this->flexFormService->convertFlexFormContentToArray($this->plugin['pi_flexform']);
         }
 
 		//merge the settings
         // 2021 : in LTS 9 this->settings is not set ?? We need to load settings from Typoscript
-        $ts = \Kennziffer\KeQuestionnaire\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $this->plugin['pid'], ) ;
+        $ts = \Kennziffer\KeQuestionnaire\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $this->plugin['pid'] ) ;
 
         $tsSettings = false ;
         if ( is_array( $ts) && array_key_exists('module' , $ts )
             && array_key_exists('tx_kequestionnaire' , $ts['module'] )) {
             $tsSettings = $ts['module']['tx_kequestionnaire']['settings'] ;
-         }
+            $debug[__LINE__] = "tsSettings: " . var_export( $tsSettings , true ) ;
+
+        } else {
+            $debug[__LINE__] = "tsSettings ist not an array " ;
+        }
         // merge loaded TS with $his->settings .. (or initialize $this->settings with loaded $tsSettings
 
         if (is_array($tsSettings) AND is_array($this->settings)) {
+            $debug[__LINE__] = "tsSettings are merged with settings " ;
             $this->settings = array_merge($this->settings,$tsSettings );
         } else {
+            $debug[__LINE__] = "Settings is not an array " ;
             $this->settings = $tsSettings ;
         }
 
         // now merge with any settings in Flexform .. Or just load from Previous settings array
         if (is_array($this->pluginFF['settings']) AND is_array($this->settings)) {
+            $debug[__LINE__] = "pluginFF settings are merged with settings " ;
             $this->pluginFF['settings'] = array_merge($this->settings,$this->pluginFF['settings']);
         } else {
+
             if ( is_array($this->settings)) {
                 $this->pluginFF['settings'] = $this->settings;
+                $debug[__LINE__] = "pluginFF is overritten by settings " ;
+            } else {
+                $debug[__LINE__] = "pluginFF is not an array " ;
             }
         }
         $this->plugin['ffdata'] = $this->pluginFF ;
@@ -147,6 +163,9 @@ class BackendController extends  AbstractController {
 		//get the first page given in the plugin data, this is the storage pid
 		$pids = explode(',',$this->plugin['pages']);
 		$this->storagePid = $pids[0];
+
+        // kep this as it helps each new typo3 version to find WHY it does not work any more
+        //   echo "" ; var_dump($debug); die;
 	}
 
 	/**

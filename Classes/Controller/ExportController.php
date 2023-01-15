@@ -609,13 +609,17 @@ class ExportController extends  BackendController {
 		
 		//the tsfe data is needed
 		$this->backendTsfe->buildTSFE();
+
 		//load the questionnaire
 		$this->questionnaire = $this->questionnaireRepository->findByUid($this->plugin['uid']);
 		$this->view->assign('questionnaire',$this->questionnaire);
 				
 		//load the result if there is a resuldId given
-		if ($resultId) $result = $this->resultRepository->findByUid($resultId);
-		else $result = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\Result');
+		if ($resultId) {
+            $result = $this->resultRepository->findByUid($resultId);
+        } else {
+            $result = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\Result');
+        }
 		$this->view->assign('result',$result);
 				
 		//if there should be a comparision load the compare-Result
@@ -633,7 +637,7 @@ class ExportController extends  BackendController {
 		//replace image urls in Backend, Frontend may need other code
 		$base = str_replace("/typo3",'',$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 		$base = str_replace("/mod.php",'',$base);
-		$content = str_replace('<img src="fileadmin/','<img src="http://'.$base.'/fileadmin/',$content);
+		$content = str_replace('<img src="fileadmin/','<img src="https://'.$base.'/fileadmin/',$content);
 		//create the pdf
 		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($content, 'pdf');	
         if( $this->pdfExport && class_exists("Kennziffer\\KeQuestionnaire\\Utility\\PdfExport")) {

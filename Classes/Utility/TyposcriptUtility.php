@@ -33,13 +33,13 @@ class TyposcriptUtility{
          * @var $rootlineService RootlineUtility
          * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
          */
-        $rootlineService =  GeneralUtility::makeInstance(RootlineUtility::class , [$pageUid ]);
+        $rootlineService = GeneralUtility::makeInstance(RootlineUtility::class, (int)$pageUid);
 
         $rootLine = $rootlineService->get() ;
 
-		$extendedTemplateService = GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
+        $extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 
-		$extendedTemplateService->tt_track = 0;
+        $extendedTemplateService->tt_track = 0;
 		// $extendedTemplateService->init();
 
 		// To get static files also
