@@ -48,14 +48,14 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	/**
 	 * Help Text
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	protected $helpText;
 
 	/**
 	 * Image
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	protected $image;
 
@@ -152,9 +152,9 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	/**
 	 * Returns the helpText
 	 *
-	 * @return string $helpText
+	 * @return string|null $helpText
 	 */
-	public function getHelpText(): string
+	public function getHelpText(): ?string
     {
 		return $this->helpText;
 	}
@@ -172,9 +172,9 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	/**
 	 * Returns the image
 	 *
-	 * @return string $image
+	 * @return string|null $image
 	 */
-	public function getImage(): string
+	public function getImage(): ?string
     {
 		return $this->image;
 	}
