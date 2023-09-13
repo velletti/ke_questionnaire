@@ -83,7 +83,7 @@ CREATE TABLE tx_kequestionnaire_domain_model_answer (
 	answer int(11) unsigned DEFAULT '0' NOT NULL,
 
 	type varchar(255) DEFAULT '' NOT NULL,
-	title varchar(512) DEFAULT '' NOT NULL,
+	title varchar(1024) DEFAULT '' NOT NULL,
 	points int(11) DEFAULT '0' NOT NULL,
 	text text NULL DEFAULT NULL,
 	is_correct_answer tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -270,7 +270,7 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultanswer (
 	value text NULL DEFAULT NULL,
 	col varchar(255) DEFAULT '' NOT NULL,
         clone tinyint(4) unsigned DEFAULT '0' NOT NULL,
-        clone_title varchar(255) DEFAULT '' NOT NULL,
+        clone_title varchar(1024) DEFAULT '' NOT NULL,
 	additional_value varchar(255) DEFAULT '' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
