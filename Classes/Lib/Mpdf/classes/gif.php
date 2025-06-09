@@ -14,16 +14,39 @@
 // All edited to $len = 0; then call function.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+namespace Kennziffer\KeQuestionnaire\Lib\Mpdf\classes ;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+class gif {
+    var $m_gif;
 
+    ///////////////////////////////////////////////////////////////////////////
+
+    // CONSTRUCTOR
+    function __construct()
+    {
+        $this->m_gif = new CGIF();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    function loadFile(&$data, $iIndex = 0)
+    {
+        return $this->m_gif->loadFile($data, $iIndex);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    function getImage()
+    {
+        return $this->m_gif->m_img;
+    }
+}
 class CGIFLZW
 {
 	var $MAX_LZW_BITS;
 	var $Fresh, $CodeSize, $SetCodeSize, $MaxCode, $MaxCodeSize, $FirstCode, $OldCode;
 	var $ClearCode, $EndCode, $Next, $Vals, $Stack, $sp, $Buf, $CurBit, $LastBit, $Done, $LastByte;
 
-	///////////////////////////////////////////////////////////////////////////
 
 	// CONSTRUCTOR
 	function CGIFLZW()
@@ -431,7 +454,7 @@ class CGIFIMAGEHEADER
 			return false;
 		}
 
-		$b = ord($lpData{8});
+		$b = ord($lpData[8]);
 		$this->m_bLocalClr  = ($b & 0x80) ? true : false;
 		$this->m_bInterlace = ($b & 0x40) ? true : false;
 		$this->m_bSorted    = ($b & 0x20) ? true : false;
@@ -695,6 +718,3 @@ class CGIF
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-?>

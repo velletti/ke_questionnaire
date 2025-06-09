@@ -1,5 +1,5 @@
 <?php
-
+namespace Kennziffer\KeQuestionnaire\Lib\Mpdf\classes ;
 class directw {
 
 var $mpdf = null;

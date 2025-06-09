@@ -141,7 +141,8 @@ class AuthCode extends AbstractEntity {
 	 * @param integer $length
 	 * @param integer §pid
 	 */
-	public function generateAuthCode($length = 10, $pid){
+	public function generateAuthCode($length, $pid){
+        $length = ( $length ?? 10 );
 		//get the existent authcodes so no duplicates are created
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$ac_rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');

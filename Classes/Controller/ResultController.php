@@ -512,9 +512,9 @@ class ResultController extends AbstractController {
 	 * @param string $flashMessage Key to show a flashMessage if needed
 	 * @return void
 	 */
-	public function moveToAction($action = 'new', Result $result, $page = 1, $flashMessage = '') {
+	public function moveToAction($action , Result $result, $page = 1, $flashMessage = '') {
 		if(!empty($flashMessage)) $this->addNewFlashMessage($flashMessage);
-		$this->forward($action, NULL, NULL, array(
+		return $this->forward(($action ?? 'new' ), NULL, NULL, array(
 			'newResult' => $result,
 			'requestedPage' => $page
 		));

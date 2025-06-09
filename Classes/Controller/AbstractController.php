@@ -202,11 +202,12 @@ class AbstractController extends ActionController {
 	/**
   * set the BasePartialRootPath for all Controllers extending this one
   *
-  * @param ViewInterface $view
+  * @param \TYPO3Fluid\Fluid\View\ViewInterface $view
   * @return void
   */
- protected function setViewConfiguration(ViewInterface $view) {
-		parent::setViewConfiguration($view);
+ protected function setViewConfiguration(\TYPO3Fluid\Fluid\View\ViewInterface $view): void
+ {
+		parent::setViewConfiguration( $view);
 		// Template Path Override
 		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		

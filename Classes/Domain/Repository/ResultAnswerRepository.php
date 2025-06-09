@@ -59,7 +59,7 @@ class ResultAnswerRepository extends Repository {
 
         $constraint = $query->logicalAnd(
             $query->equals('resultquestion', $questionId)
-            , $query->equals('answer', $answerId) ;
+            , $query->equals('answer', $answerId)
 		);
 		$query->matching($constraint);
 		return $query->execute($returnRaw);

@@ -66,7 +66,8 @@ class MultiInput extends SingleInput {
 	 * @param integer $width
 	 * @return void
 	 */
-	public function setWidth($width) {
+	public function setWidth($width): void
+    {
 		$this->width = $width;
 	}
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace Kennziffer\KeQuestionnaire\Lib\Mpdf\classes ;
 require_once(_MPDF_PATH.'classes/ttfontsuni.php');
 
 class TTFontFile_Analysis EXTENDS TTFontFile {

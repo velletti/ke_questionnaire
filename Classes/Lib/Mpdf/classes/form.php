@@ -1,5 +1,5 @@
 <?php
-
+namespace Kennziffer\KeQuestionnaire\Lib\Mpdf\classes ;
 class form {
 
 var $mpdf = null;
@@ -806,7 +806,8 @@ function SetFormText( $w, $h, $name, $value = '', $default = '', $title = '', $f
 	}
 
 
-	function SetFormSubmit( $w, $h, $name, $value = 'Submit', $url, $title = '', $typ = 'html', $method = 'POST', $flags = array(), $background_col=false, $border_col=false, $noprint=false) {
+	function SetFormSubmit( $w, $h, $name, $value , $url, $title = '', $typ = 'html', $method = 'POST', $flags = array(), $background_col=false, $border_col=false, $noprint=false) {
+        $value = ( $value ?? 'Submit')  ;
 		if (!$name) { $name = 'Submit'; }
 		$this->SetFormButton( $w, $h, $name, $value, 'submit', $title, $flags, false, false, $background_col, $border_col, $noprint);
 		$this->forms[$this->formn]['URL'] = $url;

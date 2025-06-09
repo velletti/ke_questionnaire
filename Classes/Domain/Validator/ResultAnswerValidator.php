@@ -41,9 +41,9 @@ class ResultAnswerValidator extends AbstractValidator  {
 	public function isValid($result): void {
 		if (!$result instanceof ResultAnswer) {
 			$this->addError('The given Object is not a KeQ-ResultAnswer.', 1262341470);
-			return FALSE;
+			$this->result->setValid(FALSE);
 		}
-		return TRUE;
+        $this->result->setValid(TRUE);
 	}
 }
 ?>
