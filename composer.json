@@ -1,5 +1,5 @@
 {
-  "name": "jvelletti/ke-questionnaire",
+  "name": "velletti/ke-questionnaire",
   "type": "typo3-cms-extension",
   "description": "Fork of ke_questionnaire: Easily create any type of questionnaire, survey, poll, quiz or ",
   "homepage": "https://github.com/velletti/ke_questionnaire/",
@@ -21,7 +21,6 @@
   "replace": {
     "typo3-ter/ke_questionnaire": "self.version",
     "Kennziffer/ke_questionnaire": "self.version",
-    "velletti/ke-questionnaire": "self.version"
   },
 
   "autoload": {
