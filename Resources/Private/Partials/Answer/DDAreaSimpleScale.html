@@ -9,7 +9,7 @@
 			<f:if condition="{answer.image}">
 				<f:then></f:then>
 				<f:else>
-					<f:image src="typo3conf/ext/ke_questionnaire/Resources/Public/Images/simpleScale.png" alt="scale"/>
+					<f:image src="{f:uri.resource(path: 'EXT:ke_questionnaire/Resources/Public/Images/simpleScale.png')}" alt="scale"/>
 				</f:else>
 			</f:if>
 		</div>
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 </f:alias>
-<ke:JavaScriptFile key="DDQuestions" filename="typo3conf/ext/ke_questionnaire/Resources/Public/Script/DDQuestions.js" />
+<f:asset.script identifier="DDQuestions" src="EXT:ke_questionnaire/Resources/Public/Script/DDQuestions.js"></f:asset.script>
 <ke:JavaScript>
 <f:if condition="<f:format.raw>{answer.areaHighlight}</f:format.raw>">
 	<f:then>

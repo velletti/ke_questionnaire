@@ -9,7 +9,7 @@
 			<f:if condition="{answer.image}">
 				<f:then></f:then>
 				<f:else>
-					<ke:image src="typo3conf/ext/ke_questionnaire/Resources/Public/Images/simpleScale.png" alt="scale"/>
+					<ke:image src="{f:uri.resource(path: 'ke_questionnaire/Resources/Public/Images/simpleScale.png')}" alt="scale"/>
 				</f:else>
 			</f:if>
 		</div>

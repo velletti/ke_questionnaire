@@ -626,8 +626,8 @@ class ExportController extends  BackendController {
 		if ($compared) $this->view->assign('compare',$this->questionnaire->getCompareResult());
 		
 		//load the css-data for the pdf
-		$css_filename = Environment::getPublicPath() . '/'.'typo3conf/ext/'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/KeQuestionnaire.css';
-		$css_filename2 = Environment::getPublicPath() . '/'.'typo3conf/ext/'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/PDF.css';
+		$css_filename = GeneralUtility::getFileAbsFileName('EXT:'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/KeQuestionnaire.css');
+		$css_filename2 = GeneralUtility::getFileAbsFileName(  'EXT:'.$this->request->getControllerExtensionKey().'/Resources/Public/Css/PDF.css');
         $css = '<style>'.file_get_contents($css_filename)."\n".file_get_contents($css_filename2).'</style>';
         //render the pdf-html-data
 		$content = $this->view->render();

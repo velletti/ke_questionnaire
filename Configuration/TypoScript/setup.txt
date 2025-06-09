@@ -4,7 +4,7 @@ page.includeCSS {
 }
 
 page.includeJS {
-	jQuery = EXT:ke_questionnaire/Resources/Public/Script/jquery-1.11.3.min.js
+	jQuery = EXT:ke_questionnaire/Resources/Public/Script/jquery-3.7.1.min.js
 	jQueryUi = EXT:ke_questionnaire/Resources/Public/Script/jquery-ui-1.11.4.min.js
 	jQueryTools = EXT:ke_questionnaire/Resources/Public/Script/jquery.tools.custom.min.js
 	questionnaire = EXT:ke_questionnaire/Resources/Public/Script/Questionnaire.js

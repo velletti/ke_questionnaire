@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Core\Environment;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-//require_once(Environment::getPublicPath() . '/'.'typo3conf/ext/ke_questionnaire/Resources/Private/Tcpdf/tcpdf.php');
 require_once(ExtensionManagementUtility::extPath('ke_questionnaire').'Classes/Lib/Mpdf/mpdf.php');
 
 /**
