@@ -100,7 +100,10 @@
 			<br />
 			<f:if condition="{counter.all} > {csvExportInterval}">
 				<f:then>
-					<f:form.button onclick="return false;" id="startInterval">{f:translate(key:'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf:csv.exportInterval.start')}</f:form.button>
+					<div style="display: none;">
+						<f:form.button onclick="return false;" id="startInterval">{f:translate(key:'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf:csv.exportInterval.start')}</f:form.button>
+					</div>
+					<f:form.submit value="{f:translate(key:'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf:csv.download')}" />
 				</f:then>
 				<f:else>
 					<f:form.submit value="{f:translate(key:'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf:csv.download')}" />
