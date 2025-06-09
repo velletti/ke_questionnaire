@@ -50,7 +50,7 @@ class GetResultAnswerMatrixViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', true );
         $this->registerArgument('questionUid', 'int', 'the question id  ', true );
         $this->registerArgument('rowUid', 'int', 'the rowUid id  ', true );

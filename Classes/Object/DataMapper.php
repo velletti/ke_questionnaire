@@ -57,50 +57,13 @@ class DataMapper {
   * @var ValidatorResolver
   */
  protected $validatorResolver;
-
-
-
-
-
-	/**
-  * injects the object manager
-  *
-  * @param ObjectManager $objectManager
-  * @return void
-  */
- public function injectObjectManager(ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-  * Injects object container
-  *
-  * @param Container $objectContainer
-  * @return void
-  */
- public function injectObjectContainer(Container $objectContainer) {
-		$this->objectContainer = $objectContainer;
-	}
-
-	/**
-	 * Injects the Reflection Service
-	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @return void
-	 */
-	public function injectReflectionService(ReflectionService $reflectionService) {
-		$this->reflectionService = $reflectionService;
-	}
-
-	/**
-	 * Injects validator resolver
-	 *
-	 * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver
-	 * @return void
-	 */
-	public function injectValidatorResolver(ValidatorResolver $validatorResolver) {
-		$this->validatorResolver = $validatorResolver;
-	}
+ public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager, \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer, \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService, \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver)
+ {
+     $this->objectManager = $objectManager;
+     $this->objectContainer = $objectContainer;
+     $this->reflectionService = $reflectionService;
+     $this->validatorResolver = $validatorResolver;
+ }
 	
 	/**
 	 * Maps the given rows on objects

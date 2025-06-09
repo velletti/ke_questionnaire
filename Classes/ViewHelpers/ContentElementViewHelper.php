@@ -60,11 +60,15 @@ class ContentElementViewHelper extends AbstractViewHelper {
   * @var ContentObjectRenderer Object
   */
  protected $cObj;
+ public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+ {
+     $this->configurationManager = $configurationManager;
+ }
 
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('uid', 'int', ' UID of any content element ', false );
         $this->registerArgument('sysLanguageUid', 'int', ' Language UID that should be rendered', false );
         parent::initializeArguments() ;
@@ -119,16 +123,5 @@ class ContentElementViewHelper extends AbstractViewHelper {
 		);
 		return $this->cObj->cObjGetSingle('RECORDS', $conf);
     }
-
-	/**
-  * Injects the Configuration Manager
-  *
-  * @param ConfigurationManagerInterface $configurationManager
-  * @return void
-  */
- public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-		$this->cObj = $this->configurationManager->getContentObject();
-	}
 }
 ?>

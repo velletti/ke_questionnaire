@@ -42,16 +42,16 @@ class ClozeText extends Answer {
   * Terms
   *
   * @var ObjectStorage<Answer>
-  * @Lazy
   */
+ #[Lazy]
  protected $terms;
 	
 	/**
   * WordPositions
   *
   * @var array
-  * @Lazy
   */
+ #[Lazy]
  protected $wordPositions;
 	
 	/**

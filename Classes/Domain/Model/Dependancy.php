@@ -78,7 +78,7 @@ class Dependancy extends AbstractEntity {
   * @param Answer $answer
   * @return void
   */
- public function setAnswer($answer) {
+ public function setAnswer($answer): void {
 		$this->answer = $answer;
 	}
 	
@@ -102,7 +102,7 @@ class Dependancy extends AbstractEntity {
   * @param Question $question
   * @return void
   */
- public function setQuestion($question) {
+ public function setQuestion($question): void {
 		$this->question = $question;
 	}
     
@@ -121,7 +121,7 @@ class Dependancy extends AbstractEntity {
   * @param Question $dQuestion
   * @return void
   */
- public function setDQuestion($dQuestion) {
+ public function setDQuestion($dQuestion): void {
 		$this->dQuestion = $dQuestion;
 	}
     
@@ -140,7 +140,7 @@ class Dependancy extends AbstractEntity {
 	 * @param string $relation
 	 * @return void
 	 */
-	public function setRelation($relation) {
+	public function setRelation($relation): void {
 		$this->relation = $relation;
 	}
 	

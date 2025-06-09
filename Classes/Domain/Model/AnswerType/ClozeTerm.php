@@ -56,7 +56,7 @@ class ClozeTerm extends Answer {
 	 * @param integer $clozePosition
 	 * @return void
 	 */
-	public function setClozePosition($clozePosition) {
+	public function setClozePosition($clozePosition): void {
 		$this->clozePosition = $clozePosition;
 	}
 	

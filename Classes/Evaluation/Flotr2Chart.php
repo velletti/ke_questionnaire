@@ -62,7 +62,7 @@ class Flotr2Chart extends AbstractChart {
 		switch($this->getRenderChart()) {
 			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
-				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
+				$amountOfNotFinishedResults = $this->resultRepository->findBy(['finished' => 0])->count();
 				$dataChart = array(
 					array(
 						'data' => array(
@@ -92,7 +92,7 @@ class Flotr2Chart extends AbstractChart {
 		switch($this->getRenderChart()) {
 			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
-				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
+				$amountOfNotFinishedResults = $this->resultRepository->findBy(['finished' => 0])->count();
 				$dataChart = array(
 					array(
 						'data' => array(
@@ -113,7 +113,7 @@ class Flotr2Chart extends AbstractChart {
 				$counter = 1;
 				/* @var $userResultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 				foreach($this->result->getQuestions() as $userResultQuestion) {
-					$resultQuestions = $this->resultQuestionRepository->findByQuestion($userResultQuestion->getQuestion());
+					$resultQuestions = $this->resultQuestionRepository->findBy(['question' => $userResultQuestion->getQuestion()]);
 					$sumPoints = 0;
 					/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 					foreach($resultQuestions as $resultQuestion) {

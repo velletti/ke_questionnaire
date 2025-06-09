@@ -35,7 +35,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
  *
  */
 class ResultRepository extends Repository {
-    public function initializeObject() {
+    public function initializeObject(): void {
         /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
         //$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
         // go for $defaultQuerySettings = $this->createQuery()->getQuerySettings(); if you want to make use of the TS persistence.storagePid with defaultQuerySettings(), see #51529 for details
@@ -171,7 +171,10 @@ class ResultRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		return $query->matching(
-				$query->logicalAnd([$query->greaterThan('finished', 0), $query->equals('pid', $pid)]))->execute();
+				$query->logicalAnd(
+                    $query->greaterThan('finished', 0),
+                    $query->equals('pid', $pid)
+                ))->execute();
 	}
         
         /**
@@ -184,7 +187,10 @@ class ResultRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->matching(
-				$query->logicalAnd([$query->greaterThan('finished', 0), $query->equals('pid', $pid)]))->execute();
+				$query->logicalAnd(
+                    $query->greaterThan('finished', 0)
+                    , $query->equals('pid', $pid)
+                ))->execute();
                 return $query->execute(true);
 	}
 	
@@ -206,7 +212,10 @@ class ResultRepository extends Repository {
 		$query->setLimit($interval);
 		$query->setOffset($position);
 		return $query->matching(
-				$query->logicalAnd([$query->greaterThan('finished', 0), $query->equals('pid', $pid)]))->execute();
+				$query->logicalAnd(
+                    $query->greaterThan('finished', 0)
+                    , $query->equals('pid', $pid)
+                ))->execute();
 	}
         
         /**
@@ -227,7 +236,10 @@ class ResultRepository extends Repository {
 		$query->setLimit($interval);
 		$query->setOffset($position);
 		return $query->matching(
-				$query->logicalAnd([$query->greaterThan('finished', 0), $query->equals('pid', $pid)]))->execute(true);
+				$query->logicalAnd(
+                    $query->greaterThan('finished', 0)
+                    , $query->equals('pid', $pid)
+                ))->execute(true);
 	}
     
     /**
@@ -240,7 +252,10 @@ class ResultRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		return $query->matching(
-				$query->logicalAnd([$query->greaterThan('finished', 0), $query->equals('pid', $pid)]))->count();
+				$query->logicalAnd(
+                    $query->greaterThan('finished', 0)
+                    , $query->equals('pid', $pid)
+                ))->count();
 	}        
     
     
@@ -254,7 +269,13 @@ class ResultRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		return $query->matching(
-				$query->logicalAnd([$query->logicalOr([$query->greaterThan('fe_user', 0), $query->greaterThan('auth_code',0)]), $query->equals('pid', $pid)]))->count();
+				$query->logicalAnd(
+                    $query->logicalOr(
+                        $query->greaterThan('fe_user', 0)
+                        , $query->greaterThan('auth_code',0)
+                    )
+                    , $query->equals('pid', $pid)
+                ))->count();
 	}
     
     
@@ -269,9 +290,12 @@ class ResultRepository extends Repository {
         $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
         
-        $constraint = $query->logicalAnd([$query->greaterThan('finished', 0), $query->equals('pid', $pid)]);
-        $constraint = $query->logicalAnd([$query->equals('fe_user',$userId), $constraint]);
-		return $query->matching($constraint)->execute();
+        $constraint = $query->logicalAnd(
+            $query->greaterThan('finished', 0)
+            , $query->equals('pid', $pid));
+        $constraint = $query->logicalAnd(
+            $query->equals('fe_user',$userId), $constraint);
+		return $query->matching(...$constraint)->execute();
 	}
 	
 	/**
@@ -291,7 +315,7 @@ class ResultRepository extends Repository {
 	 * 
 	 * @return integer
 	 */
-	public function clearRATable() {
+	public function clearRATable(): void {
         $query = $this->createQuery();
         $query->statement("DELETE from tx_kequestionnaire_domain_model_resultanswer WHERE resultquestion = 0 ")->execute() ;
 	}

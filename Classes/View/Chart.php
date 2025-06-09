@@ -111,7 +111,7 @@ class Chart extends AbstractTemplateView {
 	 * @return void
 	 * @api
 	 */
-	public function setFormat($format) {
+	public function setFormat($format): void {
 		$this->getRequest()->setFormat($format);
 	}
 
@@ -141,7 +141,7 @@ class Chart extends AbstractTemplateView {
 	 * @return void
 	 * @api
 	 */
-	public function setTemplatePathAndFilename($templatePathAndFilename) {
+	public function setTemplatePathAndFilename($templatePathAndFilename): void {
 		$this->templatePathAndFilename = $templatePathAndFilename;
 	}
 
@@ -163,7 +163,7 @@ class Chart extends AbstractTemplateView {
 	 * @return void
 	 * @api
 	 */
-	public function setTemplateSource($templateSource) {
+	public function setTemplateSource($templateSource): void {
 		$this->templateSource = $templateSource;
 	}
 
@@ -174,7 +174,7 @@ class Chart extends AbstractTemplateView {
 	 * @return void
 	 * @api
 	 */
-	public function setLayoutRootPath($layoutRootPath) {
+	public function setLayoutRootPath($layoutRootPath): void {
 		$this->layoutRootPath = $layoutRootPath;
 	}
 
@@ -201,7 +201,7 @@ class Chart extends AbstractTemplateView {
 	 * @return void
 	 * @api
 	 */
-	public function setPartialRootPath($partialRootPath) {
+	public function setPartialRootPath($partialRootPath): void {
 		$this->partialRootPath = $partialRootPath;
 	}
 

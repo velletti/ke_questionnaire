@@ -55,8 +55,8 @@ class ResultQuestion extends AbstractEntity {
   * Answers
   *
   * @var ObjectStorage<ResultAnswer>
-  * @Cascade("remove")
   */
+ #[Cascade(['value' => 'remove'])]
  protected $answers;
 
 	/**
@@ -129,7 +129,7 @@ class ResultQuestion extends AbstractEntity {
     /**
      * @param bool $minAnswers
      */
-    public function setMinAnswers($minAnswers)
+    public function setMinAnswers($minAnswers): void
     {
         $this->minAnswers = $minAnswers;
     }
@@ -145,7 +145,7 @@ class ResultQuestion extends AbstractEntity {
     /**
      * @param bool $maxAnswers
      */
-    public function setMaxAnswers($maxAnswers)
+    public function setMaxAnswers($maxAnswers): void
     {
         $this->maxAnswers = $maxAnswers;
     }
@@ -165,7 +165,7 @@ class ResultQuestion extends AbstractEntity {
 	 * @param integer $feCruserId
 	 * @return void
 	 */
-	public function setFeCruserId($feCruserId) {
+	public function setFeCruserId($feCruserId): void {
 		$this->feCruserId = $feCruserId;
 	}
 	
@@ -175,7 +175,7 @@ class ResultQuestion extends AbstractEntity {
   * @param ObjectStorage<ResultAnswer> $answers
   * @return void
   */
- public function checkAnswers(ObjectStorage $answers) {
+ public function checkAnswers(ObjectStorage $answers): void {
 		foreach ($this->getAnswers() as $answer){
 			$this->checkAnswer($answers, $answer);
 		}
@@ -203,7 +203,7 @@ class ResultQuestion extends AbstractEntity {
   * @param ObjectStorage $answers
   * @param ResultAnswer $resultAnswer
   */
- public function checkAnswer($answers, &$resultAnswer){
+ public function checkAnswer($answers, &$resultAnswer): void{
 		if ($resultAnswer->getAnswer()){
 			switch ($resultAnswer->getAnswer()->getSaveType()){
 				case 'replaceAnswer':
@@ -247,7 +247,7 @@ class ResultQuestion extends AbstractEntity {
   * @param ResultAnswer $answer
   * @return void
   */
- public function addAnswer(ResultAnswer $answer) {
+ public function addAnswer(ResultAnswer $answer): void {
 		$this->answers->attach($answer);
 	}
 
@@ -257,7 +257,7 @@ class ResultQuestion extends AbstractEntity {
   * @param ResultAnswer $answerToRemove The ResultAnswer to be removed
   * @return void
   */
- public function removeAnswer(ResultAnswer $answerToRemove) {
+ public function removeAnswer(ResultAnswer $answerToRemove): void {
 	    try {
             $this->answers->detach($answerToRemove);
         } catch(\Exception $e){
@@ -280,7 +280,7 @@ class ResultQuestion extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function clearAnswers() {
+	public function clearAnswers(): void {
 		foreach ($this->getAnswers() as $rAnswer){
 			$rAnswer->setValue('');
 			$rAnswer->setAdditionalValue('');
@@ -298,7 +298,7 @@ class ResultQuestion extends AbstractEntity {
      *
      * @return void
      */
-    public function removeAnswers() {
+    public function removeAnswers(): void {
         if($this->getAnswers()) {
             foreach ($this->getAnswers()->toArray() as $rAnswer){
 
@@ -330,7 +330,7 @@ class ResultQuestion extends AbstractEntity {
   * @param ObjectStorage<ResultAnswer> $answers
   * @return void
   */
- public function setAnswers(ObjectStorage $answers) {
+ public function setAnswers(ObjectStorage $answers): void {
 		$this->answers = $answers;
 	}
 
@@ -349,7 +349,7 @@ class ResultQuestion extends AbstractEntity {
   * @param Question $question
   * @return void
   */
- public function setQuestion(Question $question) {
+ public function setQuestion(Question $question): void {
 		$this->question = $question;
 	}
 
@@ -364,7 +364,7 @@ class ResultQuestion extends AbstractEntity {
     /**
      * @param int $page
      */
-    public function setPage($page)
+    public function setPage($page): void
     {
         $this->page = $page;
     }
@@ -386,7 +386,7 @@ class ResultQuestion extends AbstractEntity {
 	 * @param integer $points
 	 * @return void
 	 */
-	public function setPoints($points) {
+	public function setPoints($points): void {
 		$this->points = $points;
 	}
 	
@@ -408,7 +408,7 @@ class ResultQuestion extends AbstractEntity {
 	 * @param integer $maxPoints
 	 * @return void
 	 */
-	public function setMaxPoints($maxPoints) {
+	public function setMaxPoints($maxPoints): void {
 		$this->maxPoints = $maxPoints;
 	}
 

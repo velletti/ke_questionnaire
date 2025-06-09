@@ -182,7 +182,7 @@ class Questionnaire extends AbstractEntity {
     /**
      * @param int $crdate
      */
-    public function setCrdate($crdate) {
+    public function setCrdate($crdate): void {
         $this->crdate = $crdate;
     }
 
@@ -374,7 +374,7 @@ class Questionnaire extends AbstractEntity {
   * @param ObjectStorage $questions
   * @return void
   */
- public function setQuestions(QueryResultInterface $questions) {
+ public function setQuestions(QueryResultInterface $questions): void {
 		$questions = $this->checkNumbering($questions);
 		$this->questions = $questions;
 		$this->questionsByPage = array();
@@ -538,7 +538,7 @@ class Questionnaire extends AbstractEntity {
 	 * @param integer $page
 	 * @return void
 	 */
-	public function setPage($page) {
+	public function setPage($page): void {
 		$this->page = $page;
 	}
 	
@@ -557,7 +557,7 @@ class Questionnaire extends AbstractEntity {
 	 * @param integer $requestedPage
 	 * @return void
 	 */
-	public function setRequestedPage($requestedPage) {
+	public function setRequestedPage($requestedPage): void {
 		$this->requestedPage = $requestedPage;
 	}
 	
@@ -705,7 +705,7 @@ class Questionnaire extends AbstractEntity {
     /**
      * @param array|object $questionsByPage
      */
-    public function setShuffledQuestionsByPage($questionsByPage , $page ) {
+    public function setShuffledQuestionsByPage($questionsByPage , $page ): void {
        //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$page : ' . var_export($page, TRUE) . "<hr>";
 
         $this->questionsByPage[$page] = $questionsByPage;

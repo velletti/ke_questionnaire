@@ -59,43 +59,20 @@ class Analysis {
 	 * @var array
 	 */
 	protected $settings;
+ public function __construct(\Kennziffer\KeQuestionnaire\Utility\JqPlot $jqPlot, \Kennziffer\KeQuestionnaire\Utility\Localization $localization, \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+ {
+     $this->jqPlot = $jqPlot;
+     $this->localization = $localization;
+     $this->signalSlotDispatcher = $signalSlotDispatcher;
+ }
 	
 	/**
 	 * get ExtConf Settings for Analysis
 	 * 
 	 * @param array $settings
 	 */
-	public function setSettings($settings){
+	public function setSettings($settings): void{
 		$this->settings = $settings;
-	}
-	
-	/**
-  * inject jqPlot
-  *
-  * @param JqPlot $jqPlot
-  */
- public function injectJqPlot(JqPlot $jqPlot) {
-		$this->jqPlot = $jqPlot;
-	}
-	
-	/**
-  * inject Localization
-  *
-  * @param Localization $localization
-  * @return void
-  */
- public function injectLocalization(Localization $localization) {
-		$this->localization = $localization;
-	}
-	
-	/**
-  * inject signal slots
-  *
-  * @param Dispatcher $signalSlotDispatcher
-  * @return void
-  */
- public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
-			$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 		
 	

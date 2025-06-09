@@ -85,7 +85,7 @@ class MultiInput extends SingleInput {
 	 * @param integer $height
 	 * @return void
 	 */
-	public function setHeight($height) {
+	public function setHeight($height): void {
 		$this->height = $height;
 	}
 

@@ -49,7 +49,7 @@ class ClozeTextViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', ' The question ', true );
         $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeText', 'the answer object  ', false );
         $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );

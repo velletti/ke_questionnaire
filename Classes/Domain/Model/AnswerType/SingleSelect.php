@@ -65,7 +65,7 @@ class SingleSelect extends Answer {
 	* @param string $selectValues
 	* @return void
 	*/
-	public function setSelectValues($selectValues) {
+	public function setSelectValues($selectValues): void {
 		$this->selectValues = $selectValues;
 	}
 	
@@ -100,7 +100,7 @@ class SingleSelect extends Answer {
 	* @param string $comparisonText
 	* @return void
 	*/
-	public function setComparisonText($comparisonText) {
+	public function setComparisonText($comparisonText): void {
 		$this->comparisonText = $comparisonText;
 	}
 

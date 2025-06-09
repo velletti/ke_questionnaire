@@ -139,7 +139,7 @@ class ExtConf implements SingletonInterface {
 	 * @param string $emailAddress
 	 * @return void
 	 */
-	public function setEmailAddress($emailAddress) {
+	public function setEmailAddress($emailAddress): void {
 		$this->emailAddress = $emailAddress;
 	}
 
@@ -158,7 +158,7 @@ class ExtConf implements SingletonInterface {
 	 * @param string $enableFeUserMarker
 	 * @return void
 	 */
-	public function setEnableFeUserMarker($enableFeUserMarker) {
+	public function setEnableFeUserMarker($enableFeUserMarker): void {
 		$this->enableFeUserMarker = $enableFeUserMarker;
 	}
 
@@ -177,7 +177,7 @@ class ExtConf implements SingletonInterface {
 	 * @param string $emailSender
 	 * @return void
 	 */
-	public function setEmailSender($emailSender) {
+	public function setEmailSender($emailSender): void {
 		$this->emailSender = $emailSender;
 	}
 
@@ -196,7 +196,7 @@ class ExtConf implements SingletonInterface {
 	 * @param string $emailSubject
 	 * @return void
 	 */
-	public function setEmailSubject($emailSubject) {
+	public function setEmailSubject($emailSubject): void {
 		$this->emailSubject = $emailSubject;
 	}
 	
@@ -215,7 +215,7 @@ class ExtConf implements SingletonInterface {
 	 * @param string $csvExportInterval
 	 * @return void
 	 */
-	public function setCsvExportInterval($csvExportInterval) {
+	public function setCsvExportInterval($csvExportInterval): void {
 		$this->csvExportInterval = $csvExportInterval;
 	}
 
@@ -230,7 +230,7 @@ class ExtConf implements SingletonInterface {
     /**
      * @param bool $enableAuthCode2feUser
      */
-    public function setEnableAuthCode2feUser($enableAuthCode2feUser)
+    public function setEnableAuthCode2feUser($enableAuthCode2feUser): void
     {
         $this->enableAuthCode2feUser = $enableAuthCode2feUser;
     }
@@ -246,7 +246,7 @@ class ExtConf implements SingletonInterface {
     /**
      * @param bool $enableAuthCode2feGroups
      */
-    public function setEnableAuthCode2feGroups($enableAuthCode2feGroups)
+    public function setEnableAuthCode2feGroups($enableAuthCode2feGroups): void
     {
         $this->enableAuthCode2feGroups = $enableAuthCode2feGroups;
     }
@@ -262,7 +262,7 @@ class ExtConf implements SingletonInterface {
     /**
      * @param bool $enableAuthCode2ttAddress
      */
-    public function setEnableAuthCode2ttAddress($enableAuthCode2ttAddress)
+    public function setEnableAuthCode2ttAddress($enableAuthCode2ttAddress): void
     {
         $this->enableAuthCode2ttAddress = $enableAuthCode2ttAddress;
     }

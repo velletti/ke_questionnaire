@@ -134,60 +134,14 @@ class AbstractChart implements RenderChartInterface {
 	 * @var string
 	 */
 	protected $varNameForChartData = 'chartData';
-
-
-
-
-
-	/**
-  * injectResultRepository
-  *
-  * @param ResultRepository $resultRepository
-  * @return void
-  */
- public function injectResultRepository(ResultRepository $resultRepository) {
-		$this->resultRepository = $resultRepository;
-	}
-
-	/**
-  * injectResultQuestionRepository
-  *
-  * @param ResultQuestionRepository $resultRepository
-  * @return void
-  */
- public function injectResultQuestionRepository(ResultQuestionRepository $resultQuestionRepository) {
-		$this->resultQuestionRepository = $resultQuestionRepository;
-	}
-
-	/**
-  * injectResultAnswerRepository
-  *
-  * @param ResultAnswerRepository $resultAnswerRepository
-  * @return void
-  */
- public function injectResultAnswerRepository(ResultAnswerRepository $resultAnswerRepository) {
-		$this->resultAnswerRepository = $resultAnswerRepository;
-	}
-
-	/**
-	 * injectView
-	 *
-	 * @param \Kennziffer\KeQuestionnaire\Evaluation\View\Chart $view
-	 * @return void
-	 */
-	public function injectView(\Kennziffer\KeQuestionnaire\Evaluation\View\Chart $view) {
-		$this->view = $view;
-	}
-
-	/**
-	 * injectCObj
-	 *
-	 * @param tslib_cObj $cObj
-	 * @return void
-	 */
-	public function injectCObj(tslib_cObj $cObj) {
-		$this->cObj = $cObj;
-	}
+ public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository, \Kennziffer\KeQuestionnaire\Evaluation\View\Chart $view, \Kennziffer\KeQuestionnaire\Evaluation\tslib_cObj $cObj)
+ {
+     $this->resultRepository = $resultRepository;
+     $this->resultQuestionRepository = $resultQuestionRepository;
+     $this->resultAnswerRepository = $resultAnswerRepository;
+     $this->view = $view;
+     $this->cObj = $cObj;
+ }
 
 
 
@@ -217,7 +171,7 @@ class AbstractChart implements RenderChartInterface {
 	 * @param string $renderChart
 	 * @return void
 	 */
-	public function setRenderChart($renderChart) {
+	public function setRenderChart($renderChart): void {
 		if(!empty($renderChart)) {
 			$this->renderChart = $renderChart;
 		}
@@ -238,7 +192,7 @@ class AbstractChart implements RenderChartInterface {
   * @param Result $result
   * @return void
   */
- public function setResult(Result $result) {
+ public function setResult(Result $result): void {
 		$this->result = $result;
 	}
 
@@ -257,7 +211,7 @@ class AbstractChart implements RenderChartInterface {
 	 * @param string $chartType
 	 * @return void
 	 */
-	public function setChartType($chartType) {
+	public function setChartType($chartType): void {
 		if(!empty($chartType)) {
 			$this->chartType = $chartType;
 		}
@@ -278,7 +232,7 @@ class AbstractChart implements RenderChartInterface {
 	 * @param array $settings
 	 * @return void
 	 */
-	public function setSettings(array $settings) {
+	public function setSettings(array $settings): void {
 		$this->settings = $settings;
 	}
 
@@ -297,7 +251,7 @@ class AbstractChart implements RenderChartInterface {
 	 * @param string $containerId
 	 * @return void
 	 */
-	public function setContainerId($containerId) {
+	public function setContainerId($containerId): void {
 		$this->containerId = $containerId;
 	}
 
@@ -316,7 +270,7 @@ class AbstractChart implements RenderChartInterface {
 	 * @param string $outerWrap
 	 * @return void
 	 */
-	public function setOuterWrap($outerWrap) {
+	public function setOuterWrap($outerWrap): void {
 		$this->outerWrap = $outerWrap;
 	}
 
@@ -335,7 +289,7 @@ class AbstractChart implements RenderChartInterface {
 	 * @param string $innerWrap
 	 * @return void
 	 */
-	public function setInnerWrap($innerWrap) {
+	public function setInnerWrap($innerWrap): void {
 		$this->innerWrap = $innerWrap;
 	}
 
@@ -354,7 +308,7 @@ class AbstractChart implements RenderChartInterface {
 	 * @param string $varNameForChartData
 	 * @return void
 	 */
-	public function setVarNameForChartData($varNameForChartData) {
+	public function setVarNameForChartData($varNameForChartData): void {
 		$this->varNameForChartData = $varNameForChartData;
 	}
 

@@ -48,29 +48,11 @@ class Mail {
   * @var ExtConf
   */
  protected $extConf;
-
-
-
-
-
-	/**
-  * inject swift message
-  *
-  * @param MailMessage $message
-  * @return void
-  */
- public function injectSwiftMessage(MailMessage $message) {
-		$this->message = $message;
-	}
-
-	/**
-  * inject extConf
-  *
-  * @param ExtConf $extConf
-  */
- public function injectExtConf(ExtConf $extConf) {
-		$this->extConf = $extConf;
-	}
+ public function __construct(\TYPO3\CMS\Core\Mail\MailMessage $message, \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf)
+ {
+     $this->message = $message;
+     $this->extConf = $extConf;
+ }
 
 
 	/**

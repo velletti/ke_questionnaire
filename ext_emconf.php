@@ -17,20 +17,11 @@ $EM_CONF['ke_questionnaire'] = array(
 	'author' => 'kennziffer.com',
 	'author_email' => 'info@kennziffer.com',
 	'author_company' => 'www.kennziffer.com',
-	'shy' => '',
-	'priority' => '',
-	'module' => '',
 	'state' => 'beta',
-	'internal' => '',
-	'uploadfolder' => '1',
-	'createDirs' => '',
-	'modify_tables' => '',
-	'clearCacheOnLoad' => 1,
-	'lockType' => '',
-	'version' => '12.4.1',
+	'version' => '12.4.4',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '11.5.0-12.9.99',
+			'typo3' => '12.4.0-12.4.99',
 		),
 		'conflicts' => array(
 		),

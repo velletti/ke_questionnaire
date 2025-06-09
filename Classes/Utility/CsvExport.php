@@ -132,57 +132,14 @@ class CsvExport {
   * @var Dispatcher
   */
  protected $signalSlotDispatcher;
-	
-	
-	/**
-  * injectQuestionRepository
-  *
-  * @param QuestionRepository $questionRepository
-  * @return void
-  */
- public function injectQuestionRepository(QuestionRepository $questionRepository) {
-		$this->questionRepository = $questionRepository;
-	}
-	
-	/**
-  * injectResultRepository
-  *
-  * @param ResultRepository $resultRepository
-  * @return void
-  */
- public function injectResultRepository(ResultRepository $resultRepository) {
-		$this->resultRepository = $resultRepository;
-	}
-	
-	/**
-  * injectResultQuestionRepository
-  *
-  * @param ResultQuestionRepository $resultQuestionRepository
-  * @return void
-  */
- public function injectResultQuestionRepository(ResultQuestionRepository $resultQuestionRepository) {
-		$this->resultQuestionRepository = $resultQuestionRepository;
-	}
-	
-	/**
-  * injectResultAnswerRepository
-  *
-  * @param ResultAnswerRepository $resultAnswerRepository
-  * @return void
-  */
- public function injectResultAnswerRepository(ResultAnswerRepository $resultAnswerRepository) {
-		$this->resultAnswerRepository = $resultAnswerRepository;
-	}
-        
-        /**
-  * inject signal slots
-  *
-  * @param Dispatcher $signalSlotDispatcher
-  * @return void
-  */
- public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
+ public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository, \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+ {
+     $this->questionRepository = $questionRepository;
+     $this->resultRepository = $resultRepository;
+     $this->resultQuestionRepository = $resultQuestionRepository;
+     $this->resultAnswerRepository = $resultAnswerRepository;
+     $this->signalSlotDispatcher = $signalSlotDispatcher;
+ }
 	
 	
 	/**
@@ -197,7 +154,7 @@ class CsvExport {
 	 * Setter Separator
 	 * @param string $separator
 	 */
-	public function setSeparator($separator){
+	public function setSeparator($separator): void{
 		$this->separator = $separator;
 	}
 	
@@ -213,7 +170,7 @@ class CsvExport {
 	 * Setter Text
 	 * @param string $text
 	 */
-	public function setText($text){
+	public function setText($text): void{
 		$this->text = $text;
 	}
 	
@@ -229,7 +186,7 @@ class CsvExport {
 	 * Setter SingleMarker
 	 * @param string $singleMarker
 	 */
-	public function setSingleMarker($singleMarker){
+	public function setSingleMarker($singleMarker): void{
 		$this->singleMarker = $singleMarker;
 	}
 	
@@ -245,7 +202,7 @@ class CsvExport {
   * Setter Results
   * @param QueryResult $results
   */
- public function setResults(QueryResult  $results){
+ public function setResults(QueryResult  $results): void{
 		$this->results = $results;
 	}
         
@@ -261,7 +218,7 @@ class CsvExport {
 	 * Setter Results
 	 * @param array  $results
 	 */
-	public function setResultsRaw(array  $results){
+	public function setResultsRaw(array  $results): void{
 		$this->resultsRaw = $results;
 	}
 	
@@ -277,7 +234,7 @@ class CsvExport {
 	 * Setter showQText
 	 * @param boolean $showQText
 	 */
-	public function setShowQText($showQText){
+	public function setShowQText($showQText): void{
 		$this->showQText = $showQText;
 	}
 	
@@ -293,7 +250,7 @@ class CsvExport {
 	 * Setter showAText
 	 * @param boolean $showAText
 	 */
-	public function setShowAText($showAText){
+	public function setShowAText($showAText): void{
 		$this->showAText = $showAText;
 	}
 	
@@ -309,7 +266,7 @@ class CsvExport {
 	 * Setter points
 	 * @param boolean $totalPoints
 	 */
-	public function setTotalPoints($totalPoints){
+	public function setTotalPoints($totalPoints): void{
 		$this->totalPoints = $totalPoints;
 	}	
 	
@@ -325,7 +282,7 @@ class CsvExport {
 	 * Setter points
 	 * @param boolean $questionPoints
 	 */
-	public function setQuestionPoints($questionPoints){
+	public function setQuestionPoints($questionPoints): void{
 		$this->questionPoints = $questionPoints;
 	}
 	

@@ -62,7 +62,7 @@ class GoogleChart extends AbstractChart {
 		switch($this->getRenderChart()) {
 			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
-				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
+				$amountOfNotFinishedResults = $this->resultRepository->findBy(['finished' => 0])->count();
 				$dataChart = array(
 					array('Title', 'Finished Questionnairs'),
 					array('Finished', $amountOfFinishedResults),
@@ -83,7 +83,7 @@ class GoogleChart extends AbstractChart {
 		switch($this->getRenderChart()) {
 			case RenderChartInterface::FINISHED:
 				$amountOfFinishedResults = $this->resultRepository->findFinishedResults()->count();
-				$amountOfNotFinishedResults = $this->resultRepository->findByFinished(0)->count();
+				$amountOfNotFinishedResults = $this->resultRepository->findBy(['finished' => 0])->count();
 				$dataChart = array(
 					array('Title', 'Finished Questionnairs'),
 					array('Finished', $amountOfFinishedResults),
@@ -99,7 +99,7 @@ class GoogleChart extends AbstractChart {
 				$results = $this->resultRepository->findAll();
 				/* @var $userResultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 				foreach($this->result->getQuestions() as $userResultQuestion) {
-					$resultQuestions = $this->resultQuestionRepository->findByQuestion($userResultQuestion->getQuestion());
+					$resultQuestions = $this->resultQuestionRepository->findBy(['question' => $userResultQuestion->getQuestion()]);
 					$sumPoints = 0;
 					/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 					foreach($resultQuestions as $resultQuestion) {

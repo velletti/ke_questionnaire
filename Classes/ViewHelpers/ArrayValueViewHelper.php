@@ -46,7 +46,7 @@ class ArrayValueViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('array', 'array', ' The Array ', false , []);
         $this->registerArgument('key', 'string', 'Key in array we are searching for  ', false , "-");
         parent::initializeArguments() ;

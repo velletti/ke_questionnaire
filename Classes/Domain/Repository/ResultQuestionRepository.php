@@ -45,9 +45,13 @@ class ResultQuestionRepository extends Repository {
                 $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
         
-		$constraint = $query->equals('result', $result);
-                $constraint = $query->logicalAnd([$query->equals('question', $question), $constraint]);
-		$query->matching($constraint);
+		 ;
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('question', $question),
+                $query->equals('result', $result)
+            )
+        );
 		return $query->execute();
 	}
         
@@ -60,9 +64,12 @@ class ResultQuestionRepository extends Repository {
                 $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
         
-		$constraint = $query->equals('result', $resultId);
-                $constraint = $query->logicalAnd([$query->equals('question', $question), $constraint]);
-		$query->matching($constraint);
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('question', $question),
+                $query->equals('result', $resultId)
+            )
+        );
 		return $query->execute();
 	}
 	
@@ -74,9 +81,11 @@ class ResultQuestionRepository extends Repository {
  public function findByQuestionAndResultRaw($question,$result) {
                 $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$constraint = $query->equals('result', $result);
-                 $constraint = $query->logicalAnd([$query->equals('question', $question), $constraint]);
-		$query->matching($constraint);
+		$query->matching(
+            $query->logicalAnd($query->equals('question', $question)
+                ,  $query->equals('result', $result)
+            )
+        );
 		return $query->execute(true);
 	}
         
@@ -88,9 +97,11 @@ class ResultQuestionRepository extends Repository {
  public function findByQuestionAndResultIdRaw($question,$resultId) {
                 $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$constraint = $query->equals('result', $resultId);
-                $constraint = $query->logicalAnd([$query->equals('question', $question), $constraint]);
-		$query->matching($constraint);
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('question', $question)
+                , $query->equals('result', $resultId)
+            ));
 		return $query->execute(true);
 	}
 	
@@ -102,9 +113,12 @@ class ResultQuestionRepository extends Repository {
  public function findByQuestionIdAndResultIdRaw($question,$resultId) {
         $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$constraint = $query->equals('result', $resultId);
-        $constraint = $query->logicalAnd([$query->equals('question', $question), $constraint]);
-		$query->matching($constraint);
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('question', $question),
+                $query->equals('result', $resultId)
+            )
+        );
 		return $query->execute(true);
 	}
 	

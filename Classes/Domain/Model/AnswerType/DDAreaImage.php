@@ -92,7 +92,7 @@ class DDAreaImage extends Answer {
 	 * @param boolean $areaHighlight
 	 * @return void
 	 */
-	public function setAreaHighlight($areaHighlight) {
+	public function setAreaHighlight($areaHighlight): void {
 		$this->areaHighlight = $areaHighlight;
 	}
 	
@@ -111,7 +111,7 @@ class DDAreaImage extends Answer {
 	 * @param string $image
 	 * @return void
 	 */
-	public function setImage($image) {
+	public function setImage($image): void {
 		$this->image = $image;
 	}
 	
@@ -142,7 +142,7 @@ class DDAreaImage extends Answer {
 	 * @param string $coords
 	 * @return void
 	 */
-	public function setCoords($coords) {
+	public function setCoords($coords): void {
 		$this->coords = $coords;
 	}
 	
@@ -161,7 +161,7 @@ class DDAreaImage extends Answer {
 	 * @param integer $width
 	 * @return void
 	 */
-	public function setWidth($width) {
+	public function setWidth($width): void {
 		$this->width = $width;
 	}
 
@@ -180,7 +180,7 @@ class DDAreaImage extends Answer {
 	 * @param integer $height
 	 * @return void
 	 */
-	public function setHeight($height) {
+	public function setHeight($height): void {
 		$this->height = $height;
 	}
 	

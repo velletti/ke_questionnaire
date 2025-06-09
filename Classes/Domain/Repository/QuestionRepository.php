@@ -66,9 +66,10 @@ class QuestionRepository extends Repository {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
         $constraints[] = $query->equals('pid', $pid) ;
-        $constraints[] = $query->logicalNot( $query->equals('type', "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak") ) ;
+        $constraints[] = $query->logicalNot(
+            $query->equals('type', "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak") ) ;
 
-        $query->matching($query->logicalAnd($constraints));
+        $query->matching($query->logicalAnd(...$constraints));
         return $query->execute();
     }
 

@@ -53,7 +53,7 @@ class DdAreaExportViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\DDAreaImage', ' The question ', true );
         $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', ' The question ', true );
         $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );

@@ -38,7 +38,7 @@ class GroupValidator extends AbstractValidator  {
 	/**
 	* validate
 	*/
-	public function isValid($result) {
+	public function isValid($result): void {
 		if (!$result instanceof Group) {
 			$this->addError('The given Object is not a KeQ-QuestionType-Group.', 1262341470);
 			return FALSE;

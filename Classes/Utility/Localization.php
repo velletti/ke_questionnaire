@@ -60,7 +60,7 @@ class Localization {
 	 * @param string $locallangPath
 	 * @return void
 	 */
-	public function setLocallangPath($locallangPath) {
+	public function setLocallangPath($locallangPath): void {
 		$this->locallangPath = $locallangPath;
 	}
 
@@ -79,7 +79,7 @@ class Localization {
 	 * @param string $locallangFile
 	 * @return void
 	 */
-	public function setLocallangFile($locallangFile) {
+	public function setLocallangFile($locallangFile): void {
 		$this->locallangFile = $locallangFile;
 	}
 

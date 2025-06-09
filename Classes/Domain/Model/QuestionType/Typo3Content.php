@@ -55,7 +55,7 @@ class Typo3Content extends Question {
 	 * @param integer $contentId
 	 * @return void
 	 */
-	public function setContentId($contentId) {
+	public function setContentId($contentId): void {
 		$this->contentId = $contentId;
 	}
 }

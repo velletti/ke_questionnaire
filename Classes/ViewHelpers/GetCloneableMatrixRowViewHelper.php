@@ -51,7 +51,7 @@ class GetCloneableMatrixRowViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MatrixHeader', ' The answerType ', true );
         $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'the question object  ', false );
         parent::initializeArguments() ;

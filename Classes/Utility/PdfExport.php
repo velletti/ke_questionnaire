@@ -44,7 +44,7 @@ class PdfExport {
      * @param string $html
      * @param string $filename
      */
-    public function createPdfFromHTML($html,$filename = "ke_questionnaire.pdf"){        
+    public function createPdfFromHTML($html,$filename = "ke_questionnaire.pdf"): void{        
         $this->createAndCheckTmpFile();
         
         $pdf = new \mPDF();

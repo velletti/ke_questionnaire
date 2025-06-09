@@ -135,7 +135,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param integer $feCruserId
 	 * @return void
 	 */
-	public function setFeCruserId($feCruserId) {
+	public function setFeCruserId($feCruserId): void {
 		$this->feCruserId = $feCruserId;
 	}
 
@@ -154,7 +154,7 @@ class ResultAnswer extends AbstractEntity {
   * @param Answer $answer
   * @return void
   */
- public function setAnswer(Answer $answer) {
+ public function setAnswer(Answer $answer): void {
 		$this->answer = $answer;
 
 		// radio buttons need some special part here. This is a templating problem.
@@ -181,7 +181,7 @@ class ResultAnswer extends AbstractEntity {
   * @param ResultQuestion $resultquestion
   * @return void
   */
- public function setResultquestion(ResultQuestion $resultquestion) {
+ public function setResultquestion(ResultQuestion $resultquestion): void {
 		$this->resultquestion = $resultquestion;
 	}
 
@@ -200,7 +200,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param string $value
 	 * @return void
 	 */
-	public function setValue($value) {
+	public function setValue($value): void {
         $this->value = $value;
 	}
 	
@@ -219,7 +219,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param array $value
 	 * @return void
 	 */
-	public function setArrayValue($value) {
+	public function setArrayValue($value): void {
         $this->arrayValue = $value;
 	}
 
@@ -339,7 +339,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param string $col
 	 * @return void
 	 */
-	public function setCol($col) {
+	public function setCol($col): void {
 		$this->col = $col;
 	}
     
@@ -358,7 +358,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param string $clone
 	 * @return void
 	 */
-	public function setClone($clone) {
+	public function setClone($clone): void {
 		$this->clone = $clone;
 	}
     
@@ -377,7 +377,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param string $cloneTitle
 	 * @return void
 	 */
-	public function setCloneTitle($cloneTitle) {
+	public function setCloneTitle($cloneTitle): void {
 		$this->cloneTitle = $cloneTitle;
 	}
 	
@@ -396,7 +396,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param string $additionalValue
 	 * @return void
 	 */
-	public function setAdditionalValue($additionalValue) {
+	public function setAdditionalValue($additionalValue): void {
 		$this->additionalValue = $additionalValue;
 	}
 	
@@ -415,7 +415,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param array $matrixPos
 	 * @return void
 	 */
-	public function setMatrixPos($matrixPos) {
+	public function setMatrixPos($matrixPos): void {
 		$this->matrixPos = $matrixPos;
 	}
     
@@ -434,7 +434,7 @@ class ResultAnswer extends AbstractEntity {
 	 * @param array $cloned
 	 * @return void
 	 */
-	public function setCloned($cloned) {
+	public function setCloned($cloned): void {
 		$this->cloned = $cloned;
 	}	
 	

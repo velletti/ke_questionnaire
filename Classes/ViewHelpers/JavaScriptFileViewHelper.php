@@ -49,7 +49,7 @@ class JavaScriptFileViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('key', 'string', ' The key ', false , '' );
         $this->registerArgument('filename', 'string', ' The $filename ', true  );
         $this->registerArgument('footer', 'boolean', 'Put file to footer', false , true );
@@ -60,7 +60,7 @@ class JavaScriptFileViewHelper extends AbstractViewHelper {
 	 * ViewHelper to bundle the javascript in a single file and include this
 	 * 
 	 */
-	public function render() {
+	public function render(): void {
         $key = $this->arguments['key'] ;
         $filename = $this->arguments['filename'] ;
         $footer = $this->arguments['footer'] ;

@@ -48,7 +48,7 @@ class MatrixRowViewHelper extends AbstractViewHelper {
     /**
      * Initialize arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('answer', 'mixed', 'Answer Type Matrix or Matrix Header or extended matrix Header');

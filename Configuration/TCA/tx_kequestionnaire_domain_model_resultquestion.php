@@ -1,5 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
+if (!defined ('TYPO3')) {
 	die ('Access denied.');
 }
 
@@ -9,7 +9,6 @@ return array(
         'label' => 'answers',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'fe_cruser_id' => 'fe_cruser_id',
         'versioningWS' => TRUE,
         'origUid' => 't3_origuid',
@@ -35,16 +34,7 @@ return array(
         'sys_language_uid' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-                    array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
-                ),
-            ),
+            'config' => ['type' => 'language'],
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -53,7 +43,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('', 0),
+                    array('label' => '', 'value' => 0),
                 ),
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultquestion',
                 'foreign_table_where' => 'AND tx_kequestionnaire_domain_model_resultquestion.pid=###CURRENT_PID### AND tx_kequestionnaire_domain_model_resultquestion.sys_language_uid IN (-1,0)',
@@ -83,30 +73,26 @@ return array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => array(
-                'type' => 'input',
+                'type' => 'datetime',
                 'size' => 13,
-                'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ),
-                'renderType' => 'inputDateTime' ,
+                ) ,
             ),
         ),
         'endtime' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => array(
-                'type' => 'input',
+                'type' => 'datetime',
                 'size' => 13,
-                'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ),
-                'renderType' => 'inputDateTime' ,
+                ) ,
             ),
         ),
         'fe_cruser_id' => array(
@@ -146,18 +132,16 @@ return array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultquestion.points',
             'config' => array(
-                'type' => 'input',
-                'size' => 4,
-                'eval' => 'int'
+                'type' => 'number',
+                'size' => 4
             ),
         ),
         'page' => array(
             'exclude' => 0,
             'label' => 'Page Number',
             'config' => array(
-                'type' => 'input',
-                'size' => 4,
-                'eval' => 'int'
+                'type' => 'number',
+                'size' => 4
             ),
         ),
         'result' => array(

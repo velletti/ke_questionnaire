@@ -41,8 +41,8 @@ class ConditionalJump extends Question {
   * Dependancies
   *
   * @var ObjectStorage<Dependancy>
-  * @Lazy
   */
+ #[Lazy]
  protected $dependancies;
     
     /**
@@ -99,7 +99,7 @@ class ConditionalJump extends Question {
 	 * @param boolean $directJump
 	 * @return void
 	 */
-	public function setDirectJump($directJump) {
+	public function setDirectJump($directJump): void {
 		$this->directJump = $directJump;
 	}
 
@@ -127,7 +127,7 @@ class ConditionalJump extends Question {
 	 * @param boolean $onlyJs
 	 * @return void
 	 */
-	public function setOnlyJs($onlyJs) {
+	public function setOnlyJs($onlyJs): void {
 		$this->onlyJs = $onlyJs;
 	}
 
@@ -155,7 +155,7 @@ class ConditionalJump extends Question {
 	 * @param integer $toPage
 	 * @return void
 	 */
-	public function setToPage($toPage) {
+	public function setToPage($toPage): void {
 		$this->toPage = $toPage;
 	}
     
@@ -174,7 +174,7 @@ class ConditionalJump extends Question {
 	 * @param string $javascript
 	 * @return void
 	 */
-	public function setJavascript($javascript) {
+	public function setJavascript($javascript): void {
         $this->javascript = $javascript;
 	}   
 }

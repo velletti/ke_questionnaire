@@ -37,7 +37,7 @@ class arrayValidator extends AbstractValidator  {
 	/**
 	* validate
 	*/
-	public function isValid($array) {
+	public function isValid($array): void {
 		if (!is_array($array)) {
 			$this->addError('The given Object is not an Array.', 1262341470);
 			return FALSE;

@@ -47,15 +47,10 @@ class AnswerValidation extends AbstractAjax {
  protected $localization;	
 	
 
-	/**
-  * injectAnswerRepository
-  *
-  * @param Localization $localization
-  * @return void
-  */
- public function injectLocalization(Localization $localization) {
-		$this->localization = $localization;
-	}
+	public function __construct(\Kennziffer\KeQuestionnaire\Utility\Localization $localization)
+ {
+     $this->localization = $localization;
+ }
 		
 	/**
 	 * process an ajax request

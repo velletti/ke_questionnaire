@@ -39,15 +39,10 @@ class AutoSave extends AbstractAjax {
   */
  protected $signalSlotDispatcher;
     
-    /**
-  * inject signal slots
-  *
-  * @param Dispatcher $signalSlotDispatcher
-  * @return void
-  */
- public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
-			$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
+    public function __construct(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+ {
+     $this->signalSlotDispatcher = $signalSlotDispatcher;
+ }
     
     /**
 	 * process an ajax request

@@ -91,7 +91,7 @@ class SemanticDifferential extends Slider {
 	 * @param boolean $showSteps
 	 * @return void
 	 */
-	public function setShowSteps($showSteps) {
+	public function setShowSteps($showSteps): void {
 		$this->showSteps = $showSteps;
 	}
 	
@@ -110,7 +110,7 @@ class SemanticDifferential extends Slider {
 	 * @param string $stepLabels
 	 * @return void
 	 */
-	public function setStepLabels($stepLabels) {
+	public function setStepLabels($stepLabels): void {
 		$this->stepLabels = $stepLabels;
 	}
 	
@@ -183,7 +183,7 @@ class SemanticDifferential extends Slider {
 	 * @param string $pointsStart
 	 * @return void
 	 */
-	public function setPointsStart($pointsStart) {
+	public function setPointsStart($pointsStart): void {
 		$this->pointsStart = $pointsStart;
 	}
 	
@@ -202,7 +202,7 @@ class SemanticDifferential extends Slider {
 	 * @param string $pointsIncrease
 	 * @return void
 	 */
-	public function setPointsIncrease($pointsIncrease) {
+	public function setPointsIncrease($pointsIncrease): void {
 		$this->pointsIncrease = $pointsIncrease;
 	}
 	
@@ -234,7 +234,7 @@ class SemanticDifferential extends Slider {
 	 *
 	 * @return string $points
 	 */
-	public function getMaxPoints() {
+	public function getMaxPoints(): void {
 		$stepcount = count($this->getSteps());
 		$max = $this->getPointsStart() + ($this->getPointsIncrease() * ($stepcount-1));
 	}

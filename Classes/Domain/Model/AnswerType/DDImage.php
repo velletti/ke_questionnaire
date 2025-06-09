@@ -55,7 +55,7 @@ class DDImage extends DDAreaImage{
 	 * @param integer $areaIndex
 	 * @return void
 	 */
-	public function setAreaIndex($areaIndex) {
+	public function setAreaIndex($areaIndex): void {
 		$this->areaIndex = $areaIndex;
 	}
 }

@@ -49,7 +49,7 @@ class GetResultQuestionViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', true );
         $this->registerArgument('questionUid', 'integer', 'the question id  ', true );
         parent::initializeArguments() ;

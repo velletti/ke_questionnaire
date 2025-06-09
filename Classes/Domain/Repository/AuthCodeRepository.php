@@ -59,7 +59,7 @@ class AuthCodeRepository extends Repository {
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$pid_cond = $query->equals('pid', $pid);
 		$code_cond = $query->equals('auth_code',$code);
-		$query->matching($query->logicalAnd([$pid_cond, $code_cond]));
+		$query->matching($query->logicalAnd(...[$pid_cond, $code_cond]));
 		return $query->execute();
 	}
 	

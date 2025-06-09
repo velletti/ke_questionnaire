@@ -115,7 +115,7 @@ class SingleInput extends Answer {
 	 * @param integer $width
 	 * @return void
 	 */
-	public function setWidth($width) {
+	public function setWidth($width): void {
 		$this->width = $width;
 	}
 
@@ -134,7 +134,7 @@ class SingleInput extends Answer {
 	 * @param string $preText
 	 * @return void
 	 */
-	public function setPreText($preText) {
+	public function setPreText($preText): void {
 		$this->preText = $preText;
 	}
 
@@ -153,7 +153,7 @@ class SingleInput extends Answer {
 	 * @param string $inText
 	 * @return void
 	 */
-	public function setInText($inText) {
+	public function setInText($inText): void {
 		$this->inText = $inText;
 	}
 
@@ -172,7 +172,7 @@ class SingleInput extends Answer {
 	 * @param string $postText
 	 * @return void
 	 */
-	public function setPostText($postText) {
+	public function setPostText($postText): void {
 		$this->postText = $postText;
 	}
 
@@ -191,7 +191,7 @@ class SingleInput extends Answer {
 	 * @param integer $maxChars
 	 * @return void
 	 */
-	public function setMaxChars($maxChars) {
+	public function setMaxChars($maxChars): void {
 		$this->maxChars = $maxChars;
 	}
 
@@ -210,7 +210,7 @@ class SingleInput extends Answer {
 	* @param string $validationType
 	* @return void
 	*/
-	public function setValidationType($validationType) {
+	public function setValidationType($validationType): void {
 		$this->validationType = $validationType;
 	}
 
@@ -229,7 +229,7 @@ class SingleInput extends Answer {
 	* @param string $validationText
 	* @return void
 	*/
-	public function setValidationText($validationText) {
+	public function setValidationText($validationText): void {
 		$this->validationText = $validationText;
 	}
     
@@ -248,7 +248,7 @@ class SingleInput extends Answer {
 	 * @param integer $validationKeysAmount
 	 * @return void
 	 */
-	public function setValidationKeysAmount($validationKeysAmount) {
+	public function setValidationKeysAmount($validationKeysAmount): void {
 		$this->validationKeysAmount = $validationKeysAmount;
 	}
     
@@ -267,7 +267,7 @@ class SingleInput extends Answer {
 	* @param string $comparisonText
 	* @return void
 	*/
-	public function setComparisonText($comparisonText) {
+	public function setComparisonText($comparisonText): void {
 		$this->comparisonText = $comparisonText;
 	}
 

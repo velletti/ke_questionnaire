@@ -57,22 +57,22 @@ class AuthCode extends AbstractEntity {
   * Participations
   *
   * @var ObjectStorage<Result>
-  * @Lazy
   */
+ #[Lazy]
  protected $participations;
         
         /**
   * FeUser
-  * @Lazy
   * @var FrontendUser
   */
+ #[Lazy]
  protected $feUser;
         
         /**
   * TtAddress
-  * @Lazy
   * @var Address
   */
+ #[Lazy]
  protected $ttAddress;
         
         /**
@@ -112,7 +112,7 @@ class AuthCode extends AbstractEntity {
 	 * @param string $authCode
 	 * @return void
 	 */
-	public function setAuthCode($authCode) {
+	public function setAuthCode($authCode): void {
 		$this->authCode = $authCode;
 	}
 	
@@ -131,7 +131,7 @@ class AuthCode extends AbstractEntity {
 	 * @param string $email
 	 * @return void
 	 */
-	public function setEmail($email) {
+	public function setEmail($email): void {
 		$this->email = $email;
 	}
 	
@@ -205,7 +205,7 @@ class AuthCode extends AbstractEntity {
   * @param FrontendUser $feUser feUser
   * @return void
   */
- public function setFeUser(FrontendUser $feUser) {
+ public function setFeUser(FrontendUser $feUser): void {
 		$this->feUser = $feUser;
 	}
 
@@ -224,7 +224,7 @@ class AuthCode extends AbstractEntity {
   * @param Address $ttAddress ttAddress
   * @return void
   */
- public function setTtAddress(Address $ttAddress) {
+ public function setTtAddress(Address $ttAddress): void {
 		$this->ttAddress = $ttAddress;
 	}
 
@@ -261,7 +261,7 @@ class AuthCode extends AbstractEntity {
 	 * @param integer $lastreminder
 	 * @return void
 	 */
-	public function setLastreminder($lastreminder) {
+	public function setLastreminder($lastreminder): void {
 		$this->lastreminder = $lastreminder;
 	}
         
@@ -289,7 +289,7 @@ class AuthCode extends AbstractEntity {
 	 * @param integer $firstactive
 	 * @return void
 	 */
-	public function setFirstactive($firstactive) {
+	public function setFirstactive($firstactive): void {
 		$this->firstactive = $firstactive;
 	}
         
@@ -318,7 +318,7 @@ class AuthCode extends AbstractEntity {
 	 * @param integer $crdate
 	 * @return void
 	 */
-	public function setCrdate($crdate) {
+	public function setCrdate($crdate): void {
 		$this->crdate = $crdate;
 	}
 }

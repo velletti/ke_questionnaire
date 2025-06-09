@@ -164,7 +164,7 @@ class Answer extends AbstractEntity {
      * @param integer $width
      * @return void
      */
-    public function setWidth($width) {
+    public function setWidth($width): void {
         $this->width = $width;
     }
 
@@ -183,7 +183,7 @@ class Answer extends AbstractEntity {
      * @param integer $height
      * @return void
      */
-    public function setHeight($height) {
+    public function setHeight($height): void {
         $this->height = $height;
     }
 
@@ -212,7 +212,7 @@ class Answer extends AbstractEntity {
 	 * @param string $type
 	 * @return void
 	 */
-	public function setType($type) {
+	public function setType($type): void {
 		$this->type = $type;
 	}
 	
@@ -240,7 +240,7 @@ class Answer extends AbstractEntity {
 	 * @param string $title
 	 * @return void
 	 */
-	public function setTitle($title) {
+	public function setTitle($title): void {
 		$this->title = $title;
 	}
 
@@ -259,7 +259,7 @@ class Answer extends AbstractEntity {
 	 * @param string $points
 	 * @return void
 	 */
-	public function setPoints($points) {
+	public function setPoints($points): void {
 		$this->points = $points;
 	}
 
@@ -278,7 +278,7 @@ class Answer extends AbstractEntity {
 	 * @param string $text
 	 * @return void
 	 */
-	public function setText($text) {
+	public function setText($text): void {
 		$this->text = $text;
 	}
 
@@ -307,7 +307,7 @@ class Answer extends AbstractEntity {
      * @param string $validationType
      * @return void
      */
-    public function setValidationType($validationType) {
+    public function setValidationType($validationType): void {
         $this->validationType = $validationType;
     }
 
@@ -326,7 +326,7 @@ class Answer extends AbstractEntity {
      * @param string $validationText
      * @return void
      */
-    public function setValidationText($validationText) {
+    public function setValidationText($validationText): void {
         $this->validationText = $validationText;
     }
 
@@ -345,7 +345,7 @@ class Answer extends AbstractEntity {
      * @param integer $validationKeysAmount
      * @return void
      */
-    public function setValidationKeysAmount($validationKeysAmount) {
+    public function setValidationKeysAmount($validationKeysAmount): void {
         $this->validationKeysAmount = $validationKeysAmount;
     }
 
@@ -364,7 +364,7 @@ class Answer extends AbstractEntity {
      * @param string $comparisonText
      * @return void
      */
-    public function setComparisonText($comparisonText) {
+    public function setComparisonText($comparisonText): void {
         $this->comparisonText = $comparisonText;
     }
 
@@ -404,7 +404,7 @@ class Answer extends AbstractEntity {
 	 * @param boolean $isCorrectAnswer
 	 * @return void
 	 */
-	public function setIsCorrectAnswer($isCorrectAnswer) {
+	public function setIsCorrectAnswer($isCorrectAnswer): void {
 		$this->isCorrectAnswer = $isCorrectAnswer;
 	}
 	
@@ -556,7 +556,7 @@ class Answer extends AbstractEntity {
 	 * @param string $template
 	 * @return void
 	 */
-	public function setTemplate($template) {
+	public function setTemplate($template): void {
 		$this->template = $template;
 	}
 	

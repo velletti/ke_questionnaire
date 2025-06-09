@@ -37,7 +37,7 @@ class PremiumInfo {
 	 * @return string show string
 	 */
 	public function showInfo() {
-		return '<i>'.LocalizationUtility::translate('premiuminfo.standard', 'ke_questionnaire').'</i>';
+		return '<i>'.LocalizationUtility::translate('premiuminfo.standard', 'KeQuestionnaire').'</i>';
 	}
 	
 	/**

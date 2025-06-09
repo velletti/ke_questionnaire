@@ -50,7 +50,7 @@ class CheckAnsweredQuestionViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\Question', ' The question ', true );
         $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
         parent::initializeArguments() ;

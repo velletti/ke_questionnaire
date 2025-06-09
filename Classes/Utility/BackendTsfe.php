@@ -47,7 +47,7 @@ class BackendTsfe {
     public $pid=1 ;
 
 
-	function buildTSFE() {
+	function buildTSFE(): void {
 	    // j.v. page ID and TypeNum  needed to make the instance of TypoScriptFrontendController
 	    $typeNum = 0 ;
 	    if(  $this->pid < 1 ) {

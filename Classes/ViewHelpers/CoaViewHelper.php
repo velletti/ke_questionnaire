@@ -79,33 +79,17 @@ class CoaViewHelper extends AbstractViewHelper {
   * @var ConfigurationManagerInterface
   */
  protected $configurationManager;
-
-
-
-
-
-	/**
-  * @param ConfigurationManagerInterface $configurationManager
-  * @return void
-  */
- public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-		$this->typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-	}
-
-	/**
-  * @param TypoScriptParser $typoScriptParser
-  * @return void
-  */
- public function injectTypoScriptParser(TypoScriptParser $typoScriptParser) {
-		$this->typoScriptParser = $typoScriptParser;
-	}
+ public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager, \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $typoScriptParser)
+ {
+     $this->configurationManager = $configurationManager;
+     $this->typoScriptParser = $typoScriptParser;
+ }
 
 
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('typoScript', 'string', ' the TypoScript to render ', false );
         $this->registerArgument('data', 'mixed', ' the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used', false );
         $this->registerArgument('currentValueKey', 'string', ' currentValueKey ', false );
@@ -122,7 +106,7 @@ class CoaViewHelper extends AbstractViewHelper {
         $data = $this->arguments['data'] ;
         $currentValueKey = $this->arguments['currentValueKey'] ;
 
-		if (TYPO3_MODE === 'BE') {
+		if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
 			$this->simulateFrontendEnvironment();
 		}
 
@@ -154,7 +138,7 @@ class CoaViewHelper extends AbstractViewHelper {
 		//$content = $contentObject->COBJ_ARRAY($typoScriptConf);
         $content = $contentObject->cObjGet($typoScriptConf);
 
-		if (TYPO3_MODE === 'BE') {
+		if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
 			$this->resetFrontendEnvironment();
 		}
 

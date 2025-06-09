@@ -59,20 +59,15 @@ class RenderPartialViewHelper extends RenderViewHelper {
 	 */
 	var $oldPaths = array();
 
-	/**
-  * Injects the object manager
-  *
-  * @param ObjectManagerInterface $objectManager
-  * @return void
-  */
- public function injectObjectManager(ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+ {
+     $this->objectManager = $objectManager;
+ }
 
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         parent::initializeArguments() ;
     }
 

@@ -1,4 +1,4 @@
-**Fork for TYPO3 11 LTS**
+**Fork for TYPO3 12 LTS**
 
 This is NOT the offical Version of ke_questionnaire!
 =======================================================
@@ -6,7 +6,7 @@ I just made a fork and made changes, that enables the USE of TYPO3 11.5
 and i only use SOME of the features of ke_questionnaire, so i do not test everything.
 But: - Checkbox, Options and Export functions in backend are working
 
-Adjustments for LTS 12 are planned for Q3 or Q4 / 2023. 
+Adjustments for LTS 12 are in work, but not ready
 
 ### installation
 
@@ -20,11 +20,11 @@ add this to you main composer.json
 
 then run 
 
-    composer req velletti/ke-questionnaire ^11.5 
+    composer req velletti/ke-questionnaire ^12.4 
 
 
 
-### IMPORTANT Breaking changes 
+### IMPORTANT Breaking changes from V10 -> V11
 ================================================
  files from 'uploadfolder' => 'uploads/tx_kequestionnaire' are not supported anymore
  You need to migrate such attached images to Questions and Answers to FAL

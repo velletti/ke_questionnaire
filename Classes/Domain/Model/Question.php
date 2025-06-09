@@ -141,18 +141,18 @@ class Question extends AbstractEntity {
   * Answers
   *
   * @var ObjectStorage<Answer>
-  * @Lazy
-  * @Cascade("remove")
   */
+ #[Lazy]
+ #[Cascade(['value' => 'remove'])]
  protected $answers;
     
     /**
   * Dependancies
   *
   * @var ObjectStorage<Dependancy>
-  * @Lazy
-  * @Cascade("remove")
   */
+ #[Lazy]
+ #[Cascade(['value' => 'remove'])]
  protected $dependancies;
 
     /**
@@ -233,7 +233,7 @@ class Question extends AbstractEntity {
 	 * @param string $type
 	 * @return void
 	 */
-	public function setType($type) {
+	public function setType($type): void {
 		$this->type = $type;
 	}
 	
@@ -262,7 +262,7 @@ class Question extends AbstractEntity {
 	 * @param integer $page
 	 * @return void
 	 */
-	public function setPage($page) {
+	public function setPage($page): void {
 		$this->page = $page;
 	}
 	
@@ -281,7 +281,7 @@ class Question extends AbstractEntity {
 	 * @param string $numbering
 	 * @return void
 	 */
-	public function setNumbering($numbering) {
+	public function setNumbering($numbering): void {
 		$this->numbering = $numbering;
 	}
 	
@@ -300,7 +300,7 @@ class Question extends AbstractEntity {
   * @param Group $group
   * @return void
   */
- public function setGroup($group) {
+ public function setGroup($group): void {
 		$this->group = $group;
 	}
 
@@ -319,7 +319,7 @@ class Question extends AbstractEntity {
 	 * @param string $title
 	 * @return void
 	 */
-	public function setTitle($title) {
+	public function setTitle($title): void {
 		$this->title = $title;
 	}
 
@@ -338,7 +338,7 @@ class Question extends AbstractEntity {
 	 * @param string $showTitle
 	 * @return void
 	 */
-	public function setShowTitle($showTitle) {
+	public function setShowTitle($showTitle): void {
 		$this->showTitle = $showTitle;
 	}
 	
@@ -357,7 +357,7 @@ class Question extends AbstractEntity {
 	 * @param string $text
 	 * @return void
 	 */
-	public function setText($text) {
+	public function setText($text): void {
 		$this->text = $text;
 	}
 
@@ -376,7 +376,7 @@ class Question extends AbstractEntity {
 	 * @param string $helpText
 	 * @return void
 	 */
-	public function setHelpText($helpText) {
+	public function setHelpText($helpText): void {
 		$this->helpText = $helpText;
 	}
 
@@ -421,7 +421,7 @@ class Question extends AbstractEntity {
   * @param FileReference $image
   * @return void
   */
- public function setImage(FileReference $image) {
+ public function setImage(FileReference $image): void {
 		$this->image = $image;
 	}
 
@@ -440,7 +440,7 @@ class Question extends AbstractEntity {
 	 * @param string $imagePosition
 	 * @return void
 	 */
-	public function setImagePosition($imagePosition) {
+	public function setImagePosition($imagePosition): void {
 		$this->imagePosition = $imagePosition;
 	}
 
@@ -459,7 +459,7 @@ class Question extends AbstractEntity {
 	 * @param boolean $isMandatory
 	 * @return void
 	 */
-	public function setIsMandatory($isMandatory) {
+	public function setIsMandatory($isMandatory): void {
 		$this->isMandatory = $isMandatory;
 	}
 
@@ -487,7 +487,7 @@ class Question extends AbstractEntity {
 	 * @param boolean $mustBeCorrect
 	 * @return void
 	 */
-	public function setMustBeCorrect($mustBeCorrect) {
+	public function setMustBeCorrect($mustBeCorrect): void {
 		$this->mustBeCorrect = $mustBeCorrect;
 	}
 
@@ -506,7 +506,7 @@ class Question extends AbstractEntity {
   * @param Answer $answer
   * @return void
   */
- public function addAnswer(Answer $answer) {
+ public function addAnswer(Answer $answer): void {
 		$this->answers->attach($answer);
 	}
 
@@ -516,7 +516,7 @@ class Question extends AbstractEntity {
   * @param Answer $answerToRemove The Answer to be removed
   * @return void
   */
- public function removeAnswer(Answer $answerToRemove) {
+ public function removeAnswer(Answer $answerToRemove): void {
 		$this->answers->detach($answerToRemove);
 	}
 
@@ -579,7 +579,7 @@ class Question extends AbstractEntity {
   * @param ObjectStorage $answers
   * @return void
   */
- public function setAnswers(ObjectStorage $answers) {
+ public function setAnswers(ObjectStorage $answers): void {
 		$this->answers = $answers;
 	}
     
@@ -589,7 +589,7 @@ class Question extends AbstractEntity {
   * @param Dependancy $dependancy
   * @return void
   */
- public function addDependancy(Dependancy $dependancy) {
+ public function addDependancy(Dependancy $dependancy): void {
 		$this->dependancies->attach($dependancy);
 	}
 
@@ -599,7 +599,7 @@ class Question extends AbstractEntity {
   * @param Dependancy $dependancyToRemove The Dependancy to be removed
   * @return void
   */
- public function removeDependancy(Dependancy $dependancyToRemove) {
+ public function removeDependancy(Dependancy $dependancyToRemove): void {
 		$this->dependancies->detach($dependancyToRemove);
 	}
 
@@ -618,7 +618,7 @@ class Question extends AbstractEntity {
   * @param ObjectStorage $dependancies
   * @return void
   */
- public function setDependancies(ObjectStorage $dependancies) {
+ public function setDependancies(ObjectStorage $dependancies): void {
 		$this->dependancies = $dependancies;
 	}
     
@@ -650,7 +650,7 @@ class Question extends AbstractEntity {
 	 * @param string $css
 	 * @return void
 	 */
-	public function setCss($css) {
+	public function setCss($css): void {
 		$this->css = $css;
 	}
 
@@ -665,7 +665,7 @@ class Question extends AbstractEntity {
     /**
      * @param int $minAnswers
      */
-    public function setMinAnswers($minAnswers)
+    public function setMinAnswers($minAnswers): void
     {
         $this->minAnswers = $minAnswers;
     }
@@ -681,7 +681,7 @@ class Question extends AbstractEntity {
     /**
      * @param int $maxAnswers
      */
-    public function setMaxAnswers($maxAnswers)
+    public function setMaxAnswers($maxAnswers): void
     {
         $this->maxAnswers = $maxAnswers;
     }
@@ -703,7 +703,7 @@ class Question extends AbstractEntity {
 	 * @param string $template
 	 * @return void
 	 */
-	public function setTemplate($template) {
+	public function setTemplate($template): void {
 		$this->template = $template;
 	}
 	

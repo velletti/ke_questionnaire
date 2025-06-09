@@ -61,7 +61,7 @@ class ClozeTextDD extends ClozeText {
 	 * @param string $clozeAddTerms
 	 * @return void
 	 */
-	public function setClozeAddTerms($clozeAddTerms) {
+	public function setClozeAddTerms($clozeAddTerms): void {
 		$this->clozeAddTerms = $clozeAddTerms;
 	}	
 }

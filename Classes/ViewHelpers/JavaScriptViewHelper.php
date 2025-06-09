@@ -54,7 +54,7 @@ class JavaScriptViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('alwaysreplace', 'mixed', 'if alwaysreplace do something', false , FALSE );
         parent::initializeArguments() ;
     }
@@ -63,7 +63,7 @@ class JavaScriptViewHelper extends AbstractViewHelper {
 	 * ViewHelper to bundle the javascript in a single file and include this
 	 * 
 	 */
-	public function render() {
+	public function render(): void {
         $this->always = $this->arguments['alwaysreplace'] ;
 		$this->cacheJavaScript($this->renderChildren());
 	}
@@ -71,7 +71,7 @@ class JavaScriptViewHelper extends AbstractViewHelper {
 	/**
 	 * write the Javascript in the file
 	 */
-	public function cacheJavaScript ($script){
+	public function cacheJavaScript ($script): void{
 		if (trim($script) != ''){
 			$endOfFile = "\n});// end of file";
 			$beginningOfFile = "jQuery(document).ready(function() {\n";

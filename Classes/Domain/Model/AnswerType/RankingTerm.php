@@ -69,7 +69,7 @@ class RankingTerm extends DDImage{
 	 * @param integer $order
 	 * @return void
 	 */
-	public function setOrder($order) {
+	public function setOrder($order): void {
 		$this->order = $order;
 	}
     
@@ -88,7 +88,7 @@ class RankingTerm extends DDImage{
 	 * @param array $selectItems
 	 * @return void
 	 */
-	public function setSelectItems($selectItems) {
+	public function setSelectItems($selectItems): void {
 		$this->selectItems = $selectItems;
 	}
 }

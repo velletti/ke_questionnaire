@@ -41,15 +41,10 @@ class Validation extends AbstractAjax {
   */
  protected $questionRepository;
 
-	/**
-  * injectQuestionRepository
-  *
-  * @param QuestionRepository $questionRepository
-  * @return void
-  */
- public function injectQuestionRepository(QuestionRepository $questionRepository) {
-		$this->questionRepository = $questionRepository;
-	}
+	public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository)
+ {
+     $this->questionRepository = $questionRepository;
+ }
 
 	/**
 	 * process an ajax request

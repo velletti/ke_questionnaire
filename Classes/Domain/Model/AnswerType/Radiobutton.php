@@ -56,7 +56,7 @@ class Radiobutton extends Answer {
 	 * @param boolean $showTextfield
 	 * @return void
 	 */
-	public function setShowTextfield($showTextfield) {
+	public function setShowTextfield($showTextfield): void {
 		$this->showTextfield = $showTextfield;
 	}
 	

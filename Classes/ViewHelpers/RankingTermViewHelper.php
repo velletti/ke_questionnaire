@@ -61,7 +61,7 @@ class RankingTermViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\Answer', ' The Answer ', true );
         $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'the question object  ', false );
         $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );

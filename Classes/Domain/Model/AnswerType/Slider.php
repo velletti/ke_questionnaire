@@ -112,7 +112,7 @@ class Slider extends Answer {
 	 * @param string $leftLabel
 	 * @return void
 	 */
-	public function setLeftLabel($leftLabel) {
+	public function setLeftLabel($leftLabel): void {
 		$this->leftLabel = $leftLabel;
 	}
 	
@@ -131,7 +131,7 @@ class Slider extends Answer {
 	 * @param string $rightLabel
 	 * @return void
 	 */
-	public function setRightLabel($rightLabel) {
+	public function setRightLabel($rightLabel): void {
 		$this->rightLabel = $rightLabel;
 	}
 	
@@ -150,7 +150,7 @@ class Slider extends Answer {
 	 * @param integer $minValue
 	 * @return void
 	 */
-	public function setMinValue($minValue) {
+	public function setMinValue($minValue): void {
 		$this->minValue = $minValue;
 	}
 	
@@ -169,7 +169,7 @@ class Slider extends Answer {
 	 * @param integer $maxValue
 	 * @return void
 	 */
-	public function setMaxValue($maxValue) {
+	public function setMaxValue($maxValue): void {
 		$this->maxValue = $maxValue;
 	}
 	
@@ -188,7 +188,7 @@ class Slider extends Answer {
 	 * @param integer $sliderIncrement
 	 * @return void
 	 */
-	public function setSliderIncrement($sliderIncrement) {
+	public function setSliderIncrement($sliderIncrement): void {
 		$this->sliderIncrement = $sliderIncrement;
 	}
 	
@@ -228,7 +228,7 @@ class Slider extends Answer {
 	 * @param integer $width
 	 * @return void
 	 */
-	public function setWidth($width) {
+	public function setWidth($width): void {
 		$this->width = $width;
 	}
 
@@ -247,7 +247,7 @@ class Slider extends Answer {
 	 * @param integer $height
 	 * @return void
 	 */
-	public function setHeight($height) {
+	public function setHeight($height): void {
 		$this->height = $height;
 	}
 }

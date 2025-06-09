@@ -84,8 +84,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   * Answers
   *
   * @var ObjectStorage<Answer>
-  * @Lazy
   */
+ #[Lazy]
  protected $answers;
 	
 	/**
@@ -145,7 +145,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $text
 	 * @return void
 	 */
-	public function setText($text) {
+	public function setText($text): void {
 		$this->text = $text;
 	}
 
@@ -165,7 +165,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $helpText
 	 * @return void
 	 */
-	public function setHelpText($helpText) {
+	public function setHelpText($helpText): void {
 		$this->helpText = $helpText;
 	}
 
@@ -185,7 +185,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $image
 	 * @return void
 	 */
-	public function setImage($image) {
+	public function setImage($image): void {
 		$this->image = $image;
 	}
 
@@ -205,7 +205,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $imagePosition
 	 * @return void
 	 */
-	public function setImagePosition($imagePosition) {
+	public function setImagePosition($imagePosition): void {
 		$this->imagePosition = $imagePosition;
 	}
 
@@ -232,7 +232,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param boolean $isMandatory
 	 * @return void
 	 */
-	public function setIsMandatory($isMandatory) {
+	public function setIsMandatory($isMandatory): void {
 		$this->isMandatory = $isMandatory;
 	}
 
@@ -262,7 +262,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param boolean $mustBeCorrect
 	 * @return void
 	 */
-	public function setMustBeCorrect($mustBeCorrect) {
+	public function setMustBeCorrect($mustBeCorrect): void {
 		$this->mustBeCorrect = $mustBeCorrect;
 	}
 
@@ -282,7 +282,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   * @param Answer $answer
   * @return void
   */
- public function addAnswer(Answer $answer) {
+ public function addAnswer(Answer $answer): void {
 		$this->answers->attach($answer);
 	}
 
@@ -292,7 +292,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   * @param Answer $answerToRemove The Answer to be removed
   * @return void
   */
- public function removeAnswer(Answer $answerToRemove) {
+ public function removeAnswer(Answer $answerToRemove): void {
 		$this->answers->detach($answerToRemove);
 	}
 
@@ -317,7 +317,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   * @param ObjectStorage<Answer> $answers
   * @return void
   */
- public function setAnswers(ObjectStorage $answers) {
+ public function setAnswers(ObjectStorage $answers): void {
 		$this->answers = $answers;
 	}
 	
@@ -398,7 +398,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param integer $maxAnswers
 	 * @return void
 	 */
-	public function setMaxAnswers($maxAnswers) {
+	public function setMaxAnswers($maxAnswers): void {
 		$this->maxAnswers = $maxAnswers;
 	}
 	
@@ -418,7 +418,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param integer $minAnswers
 	 * @return void
 	 */
-	public function setMinAnswers($minAnswers) {
+	public function setMinAnswers($minAnswers): void {
 		$this->minAnswers = $minAnswers;
 	}
 	

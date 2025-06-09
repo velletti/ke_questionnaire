@@ -81,7 +81,7 @@ class Step extends AbstractEntity {
 	 * @param string $type
 	 * @return void
 	 */
-	public function setType($type) {
+	public function setType($type): void {
 		$type = strtolower($type);
 		switch ($type) {
 			case 'forward':
@@ -108,7 +108,7 @@ class Step extends AbstractEntity {
 	 * @param string $action
 	 * @return void
 	 */
-	public function setAction($action) {
+	public function setAction($action): void {
 		$this->action = $action;
 	}
 
@@ -127,7 +127,7 @@ class Step extends AbstractEntity {
 	 * @param string $controller
 	 * @return void
 	 */
-	public function setController($controller) {
+	public function setController($controller): void {
 		$this->controller = $controller;
 	}
 
@@ -146,7 +146,7 @@ class Step extends AbstractEntity {
 	 * @param string $extension
 	 * @return void
 	 */
-	public function setExtension($extension) {
+	public function setExtension($extension): void {
 		$this->extension = $extension;
 	}
 

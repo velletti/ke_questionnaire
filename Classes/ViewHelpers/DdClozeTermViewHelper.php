@@ -49,7 +49,7 @@ class DdClozeTermViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVi
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('answer', '\Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\ClozeTextDD', ' The answerType ', true );
         $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', 'the question object  ', false );
         parent::initializeArguments() ;

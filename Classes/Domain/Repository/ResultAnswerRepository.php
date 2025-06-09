@@ -56,11 +56,10 @@ class ResultAnswerRepository extends Repository {
 	public function findForResultQuestionAndAnswerRaw($questionId,$answerId , $returnRaw = true ) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$constraints[] = $query->equals('resultquestion', $questionId);
-		$constraints[] = $query->equals('answer', $answerId) ;
 
-        $constraint = $query->logicalAnd(	
-			$constraints
+        $constraint = $query->logicalAnd(
+            $query->equals('resultquestion', $questionId)
+            , $query->equals('answer', $answerId) ;
 		);
 		$query->matching($constraint);
 		return $query->execute($returnRaw);
@@ -113,7 +112,11 @@ class ResultAnswerRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd([$query->equals('answer', $answer), $query->equals('value', $answer->getUid())]));
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('answer', $answer),
+                $query->equals('value', $answer->getUid())
+            ));
 		
 		return $query->count();
 	}
@@ -142,7 +145,11 @@ class ResultAnswerRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('value',$value)]));
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('answer', $row)
+                , $query->equals('value',$value)
+            ));
 		
 		return $query->count();
 	}
@@ -157,7 +164,11 @@ class ResultAnswerRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('col',$value)]));
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('answer', $row)
+                , $query->equals('col',$value)
+            ));
 		
 		return $query->count();
 	}
@@ -172,7 +183,11 @@ class ResultAnswerRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
-		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('col',$value)]));
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('answer', $row)
+                , $query->equals('col',$value)
+            ));
 		
 		return $query->execute();
 	}
@@ -187,7 +202,11 @@ class ResultAnswerRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 
-		$query->matching($query->logicalAnd([$query->equals('answer', $row), $query->equals('col',$value)]));
+		$query->matching(
+            $query->logicalAnd(
+                $query->equals('answer', $row)
+                , $query->equals('col',$value)
+            ));
 		
 		return $query->execute(true);
 	}

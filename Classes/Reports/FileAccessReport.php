@@ -95,25 +95,25 @@ class FileAccessReport implements StatusProviderInterface {
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.ok'),
 				'',
-				Status::OK
+				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK
 			),
 			'writeFail' => array(
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning.details'),
-				Status::WARNING
+				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
 			),
 			'tmpFileReadable' => array(
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.error'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.error.explanation'),
-				Status::ERROR
+				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
 			),
 			'unknownErrorCheckingTmpFile' => array(
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning.unknown'),
-				Status::WARNING
+				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
 			)
 		);
 	}

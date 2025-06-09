@@ -77,7 +77,7 @@ class Chart extends AbstractEntity {
 	 * @param string $title
 	 * @return void
 	 */
-	public function setTitle($title) {
+	public function setTitle($title): void {
 		$this->title = $title;
 	}
 
@@ -96,7 +96,7 @@ class Chart extends AbstractEntity {
 	 * @param integer $width
 	 * @return void
 	 */
-	public function setWidth($width) {
+	public function setWidth($width): void {
 		$this->width = $width;
 	}
 
@@ -115,7 +115,7 @@ class Chart extends AbstractEntity {
 	 * @param integer $height
 	 * @return void
 	 */
-	public function setHeight($height) {
+	public function setHeight($height): void {
 		$this->height = $height;
 	}
 
@@ -136,7 +136,7 @@ class Chart extends AbstractEntity {
 	 * @param Array $data
 	 * @return void
 	 */
-	public function setData($data) {
+	public function setData($data): void {
 		$this->data = $data;
 	}
 
@@ -149,7 +149,7 @@ class Chart extends AbstractEntity {
 	 * @param integer $value
 	 * @return void
 	 */
-	public function addData($title, $value = 1) {
+	public function addData($title, $value = 1): void {
 		if(isset($this->data[$key])) {
 			$this->data[$key] += $value;
 		} else $this->data[$key] = $value;

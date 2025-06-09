@@ -66,8 +66,8 @@ class Result extends AbstractEntity {
   * Questions
   *
   * @var ObjectStorage<ResultQuestion>
-  * @Cascade("remove")
   */
+ #[Cascade(['value' => 'remove'])]
  protected $questions;
 
 	/**
@@ -86,16 +86,16 @@ class Result extends AbstractEntity {
 	
 	/**
   * FeUser
-  * @Lazy
   * @var FrontendUser
   */
+ #[Lazy]
  protected $feUser;
 
 	/**
   * AuthCode
-  * @Lazy
   * @var AuthCode
   */
+ #[Lazy]
  protected $authCode;
 	
 	/**
@@ -152,7 +152,7 @@ class Result extends AbstractEntity {
 	 * @param integer $feCruserId
 	 * @return void
 	 */
-	public function setFeCruserId($feCruserId) {
+	public function setFeCruserId($feCruserId): void {
 		$this->feCruserId = $feCruserId;
 	}
 	
@@ -171,7 +171,7 @@ class Result extends AbstractEntity {
 	 * @param integer $crdate
 	 * @return void
 	 */
-	public function setCrdate($crdate) {
+	public function setCrdate($crdate): void {
 		$this->crdate = $crdate;
 	}
 
@@ -190,7 +190,7 @@ class Result extends AbstractEntity {
 	 * @param integer $finished
 	 * @return void
 	 */
-	public function setFinished($finished) {
+	public function setFinished($finished): void {
 		$this->finished = $finished;
 	}
 
@@ -200,7 +200,7 @@ class Result extends AbstractEntity {
   * @param ResultQuestion $rquestion
   * @return void
   */
- public function addOrUpdateQuestion(ResultQuestion $rquestion) {
+ public function addOrUpdateQuestion(ResultQuestion $rquestion): void {
 		//check if a resultQuestion with this Question is already here
 		//if no question is given		
 		$rquestion = $this->checkMatrixType($rquestion);
@@ -338,7 +338,7 @@ class Result extends AbstractEntity {
   * @param ResultQuestion $resultQuestion
   * @return void
   */
- public function addQuestion(ResultQuestion $resultQuestion) {
+ public function addQuestion(ResultQuestion $resultQuestion): void {
 		$this->questions->attach($resultQuestion);
 	}
 
@@ -348,7 +348,7 @@ class Result extends AbstractEntity {
   * @param ResultQuestion $questionToRemove The ResultQuestion to be removed
   * @return void
   */
- public function removeQuestion(ResultQuestion $questionToRemove) {
+ public function removeQuestion(ResultQuestion $questionToRemove): void {
 		$this->questions->detach($questionToRemove);
 	}
 
@@ -490,7 +490,7 @@ class Result extends AbstractEntity {
   * @param ObjectStorage<ResultQuestion> $questions
   * @return void
   */
- public function setQuestions(ObjectStorage $questions) {
+ public function setQuestions(ObjectStorage $questions): void {
 		$this->questions = $questions;
 	}
 
@@ -509,7 +509,7 @@ class Result extends AbstractEntity {
 	 * @param integer $points
 	 * @return void
 	 */
-	public function setPoints(int $points) {
+	public function setPoints(int $points): void {
 		$this->points = $points;
 	}
 
@@ -528,7 +528,7 @@ class Result extends AbstractEntity {
 	 * @param integer $maxPoints
 	 * @return void
 	 */
-	public function setMaxPoints(int $maxPoints) {
+	public function setMaxPoints(int $maxPoints): void {
 		$this->maxPoints = $maxPoints;
 	}
 	
@@ -538,7 +538,7 @@ class Result extends AbstractEntity {
   * @param FrontendUser $feUser feUser
   * @return void
   */
- public function setFeUser(FrontendUser $feUser) {
+ public function setFeUser(FrontendUser $feUser): void {
 		$this->feUser = $feUser;
 	}
 
@@ -557,7 +557,7 @@ class Result extends AbstractEntity {
   * @param AuthCode $authCode authCode
   * @return void
   */
- public function setAuthCode(AuthCode $authCode) {
+ public function setAuthCode(AuthCode $authCode): void {
 		$this->authCode = $authCode;
 	}
 
@@ -721,7 +721,7 @@ class Result extends AbstractEntity {
 	 * @param string $addParameter
 	 * @return void
 	 */
-	public function setAddParameter($addParameter) {
+	public function setAddParameter($addParameter): void {
 		$this->addParameter = $addParameter;
 	}
 }

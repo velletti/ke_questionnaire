@@ -69,15 +69,10 @@ class RangeViewHelper extends AbstractViewHelper {
      */
 	private $result ;
 
-	/**
-	 * inject signal slots
-	 *
-	 * @param Dispatcher $signalSlotDispatcher
-	 * @return void
-	 */
-	public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
-			$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
+	public function __construct(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+ {
+     $this->signalSlotDispatcher = $signalSlotDispatcher;
+ }
 	
 	/**
 	 * ranges
@@ -88,7 +83,7 @@ class RangeViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('questionnaire', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', ' The questionnaire ', true );
         $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
         $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );
@@ -157,7 +152,7 @@ class RangeViewHelper extends AbstractViewHelper {
  private function getRanges(){
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-		$this->contentObj = $this->configurationManager->getContentObject();
+		$this->contentObj = $this->request->getAttribute('currentContentObject');
 		$uid = $this->contentObj->data['uid'] ;
 
 		$this->questionnaire = $this->questionnaire->loadFullObject($this->contentObj->data['uid']);

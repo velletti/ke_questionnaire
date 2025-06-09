@@ -62,7 +62,7 @@ class MatrixRow extends Answer {
 	 * @param boolean $showTextfield
 	 * @return void
 	 */
-	public function setShowTextfield($showTextfield) {
+	public function setShowTextfield($showTextfield): void {
 		$this->showTextfield = $showTextfield;
 	}
 	
@@ -98,7 +98,7 @@ class MatrixRow extends Answer {
 	 * @param boolean $titleLine
 	 * @return void
 	 */
-	public function setTitleLine($titleLine) {
+	public function setTitleLine($titleLine): void {
 		$this->titleLine = $titleLine;
 	}	
 	

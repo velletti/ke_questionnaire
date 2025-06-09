@@ -77,7 +77,7 @@ class Range extends AbstractEntity {
 	 * @param string $title
 	 * @return void
 	 */
-	public function setTitle($title) {
+	public function setTitle($title): void {
 		$this->title = $title;
 	}
 
@@ -96,7 +96,7 @@ class Range extends AbstractEntity {
 	 * @param string $text
 	 * @return void
 	 */
-	public function setText($text) {
+	public function setText($text): void {
 		$this->text = $text;
 	}
 
@@ -115,7 +115,7 @@ class Range extends AbstractEntity {
 	 * @param integer $pointsFrom
 	 * @return void
 	 */
-	public function setPointsFrom($pointsFrom) {
+	public function setPointsFrom($pointsFrom): void {
 		$this->pointsFrom = $pointsFrom;
 	}
 
@@ -134,7 +134,7 @@ class Range extends AbstractEntity {
 	 * @param integer $pointsUntil
 	 * @return void
 	 */
-	public function setPointsUntil($pointsUntil) {
+	public function setPointsUntil($pointsUntil): void {
 		$this->pointsUntil = $pointsUntil;
 	}
 	

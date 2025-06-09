@@ -40,15 +40,10 @@ abstract class AbstractValidation {
  protected $objectManager;
 	
 	
-	/**
-  * Injects the object manager
-  *
-  * @param ObjectManagerInterface $objectManager
-  * @return void
-  */
- public function injectObjectManager(ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+ {
+     $this->objectManager = $objectManager;
+ }
 	
 	
 	/**

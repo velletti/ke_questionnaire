@@ -41,8 +41,8 @@ class MatrixHeader extends Answer {
   * Cols
   *
   * @var ObjectStorage<Answer>
-  * @Lazy
   */
+ #[Lazy]
  protected $cols;
 	
 	/**
@@ -80,7 +80,7 @@ class MatrixHeader extends Answer {
   * @param Answer $col
   * @return void
   */
- public function addCol(Answer $col) {
+ public function addCol(Answer $col): void {
 		$this->cols->attach($col);
 	}
 
@@ -90,7 +90,7 @@ class MatrixHeader extends Answer {
   * @param Answer $colToRemove The Col to be removed
   * @return void
   */
- public function removeCol(Answer $colToRemove) {
+ public function removeCol(Answer $colToRemove): void {
 		$this->cols->detach($colToRemove);
 	}
 
@@ -110,7 +110,7 @@ class MatrixHeader extends Answer {
   * @param ObjectStorage<Answer> $cols
   * @return void
   */
- public function setCols(ObjectStorage $cols) {
+ public function setCols(ObjectStorage $cols): void {
 		$this->cols = $cols;
 	}
 	
@@ -129,7 +129,7 @@ class MatrixHeader extends Answer {
 	 * @param integer $maxAnswers
 	 * @return void
 	 */
-	public function setMaxAnswers($maxAnswers) {
+	public function setMaxAnswers($maxAnswers): void {
 		$this->maxAnswers = $maxAnswers;
 	}
 	
@@ -148,7 +148,7 @@ class MatrixHeader extends Answer {
 	 * @param integer $minAnswers
 	 * @return void
 	 */
-	public function setMinAnswers($minAnswers) {
+	public function setMinAnswers($minAnswers): void {
 		$this->minAnswers = $minAnswers;
 	}
 	
@@ -352,7 +352,7 @@ class MatrixHeader extends Answer {
 	 * @param boolean $addClones
 	 * @return void
 	 */
-	public function setAddClones($addClones) {
+	public function setAddClones($addClones): void {
 		$this->addClones = $addClones;
 	}
 	

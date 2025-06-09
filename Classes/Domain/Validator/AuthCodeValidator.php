@@ -38,7 +38,7 @@ class AuthCodeValidator extends AbstractValidator  {
 	/**
 	* validate
 	*/
-	public function isValid($result) {
+	public function isValid($result): void {
 		if (!$result instanceof AuthCode) {
 			$this->addError('The given Object is not a KeQ-AuthCode.', 1262341470);
 			return FALSE;
