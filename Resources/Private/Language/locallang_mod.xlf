@@ -15,18 +15,6 @@
 			<trans-unit id="editPlugin" resname="editPlugin" >
 				<source>Edit Questionnaire-plugin-data</source>
 			</trans-unit>
-			<trans-unit id="imageAreaSelectHeader" resname="imageAreaSelectHeader" >
-				<source>Select the Areas</source>
-			</trans-unit>
-			<trans-unit id="imageAreaSelectInfo" resname="imageAreaSelectInfo" >
-				<source>Just draw a rectangle on the image and press the save button to save an area. If you have selected all your areas, close the popup.</source>
-			</trans-unit>
-			<trans-unit id="imageAreaSelectSave" resname="imageAreaSelectSave" >
-				<source>Save</source>
-			</trans-unit>
-			<trans-unit id="imageAreaSelectClose" resname="imageAreaSelectClose" >
-				<source>Close</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

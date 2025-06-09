@@ -19,22 +19,6 @@
 				<source>Edit Questionnaire-plugin-data</source>
 				<target>KeQ Questionnaire-Plugin-Daten bearbeiten</target>
 			</trans-unit>
-			<trans-unit id="imageAreaSelectHeader" resname="imageAreaSelectHeader"  approved="yes">
-				<source>Select the Areas</source>
-				<target>Bereiche auswählen</target>
-			</trans-unit>
-			<trans-unit id="imageAreaSelectInfo" resname="imageAreaSelectInfo"  approved="yes">
-				<source>Just draw a rectangle on the image and press the save button to save an area. If you have selected all your areas, close the popup.</source>
-				<target>Zeichne ein Rechteck auf das Bild um einen Bereich zu markieren und drücke den Speichern-Button. Wenn alle Bereiche ausgewählt wurden, schliesse das Popup</target>
-			</trans-unit>
-			<trans-unit id="imageAreaSelectSave" resname="imageAreaSelectSave"  approved="yes">
-				<source>Save</source>
-				<target>Speichern</target>
-			</trans-unit>
-			<trans-unit id="imageAreaSelectClose" resname="imageAreaSelectClose"  approved="yes">
-				<source>Close</source>
-				<target>Schliessen</target>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -5,11 +5,6 @@
  */
 return [
     /** Wizards */
-    // Register backend_layout wizard
-    'wizard_imageAreaSelect' => [
-        'path' => '/wizard/imageAreaSelect',
-        'target' => Kennziffer\KeQuestionnaire\Controller\Wizard\ImageAreaSelectController::class . '::mainAction'
-    ] ,
     'keQuestionnaireBe' => [
         'path' => '/keQuestionnaireBe/KeQuestionnaireAuthcode',
         'target' => Kennziffer\KeQuestionnaire\Controller\BackendController::class . '::createAndMailAuthCodesAction'
