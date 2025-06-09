@@ -20,7 +20,7 @@
 
   "replace": {
     "typo3-ter/ke_questionnaire": "self.version",
-    "Kennziffer/ke_questionnaire": "self.version",
+    "Kennziffer/ke_questionnaire": "self.version"
   },
 
   "autoload": {
