@@ -1,7 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Ajax;
 
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 /***************************************************************
  *  Copyright notice
  *
@@ -37,12 +36,10 @@ class AutoSave extends AbstractAjax {
     /**
   * @var Dispatcher
   */
- protected $signalSlotDispatcher;
-    
-    public function __construct(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
- {
-     $this->signalSlotDispatcher = $signalSlotDispatcher;
- }
+
+    public function __construct()
+     {
+     }
     
     /**
 	 * process an ajax request
@@ -52,7 +49,7 @@ class AutoSave extends AbstractAjax {
 	 */
 	public function processAjaxRequest(array $arguments) {
 		$this->info = array();
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'ajaxAutoSave', array($this->convertAjaxFormArray($arguments), $this));
+      //  $this->signalSlotDispatcher->dispatch(__CLASS__, 'ajaxAutoSave', array($this->convertAjaxFormArray($arguments), $this));
 		$json = $this->convertValueToJson($this->info['resultUid']);
 		return trim($json);
 	}

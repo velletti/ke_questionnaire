@@ -103,8 +103,7 @@ class DdImageViewHelper extends AbstractViewHelper {
 		
 		// workaround for pointer in question, so all following answer-objects are rendered.
 		$addIt = false;
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestion($question);
 		//$answers = $question->getAnswers();
         

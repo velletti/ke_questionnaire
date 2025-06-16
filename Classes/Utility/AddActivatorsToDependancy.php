@@ -1,7 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
 
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,10 +36,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AddActivatorsToDependancy {
 	
-	/**
-  * @var ObjectManager
-  */
- protected $objectManager;
 
 	/**
   * questionRepository
@@ -97,8 +92,7 @@ class AddActivatorsToDependancy {
   */
  private function getQuestions($storagePid) {
         //$this->questionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->questionRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
+		$this->questionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
 		$questions = $this->questionRepository->findAllForPid($storagePid);
 		
 		return $questions;

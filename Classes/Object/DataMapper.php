@@ -2,7 +2,6 @@
 namespace Kennziffer\KeQuestionnaire\Object;
 
 use TYPO3\CMS\Extbase\Object\Container\Container;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use Kennziffer\KeQuestionnaire\Exception;
@@ -43,10 +42,7 @@ class DataMapper {
   */
  protected $objectContainer;
 
-	/**
-  * @var ObjectManager
-  */
- protected $objectManager;
+
 
 	/**
   * @var ReflectionService
@@ -57,9 +53,8 @@ class DataMapper {
   * @var ValidatorResolver
   */
  protected $validatorResolver;
- public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager, \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer, \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService, \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver)
+ public function __construct( \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer, \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService, \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver)
  {
-     $this->objectManager = $objectManager;
      $this->objectContainer = $objectContainer;
      $this->reflectionService = $reflectionService;
      $this->validatorResolver = $validatorResolver;
@@ -73,7 +68,7 @@ class DataMapper {
 	 * @return array An array of objects of the given class
 	 */
 	public function map($className, array $rows) {
-		$objectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$objectStorage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($rows as $row) {
 			/* @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
 			$objectStorage->attach($this->mapSingleRow($className, $row));

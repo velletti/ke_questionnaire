@@ -223,19 +223,19 @@ class BackendController extends  AbstractController {
 
 		if ( $this->extConf->isEnableAuthCode2feUser() || $this->extConf->isEnableAuthCode2feGroups() ) {
             // FE user / FFE Group Lists
-            $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+            $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
             $querySettings->setRespectStoragePage(FALSE);
 
 
             if ( $this->extConf->isEnableAuthCode2feUser()  ) {
-                $userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+                $userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
                 $userRepository->setDefaultQuerySettings($querySettings);
                 $this->view->assign('feusers', $userRepository->findAll());
             } else {
                 $this->view->assign('feusers', 'Disabled in EXT Configuration');
             }
             if ( $this->extConf->isEnableAuthCode2feGroups() ) {
-                $groupRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository');
+                $groupRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository');
                 $groupRepository->setDefaultQuerySettings($querySettings);
                 $this->view->assign('fegroups',$groupRepository->findAll());
             } else {
@@ -312,7 +312,7 @@ class BackendController extends  AbstractController {
 			$this->authCodeRepository->add($newAuthCode);
 
 		}
-        $persistenceManager = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
         /* @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
         $persistenceManager->persistAll();
 
@@ -386,15 +386,15 @@ class BackendController extends  AbstractController {
 				$newAuthCode->setEmail($mail['email']);
                     switch($mail['sourcetype']) {
                         case 'feuser':
-                                $userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-                                $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+                                $userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+                                $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
                                 $querySettings->setRespectStoragePage(FALSE);
                                 $userRepository->setDefaultQuerySettings($querySettings);
                                 $newAuthCode->setFeUser($userRepository->findByUid($mail['uid']));
                             break;
                         case 'ttaddress':
-                                $addrRepository = $this->objectManager->get('TYPO3\\TtAddress\\Domain\\Repository\\AddressRepository');
-                                $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+                                $addrRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\TtAddress\\Domain\\Repository\\AddressRepository');
+                                $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
                                 $querySettings->setRespectStoragePage(FALSE);
                                 $addrRepository->setDefaultQuerySettings($querySettings);
                                 $newAuthCode->setTtAddress($addrRepository->findByUid($mail['uid']));
@@ -434,7 +434,7 @@ class BackendController extends  AbstractController {
 			}			
 		}
         //store the authCode
-        $persistenceManager = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
         // @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
         $persistenceManager->persistAll();
 		//forward to standard-action
@@ -451,8 +451,8 @@ class BackendController extends  AbstractController {
 		
 		foreach ($fe_groups as $uid){
 			$group = BackendUtility::getRecord('fe_groups',$uid);
-			$userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-			$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+			$userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+			$querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 			$querySettings->setRespectStoragePage(FALSE);
 			$userRepository->setDefaultQuerySettings($querySettings);
 			$user = $userRepository->findAll();
@@ -512,8 +512,6 @@ class BackendController extends  AbstractController {
 		if ($plugin) $this->plugin = $plugin;
 		
 		$this->view->assign('plugin',$this->plugin);
-                //SignalSlot for Action
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'authCodesRemindAction', array($this,$this->storagePid,$this->request->getControllerExtensionName()));
 	}
         
         /**
@@ -521,11 +519,8 @@ class BackendController extends  AbstractController {
 	 */
 	public function remindAndMailAuthCodesAction() {
             $this->view->assign('plugin',$this->plugin);
-		//SignalSlot for Action
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'remindAndMailAuthCodesAction', array($this,$this->request,$this->request->getControllerExtensionName()));
-                
+
 		//forward to standard-action
 		$this->forward('authCodes');
 	}
 }
-?>

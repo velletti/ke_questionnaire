@@ -24,6 +24,7 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+
 /**
  * Abstract Class to process Ajax Actions in Questionnaires
  *
@@ -33,6 +34,7 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
  */
 abstract class AbstractAjax implements AjaxInterface {
 
+    public array $setttings;
 	/**
 	 * return value as JSON
 	 *
@@ -58,4 +60,3 @@ abstract class AbstractAjax implements AjaxInterface {
 	}
 
 }
-?>

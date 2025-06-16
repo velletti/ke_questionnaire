@@ -37,8 +37,6 @@ use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
 class ResultRepository extends Repository {
     public function initializeObject(): void {
         /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
-        //$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
-        // go for $defaultQuerySettings = $this->createQuery()->getQuerySettings(); if you want to make use of the TS persistence.storagePid with defaultQuerySettings(), see #51529 for details
         $defaultQuerySettings = $this->createQuery()->getQuerySettings();
  
         // don't add sys_language_uid constraint

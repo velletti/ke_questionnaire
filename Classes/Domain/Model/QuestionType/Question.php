@@ -1,7 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
 
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -115,10 +114,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @var integer
 	 */
 	protected $minAnswers;
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
+
 
     /**
 	 * __construct
@@ -217,8 +213,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	public function getIsMandatory(): bool
     {
 		// Check if one answer is a DataPrivacy. If yes, the the question is always mandatory
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestion($this);
 		foreach ($answers as $answer){
 			if ($answer->getShortType() == 'DataPrivacy') $this->isMandatory = true;

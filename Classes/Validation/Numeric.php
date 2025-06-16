@@ -42,17 +42,7 @@ class Numeric extends AbstractValidation {
 	 */
 	public function isValid($value, $model) {
 		/* @var $validator Tx_Extbase_Validation_Validator_NumberValidator */
-		/*$validator = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator');
-		/$vali = $validator->validate($value);
-		
-		if ($vali->errorsExist){
-			\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($validator, 'vali');exit;
-			$value = str_replace(',', '.', $value);
-			$vali = $validator->validate($value);
-			
-			if ($vali->errorsExist) return false;
-			else return true;
-		} else return true;*/
+
 		if (!is_numeric($value)) {
 			$value = str_replace(',', '.', $value);
 			return (is_numeric($value));

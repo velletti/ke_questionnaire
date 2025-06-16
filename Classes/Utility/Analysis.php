@@ -23,7 +23,6 @@ namespace Kennziffer\KeQuestionnaire\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\Question;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,20 +49,15 @@ class Analysis {
   */
  protected $localization;
 	
-	/**
-  * @var Dispatcher
-  */
- protected $signalSlotDispatcher;
-	
+
 	/**
 	 * @var array
 	 */
 	protected $settings;
- public function __construct(\Kennziffer\KeQuestionnaire\Utility\JqPlot $jqPlot, \Kennziffer\KeQuestionnaire\Utility\Localization $localization, \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+ public function __construct(\Kennziffer\KeQuestionnaire\Utility\JqPlot $jqPlot, \Kennziffer\KeQuestionnaire\Utility\Localization $localization)
  {
      $this->jqPlot = $jqPlot;
      $this->localization = $localization;
-     $this->signalSlotDispatcher = $signalSlotDispatcher;
  }
 	
 	/**
@@ -208,7 +202,7 @@ class Analysis {
 					break;
 				default:
 					$this->signalData = false;
-					$this->signalSlotDispatcher->dispatch(__CLASS__, 'createChartWithData', array($type, $data, $question, $this));
+					// $this->signalSlotDispatcher->dispatch(__CLASS__, 'createChartWithData', array($type, $data, $question, $this));
 					if ($this->signalData) {
 						$divs .= $this->signalData['div'];
 						$charts .= $this->signalData['chart'];								
@@ -286,9 +280,8 @@ class Analysis {
      */
     public function createQuestionDataArray($type, Question $question, $results){
 		$answers = array();
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$resultQuestionRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
-		$resultAnswerRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
+		$resultQuestionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$resultAnswerRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
 		
 		foreach ($question->getAnswers() as $answer){
 			switch ($answer->getShortType()){
@@ -410,7 +403,7 @@ class Analysis {
 					break;
 				default:
 						$this->signalData = false;
-						$this->signalSlotDispatcher->dispatch(__CLASS__, 'createQuestionDataArray', array($type, $question, $results, $this));
+						// $this->signalSlotDispatcher->dispatch(__CLASS__, 'createQuestionDataArray', array($type, $question, $results, $this));
 						if ($this->signalData) $answers = $this->signalData;												
 					break;
 			}

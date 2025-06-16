@@ -89,8 +89,7 @@ class Dependancy extends AbstractEntity {
   */
  public function getQuestion() {
         if (!$this->question){
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-			$q_rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
+			$q_rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
             $this->question = $q_rep->findByUid($this->answer->getQuestion());
         }
 		return $this->question;

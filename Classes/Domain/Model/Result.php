@@ -382,8 +382,7 @@ class Result extends AbstractEntity {
   * @return ResultQuestion
   */
  public function getResultQuestionForQuestion(Question $question) {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		$rQuestion = $rep->findByQuestionAndResult($question,$this);
 		if ($rQuestion[0] AND $this->getQuestions()->contains($rQuestion[0])) {
 			return $rQuestion[0];
@@ -399,8 +398,7 @@ class Result extends AbstractEntity {
   * @return ResultQuestion
   */
  public function questionKnown($question) {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		$rQuestion = $rep->findByQuestionAndResult($question->getQuestion(),$this);
 		if ($rQuestion[0] AND $this->getQuestions()->contains($rQuestion[0])) {
 			$rq = $rQuestion[0];
@@ -423,8 +421,7 @@ class Result extends AbstractEntity {
   * @return ResultAnswer
   */
  public function getAnswer($questionUid, $answerUid, $columnUid = 0) {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		$resultQuestion = $rep->findByQuestionAndResult($questionUid, $this);
 		$resultQuestion = $resultQuestion[0];
 		
@@ -454,8 +451,7 @@ class Result extends AbstractEntity {
   * @return ResultAnswer
   */
  public function getRadioAnswer($questionUid, $answerUid, $columnUid) {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		$resultQuestion = $rep->findByQuestionAndResult($questionUid, $this);
 		$resultQuestion = $resultQuestion[0];
 		
@@ -479,8 +475,7 @@ class Result extends AbstractEntity {
   * @return ResultAnswer
   */
  public function getResultAnswer($answerUid) {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
 		return $rep->findByUid($answerUid);
 	}
 

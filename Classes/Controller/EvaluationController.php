@@ -54,9 +54,9 @@ class EvaluationController extends ActionController {
 	 */
 	public function initializeAction() {
 		$class = $this->settings['chart']['class'];
-		$this->chartClass = $this->objectManager->get($class);
+		$this->chartClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
 		if (!$this->chartClass instanceof AbstractChart) {
-			$this->chartClass = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Evaluation\\GoogleChart');
+			$this->chartClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Evaluation\\GoogleChart');
 		}
 		$this->chartClass->setSettings($this->settings);
 

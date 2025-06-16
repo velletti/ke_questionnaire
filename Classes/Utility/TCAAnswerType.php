@@ -60,8 +60,7 @@ class TCAAnswerType {
 		//if more than one answer is found => more depth than question->answer
 		//get the base element
 		if (count($uids) > 1){
-			$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-			$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
+			$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 			//baseElement for is the last element before the newly added
 			$baseElement = $rep->findByUid($uids[count($uids)-2]);
 		}

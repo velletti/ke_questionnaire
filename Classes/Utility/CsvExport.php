@@ -6,7 +6,6 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use Kennziffer\KeQuestionnaire\Domain\Model\Question;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 /***************************************************************
@@ -131,14 +130,12 @@ class CsvExport {
         /**
   * @var Dispatcher
   */
- protected $signalSlotDispatcher;
- public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository, \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+ public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository)
  {
      $this->questionRepository = $questionRepository;
      $this->resultRepository = $resultRepository;
      $this->resultQuestionRepository = $resultQuestionRepository;
      $this->resultAnswerRepository = $resultAnswerRepository;
-     $this->signalSlotDispatcher = $signalSlotDispatcher;
  }
 	
 	
@@ -335,8 +332,7 @@ class CsvExport {
 			$this->csv .= $this->newline;
 		}
                 
-                //SignalSlot for Action
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'createAuthCodes', array($this,$authCodes));
+                // $this->signalSlotDispatcher->dispatch(__CLASS__, 'createAuthCodes', array($this,$authCodes));
 						
 		return $this->csv;
 	}
@@ -881,4 +877,3 @@ class CsvExport {
 		return $lines;
 	}
 }
-?>

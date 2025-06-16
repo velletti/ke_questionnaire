@@ -42,8 +42,6 @@ class Integer extends AbstractValidation {
 	 */
 	public function isValid($value, $model) {
 		/* @var $validator \TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator */
-		//$validator = $this->objectManager->get('TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator');
-		//return $validator->isValid($value);
         $value = filter_var($value, FILTER_VALIDATE_INT);
         return ($value !== FALSE);
 	}

@@ -307,8 +307,7 @@ class Questionnaire extends AbstractEntity {
   */
  public function getQuestions() {
 		if (count($this->questions)==0){
-			$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-			$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
+			$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
 			$this->setQuestions($rep->findAllForPid($this->getStoragePid()));
 		}
 		return $this->questions;
@@ -477,10 +476,9 @@ class Questionnaire extends AbstractEntity {
     public function getUserResults($userId = false){
         if (!$userId) $userId = $GLOBALS['TSFE']->fe_user->user['uid'];
         if ($userId > 0){
-			$this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-			$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+			$querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 			$querySettings->setRespectStoragePage(FALSE);
-			$resultRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
+			$resultRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
 			$resultRepository->setDefaultQuerySettings($querySettings);
 			$results = $resultRepository->findByFeUserAndPid($userId,$this->getStoragePid());
 
@@ -495,10 +493,9 @@ class Questionnaire extends AbstractEntity {
      * @return results
      */
     public function countResults($finished = true){
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
-        $resultRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
+        $resultRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
         $resultRepository->setDefaultQuerySettings($querySettings);
         if ($finished) $counter = $resultRepository->countFinishedForPid($this->getStoragePid());
         else $counter = $resultRepository->countAllForPid($this->getStoragePid());
@@ -512,10 +509,9 @@ class Questionnaire extends AbstractEntity {
      * @return integer
      */
     public function countAuthCodes(){
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
-        $resultRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
+        $resultRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
         $resultRepository->setDefaultQuerySettings($querySettings);
         $counter = $resultRepository->countAllForPid($this->getStoragePid());
 
@@ -697,8 +693,7 @@ class Questionnaire extends AbstractEntity {
      */
     public function loadFullObject($uid){
         //$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
+		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
 		return $rep->findForUid($uid);
     }
 

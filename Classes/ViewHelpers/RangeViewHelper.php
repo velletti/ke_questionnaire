@@ -7,7 +7,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /***************************************************************
  *  Copyright notice
@@ -53,11 +52,6 @@ class RangeViewHelper extends AbstractViewHelper {
     protected $escapeOutput = false;
 
 
-	
-	/**
-	 * @var Dispatcher
-	 */
-	protected $signalSlotDispatcher;
 
     /**
      * @var Questionnaire
@@ -69,9 +63,8 @@ class RangeViewHelper extends AbstractViewHelper {
      */
 	private $result ;
 
-	public function __construct(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+	public function __construct()
  {
-     $this->signalSlotDispatcher = $signalSlotDispatcher;
  }
 	
 	/**
@@ -140,7 +133,7 @@ class RangeViewHelper extends AbstractViewHelper {
         }
 
 		
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'getPremiumRanges', array($this));
+		// $this->signalSlotDispatcher->dispatch(__CLASS__, 'getPremiumRanges', array($this));
 		return $this->ranges;
 	}
 	
@@ -150,14 +143,13 @@ class RangeViewHelper extends AbstractViewHelper {
   * @return QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
   */
  private function getRanges(){
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$this->contentObj = $this->request->getAttribute('currentContentObject');
 		$uid = $this->contentObj->data['uid'] ;
 
 		$this->questionnaire = $this->questionnaire->loadFullObject($this->contentObj->data['uid']);
 		/** @var RangeRepository $rep */
-  $rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\RangeRepository');
+  $rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\RangeRepository');
 		
 		$ranges = $rep->findForPid($this->questionnaire->getStoragePid());
 		return $ranges;

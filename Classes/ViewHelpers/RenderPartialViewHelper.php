@@ -1,7 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
 
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper ;
@@ -48,20 +47,14 @@ class RenderPartialViewHelper extends RenderViewHelper {
      */
     protected $escapeOutput = false;
 
-	
-	/**
-  * @var ObjectManagerInterface
-  */
- protected $objectManager;
-	
+
 	/**
 	 * @var array
 	 */
 	var $oldPaths = array();
 
-	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+	public function __construct()
  {
-     $this->objectManager = $objectManager;
  }
 
 

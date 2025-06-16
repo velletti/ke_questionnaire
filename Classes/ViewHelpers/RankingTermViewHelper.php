@@ -1,7 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -52,11 +51,6 @@ class RankingTermViewHelper extends AbstractViewHelper {
      * @var boolean
      */
     protected $escapeOutput = false;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
 
 
     /** * Constructor *
@@ -116,9 +110,9 @@ class RankingTermViewHelper extends AbstractViewHelper {
 		// workaround for pointer in question, so all following answer-objects are rendered.
 		$addIt = false;
         $type = '';
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		/** @var AnswerRepository $rep */
-  $rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
+
+                /** @var AnswerRepository $rep */
+        $rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
 		$answers = $rep->findByQuestion($question);
 		
 		$ranswers = array();

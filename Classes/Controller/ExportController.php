@@ -533,7 +533,7 @@ class ExportController extends  BackendController {
 		$csvdata = '';
 		
 		if (ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')){
-			$this->csvExport = $this->objectManager->get('Kennziffer\KeQuestionnairePremium\Utility\CsvExport');
+			$this->csvExport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnairePremium\Utility\CsvExport');
 			
 			if ($this->request->hasArgument('averagePoints')) $this->csvExport->setAveragePoints($this->request->getArgument('averagePoints'));
 			else $this->csvExport->setAveragePoints($this->plugin->ffdata['settings']['csv']['averagePoints']);
@@ -618,7 +618,7 @@ class ExportController extends  BackendController {
 		if ($resultId) {
             $result = $this->resultRepository->findByUid($resultId);
         } else {
-            $result = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\Result');
+            $result = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Model\Result');
         }
 		$this->view->assign('result',$result);
 				

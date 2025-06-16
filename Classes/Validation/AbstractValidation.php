@@ -1,7 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Validation;
 
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,16 +32,10 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  *
  */
 abstract class AbstractValidation {
+
 	
-	/**
-  * @var ObjectManagerInterface
-  */
- protected $objectManager;
-	
-	
-	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+	public function __construct()
  {
-     $this->objectManager = $objectManager;
  }
 	
 	

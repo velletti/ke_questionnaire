@@ -8,7 +8,6 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\ExtConf;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use Kennziffer\KeQuestionnaire\Utility\Localization;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -89,11 +88,6 @@ class AbstractController extends ActionController {
  protected $extConf;
 
 	/**
-  * @var Dispatcher
-  */
- protected $signalSlotDispatcher;
-
-	/**
   * @var Localization
   */
  protected $localization;
@@ -164,15 +158,6 @@ class AbstractController extends ActionController {
 		$this->extConf = $extConf;
 	}
 
-	/**
-  * inject signal slots
-  *
-  * @param Dispatcher $signalSlotDispatcher
-  * @return void
-  */
- public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
-			$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
 
 	/**
   * inject localization
@@ -225,13 +210,13 @@ class AbstractController extends ActionController {
 	 */
 	public function initializeAction() {
 		parent::initializeAction();
-		if (!is_object($this->questionnaireRepository)) $this->questionnaireRepository = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
+		if (!is_object($this->questionnaireRepository)) $this->questionnaireRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
 
 		// initialize steps
 		if ($this->steps AND $this->steps->count() == 0) {
 			if (is_array($this->settings['steps']) && count($this->settings['steps'])) {
 				/* @var $dataMapper \Kennziffer\KeQuestionnaire\Object\DataMapper */
-				$dataMapper = $this->objectManager->get('Kennziffer\KeQuestionnaire\Object\DataMapper');
+				$dataMapper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Object\DataMapper');
 				$steps = $dataMapper->map('Kennziffer\KeQuestionnaire\Domain\Model\Step', $this->settings['steps']);
 				foreach ($steps as $step) {
 					$this->steps->attach($step);

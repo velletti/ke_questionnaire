@@ -1,8 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
-use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
-use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -95,8 +93,8 @@ class ResultController extends AbstractController {
 		$this->questionnaire->settings = $this->settings;
 
 		//check a logged in user
-		$userRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+		$userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+		$querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->setRespectStoragePage(FALSE);
 		$userRepository->setDefaultQuerySettings($querySettings);
 
@@ -130,7 +128,7 @@ class ResultController extends AbstractController {
  public function newAction(Result $newResult = NULL, $requestedPage = 0) {
 		if ($newResult == NULL) { // workaround for fluid bug ##5636
 		    /** @var Result $newResult */
-			$newResult = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\Result');
+			$newResult = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Model\Result');
 		}
         $newResult->setFeCruserId($this->userUid);
 		if ($this->user) {
@@ -163,9 +161,8 @@ class ResultController extends AbstractController {
 		$questions = $this->questionRepository->findAll();
 		$this->questionnaire->setQuestions($questions);
 
-		//SignalSlot for newAction
         $this->signalResult = $newResult;
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array($this));
+		// $this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array($this));
         $newResult = $this->signalResult;
 
 
@@ -188,7 +185,7 @@ class ResultController extends AbstractController {
                 if( $questions) {
                     foreach ($questions as $question) {
                         /** @var ResultQuestion $resultQuestion */
-                        $resultQuestion = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion');
+                        $resultQuestion = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion');
                         $resultQuestion->setQuestion($question);
                         $resultQuestion->setPage($page);
                         $newResult->addQuestion($resultQuestion);
@@ -221,7 +218,7 @@ class ResultController extends AbstractController {
 	 * @return void
 	 */
 	public function setStoragePid($storagePid) {
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		//fallback to current pid if no storagePid is defined
         $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$currentPid['persistence']['storagePid'] = $storagePid;
@@ -238,8 +235,7 @@ class ResultController extends AbstractController {
         if ( $this->request->hasArgument("newResult") ) {
             $this->temp_result = $this->request->getArgument('newResult');
         }
-		//SignalSlot for this action
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'initializeCreateAction', array($this, $this->arguments));
+        // $this->signalSlotDispatcher->dispatch(__CLASS__, 'initializeCreateAction', array($this, $this->arguments));
 		//check for autoSave
 		//Premium function needs to be checked here anyway. The autosave Action is part of the premium
         if ($this->settings['ajaxAutoSave'] == 1 AND $GLOBALS['TSFE']->fe_user->user['uid'] > 0){
@@ -256,8 +252,8 @@ class ResultController extends AbstractController {
         if( is_array( $this->temp_result )) {
             /** @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $answerRepository */
             /** @var ResultAnswerRepository $resultAnswerRepository */
-            $answerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository');
-            $resultAnswerRepository = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository');
+            $answerRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository');
+            $resultAnswerRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository');
             if (array_key_exists('__identity' , $this->temp_result ) && $this->temp_result['__identity'] > 0) {
 
                 $debug = [] ;
@@ -290,7 +286,7 @@ class ResultController extends AbstractController {
                                              if( $formAnswer['value'] || $formAnswer['answer'] ) {
                                                 $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
                                                 /** @var ResultAnswer $resultAnswer */
-                                                $resultAnswer = $this->objectManager->get('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
+                                                $resultAnswer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
                                                 $resultAnswer->setPid($result->getPid()) ;
                                                 $resultAnswer->setResultquestion($resultQuestion);
                                                 $resultAnswer->setFeCruserId(   $this->userUid );
@@ -423,7 +419,7 @@ class ResultController extends AbstractController {
 				$this->view->assign('result', $newResult);
 				$this->view->assign('questionnaire', $this->questionnaire);
 				$temp = false;
-				$this->signalSlotDispatcher->dispatch(__CLASS__, 'endAction', array($newResult, $this, &$temp));
+				// $this->signalSlotDispatcher->dispatch(__CLASS__, 'endAction', array($newResult, $this, &$temp));
 				if ($temp) $this->redirectToUri ($temp);
 			}
 		//if not last page, set all stuff for questionnaire-page
@@ -444,9 +440,7 @@ class ResultController extends AbstractController {
                 $this->questionnaire->settings['startTime'] = time()  ;
             }
 
-            //signalSlot for this action
-
-			$this->signalSlotDispatcher->dispatch(__CLASS__, 'createAction', array($this));
+			//$this->signalSlotDispatcher->dispatch(__CLASS__, 'createAction', array($this));
 
 			$this->view->assign('questions', $newResult->getQuestionsForPage($requestedPage));
 			$this->view->assign('questionnaire', $this->questionnaire);
@@ -535,7 +529,7 @@ class ResultController extends AbstractController {
 		} else {
 			$result = $this->updateResult($newResult);			
 		}
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'getSavedAndMergedResult', array($result, $this));
+		// $this->signalSlotDispatcher->dispatch(__CLASS__, 'getSavedAndMergedResult', array($result, $this));
 		return $result;
 	}
 
@@ -594,7 +588,7 @@ class ResultController extends AbstractController {
 		if ($this->questionnaire AND $this->questionnaire->getIsFinished()) {
 			$result->setFinished(time());
 		}
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'modifyResultBeforeSave', array($result, $this));
+		// $this->signalSlotDispatcher->dispatch(__CLASS__, 'modifyResultBeforeSave', array($result, $this));
 
 		return $result;
 	}
@@ -642,7 +636,7 @@ class ResultController extends AbstractController {
      * checkes the dependancy of the Questionnaire
      */
     public function checkDependancy() {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'checkDependancy', array($this));
+        // $this->signalSlotDispatcher->dispatch(__CLASS__, 'checkDependancy', array($this));
     }
 	
 	/**
@@ -769,7 +763,7 @@ class ResultController extends AbstractController {
 		
 		$this->view->assign('result', $result);
 		$this->view->assign('questionnaire', $questionnaire);
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'endAction', array($result, $this));
+		// $this->signalSlotDispatcher->dispatch(__CLASS__, 'endAction', array($result, $this));
 	}
 
 
@@ -818,4 +812,3 @@ class ResultController extends AbstractController {
 
     }
 }
-?>

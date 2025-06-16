@@ -75,32 +75,31 @@ class Chart extends AbstractTemplateView {
 		if (!ExtensionManagementUtility::isLoaded('extbase')) {
 			return 'In the current version you still need to have Extbase installed in order to use the Fluid Standalone view!';
 		}
-		$this->objectManager = GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
 
-		$configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
+		$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
 		if ($contentObject === NULL) {
 			$contentObject = GeneralUtility::makeInstance('tslib_cObj');
 		}
 		$configurationManager->setContentObject($contentObject);
 
-		$this->templateParser = $this->objectManager->get('Tx_Fluid_Core_Parser_TemplateParser');
-		$this->setRenderingContext($this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext'));
+		$this->templateParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Tx_Fluid_Core_Parser_TemplateParser');
+		$this->setRenderingContext(\TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Tx_Fluid_Core_Rendering_RenderingContext'));
 
-		$request = $this->objectManager->get('Tx_Extbase_MVC_Web_Request');
+		$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Tx_Extbase_MVC_Web_Request');
 		$request->setRequestURI(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 
-		$uriBuilder = $this->objectManager->get('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$uriBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$uriBuilder->setRequest($request);
 
-		$controllerContext = $this->objectManager->get('Tx_Extbase_MVC_Controller_ControllerContext');
+		$controllerContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Tx_Extbase_MVC_Controller_ControllerContext');
 		$controllerContext->setRequest($request);
 		$controllerContext->setUriBuilder($uriBuilder);
-		$flashMessageContainer = $this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
+		$flashMessageContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
 		$controllerContext->setFlashMessageContainer($flashMessageContainer);
 		$this->setControllerContext($controllerContext);
 
-		$this->templateCompiler = $this->objectManager->get('Tx_Fluid_Core_Compiler_TemplateCompiler'); // singleton
+		$this->templateCompiler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Tx_Fluid_Core_Compiler_TemplateCompiler'); // singleton
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
 	}
 

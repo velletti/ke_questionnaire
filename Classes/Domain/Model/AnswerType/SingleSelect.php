@@ -2,7 +2,6 @@
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
 
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Kennziffer\KeQuestionnaire\Validation\AbstractValidation;
 /***************************************************************
  *  Copyright notice
@@ -129,8 +128,7 @@ class SingleSelect extends Answer {
 	public function isValid(string $value){
 		$class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
 		if (class_exists($class)) {
-			$objectManager = new ObjectManager;
-			$validator = $objectManager->get($class);
+			$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
 			if ($validator instanceof AbstractValidation) {
 				/* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
 				return $validator->isValid($value, $this);

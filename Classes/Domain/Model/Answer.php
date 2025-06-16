@@ -2,7 +2,6 @@
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Kennziffer\KeQuestionnaire\Validation\AbstractValidation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
@@ -378,8 +377,7 @@ class Answer extends AbstractEntity {
         if ($value){
             $class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
             if (class_exists($class)) {
-                $objectManager = new ObjectManager;
-                $validator = $objectManager->get($class);
+                $validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
                 if ($validator instanceof AbstractValidation) {
                     /* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
                     return $validator->isValid($value, $this);
@@ -452,9 +450,8 @@ class Answer extends AbstractEntity {
  public function getCsvLineValues(array $results, Question $question, $options = array()) {
 		$line = '';
 		//for each results get the values
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$repRA = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
-        $repRQ = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$repRA = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
+        $repRQ = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
 		foreach ($results as $result){
 			// $rAnswer = $result->getAnswer($question->getUid(), $this->getUid());
                         $rQuestion = $repRQ->findByQuestionAndResultIdRaw($question, $result['uid']);

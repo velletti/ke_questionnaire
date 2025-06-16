@@ -6,7 +6,6 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
 use Kennziffer\KeQuestionnaire\Utility\Mail;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Kennziffer\KeQuestionnaire\ValidationAbstractValidation;
 /***************************************************************
  *  Copyright notice
@@ -119,8 +118,6 @@ class QuestionnaireController extends ActionController {
 	 */
 	public function listAction() {		
             $this->view->assign('questionnaires',$this->getQuestionnaires());
-            //SignalSlot for listAction
-            $this->signalSlotDispatcher->dispatch(__CLASS__, 'listAction', array($this));            
 	}
 	
 	/**
@@ -141,8 +138,7 @@ class QuestionnaireController extends ActionController {
 	public function isValidEmail($value){
 		$class = 'Kennziffer\\KeQuestionnaire\\Validation\\Email';
 		if (class_exists($class)) {
-			$objectManager = new ObjectManager;
-			$validator = $objectManager->get($class);
+			$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
 			if ($validator instanceof ValidationAbstractValidation) {
 				/* @var $validator \Kennziffer\KeQuestionnaire\ValidationAbstractValidation */
 				return $validator->isValid($value, $this);
@@ -199,4 +195,3 @@ class QuestionnaireController extends ActionController {
 	}
 
 }
-?>

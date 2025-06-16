@@ -144,8 +144,7 @@ class AuthCode extends AbstractEntity {
 	public function generateAuthCode($length, $pid){
         $length = ( $length ?? 10 );
 		//get the existent authcodes so no duplicates are created
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$ac_rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
+		$ac_rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
 		// Generate authcode
 		$loop = 1;
 		while($loop){
@@ -193,8 +192,7 @@ class AuthCode extends AbstractEntity {
 	 */
 	public function getAndLoadParticipations() {
             if (!$this->participations ){
-                    $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-                    $rep = $this->objectManager->get('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
+                    $rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
                     $this->participations = $rep->findForAuthCode($this);
             }
             return $this->participations;

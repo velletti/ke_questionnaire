@@ -46,7 +46,7 @@ class AjaxController extends ActionController {
  public function ajaxAction($type, $arguments = array()) {
 		$requestedClassName = 'Kennziffer\\KeQuestionnaire\\Ajax\\' . $type;
 		if (class_exists($requestedClassName)) {
-			$object = $this->objectManager->get($requestedClassName);
+			$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($requestedClassName);
 			$object->settings = $this->settings;
 			return $object->processAjaxRequest($arguments);
 		} else return '';

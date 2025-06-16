@@ -54,12 +54,19 @@ class FileAccessReport implements StatusProviderInterface {
 	 */
 	protected $staticStateResponseData = array();
 
+	public function getLabel(): string
+	{
+		return $GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.label');
+	}
+
+
 	/**
 	 * Returns the status of an extension or (sub)system
 	 *
 	 * @return array An array of \TYPO3\CMS\Reports\Status objects
 	 */
-	public function getStatus() {
+	public function getStatus(): array
+	{
 		$statusArray = array();
 		$failState = '';
 
@@ -68,7 +75,7 @@ class FileAccessReport implements StatusProviderInterface {
 
 		list($title, $value, $message, $severity) = $this->staticStateResponseData[$failState];
 
-		$status = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get(
+		$status = GeneralUtility::makeInstance(
 			'TYPO3\\CMS\\Reports\\Status',
 			$title,
 			$value,

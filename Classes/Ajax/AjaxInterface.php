@@ -41,4 +41,3 @@ interface AjaxInterface {
 	 */
 	public function processAjaxRequest(array $arguments);
 }
-?>
