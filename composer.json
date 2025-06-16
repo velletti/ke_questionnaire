@@ -28,10 +28,6 @@
     "psr-4": {
       "Kennziffer\\KeQuestionnaire\\": "Classes"
     },
-    "classmap": [
-      "Classes/Lib/Mpdf",
-      "Classes/Lib/Mpdf/classes"
-    ]
   },
 
   "config": {
