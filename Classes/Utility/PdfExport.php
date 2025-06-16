@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Core\Environment;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once(ExtensionManagementUtility::extPath('ke_questionnaire').'Classes/Lib/Mpdf/mpdf.php');
-
 /**
  *
  *
@@ -47,10 +45,10 @@ class PdfExport {
         $this->createAndCheckTmpFile();
         
         $pdf = new \mPDF();
-	$pdf->WriteHtml($html);
-	$pdf->Output($filename, 'D');
-	//$pdf->Output();
-	exit;
+        $pdf->WriteHtml($html);
+        $pdf->Output($filename, 'D');
+        //$pdf->Output();
+        exit;
     }
     
     /**
