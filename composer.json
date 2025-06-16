@@ -16,7 +16,7 @@
 
   "require": {
     "typo3/cms-core": "^12.4",
-    "mpdf/mpdf": "^8.2",
+    "mpdf/mpdf": "^8.2"
   },
 
   "replace": {
