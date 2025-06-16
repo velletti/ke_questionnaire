@@ -3,7 +3,7 @@ namespace Kennziffer\KeQuestionnaire\Utility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Core\Environment;
-
+use Mpdf\Mpdf;
 /***************************************************************
  *  Copyright notice
  *
@@ -44,7 +44,7 @@ class PdfExport {
     public function createPdfFromHTML($html,$filename = "ke_questionnaire.pdf"): void{        
         $this->createAndCheckTmpFile();
         
-        $pdf = new \mPDF();
+        $pdf = new Mpdf();
         $pdf->WriteHtml($html);
         $pdf->Output($filename, 'D');
         //$pdf->Output();
@@ -61,13 +61,30 @@ class PdfExport {
         }
         //create htaccess file
         $htaccess = '
-Order Deny,Allow
-Deny from all
-Allow from 127.0.0.1
+<IfModule !mod_authz_core.c>
+    # Apache 2.0 and 2.2
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+</IfModule>
+
+<IfModule mod_authz_core.c>
+    # Apache 2.4 and later
+    Require all denied
+    Require ip 127.0.0.1
+</IfModule>
 
 <FilesMatch ".*\.(css|js)$">
-	Order Allow,Deny
-	Allow from all
+    <IfModule !mod_authz_core.c>
+        # Apache 2.0 and 2.2
+        Order Allow,Deny
+        Allow from all
+    </IfModule>
+
+    <IfModule mod_authz_core.c>
+        # Apache 2.4 and later
+        Require all granted
+    </IfModule>
 </FilesMatch>';
         $htaccessFileAndPath = Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/.htaccess';
         GeneralUtility::writeFileToTypo3tempDir($htaccessFileAndPath, $htaccess);        
