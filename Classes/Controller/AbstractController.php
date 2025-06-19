@@ -10,7 +10,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\ExtConf;
 use Kennziffer\KeQuestionnaire\Utility\Localization;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -190,7 +190,7 @@ class AbstractController extends ActionController {
   * @param \TYPO3Fluid\Fluid\View\ViewInterface $view
   * @return void
   */
- protected function setViewConfiguration(\TYPO3Fluid\Fluid\View\ViewInterface $view): void
+ protected function setViewConfiguration(ViewInterface $view): void
  {
 		parent::setViewConfiguration( $view);
 		// Template Path Override
@@ -210,7 +210,9 @@ class AbstractController extends ActionController {
 	 */
 	public function initializeAction() {
 		parent::initializeAction();
-		if (!is_object($this->questionnaireRepository)) $this->questionnaireRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
+		if (!is_object($this->questionnaireRepository)) {
+            $this->questionnaireRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
+        }
 
 		// initialize steps
 		if ($this->steps AND $this->steps->count() == 0) {

@@ -228,15 +228,15 @@ class BackendController extends  AbstractController {
 
 
             if ( $this->extConf->isEnableAuthCode2feUser()  ) {
-                $userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-                $userRepository->setDefaultQuerySettings($querySettings);
+              //  $userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+              //  $userRepository->setDefaultQuerySettings($querySettings);
                 $this->view->assign('feusers', $userRepository->findAll());
             } else {
                 $this->view->assign('feusers', 'Disabled in EXT Configuration');
             }
             if ( $this->extConf->isEnableAuthCode2feGroups() ) {
-                $groupRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository');
-                $groupRepository->setDefaultQuerySettings($querySettings);
+              //  $groupRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository');
+              //  $groupRepository->setDefaultQuerySettings($querySettings);
                 $this->view->assign('fegroups',$groupRepository->findAll());
             } else {
                 $this->view->assign('fegroups', 'Disabled in EXT Configuration');
@@ -386,11 +386,11 @@ class BackendController extends  AbstractController {
 				$newAuthCode->setEmail($mail['email']);
                     switch($mail['sourcetype']) {
                         case 'feuser':
-                                $userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-                                $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-                                $querySettings->setRespectStoragePage(FALSE);
-                                $userRepository->setDefaultQuerySettings($querySettings);
-                                $newAuthCode->setFeUser($userRepository->findByUid($mail['uid']));
+                              //  $userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+                              //  $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+                              //  $querySettings->setRespectStoragePage(FALSE);
+                              //  $userRepository->setDefaultQuerySettings($querySettings);
+                              //  $newAuthCode->setFeUser($userRepository->findByUid($mail['uid']));
                             break;
                         case 'ttaddress':
                                 $addrRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\TtAddress\\Domain\\Repository\\AddressRepository');
@@ -450,19 +450,20 @@ class BackendController extends  AbstractController {
 		$mails = array();
 		
 		foreach ($fe_groups as $uid){
+            // todo V12
 			$group = BackendUtility::getRecord('fe_groups',$uid);
-			$userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-			$querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-			$querySettings->setRespectStoragePage(FALSE);
-			$userRepository->setDefaultQuerySettings($querySettings);
-			$user = $userRepository->findAll();
-			foreach ($user as $use){				
-				foreach ($use->getUsergroup() as $ugroup){
-					if ($uid == $ugroup->getUid() AND $use->getEmail()){
-						$mails[$use->getUid()] = BackendUtility::getRecord('fe_users',$use->getUid());
-					}
-				}
-			}			
+		//	$userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+		//	$querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+		//	$querySettings->setRespectStoragePage(FALSE);
+		//	$userRepository->setDefaultQuerySettings($querySettings);
+		//	$user = $userRepository->findAll();
+		//	foreach ($user as $use){
+		//		foreach ($use->getUsergroup() as $ugroup){
+		//			if ($uid == $ugroup->getUid() AND $use->getEmail()){
+		//				$mails[$use->getUid()] = BackendUtility::getRecord('fe_users',$use->getUid());
+		//			}
+		//		}
+		//	}
 		}	
 		return $mails;
 	}

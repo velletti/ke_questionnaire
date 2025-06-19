@@ -93,20 +93,16 @@ class ResultController extends AbstractController {
 		$this->questionnaire->settings = $this->settings;
 
 		//check a logged in user
-		$userRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-		$querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$querySettings->setRespectStoragePage(FALSE);
-		$userRepository->setDefaultQuerySettings($querySettings);
 
-		if ($GLOBALS['TSFE']->fe_user->user['uid']) {
-            $this->user = $userRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
-            if( $this->user ) {
-                $this->userUid = $this->user->getUid() ;
+        if ($this->request->getAttribute('frontend.user')) {
+            $this->user = $this->request->getAttribute('frontend.user');
+            if ($this->user) {
+                $this->userUid = $this->user['uid'];
             }
         }
 
 		//check jsKey for the created js-file
-		$jsKey = substr($GLOBALS['TSFE']->fe_user->id,0,10).'_keqjs';
+		$jsKey = substr($this->userUid,0,10).'_keqjs';
 		$GLOBALS['TSFE']->fe_user->setKey('ses','keq_jskey',$jsKey);
 		//maybe better to erase the js file every time
 		$pathname = 'typo3temp/ke_questionnaire';

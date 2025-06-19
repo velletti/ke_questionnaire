@@ -6,16 +6,12 @@
     <sheets>
         <basics>
             <ROOT>
-                <sheetTitle>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:sheet.basics
-                </sheetTitle>
-                <cshFile>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_csh_flexforms.xml</cshFile>
+                <sheetTitle>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:sheet.basics</sheetTitle>
                 <type>array</type>
                 <el>
                     <view.partialRootPath>
                         <exclude>1</exclude>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.templates
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.templates</label>
                         <config>
                             <type>input</type>
                             <wizards type="array">
@@ -44,186 +40,136 @@
         </basics>
         <access>
             <ROOT>
-                <sheetTitle>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:sheet.access
-                </sheetTitle>
+                <sheetTitle>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:sheet.access</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.accessType>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType</label>
                         <onChange>reload</onChange>
                         <config>
                             <type>select</type>
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType.free
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType.free</numIndex>
                                     <numIndex index="1">free</numIndex>
                                 </numIndex>
                                 <numIndex index="1">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType.feUser
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType.feUser</numIndex>
                                     <numIndex index="1">feUser</numIndex>
                                 </numIndex>
                                 <numIndex index="2">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType.authCode
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.accessType.authCode</numIndex>
                                     <numIndex index="1">authCode</numIndex>
                                 </numIndex>
                             </items>
                         </config>
                     </settings.accessType>
                     <settings.participations.max>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.participations.max
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.participations.max</label>
                         <config>
                             <type>input</type>
                             <default>0</default>
-                            <eval>num</eval>
+                            <eval>int</eval>
                             <size>3</size>
                         </config>
                     </settings.participations.max>
                     <settings.restart>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.restart
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.restart</label>
                         <displayCond>FIELD:settings.accessType:!=:free</displayCond>
                         <config>
                             <type>check</type>
                             <default>1</default>
                         </config>
                     </settings.restart>
-
                 </el>
             </ROOT>
         </access>
         <layout>
             <ROOT>
-                <sheetTitle>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:sheet.layout
-                </sheetTitle>
+                <sheetTitle>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:sheet.layout</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.questionNumbering>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering</label>
                         <config>
                             <type>select</type>
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.none
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.none</numIndex>
                                     <numIndex index="1">none</numIndex>
                                 </numIndex>
                                 <numIndex index="1">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.all
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.all</numIndex>
                                     <numIndex index="1">all</numIndex>
                                 </numIndex>
                                 <numIndex index="2">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.grouped
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.grouped</numIndex>
                                     <numIndex index="1">grouped</numIndex>
                                 </numIndex>
                                 <numIndex index="3">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.questions
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.questions</numIndex>
                                     <numIndex index="1">questions</numIndex>
                                 </numIndex>
                                 <numIndex index="4">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.groupedQuestions
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.groupedQuestions</numIndex>
                                     <numIndex index="1">groupedQuestions</numIndex>
                                 </numIndex>
                                 <numIndex index="5">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.undependantQuestions
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.undependantQuestions</numIndex>
                                     <numIndex index="1">undependantQuestions</numIndex>
                                 </numIndex>
                             </items>
                         </config>
                     </settings.questionNumbering>
                     <settings.navigationType>
-                        <TCEforms>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType</label>
                         <config>
                             <type>select</type>
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.none
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.none</numIndex>
                                     <numIndex index="1">none</numIndex>
                                 </numIndex>
                                 <numIndex index="1">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.display
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.display</numIndex>
                                     <numIndex index="1">display</numIndex>
                                 </numIndex>
                                 <numIndex index="2">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.displayStatus
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.displayStatus</numIndex>
                                     <numIndex index="1">displayStatus</numIndex>
                                 </numIndex>
                                 <numIndex index="3">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.pages
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.pages</numIndex>
                                     <numIndex index="1">pages</numIndex>
                                 </numIndex>
                                 <numIndex index="4">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.navigate
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.navigate</numIndex>
                                     <numIndex index="1">navigate</numIndex>
                                 </numIndex>
                                 <numIndex index="5">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.navigateStatus
-                                    </numIndex>
+                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.navigationType.navigateStatus</numIndex>
                                     <numIndex index="1">navigateStatus</numIndex>
                                 </numIndex>
                             </items>
                         </config>
                     </settings.navigationType>
                     <settings.showProgressBar>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.showProgressBar
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.showProgressBar</label>
                         <config>
                             <type>check</type>
                         </config>
                     </settings.showProgressBar>
                     <settings.hidePoints>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.hidePoints
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.hidePoints</label>
                         <config>
                             <type>check</type>
                         </config>
                     </settings.hidePoints>
                     <settings.randomQuestions>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.randomQuestions
-                        </label>
+                        <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.randomQuestions</label>
                         <config>
                             <type>check</type>
                         </config>
@@ -240,7 +186,6 @@
                                 <lower>0</lower>
                                 <upper>9999</upper>
                             </range>
-
                         </config>
                     </settings.randomQuestionsMax>
                     <settings.maxSeconds>
@@ -255,10 +200,8 @@
                                 <lower>0</lower>
                                 <upper>999999</upper>
                             </range>
-
                         </config>
                     </settings.maxSeconds>
-
                 </el>
             </ROOT>
         </layout>

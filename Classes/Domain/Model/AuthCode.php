@@ -4,8 +4,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
-use FriendsOfTYPO3\TtAddress\Domain\Model\Address;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
@@ -62,17 +60,15 @@ class AuthCode extends AbstractEntity {
  protected $participations;
         
         /**
-  * FeUser
-  * @var FrontendUser
+  *
+  * @var int|null
   */
- #[Lazy]
  protected $feUser;
         
-        /**
+  /**
   * TtAddress
-  * @var Address
+  * @var FriendsOfTYPO3\TtAddress\Domain\Model\Address|null
   */
- #[Lazy]
  protected $ttAddress;
         
         /**
@@ -201,38 +197,42 @@ class AuthCode extends AbstractEntity {
         /**
   * Setter for feUser
   *
-  * @param FrontendUser $feUser feUser
+  * @param int|null $feUser feUser
   * @return void
   */
- public function setFeUser(FrontendUser $feUser): void {
-		$this->feUser = $feUser;
+ public function setFeUser(?int $feUser): void {
+     if(is_array($feUser)) {
+         $feUser = ($feUser['uid'] ?? null);
+     } else  {
+        $feUser = null;
+     }
 	}
 
 	/**
   * Getter for feUser
   *
-  * @return FrontendUser feUser
+  * @return int|null feUser
   */
- public function getFeUser() {
+ public function getFeUser(): ?int
+ {
 		return $this->feUser;
 	}
         
-        /**
+  /**
   * Setter for ttAddress
   *
-  * @param Address $ttAddress ttAddress
   * @return void
   */
- public function setTtAddress(Address $ttAddress): void {
+ public function setTtAddress(  $ttAddress): void {
 		$this->ttAddress = $ttAddress;
 	}
 
 	/**
   * Getter for ttAddress
   *
-  * @return Address ttAddress
   */
- public function getTtAddress() {
+ public function getTtAddress()
+ {
 		return $this->ttAddress;
 	}
         

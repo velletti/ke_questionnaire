@@ -5,7 +5,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group;
@@ -86,9 +85,8 @@ class Result extends AbstractEntity {
 	
 	/**
   * FeUser
-  * @var FrontendUser
+  * @var int|null
   */
- #[Lazy]
  protected $feUser;
 
 	/**
@@ -530,17 +528,21 @@ class Result extends AbstractEntity {
 	/**
   * Setter for feUser
   *
-  * @param FrontendUser $feUser feUser
   * @return void
   */
- public function setFeUser(FrontendUser $feUser): void {
-		$this->feUser = $feUser;
+ public function setFeUser( $feUser): void {
+     if ( is_array($feUser)) {
+         $this->feUser = ($feUser['uid'] ?? null) ;
+     } else {
+         $this->feUser = null;
+     }
+
 	}
 
 	/**
   * Getter for feUser
   *
-  * @return FrontendUser feUser
+  * @return ?int feUser
   */
  public function getFeUser() {
 		return $this->feUser;

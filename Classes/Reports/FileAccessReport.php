@@ -80,7 +80,7 @@ class FileAccessReport implements StatusProviderInterface {
 			$title,
 			$value,
 			$message,
-			$severity
+            ($severity ?? \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK)
 		);
 
 		$statusArray[] = $status;
@@ -210,6 +210,25 @@ Allow from 127.0.0.1
 
 		return '';
 	}
+
+	public function getIdentifier(): string
+	{
+		return 'general';
+	}
+
+	public function getTitle(): string
+	{
+		return 'File Access report';
+	}
+
+	public function getDescription(): string
+	{
+		return '....';
+	}
+
+	public function getIconIdentifier(): string
+	{
+		return 'module-reports';
+	}
 }
 
-?>
