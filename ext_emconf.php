@@ -22,6 +22,7 @@ $EM_CONF['ke_questionnaire'] = array(
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '12.4.0-12.4.99',
+			'friendsoftypo3/tt-address' => '9.0.0-9.9.9',
 		),
 		'conflicts' => array(
 		),
