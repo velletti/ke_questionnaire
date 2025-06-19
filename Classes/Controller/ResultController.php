@@ -93,11 +93,13 @@ class ResultController extends AbstractController {
 		$this->questionnaire->settings = $this->settings;
 
 		//check a logged in user
-
+        $this->user = 0 ;
+        $this->userUid = 0 ;
         if ($this->request->getAttribute('frontend.user')) {
             $this->user = $this->request->getAttribute('frontend.user');
-            if ($this->user) {
-                $this->userUid = $this->user['uid'];
+            if ($this->user && $this->user->user) {
+
+                $this->userUid = $this->user->user['uid'];
             }
         }
 
@@ -133,20 +135,34 @@ class ResultController extends AbstractController {
         }
 		//check for the Access-Type
 		switch ($this->settings['accessType']){
-                    case 'feUser':
-                                    $this->checkFeUser();
-                            break;
-                    case 'authCode':
-                                    $this->checkAuthCode();
-                                    $newResult->setAuthCode($this->authCode);
-                            break;
+            case 'feUser':
+                if (!$this->userUid > 0 ){
+                    return $this->redirect('feUserAccess');
+                }
+                break;
+            case 'authCode':
+                //check if the authCode is valid
+                if( $newResult->getAuthCode() && $newResult->getAuthCode()->getUid() > 0 ) {
+                    $this->authCode = $newResult->getAuthCode();
+                } else {
+                    $this->authCode = null;
+                    if ( !$this->checkAuthCode()) {
+                        return $this->redirect('authCodeAccess');
+                    }
+                    $newResult->setAuthCode($this->authCode);
+                }
+
+                break;
 		}
 		//check questionnaire-dependancy
+        //  todo V12
 		$this->checkDependancy();
 		//check for restart
-		$newResult = $this->checkRestart($newResult);
+		// $newResult = $this->checkRestart($newResult);
 		//check if the max participations are reached
-		$this->checkMaxParticipations();
+		if( !$this->checkMaxParticipations() ) {
+            return $this->redirect('maxParticipations');
+        }
 
 		//get the correct requested start-page
 		if ($requestedPage == 0 && !$this->settings['description']) $requestedPage = 1;
@@ -201,7 +217,7 @@ class ResultController extends AbstractController {
 		$this->view->assign('questions', $this->questionnaire->getQuestionsForPage($requestedPage));
 		$this->view->assign('questionnaire', $this->questionnaire);
 		$this->view->assign('newResult', $newResult);
-
+        return $this->htmlResponse();
 
     }
 
@@ -234,7 +250,7 @@ class ResultController extends AbstractController {
         // $this->signalSlotDispatcher->dispatch(__CLASS__, 'initializeCreateAction', array($this, $this->arguments));
 		//check for autoSave
 		//Premium function needs to be checked here anyway. The autosave Action is part of the premium
-        if ($this->settings['ajaxAutoSave'] == 1 AND $GLOBALS['TSFE']->fe_user->user['uid'] > 0){
+        if ($this->settings['ajaxAutoSave'] == 1 && $this->userUid > 0){
 			if ($this->temp_result['__identity'] > 0){
 				$result = $this->resultRepository->findByUid($this->temp_result['__identity']);	
 				$this->request->setArgument('newResult',$result);
@@ -279,6 +295,7 @@ class ResultController extends AbstractController {
                                         $debug[] = var_export( $formquestion , true );
 
                                         foreach( $formquestion['answers'] as $formAnswer) {
+                                            $isAnswered = false ;
                                              if( $formAnswer['value'] || $formAnswer['answer'] ) {
                                                 $answer = $answerRepository->findByUidFree( intval($formAnswer['answer'] )) ;
                                                 /** @var ResultAnswer $resultAnswer */
@@ -294,8 +311,14 @@ class ResultController extends AbstractController {
 
                                                 if( $answer->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton") {
                                                     $resultAnswer->setValue( $formAnswer['answer']);
+                                                    if ( $formAnswer['answer'] ) {
+                                                        $isAnswered = true ;
+                                                    }
                                                 } else {
                                                     $resultAnswer->setValue( $formAnswer['value']);
+                                                    if ( $formAnswer['value'] ) {
+                                                        $isAnswered = true ;
+                                                    }
                                                 }
 
                                                 $oldResultAnswer = $resultAnswerRepository->findForResultQuestionAndAnswerRaw(
@@ -305,11 +328,10 @@ class ResultController extends AbstractController {
                                                 if( $oldResultAnswer && $oldResultAnswer->getFirst() instanceof  ResultAnswer) {
                                                     $resultAnswerRepository->remove($oldResultAnswer->getFirst() ) ;
                                                 }
-
-                                                $resultAnswer->setAnswer($answer);
-
-                                                $resultQuestion->addAnswer($resultAnswer);
-
+                                                 $resultAnswer->setAnswer($answer);
+                                                 if( $isAnswered ) {
+                                                    $resultQuestion->addAnswer($resultAnswer);
+                                                }
                                             }
 
                                         }
@@ -319,10 +341,7 @@ class ResultController extends AbstractController {
                                 }
                             }
                         }
-
                     }
-
-
                 }
                 if ($result) {
                     $this->resultRepository->update($result) ;
@@ -363,15 +382,23 @@ class ResultController extends AbstractController {
 		//check for the Access-Type
 		switch ($this->settings['accessType']){
 			case 'feUser':
-					$this->checkFeUser();
+                if (!$this->user){
+                    return $this->redirect('feUserAccess');
+                }
 				break;
 			case 'authCode':
-					$this->checkAuthCode();
-					$newResult->setAuthCode($this->authCode);
+                //check if the authCode is valid
+                if ( !$this->checkAuthCode()) {
+                    return $this->redirect('authCodeAccess');
+                }
+                $newResult->setAuthCode($this->authCode);
 				break;
 		}
         //validate the result
-		$this->validateResult($newResult, $requestedPage);
+		$isValid = $this->validateResult($newResult, $currentPage);
+        if ($isValid !== 'valid') {
+            return $this->moveToAction('new', $newResult, $currentPage , $isValid);
+        }
 
         //rework the result so all given answers to all questions (not only current page) are stored
 		$result = $this->getSavedAndMergedResult($newResult);
@@ -442,7 +469,7 @@ class ResultController extends AbstractController {
 			$this->view->assign('questionnaire', $this->questionnaire);
 			$this->view->assign('newResult', $newResult);
 		}
-
+        return $this->htmlResponse();
 	}
 
 	/**
@@ -459,6 +486,7 @@ class ResultController extends AbstractController {
 			$this->view->assign('questionnaire', $questionnaire[0]);
 			$this->view->assign('result', $result);
 		}
+        return $this->htmlResponse();
 	}
 
 	/**
@@ -469,28 +497,35 @@ class ResultController extends AbstractController {
 	 * @param integer $requestedPage after checking the questions redirect to this page
 	 * @return void
 	 */
-	public function validateResult(Result &$result, $requestedPage = 1) {
+	public function validateResult(Result $result, $requestedPage = 1) {
 		/* @var  \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $resultQuestion  */
 		//check for every question in result
+        $debug[] = 'validateResult: ' . $result->getUid() . ' - Page:' . $requestedPage ;
 		foreach ($result->getQuestions() as $resultQuestion) {
-				if ($resultQuestion->getQuestion()){
-						// check if the question has to be answered correctly
-						if ($resultQuestion->getQuestion()->getMustBeCorrect()) {
-								if (!$resultQuestion->isAnsweredCorrectly()) {
-										$this->moveToAction('new', $result, $requestedPage, 'mustBeCorrect');
-								}
-						}	
+            $debug[] = ' Question: ' . $resultQuestion->getQuestion()->getUid() .  ' - ' . $resultQuestion->getQuestion()->getTitle() . ' - Page:' . $resultQuestion->getPage() ;
 
-						// check if question is mandatory
-						if ($resultQuestion->getQuestion()->getIsMandatory() AND !$resultQuestion->getQuestion()->IsDependant()) {
-								if (!$resultQuestion->isAnswered()) {
-										$this->moveToAction('new', $result, $requestedPage, 'mandatory');
-								}
-						}                           					
-				}
+            if ($resultQuestion->getQuestion() && $resultQuestion->getPage() == ($requestedPage) ) {
+                // check if the question has to be answered correctly
+                if ($resultQuestion->getQuestion()->getMustBeCorrect()) {
+                    if (!$resultQuestion->isAnsweredCorrectly()) {
+                        return     'mustBeCorrect' ;
+                    }
+                }
+
+                // check if question is mandatory
+                if ($resultQuestion->getQuestion()->getIsMandatory() && !$resultQuestion->getQuestion()->IsDependant()) {
+                    if (!$resultQuestion->isAnswered()) {
+
+                        return  'mandatory' ;
+                    }
+                }
+            }
 		}
 		$result->setFeCruserId($this->userUid);
-		if ($this->user) $result->setFeUser($this->user);            
+		if ($this->user) {
+            $result->setFeUser($this->user);
+        }
+        return 'valid' ;
 	}
     
 	/**
@@ -503,8 +538,8 @@ class ResultController extends AbstractController {
 	 * @return void
 	 */
 	public function moveToAction($action , Result $result, $page = 1, $flashMessage = '') {
-		if(!empty($flashMessage)) $this->addNewFlashMessage($flashMessage);
-		return $this->forward(($action ?? 'new' ), NULL, NULL, array(
+		if(!empty($flashMessage)) $this->addNewFlashMessage($flashMessage , AbstractMessage::ERROR);
+		return $this->redirect(($action ?? 'new' ), NULL, NULL, array(
 			'newResult' => $result,
 			'requestedPage' => $page
 		));
@@ -555,11 +590,15 @@ class ResultController extends AbstractController {
 	 * @param Result $formResult This is the result from the form. NOT DB!
 	 * @return Result The updated result object
 	 */
-	public function updateResult(Result $formResult) {
-		//merge the old and the new result-data
-		$dbResult = $this->oldResult;
-		if ($dbResult) $updatedResult = $this->addQuestionToDbResult($formResult, $dbResult);
-		else $updatedResult = $formResult;
+	public function updateResult(Result $formResult)
+    {
+        //merge the old and the new result-data
+        $dbResult = $this->oldResult;
+        if ($dbResult) {
+            $updatedResult = $this->addQuestionToDbResult($formResult, $dbResult);
+        } else {
+            $updatedResult = $formResult;
+        }
 
 		$updatedResult->setPoints($updatedResult->getPoints() + $formResult->getPoints());
 		$updatedResult->setMaxPoints($updatedResult->getMaxPoints() + $formResult->getMaxPoints());
@@ -608,24 +647,14 @@ class ResultController extends AbstractController {
 		return $formResult;
 	}
 	
-	/**
-	 * checks the logged in user
-	 *
-	 * @return void
-	 */
-	public function checkFeUser() {
-		if (!$this->user){
-			$this->forward('feUserAccess');
-		}
-	}
-    
+
     /**
 	 * Action to show the FeUser-Access Error
 	 *
 	 * @return void
 	 */
 	public function feUserAccessAction() {
-		
+        return $this->htmlResponse();
 	}
     
     /**
@@ -642,7 +671,8 @@ class ResultController extends AbstractController {
   * @return void
   */
  public function dependancyAccessAction(Questionnaire $questionnaire) {
-		$this->view->assign('questionnaire',$questionnaire);
+     $this->view->assign('questionnaire',$questionnaire);
+     return $this->htmlResponse();
 	}
 	
 	/**
@@ -652,36 +682,49 @@ class ResultController extends AbstractController {
 	 */
 	public function checkAuthCode() {
 		//direct call with &authCode= in URI
-		if ($_REQUEST['authCode'])$this->request->setArgument('code',$_REQUEST['authCode']);
+        $debug = [] ;
+		if ($_REQUEST['authCode']) {
+            $debug[] = 'checkAuthCode from URI: ' . $_REQUEST['authCode'] ;
+            $this->request->setArgument('code',$_REQUEST['authCode']);
+        }
 		if ($this->request->hasArgument('authCode')){			
 			$code = $this->authCodeRepository->findByUid($this->request->getArgument('authCode'));
-			if ($code) {
+            $debug[] = 'checkAuthCode From Request: ' . $code ;
+            if ($code) {
 				$this->authCode = $code;
-                                if (!$this->authCode->getFirstactive()) {
-                                    $this->authCode->setFirstactive(time());                                    
-                                    $this->authCodeRepository->update($this->authCode);
-                                    
-                                    $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-                                    $persistenceManager->persistAll();
-                                }
-				return true;
+                $debug[] = 'found AuthCode: ' . $this->authCode->getUid() ;
+                if (!$this->authCode->getFirstactive()) {
+                    $this->authCode->setFirstactive(time());
+                    $this->authCodeRepository->update($this->authCode);
+
+                    $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+                    $persistenceManager->persistAll();
+                }
+                return true;
 			}
 		} elseif ($this->request->hasArgument('code')){
 			$codes = $this->authCodeRepository->findByAuthCode($this->request->getArgument('code'));
-                        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($codes[0], 'code');	exit;
-			if ($codes[0]) {
+            $debug[] = 'checkAuthCode From Request URI: ' . $this->request->getArgument('code') ;
+            if ($codes[0]) {
 				$this->authCode = $codes[0];
-                                if (!$this->authCode->getFirstactive()) {
-                                    $this->authCode->setFirstactive(time());                                    
-                                    $this->authCodeRepository->update($this->authCode);
-                                    
-                                    $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-                                    $persistenceManager->persistAll();
-                                }
+                $debug[] = 'found AuthCode: ' . $this->authCode->getUid() ;
+                if (!$this->authCode->getFirstactive()) {
+                    $this->authCode->setFirstactive(time());
+                    $this->authCodeRepository->update($this->authCode);
+
+                    $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+                    $persistenceManager->persistAll();
+                }
 				return true;
 			}
-		}
-		$this->forward('authCodeAccess');
+		} else {
+            // NO AUTHCODE GIVEN
+            return false;
+        }
+        //if no VALID authCode is given, return false but throw also warning
+        $this->addFlashMessage(LocalizationUtility::translate('reclaimAuthcode.notFoundTitle' , 'KeQuestionnaire'), '', AbstractMessage::WARNING);
+
+        return false;
 	}
 	
 	/**
@@ -690,7 +733,7 @@ class ResultController extends AbstractController {
 	 * @return void
 	 */
 	public function authCodeAccessAction() {
-		
+        return $this->htmlResponse();
 	}
 	
 	/**
@@ -705,10 +748,13 @@ class ResultController extends AbstractController {
 			} elseif ($this->settings['accessType'] == 'feUser') {
 				$counted = $this->resultRepository->findFinishedResultsByUser($this->user)->count();
 			} elseif ($this->settings['accessType'] == 'authCode') {
-				$counted = $this->resultRepository->findByAuthCode($this->authCode->getUid())->count();
+				$counted = $this->resultRepository->findFinishedResultsByAuthCode( $this->authCode ? $this->authCode->getUid() : null )->count();
 			}
-			if ($counted >= $this->settings['participations']['max']) $this->forward('maxParticipations');
+			if ($counted >= $this->settings['participations']['max']) {
+                return false ;
+            }
 		}
+        return true;
 	}
 	
 	/**
@@ -717,7 +763,7 @@ class ResultController extends AbstractController {
 	 * @return void
 	 */
 	public function maxParticipationsAction() {
-		
+        return $this->htmlResponse();
 	}
 	
 	/**
@@ -725,25 +771,26 @@ class ResultController extends AbstractController {
 	 * 
 	 * @param Result $result
 	 */
-	private function checkRestart(Result $result){
-            if ($this->settings['accessType'] != 'free' AND $this->settings['restart']){
-                //fetch the last participation of the user
-                if ($result->getFeUser()){
-                    $parts = $this->resultRepository->findByFeUser($result->getFeUser())->toArray();
-                    if (count($parts) > 0){
-                        $last = $parts[count($parts)-1];
-                        if (!$last->getFinished()) $result = $last;
-                    }
-                    //or the authCode
-		} elseif ($result->getAuthCode()){
-                    $parts = $this->resultRepository->findByAuthCode($result->getAuthCode())->toArray();
-                    if (count($parts) > 0){
-			$last = $parts[count($parts)-1];
-			if (!$last->getFinished()) $result = $last;
-                    }
-		}
+	private function checkRestart(Result $result)
+    {
+        if ($this->settings['accessType'] != 'free' AND $this->settings['restart']) {
+            //fetch the last participation of the user
+            if ($result->getFeUser()){
+                $parts = $this->resultRepository->findByFeUser($result->getFeUser())->toArray();
+                if (count($parts) > 0){
+                    $last = $parts[count($parts)-1];
+                    if (!$last->getFinished()) $result = $last;
+                }
+                //or the authCode
+            } elseif ($result->getAuthCode()) {
+                $parts = $this->resultRepository->findByAuthCode($result->getAuthCode())->toArray();
+                if (count($parts) > 0){
+                    $last = $parts[count($parts)-1];
+                    if (!$last->getFinished()) $result = $last;
+                }
             }
-            return $result;
+        }
+        return $result;
 	}
 	
 	/**
@@ -754,12 +801,13 @@ class ResultController extends AbstractController {
   * @return void
   */
  public function endAction(Result $result = NULL) {
-		if (!$result) $result = $this->resultRepository->findByUid($this->request->getArgument('result'));
+    if (!$result) $result = $this->resultRepository->findByUid($this->request->getArgument('result'));
 		$questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
 		
 		$this->view->assign('result', $result);
 		$this->view->assign('questionnaire', $questionnaire);
 		// $this->signalSlotDispatcher->dispatch(__CLASS__, 'endAction', array($result, $this));
+     return $this->htmlResponse();
 	}
 
 

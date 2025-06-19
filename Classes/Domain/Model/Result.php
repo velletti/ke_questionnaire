@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
 
+use Mpdf\Tag\A;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
@@ -91,9 +92,8 @@ class Result extends AbstractEntity {
 
 	/**
   * AuthCode
-  * @var AuthCode
+  * @var AuthCode|null
   */
- #[Lazy]
  protected $authCode;
 	
 	/**
@@ -532,9 +532,9 @@ class Result extends AbstractEntity {
   */
  public function setFeUser( $feUser): void {
      if ( is_array($feUser)) {
-         $this->feUser = ($feUser['uid'] ?? null) ;
+         $this->feUser = ($feUser['uid'] ?? 0) ;
      } else {
-         $this->feUser = null;
+         $this->feUser = 0;
      }
 
 	}
@@ -545,25 +545,26 @@ class Result extends AbstractEntity {
   * @return ?int feUser
   */
  public function getFeUser() {
-		return $this->feUser;
+		return ($this->feUser ?? 0 ) ;
 	}
 	
 	/**
   * Setter for authCode
   *
-  * @param AuthCode $authCode authCode
+  * @param AuthCode|null $authCode authCode
   * @return void
   */
- public function setAuthCode(AuthCode $authCode): void {
+ public function setAuthCode(?AuthCode $authCode): void {
 		$this->authCode = $authCode;
 	}
 
 	/**
   * Getter for authCode
   *
-  * @return AuthCode authCode
+  * @return ?AuthCode authCode
   */
- public function getAuthCode() {
+ public function getAuthCode() : ?AuthCode
+ {
 		return $this->authCode;
 	}
 	
@@ -640,11 +641,16 @@ class Result extends AbstractEntity {
                             $debug[] = "result Answer to get possible Points : " . $resultAnswer->getPoints();
                             $calcPoints = $resultAnswer->getPoints();
                             $debug[] = "calulated Points " . $calcPoints;
-                            if ($calcPoints > 0) {
-                                $pointsForQuestion += $calcPoints;
+                            if ( $reducePointsforWrongAnswers ) {
+                                if ($calcPoints > 0) {
+                                    $pointsForQuestion += $calcPoints;
+                                } else {
+                                    $wrongAnswersForQuestion++;
+                                }
                             } else {
-                                $wrongAnswersForQuestion++;
+                                $pointsForQuestion += $calcPoints;
                             }
+
 
                         }
                         $resultAnswer->setFeCruserId($userId);

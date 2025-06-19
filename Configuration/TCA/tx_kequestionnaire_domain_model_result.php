@@ -115,7 +115,7 @@ return  array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultquestion',
                 'foreign_field' => 'result',
-                'maxitems'      => 9999,
+                'maxitems'      => 999,
                 'appearance' => array(
                     'collapseAll' => 0,
                     'levelLinksPosition' => 'top',

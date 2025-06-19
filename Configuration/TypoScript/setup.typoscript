@@ -1,0 +1,190 @@
+< INCLUDE_TYPOSCRIPT: source="FILE: EXT:ke_questionnaire/Configuration/TypoScript/ajax.txt" >
+page.includeCSS {
+	ke-questionnaire = EXT:ke_questionnaire/Resources/Public/Css/KeQuestionnaire.css
+}
+
+page.includeJS {
+	jQuery = EXT:ke_questionnaire/Resources/Public/JavaScript/jquery-3.7.1.min.js
+	jQueryUi = EXT:ke_questionnaire/Resources/Public/JavaScript/jquery-ui-1.11.4.min.js
+	jQueryTools = EXT:ke_questionnaire/Resources/Public/JavaScript/jquery.tools.custom.min.js
+	questionnaire = EXT:ke_questionnaire/Resources/Public/JavaScript/Questionnaire.js
+	#flotr2 = EXT:ke_questionnaire/Resources/Public/JavaScript/Flotr2.min.js
+}
+
+plugin.tx_kequestionnaire {
+	view {
+		templateRootPaths.10 = {$plugin.tx_kequestionnaire.view.templateRootPath}
+		partialRootPaths.10 = {$plugin.tx_kequestionnaire.view.partialRootPath}
+		layoutRootPaths.10 = {$plugin.tx_kequestionnaire.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_kequestionnaire.persistence.storagePid}
+	}
+	settings {
+		question {
+			image {
+				top {
+					width = 300
+				}
+				right {
+					width = 150
+				}
+				left {
+					width = 150
+				}
+				bottom {
+					width = 300
+				}
+			}
+		}
+		answer {
+			image {
+				top {
+					width = 300
+				}
+				right {
+					width = 150
+				}
+				left {
+					width = 150
+				}
+				bottom {
+					width = 300
+				}
+			}
+
+			validation {
+				date = d.m.Y                
+				numeric = ,
+				email = name@domain.end
+			}
+		}
+		steps {
+			1 {
+				type = forward
+				action = create
+				controller = Result
+				extension = KeQuestionnaire
+				vendorName = Kennziffer
+			}
+			2 {
+				type = forward
+				action = mail
+				controller = Mailing
+				extension = KeQuestionnaire
+				vendorName = Kennziffer
+			}
+			3 {
+				type = redirect
+				action = show
+				controller = Evaluation
+				extension = KeQuestionnaire
+				vendorName = Kennziffer
+			}
+			#3 {
+			#	type = redirect
+			#	action = showText
+			#	controller = PointRange
+			#	extension = KeQuestionnaire
+			#}
+		}
+		authCodes {
+			length = 10
+		}
+		export {
+			csv {
+				text = "
+				separator = ;
+				finished = 1
+				singleMarker = x
+				encoding = UTF-8
+				showQText = 0
+				showAText = 1
+				totalPoints = 0
+				questionPoints = 0
+			}
+		}
+		analysis {
+			chartTypes {
+				SemanticDifferential = barChart
+				SingleSelect = barChart
+				DDImage = barChart
+			}
+		}
+		chart {
+			class = Tx_KeQuestionnaire_Evaluation_GoogleChart
+			#class = Tx_KeQuestionnaire_Evaluation_Flotr2Chart
+			renderChart = {$plugin.tx_kequestionnaire.settings.chart.renderChart}
+			chartType = {$plugin.tx_kequestionnaire.settings.chart.chartType}
+			jsVariables {
+				title = My own chart
+				height = 300
+				width = 400
+			}
+			GoogleChart {
+				# https://google-developers.appspot.com/chart/interactive/docs/gallery/piechart#Configuration_Options
+				Pie {
+					backgroundColor {
+						stroke = pink
+						fill = white
+					}
+				}
+				# https://google-developers.appspot.com/chart/interactive/docs/gallery/columnchart#Configuration_Options
+				Column {
+					height = 300
+					width = 400
+					backgroundColor {
+						stroke = pink
+						fill = white
+					}
+					legend {
+						position = top
+					}
+				}
+			}
+			Flotr2Chart {
+				Pie {
+					HtmlText = false
+					grid {
+						verticalLines = false
+						horizontalLines = false
+					}
+					xaxis {
+						showLabels = false
+					}
+					yaxis {
+						showLabels = false
+					}
+					pie {
+						show = true
+						explode = 6
+					}
+					mouse {
+						track = true
+					}
+					legend {
+						position = se
+						backgroundColor = #D2E8FF
+					}
+				}
+				Column {
+					bars {
+						show = true
+						shadowSize = 0
+						barWidth = 0.5
+					}
+					mouse {
+						track = true
+						relative = true
+					}
+					yaxis {
+						min = 0
+						autoscaleMargin = 1
+					}
+				}
+			}
+		}
+	}
+}
+
+module.tx_kequestionnaire < plugin.tx_kequestionnaire

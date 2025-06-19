@@ -8,26 +8,21 @@ if (!defined('TYPO3')) {
 	'Questionnaire',
 	array(
         Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'new,create,show,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,end',
-        Kennziffer\KeQuestionnaire\Controller\MailingController::class => 'mail',
         Kennziffer\KeQuestionnaire\Controller\EvaluationController::class => 'show',
 		Kennziffer\KeQuestionnaire\Controller\PointRangeController::class => 'showText',
-		Kennziffer\KeQuestionnaire\Controller\QuestionController::class => 'list',
 		Kennziffer\KeQuestionnaire\Controller\AjaxController::class => 'test',
 		Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	),
 	// non-cacheable actions
 	array(
-        Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'new,create',
-		Kennziffer\KeQuestionnaire\Controller\MailingController::class => '',
+        Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'new,create,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,',
 		Kennziffer\KeQuestionnaire\Controller\EvaluationController::class => '',
 		Kennziffer\KeQuestionnaire\Controller\PointRangeController::class => '',
-		Kennziffer\KeQuestionnaire\Controller\QuestionController::class => '',
 		Kennziffer\KeQuestionnaire\Controller\AjaxController::class => 'test',
 		Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	)
 );
 
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'KeQuestionnaire',

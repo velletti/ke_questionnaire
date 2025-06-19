@@ -408,7 +408,7 @@ class Questionnaire extends AbstractEntity {
 			$page = 1;
 			
 			$questionCounter = 0;
-			$groupCounter = 0;
+			$groupCounter = 1;
 			$group = NULL;
 			//check through all questions
 			foreach ($questions as $question){

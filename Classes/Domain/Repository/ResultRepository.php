@@ -66,10 +66,26 @@ class ResultRepository extends Repository {
         $query = $this->createQuery();
 
         return $query->matching(
-            $query->logicalAnd( [
-            $query->greaterThan('finished', 0) ,
-            $query->equals('FeUser', intval($FeUser ) )
-                    ]
+            $query->logicalAnd(
+                $query->greaterThan('finished', 0) ,
+                $query->equals('FeUser', intval($FeUser ) )
+            )
+        )->execute();
+    }
+
+
+    /**
+     * find all finished results
+     *
+     * @return QueryResultInterface All finished results
+     */
+    public function findFinishedResultsByAuthCode( $authCode ) {
+        $query = $this->createQuery();
+
+        return $query->matching(
+            $query->logicalAnd(
+                $query->greaterThan('finished', 0) ,
+                $query->equals('auth_code', $authCode )
             )
         )->execute();
     }
@@ -305,7 +321,9 @@ class ResultRepository extends Repository {
  public function findForAuthCode(AuthCode $authCode) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$query->matching($query->equals('auth_code', $authCode->getUid()));
+		$query->matching(
+            $query->equals('auth_code', $authCode->getUid())
+        );
 		return $query->execute();
 	}
 	

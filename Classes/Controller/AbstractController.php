@@ -180,32 +180,6 @@ class AbstractController extends ActionController {
 
 
 	/**
-	* @var defaultViewObjectName use custom extended \TYPO3\CMS\Fluid\View\TemplateView
-	*/
-	protected $defaultViewObjectName = 'Kennziffer\\KeQuestionnaire\\View\\TemplateView';
-		
-	/**
-  * set the BasePartialRootPath for all Controllers extending this one
-  *
-  * @param \TYPO3Fluid\Fluid\View\ViewInterface $view
-  * @return void
-  */
- protected function setViewConfiguration(ViewInterface $view): void
- {
-		parent::setViewConfiguration( $view);
-		// Template Path Override
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		
-		//check if there is a different Path in the base configuration
-		if (isset($extbaseFrameworkConfiguration['view']['basePartialRootPath'])
-			&& strlen($extbaseFrameworkConfiguration['view']['basePartialRootPath']) > 0
-			&& method_exists($view, 'setBasePartialRootPath')) {
-			$view->setBasePartialRootPath(GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['basePartialRootPath']));
-		}
-	}
-
-
-	/**
 	 * initializes the actions
 	 */
 	public function initializeAction() {
@@ -215,8 +189,9 @@ class AbstractController extends ActionController {
         }
 
 		// initialize steps
-		if ($this->steps AND $this->steps->count() == 0) {
-			if (is_array($this->settings['steps']) && count($this->settings['steps'])) {
+        // todo V12
+		if ($this->steps AND $this->steps->count() == 0  ) {
+			if (is_array($this->settings['--No-working-steps--not-working']) && count($this->settings['steps'])) {
 				/* @var $dataMapper \Kennziffer\KeQuestionnaire\Object\DataMapper */
 				$dataMapper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Object\DataMapper');
 				$steps = $dataMapper->map('Kennziffer\KeQuestionnaire\Domain\Model\Step', $this->settings['steps']);
@@ -234,8 +209,8 @@ class AbstractController extends ActionController {
   * @return void
   */
  public function initializeView(ViewInterface $view) {
-		if($this->extConf->getEnableFeUserMarker() && is_array($GLOBALS['TSFE']->fe_user->user)) {
-			$view->assign('feUser', $GLOBALS['TSFE']->fe_user->user);
+		if($this->extConf->getEnableFeUserMarker() && is_array($this->user)) {
+			$view->assign('feUser', $this->user);
 		}
 	}
 
@@ -261,9 +236,9 @@ class AbstractController extends ActionController {
 	 */
 	public function addNewFlashMessage($action, $severity = AbstractMessage::OK) {
 		$messageLocallangKey = sprintf('flashmessage.%s.%s', $this->request->getControllerName(), $action);
-		$localizedMessage = $this->translate($messageLocallangKey, '[' . $messageLocallangKey . ']');
+		$localizedMessage = $this->translate($messageLocallangKey, '');
 		$titleLocallangKey = sprintf('%s.title', $messageLocallangKey);
-		$localizedTitle = $this->translate($titleLocallangKey, '[' . $titleLocallangKey . ']');
+		$localizedTitle = $this->translate($titleLocallangKey, '');
 
         $this->addFlashMessage($localizedMessage, $localizedTitle, $severity)  ;
 	}

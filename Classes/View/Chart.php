@@ -103,35 +103,9 @@ class Chart extends AbstractTemplateView {
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
 	}
 
-	/**
-	 * Sets the format of the current request (default format is "html")
-	 *
-	 * @param string $format
-	 * @return void
-	 * @api
-	 */
-	public function setFormat($format): void {
-		$this->getRequest()->setFormat($format);
-	}
 
-	/**
-	 * Returns the format of the current request (defaults is "html")
-	 *
-	 * @return string $format
-	 * @api
-	 */
-	public function getFormat() {
-		return $this->getRequest()->getFormat();
-	}
 
-	/**
-	 * Returns the current request object
-	 *
-	 * @return Tx_Extbase_MVC_Web_Request
-	 */
-	public function getRequest() {
-		return $this->controllerContext->getRequest();
-	}
+
 
 	/**
 	 * Sets the absolute path to a Fluid template file
@@ -327,7 +301,7 @@ class Chart extends AbstractTemplateView {
 			throw new InvalidTemplateResourceException('Layout root path "' . $layoutRootPath . '" does not exist.', 1288092521);
 		}
 		$possibleLayoutPaths = array();
-		$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName . '.' . $this->getRequest()->getFormat());
+		$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName . '.html' );
 		$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName);
 		foreach($possibleLayoutPaths as $layoutPathAndFilename) {
 			if (file_exists($layoutPathAndFilename)) {
@@ -380,7 +354,7 @@ class Chart extends AbstractTemplateView {
 			throw new InvalidTemplateResourceException('Partial root path "' . $partialRootPath . '" does not exist.', 1288094648);
 		}
 		$possiblePartialPaths = array();
-		$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName . '.' . $this->getRequest()->getFormat());
+		$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName . '.html' );
 		$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName);
 		foreach($possiblePartialPaths as $partialPathAndFilename) {
 			if (file_exists($partialPathAndFilename)) {

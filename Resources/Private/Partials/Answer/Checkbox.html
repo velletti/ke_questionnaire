@@ -2,7 +2,11 @@
 <f:alias map="{resultAnswer: '{ke:getResultAnswer(result: newResult, questionUid: question.uid, answerUid: answer.uid)}'}">
 	<f:form.hidden name="newResult[questions][{question.uid}][answers][{answer.uid}][answer]" value="{answer.uid}" />
 	<div class="keqAnswerWrap keqAnswerCheckbox">	
-		<f:form.checkbox id="keq{question.uid}a{answer.uid}" name="newResult[questions][{question.uid}][answers][{answer.uid}][value]" value="{answer.uid}" checked="{f:if(condition: '{resultAnswer.value}=={answer.uid}', then: 'true', else: 'false')}" />
+		<f:form.checkbox id="keq{question.uid}a{answer.uid}" name="newResult[questions][{question.uid}][answers][{answer.uid}][value]"
+						 value="{answer.uid}"
+						 checked="{f:if(condition: '{resultAnswer.value}=={answer.uid}', then: 'true', else: 'false')}"
+						 data="{mandatory: question.isMandatory, minAnswers: question.minAnswers, maxAnswers: question.maxAnswers}"
+		/>
 		<label for="keq{question.uid}a{answer.uid}" class="radio_checkbox">&nbsp;</label>
 		<f:if condition="{answer.text}">
 			<f:then><f:format.html>{answer.text}</f:format.html></f:then>
