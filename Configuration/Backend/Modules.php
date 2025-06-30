@@ -1,17 +1,21 @@
 <?php
 
 return [
-    'keQuestionnaireBe_KeQuestionnaire' => [
-        'parent' => 'keQuestionnaireBe',
+    'kequestionnairebe_index' => [
+        'position' => 'web',
         'access' => 'user',
         'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf',
         'extensionName' => 'KeQuestionnaire',
         'controllerActions' => [],
-    ], 'keQuestionnaireBe_KeQuestionnaireAuthcode' => [
-        'parent' => 'keQuestionnaireBe',
+        'path' => '/kequestionnairebe', // Matches the route path in Routes.php
+        'iconIdentifier' => 'kequestionnaire-plugin',
+    ],
+    'kequestionnairebe_authcode' => [
+        'parent' => 'kequestionnairebe_index',
         'access' => 'user',
         'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf',
         'extensionName' => 'KeQuestionnaire',
+        'pluginName' => 'Be',
         'controllerActions' => [
             'Kennziffer\KeQuestionnaire\Controller\BackendController' => [
                 'index',
@@ -29,12 +33,15 @@ return [
                 'downloadAuthCodesCsv',
             ],
         ],
+        'path' => '/kequestionnairebe/authcode', // Matches the route path in Routes.php
+        'iconIdentifier' => 'kequestionnaire-authcode-plugin',
     ],
-    'keQuestionnaireBe_KeQuestionnaireExport' => [
-        'parent' => 'keQuestionnaireBe',
+    'kequestionnairebe_export' => [
+        'parent' => 'kequestionnairebe_index',
         'access' => 'user',
         'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf',
         'extensionName' => 'KeQuestionnaire',
+        'pluginName' => 'Be',
         'controllerActions' => [
             'Kennziffer\KeQuestionnaire\Controller\ExportController' => [
                 'index',
@@ -50,12 +57,15 @@ return [
                 'downloadCsvInterval',
             ],
         ],
+        'path' => '/kequestionnairebe/export', // Matches the route path in Routes.php
+        'iconIdentifier' => 'kequestionnaire-export-plugin',
     ],
-    'keQuestionnaireBe_KeQuestionnaireAnalyse' => [
-        'parent' => 'keQuestionnaireBe',
+    'kequestionnairebe_analyse' => [
+        'parent' => 'kequestionnairebe_index',
         'access' => 'user',
         'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_analyse.xlf',
         'extensionName' => 'KeQuestionnaire',
+        'pluginName' => 'Be',
         'controllerActions' => [
             'Kennziffer\KeQuestionnaire\Controller\AnalyseController' => [
                 'index',
@@ -63,5 +73,7 @@ return [
                 'general',
             ],
         ],
+        'path' => '/kequestionnairebe/analyse', // Matches the route path in Routes.php
+        'iconIdentifier' => 'kequestionnaire-analyse-plugin',
     ],
 ];

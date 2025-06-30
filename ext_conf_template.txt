@@ -11,8 +11,6 @@ emailSubject = Infomail from ke_questionnaire
 	# cat=csvExport//10; type=int; label=LLL:EXT:ke_questionnaire/Resources/Private/Language/extConf.xml:csvExportInterval
 csvExportInterval = 100
 
-	# cat=basic/enable/20; type=boolean; label=Modifications see: SEE https://www.pivotaltracker.com/story/show/132754271
-dummy = 1
 
 	# cat=basic/enable/20; type=boolean; label=List all FeUSER when sending AUTH Codes : (activate this only if you do not have many fe Users)
 enableAuthCode2feUser = 0
