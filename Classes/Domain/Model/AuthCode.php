@@ -184,7 +184,7 @@ class AuthCode extends AbstractEntity {
                 }
 
             }
-            $key = rtrim($resultKey , "-") ;
+            $key = strtoupper(rtrim($resultKey , "-")) ;
 
 			$existent = $ac_rep->findByAuthCodeForPid($key,$pid);
 			if ($existent) $loop = 0;

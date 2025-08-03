@@ -123,7 +123,15 @@ class AbstractController extends ActionController {
 	public function initializeAction(): void {
 		parent::initializeAction();
 		if (!is_object($this->questionnaireRepository)) {
-            $this->questionnaireRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
+            $this->questionnaireRepository = GeneralUtility::makeinstance(QuestionnaireRepository::class);
+        }
+        if (!is_object($this->authCodeRepository)) {
+            $this->authCodeRepository = GeneralUtility::makeinstance(AuthCodeRepository::class);
+        }
+
+        if (!$this->questionnaire) {
+            $pageArguments = $this->request->getAttribute('routing');
+            $this->questionnaire = $this->questionnaireRepository->findForPid( $pageArguments ? $pageArguments->getPageId() : 0) ;
         }
 
 		// initialize steps
@@ -141,17 +149,6 @@ class AbstractController extends ActionController {
        
 	}
 
-	/**
-  * initializes the view with additional placeholders/markers
-  *
-  * @param ViewInterface $view
-  * @return void
-  */
- public function initializeView(ViewInterface $view): void {
-		if($this->extConf->getEnableFeUserMarker() && is_array($this->user)) {
-			$view->assign('feUser', $this->user);
-		}
-	}
 
 	/**
 	 * Override getErrorFlashMessage to present

@@ -5,6 +5,7 @@ use TYPO3\CMS\Core\Mail\MailMessage;
 use Kennziffer\KeQuestionnaire\Domain\Model\ExtConf;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Exception;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /***************************************************************
@@ -76,7 +77,7 @@ class Mail {
         $this->flexform = ($plugin && $plugin->getPiFlexForm()['settings']['email']['invite'] ? $plugin->getPiFlexForm()['settings']['email']['invite'] : null );
     }
 
-    public function init($email , $authCode = NULL) {
+    public function init($email , $authCode) {
         // get standAlone mail renderer
         $this->mailRenderer = GeneralUtility::makeInstance(StandaloneView::class);
         $this->mailRenderer->setLayoutRootPaths(
@@ -98,6 +99,8 @@ class Mail {
         $this->mailRenderer->assign("settings", $settings);
         $this->mailRenderer->assign("signature", false);
 
+        $pid = $this->plugin->getPid();
+
         $subject =  $this->flexform['subject'];
         $text =  $this->flexform['text'];
 
@@ -109,7 +112,23 @@ class Mail {
         $text['after'] = str_replace('###' . strtoupper($field) . '###', $email, $text['after']);
         $text['after'] = str_replace('###' . strtolower($field) . '###', $email, $text['after']);
 
+        try {
+            /** @var UriBuilder $uriBuilder */
 
+            $uriBuilder = GeneralUtility::makeInstance( UriBuilder::class ) ;
+            $uri = $uriBuilder->reset()
+                ->setTargetPageUid($pid)
+                ->setAbsoluteUriScheme('https')
+                ->setCreateAbsoluteUri(true)
+                ->buildFrontendUri() ;
+
+        } catch  ( \Exception ) {
+            $uri = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . 'index.php?id=' . $pid . '&authCode=' . $authCode;
+        }
+
+
+
+        $this->mailRenderer->assign('uri',$uri);
         $this->mailRenderer->assign('authCode',$authCode);
         $this->mailRenderer->assign('text',$text);
 

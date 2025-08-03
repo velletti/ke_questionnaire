@@ -2,6 +2,9 @@
 
 <f:section name="main">
 	<f:format.raw>{text.before}</f:format.raw>
-	{authCode.authCode}
-	<f:format.raw>{text.after}</f:format.raw>
+
+	<a href="{uri}?authCode={authCode}" style="margin:12px;padding:12px;border: #999999 1pxsolid; text-decoration: none"><b>{uri}</b></a><br>
+	<br>
+	<h2>{authCode}</h2><br>
+	<f:format.raw>{text.after}</f:format.raw><br>
 </f:section>

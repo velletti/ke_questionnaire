@@ -1,22 +1,27 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
-use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
-use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
-use Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
+
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+
 
 /***************************************************************
  *  Copyright notice
@@ -70,21 +75,20 @@ class ResultController extends AbstractController {
 	
 	public function __construct( \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository)
  {
+     $this->questionnaireRepository = $questionnaireRepository;
+     $this->resultRepository = GeneralUtility::makeInstance(ResultRepository::class);
+     $this->questionRepository = GeneralUtility::makeInstance(QuestionRepository::class);
  }
-	
-	/**
-	 * initializes the controller
-	 */
-	public function initialize(): void {
-		parent::initialize();
-	}
 
 	/**
 	 * initializes the actions
 	 */
 	public function initializeAction(): void {
 		parent::initializeAction();
-		$this->questionnaire->settings = $this->settings;
+        if ($this->questionnaire) {
+            $this->questionnaire->settings = $this->settings;
+        }
+
 
 		//check a logged in user
         $this->user = 0 ;
@@ -677,15 +681,18 @@ class ResultController extends AbstractController {
 	public function checkAuthCode() {
 		//direct call with &authCode= in URI
         $debug = [] ;
-		if ($_REQUEST['authCode']) {
-            $debug[] = 'checkAuthCode from URI: ' . $_REQUEST['authCode'] ;
-            $this->request->setArgument('code',$_REQUEST['authCode']);
-        }
-		if ($this->request->hasArgument('authCode')){			
-			$code = $this->authCodeRepository->findByUid($this->request->getArgument('authCode'));
-            $debug[] = 'checkAuthCode From Request: ' . $code ;
+		if ($_REQUEST['authCode'] || $this->request->hasArgument('code') ) {
+            if ($this->request->hasArgument('code')) {
+                $code = $this->request->getArgument('code');
+            } else {
+                $code = $_REQUEST['authCode'];
+            }
+            $code = trim($code) ;
+
+            $code = $this->authCodeRepository->findOneBy(['authCode' => $code]);
+            $debug[] = 'checkAuthCode From Request URI: ' . $code ;
             if ($code) {
-				$this->authCode = $code;
+                $this->authCode = $code;
                 $debug[] = 'found AuthCode: ' . $this->authCode->getUid() ;
                 if (!$this->authCode->getFirstactive()) {
                     $this->authCode->setFirstactive(time());
@@ -695,26 +702,32 @@ class ResultController extends AbstractController {
                     $persistenceManager->persistAll();
                 }
                 return true;
-			}
-		} elseif ($this->request->hasArgument('code')){
-			$codes = $this->authCodeRepository->findBy(['authCode' => $this->request->getArgument('code')]);
-            $debug[] = 'checkAuthCode From Request URI: ' . $this->request->getArgument('code') ;
-            if ($codes[0]) {
-				$this->authCode = $codes[0];
-                $debug[] = 'found AuthCode: ' . $this->authCode->getUid() ;
-                if (!$this->authCode->getFirstactive()) {
-                    $this->authCode->setFirstactive(time());
-                    $this->authCodeRepository->update($this->authCode);
+            }
 
-                    $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-                    $persistenceManager->persistAll();
+
+        } else {
+            if ($this->request->hasArgument('authCode')) {
+                $debug[] = 'checkAuthCode from getArgument: ' ;
+                $code = $this->request->getArgument('authCode');
+            }
+            if ( $code ) {
+                $code = $this->authCodeRepository->findByUid($this->request->getArgument('authCode'));
+                $debug[] = 'checkAuthCode From Request: ' . $code ;
+                if ($code) {
+                    $this->authCode = $code;
+                    $debug[] = 'found AuthCode: ' . $this->authCode->getUid() ;
+                    if (!$this->authCode->getFirstactive()) {
+                        $this->authCode->setFirstactive(time());
+                        $this->authCodeRepository->update($this->authCode);
+
+                        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+                        $persistenceManager->persistAll();
+                    }
+                    return true;
                 }
-				return true;
-			}
-		} else {
-            // NO AUTHCODE GIVEN
-            return false;
+            }
         }
+
         //if no VALID authCode is given, return false but throw also warning
         $this->addFlashMessage(LocalizationUtility::translate('reclaimAuthcode.notFoundTitle' , 'KeQuestionnaire'), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
 

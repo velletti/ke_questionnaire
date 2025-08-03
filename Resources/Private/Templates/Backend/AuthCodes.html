@@ -77,13 +77,13 @@
 
 
 <f:section name="participation">
-	<a class="btn btn-primary btn-smmb-1 mr-1" href="{be:uri.editRecord(uid: p.uid, table: 'tx_kequestionnaire_domain_model_result')}" title="Finished: {p.finished -> f:format.date(format: 'd.m.Y H:i')} | Points: {p.points} of {p.maxPoints}">
+	<a class="btn btn-primary btn-sm mb-1 mr-1" href="{be:uri.editRecord(uid: p.uid, table: 'tx_kequestionnaire_domain_model_result')}" title="Finished: {p.finished -> f:format.date(format: 'd.m.Y H:i')} | Points: {p.points} of {p.maxPoints}">
 		<core:icon identifier="actions-document-open"/>
 		{p.uid}
 	</a>
 </f:section>
 <f:section name="participationOpen">
-	<a class="btn btn-secondary btn-smmb-1 mr-1"  href="{be:uri.editRecord(uid: p.uid, table: 'tx_kequestionnaire_domain_model_result')}">
+	<a class="btn btn-secondary btn-sm mb-1 mr-1"  href="{be:uri.editRecord(uid: p.uid, table: 'tx_kequestionnaire_domain_model_result')}">
 		<core:icon identifier="actions-document-open"/>
 		{p.uid}
 	</a>

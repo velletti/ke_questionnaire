@@ -109,7 +109,23 @@ class QuestionnaireRepository extends Repository {
            
            return $questionnaire;
        }
-       
+
+    /**
+     * find ke_questionnaires for uid
+     *
+     * @param integer $uid
+     * @return questionnaire
+     */
+    public function findForPid($pid) {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $query->matching($query->equals('pid',$pid));
+        $questionnaires = $query->execute();
+
+        return $questionnaires->getFirst();
+
+    }
        
 }
 ?>

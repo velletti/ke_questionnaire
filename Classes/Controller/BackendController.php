@@ -233,7 +233,7 @@ class BackendController
             foreach ($emails as $key => $email) {
 
                 /** @var AuthCode $newAuthCode */
-                $newAuthCode = GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
+                $newAuthCode = new AuthCode() ;
 
                 $newAuthCode->generateAuthCode($authCodeLength, $pid);
                 $newAuthCode->setPid($pid);
@@ -286,7 +286,6 @@ class BackendController
                 $this->flashMessageQueue->addMessage($message);
                 return $this->authCodesAction($request, $view);
             }
-
             $mailSender = GeneralUtility::makeInstance(Mail::class);
             $mailSender->setPlugin( $this->questionnaireRepository->findByUid($query['uid'] ));
             $mailSender->init($AuthCode->getEmail() , $AuthCode->getAuthCode()) ;
@@ -329,28 +328,29 @@ class BackendController
         
         $query = $request->getQueryParams();
         $form = $request->getParsedBody();
+
         if (is_array($form)) {
 
-            $amount = (int)($form['amount'] ?? 1);
+            $amount = ($form['amount'] ? (int)$form['amount'] :  1);
             $authCodeLength = (int)((int)$form['length'] > 3 ? $form['length'] : $defaultAuthCodeLength);
             $pid = (int)($form['id'] ?? 0);
+
+            /* @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
+            $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 
             //create the codes and store them in the storagepid of the plugin
             $generated = 0 ;
             for ($i = 0; $i < $amount; $i++){
                 /** @var AuthCode $newAuthCode */
-                $newAuthCode = GeneralUtility::makeInstance( 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AuthCode');
+                $newAuthCode = new AuthCode() ;
 
                 $newAuthCode->generateAuthCode($authCodeLength,$pid);
                 $newAuthCode->setPid($pid);
 
                 $this->authCodeRepository->add($newAuthCode);
                 $generated++;
-
+                $persistenceManager->persistAll();
             }
-            /* @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
-            $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-            $persistenceManager->persistAll();
 
             $message = GeneralUtility::makeInstance(FlashMessage::class,
                 $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodesCreated', true) . ': ' . $generated,
