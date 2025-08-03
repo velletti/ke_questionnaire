@@ -68,27 +68,21 @@ class ResultController extends AbstractController {
      */
 	var $userUid = 0 ;
 	
-	/**
-  * injectQuestionnaireRepository
-  *
-  * @param QuestionnaireRepository $questionnaireRepository
-  * @return void
-  */
- public function injectQuestionnaireRepository(QuestionnaireRepository $questionnaireRepository) {
-		$this->questionnaireRepository = $questionnaireRepository;
-	}
+	public function __construct( \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository)
+ {
+ }
 	
 	/**
 	 * initializes the controller
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 	}
 
 	/**
 	 * initializes the actions
 	 */
-	public function initializeAction() {
+	public function initializeAction(): void {
 		parent::initializeAction();
 		$this->questionnaire->settings = $this->settings;
 
@@ -120,9 +114,9 @@ class ResultController extends AbstractController {
   *
   * @throws InvalidSlotException
   * @throws InvalidSlotReturnException
-  * @IgnoreValidation
   * @return void
   */
+ #[IgnoreValidation([])]
  public function newAction(Result $newResult = NULL, $requestedPage = 0) {
 		if ($newResult == NULL) { // workaround for fluid bug ##5636
 		    /** @var Result $newResult */
@@ -229,7 +223,7 @@ class ResultController extends AbstractController {
 	 * @param $storagePid
 	 * @return void
 	 */
-	public function setStoragePid($storagePid) {
+	public function setStoragePid($storagePid): void {
 		$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		//fallback to current pid if no storagePid is defined
         $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -241,7 +235,7 @@ class ResultController extends AbstractController {
 	/**
 	 * initializes the createAction
 	 */
-	public function initializeCreateAction() {
+	public function initializeCreateAction(): void {
 		//to get correct updates it is needed that a clone of the actual result is created
 		//the temp_result stores the current newResult-data
         if ( $this->request->hasArgument("newResult") ) {
@@ -359,15 +353,15 @@ class ResultController extends AbstractController {
   *
   * @param integer $currentPage check, validate and save the results of this page
   * @param integer $requestedPage after checking the questions of currentPage redirect to this page
-  * @return void
+  * @return \Psr\Http\Message\ResponseInterface
   * @throws StopActionException
   * @throws UnsupportedRequestTypeException
   * @throws IllegalObjectTypeException
   * @throws UnknownObjectException
   * @throws InvalidSlotException
   * @throws InvalidSlotReturnException
-  * @IgnoreValidation
   */
+ #[IgnoreValidation([])]
  public function createAction( $currentPage, $requestedPage) {
 	    /** @var Result $newResult */
 	    $newResult = $this->newResult ;
@@ -420,7 +414,7 @@ class ResultController extends AbstractController {
 			if ($this->settings['redirectFinished']){
 				$this->uriBuilder->setTargetPageUid($this->settings['redirectFinished']);   
 				$link = $this->uriBuilder->build();
-				$this->redirectToUri($link);
+				return $this->redirectToUri($link);
 			} else {
 				/* Problems with forward and RealUrl
 				 $this->forward('end', NULL, NULL, array(
@@ -443,7 +437,7 @@ class ResultController extends AbstractController {
 				$this->view->assign('questionnaire', $this->questionnaire);
 				$temp = false;
 				// $this->signalSlotDispatcher->dispatch(__CLASS__, 'endAction', array($newResult, $this, &$temp));
-				if ($temp) $this->redirectToUri ($temp);
+				if ($temp) return $this->redirectToUri ($temp);
 			}
 		//if not last page, set all stuff for questionnaire-page
 		} else {            
@@ -478,9 +472,9 @@ class ResultController extends AbstractController {
 	 * @param Result $result
 	 * @return void
 	 */
-	public function showAction(Result $result = NULL) {
+	public function showAction(Result $result = NULL): \Psr\Http\Message\ResponseInterface {
 		if (!$result) {
-			$this->addFlashMessage(LocalizationUtility::translate('feView.noResultError' ), LocalizationUtility::translate('feView.noResultErrorTitle' ), AbstractMessage::WARNING);
+			$this->addFlashMessage(LocalizationUtility::translate('feView.noResultError' ), LocalizationUtility::translate('feView.noResultErrorTitle' ), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
 		} else {
 			$questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
 			$this->view->assign('questionnaire', $questionnaire[0]);
@@ -538,7 +532,7 @@ class ResultController extends AbstractController {
 	 * @return void
 	 */
 	public function moveToAction($action , Result $result, $page = 1, $flashMessage = '') {
-		if(!empty($flashMessage)) $this->addNewFlashMessage($flashMessage , AbstractMessage::ERROR);
+		if(!empty($flashMessage)) $this->addNewFlashMessage($flashMessage , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
 		return $this->redirect(($action ?? 'new' ), NULL, NULL, array(
 			'newResult' => $result,
 			'requestedPage' => $page
@@ -653,14 +647,14 @@ class ResultController extends AbstractController {
 	 *
 	 * @return void
 	 */
-	public function feUserAccessAction() {
+	public function feUserAccessAction(): \Psr\Http\Message\ResponseInterface {
         return $this->htmlResponse();
 	}
     
     /**
      * checkes the dependancy of the Questionnaire
      */
-    public function checkDependancy() {
+    public function checkDependancy(): void {
         // $this->signalSlotDispatcher->dispatch(__CLASS__, 'checkDependancy', array($this));
     }
 	
@@ -670,7 +664,7 @@ class ResultController extends AbstractController {
   * @param Questionnaire $questionnaire
   * @return void
   */
- public function dependancyAccessAction(Questionnaire $questionnaire) {
+ public function dependancyAccessAction(Questionnaire $questionnaire): \Psr\Http\Message\ResponseInterface {
      $this->view->assign('questionnaire',$questionnaire);
      return $this->htmlResponse();
 	}
@@ -703,7 +697,7 @@ class ResultController extends AbstractController {
                 return true;
 			}
 		} elseif ($this->request->hasArgument('code')){
-			$codes = $this->authCodeRepository->findByAuthCode($this->request->getArgument('code'));
+			$codes = $this->authCodeRepository->findBy(['authCode' => $this->request->getArgument('code')]);
             $debug[] = 'checkAuthCode From Request URI: ' . $this->request->getArgument('code') ;
             if ($codes[0]) {
 				$this->authCode = $codes[0];
@@ -722,7 +716,7 @@ class ResultController extends AbstractController {
             return false;
         }
         //if no VALID authCode is given, return false but throw also warning
-        $this->addFlashMessage(LocalizationUtility::translate('reclaimAuthcode.notFoundTitle' , 'KeQuestionnaire'), '', AbstractMessage::WARNING);
+        $this->addFlashMessage(LocalizationUtility::translate('reclaimAuthcode.notFoundTitle' , 'KeQuestionnaire'), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
 
         return false;
 	}
@@ -732,7 +726,7 @@ class ResultController extends AbstractController {
 	 *
 	 * @return void
 	 */
-	public function authCodeAccessAction() {
+	public function authCodeAccessAction(): \Psr\Http\Message\ResponseInterface {
         return $this->htmlResponse();
 	}
 	
@@ -762,7 +756,7 @@ class ResultController extends AbstractController {
 	 *
 	 * @return void
 	 */
-	public function maxParticipationsAction() {
+	public function maxParticipationsAction(): \Psr\Http\Message\ResponseInterface {
         return $this->htmlResponse();
 	}
 	
@@ -776,14 +770,14 @@ class ResultController extends AbstractController {
         if ($this->settings['accessType'] != 'free' AND $this->settings['restart']) {
             //fetch the last participation of the user
             if ($result->getFeUser()){
-                $parts = $this->resultRepository->findByFeUser($result->getFeUser())->toArray();
+                $parts = $this->resultRepository->findBy(['feUser' => $result->getFeUser()])->toArray();
                 if (count($parts) > 0){
                     $last = $parts[count($parts)-1];
                     if (!$last->getFinished()) $result = $last;
                 }
                 //or the authCode
             } elseif ($result->getAuthCode()) {
-                $parts = $this->resultRepository->findByAuthCode($result->getAuthCode())->toArray();
+                $parts = $this->resultRepository->findBy(['authCode' => $result->getAuthCode()])->toArray();
                 if (count($parts) > 0){
                     $last = $parts[count($parts)-1];
                     if (!$last->getFinished()) $result = $last;
@@ -797,10 +791,10 @@ class ResultController extends AbstractController {
   * Action to show the End Page of the questionnaire
   *
   * @param Result $result
-  * @IgnoreValidation
   * @return void
   */
- public function endAction(Result $result = NULL) {
+ #[IgnoreValidation([])]
+ public function endAction(Result $result = NULL): \Psr\Http\Message\ResponseInterface {
     if (!$result) $result = $this->resultRepository->findByUid($this->request->getArgument('result'));
 		$questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
 		
@@ -815,7 +809,7 @@ class ResultController extends AbstractController {
      * @author joergVelletti <jvelletti@allplan.com>
      * @param \Kennziffer\KeQuestionnaire\Controller\ResultController
      */
-    public function shuffleQuestions() {
+    public function shuffleQuestions(): void {
         $questions = $this->questionnaire->getQuestions() ;
         if($questions->count()) {
             $page = 1;

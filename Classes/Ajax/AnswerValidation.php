@@ -47,7 +47,7 @@ class AnswerValidation extends AbstractAjax {
  protected $localization;	
 	
 
-	public function __construct(\Kennziffer\KeQuestionnaire\Utility\Localization $localization)
+	public function __construct(\Kennziffer\KeQuestionnaire\Utility\Localization $localization, private \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
  {
      $this->localization = $localization;
  }
@@ -66,7 +66,7 @@ class AnswerValidation extends AbstractAjax {
         $validation = array();
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = $this->connectionPool;
         $queryBuilder = $connectionPool->getConnectionForTable('tx_kequestionnaire_domain_model_answer')->createQueryBuilder();
         $queryBuilder->select('validation_type') ->from('tx_kequestionnaire_domain_model_answer') ;
         $expr = $queryBuilder->expr();

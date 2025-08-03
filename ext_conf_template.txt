@@ -11,12 +11,5 @@ emailSubject = Infomail from ke_questionnaire
 	# cat=csvExport//10; type=int; label=LLL:EXT:ke_questionnaire/Resources/Private/Language/extConf.xml:csvExportInterval
 csvExportInterval = 100
 
-
-	# cat=basic/enable/20; type=boolean; label=List all FeUSER when sending AUTH Codes : (activate this only if you do not have many fe Users)
-enableAuthCode2feUser = 0
-
-	# cat=basic/enable/20; type=boolean; label=List all FeUSERGROUPS when sending AUTH Codes : (activate this only if you do not have many fe groups )
-enableAuthCode2feGroups = 0
-
-	# cat=basic/enable/20; type=boolean; label=List all TT Address entries when sending AUTH Codes : (activate this only if you do not have many tt Address)
-enableAuthCode2ttAddress = 0
+# cat=authCode//10; type=int; label=LLL:EXT:ke_questionnaire/Resources/Private/Language/extConf.xml:authCodeLength
+authCodeLength =10

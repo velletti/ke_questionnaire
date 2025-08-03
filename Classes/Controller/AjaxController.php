@@ -40,16 +40,17 @@ class AjaxController extends ActionController {
   *
   * @param string $type Which Ajax Object has to be called
   * @param array $arguments If you want, you can add some arguments to your object
-  * @IgnoreValidation
   * @return string In most cases JSON
   */
- public function ajaxAction($type, $arguments = array()) {
+ #[IgnoreValidation([])]
+ public function ajaxAction($type, $arguments = array()): \Psr\Http\Message\ResponseInterface {
 		$requestedClassName = 'Kennziffer\\KeQuestionnaire\\Ajax\\' . $type;
 		if (class_exists($requestedClassName)) {
 			$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($requestedClassName);
 			$object->settings = $this->settings;
-			return $object->processAjaxRequest($arguments);
-		} else return '';
+			return $this->htmlResponse($object->processAjaxRequest($arguments));
+		} else return $this->htmlResponse('');
+  return $this->htmlResponse();
 	}
 }
 ?>

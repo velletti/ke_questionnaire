@@ -134,13 +134,12 @@ class AbstractChart implements RenderChartInterface {
 	 * @var string
 	 */
 	protected $varNameForChartData = 'chartData';
- public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository, \Kennziffer\KeQuestionnaire\Evaluation\View\Chart $view, \Kennziffer\KeQuestionnaire\Evaluation\tslib_cObj $cObj)
+ public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository )
  {
      $this->resultRepository = $resultRepository;
      $this->resultQuestionRepository = $resultQuestionRepository;
      $this->resultAnswerRepository = $resultAnswerRepository;
-     $this->view = $view;
-     $this->cObj = $cObj;
+     // $this->cObj = $cObj;
  }
 
 

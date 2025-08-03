@@ -60,7 +60,7 @@ class ContentElementViewHelper extends AbstractViewHelper {
   * @var ContentObjectRenderer Object
   */
  protected $cObj;
- public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+ public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager, private \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
  {
      $this->configurationManager = $configurationManager;
  }
@@ -91,7 +91,7 @@ class ContentElementViewHelper extends AbstractViewHelper {
         if(intval($sysLanguageUid) > 0){
 
             /** @var ConnectionPool $connectionPool */
-            $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+            $connectionPool = $this->connectionPool;
 
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $connectionPool->getConnectionForTable('tt_content')->createQueryBuilder();

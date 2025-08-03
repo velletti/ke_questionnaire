@@ -52,30 +52,35 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
         Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'show',
 	)
 );
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'KeQuestionnaire',
-    'Be',
-    array(
-        Kennziffer\KeQuestionnaire\Controller\BackendController::class =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
-        Kennziffer\KeQuestionnaire\Controller\ExportController::class  => 'downloadPdf, pdf, downloadAuthCodesCsv',
-        Kennziffer\KeQuestionnaire\Controller\AnalyseController::class  => 'index,qustion,general'
-    ),
-    // non-cacheable actions
-    array(
-        Kennziffer\KeQuestionnaire\Controller\BackendController::class =>  'index,authCodes,createAuthCodes,authCodesSimple,authCodesMail,createAndMailAuthCodes,authCodesRemind,remindAndMailAuthCodes',
-        Kennziffer\KeQuestionnaire\Controller\ExportController::class  => 'downloadPdf, pdf, downloadAuthCodesCsv',
-        Kennziffer\KeQuestionnaire\Controller\AnalyseController::class  => 'index,qustion,general'
-    )
-);
 
 
 
+(function () {
+    ExtensionManagementUtility::addModule(
+        'web', // Main module key
+        'kequestionnaire', // Submodule key
+        '', // Position
+        null, // Path to module icon (optional)
+        [
+            'routeTarget' => Kennziffer\KeQuestionnaire\Controller\BackendController::class . '::indexAction',
+            'access' => 'user,group',
+            'name' => 'web_kequestionnaire',
+            'icon' => 'EXT:ke_questionnaire/Resources/Public/Icons/backend.svg',
+            'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf',
+        ]
+    );
+})();
 
 (function () {
     $iconRegistry = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(IconRegistry::class);
 
     $iconRegistry->registerIcon(
         'kequestionnaire-plugin',
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:ke_questionnaire/Resources/Public/Icons/backend_main.svg']
+    );
+    $iconRegistry->registerIcon(
+        'kequestionnaire-plugin-index',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
         ['source' => 'EXT:ke_questionnaire/Resources/Public/Icons/backend.svg']
     );

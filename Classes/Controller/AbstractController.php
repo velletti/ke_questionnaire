@@ -52,7 +52,7 @@ class AbstractController extends ActionController {
   *
   * @var ResultRepository
   */
- protected $resultRepository;
+ public $resultRepository;
 
 	/**
   * questionRepository
@@ -66,7 +66,7 @@ class AbstractController extends ActionController {
   *
   * @var QuestionnaireRepository
   */
- protected $questionnaireRepository;
+    public $questionnaireRepository;
 	
 	/**
   * authCodeRepository
@@ -96,93 +96,31 @@ class AbstractController extends ActionController {
   * @var ObjectStorage
   */
  protected $steps;
-
-
-	/**
-  * injectResultRepository
-  *
-  * @param ResultRepository $resultRepository
-  * @return void
-  */
- public function injectResultRepository(ResultRepository $resultRepository) {
-		$this->resultRepository = $resultRepository;
-	}
-
-	/**
-  * injectQuestionRepository
-  *
-  * @param QuestionRepository $questionRepository
-  * @return void
-  */
- public function injectQuestionRepository(QuestionRepository $questionRepository) {
-		$this->questionRepository = $questionRepository;
-	}
-	
-	/**
-  * injectAuthCodeRepository
-  *
-  * @param AuthCodeRepository $authCodeRepository
-  * @return void
-  */
- public function injectAuthCodeRepository(AuthCodeRepository $authCodeRepository) {
-		$this->authCodeRepository = $authCodeRepository;
-	}
-
-	/**
-  * injectQuestionnaire
-  *
-  * @param Questionnaire $questionnaire
-  * @return void
-  */
- public function injectQuestionnaire(Questionnaire $questionnaire) {
-		$this->questionnaire = $questionnaire;
-	}
-    
-    /**
-  * injectQuestionnaireRepository
-  *
-  * @param QuestionnaireRepository $questionnaireRepository
-  * @return void
-  */
- public function injectQuestionnaireRepository(QuestionnaireRepository $questionnaireRepository) {
-		$this->questionnaireRepository = $questionnaireRepository;
-	}
-
-	/**
-  * inject extConf
-  *
-  * @param ExtConf $extConf
-  * @return void
-  */
- public function injectExtConf(ExtConf $extConf) {
-		$this->extConf = $extConf;
-	}
-
-
-	/**
-  * inject localization
-  *
-  * @param Localization $extConf
-  */
- public function injectLocalization(Localization $localization) {
-		$this->localization = $localization;
-	}
-
-	/**
-  * inject steps
-  *
-  * @param ObjectStorage $steps
-  * @return void
-  */
- public function injectSteps(ObjectStorage $steps) {
-			$this->steps = $steps;
-	}
+ public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, 
+                             \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository, 
+                             \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository, 
+                             \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire, 
+                             \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository, 
+                             \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf, 
+                             \Kennziffer\KeQuestionnaire\Utility\Localization $localization, 
+                             \TYPO3\CMS\Extbase\Persistence\ObjectStorage $steps
+ )
+ {
+     $this->resultRepository = $resultRepository;
+     $this->questionRepository = $questionRepository;
+     $this->authCodeRepository = $authCodeRepository;
+     $this->questionnaire = $questionnaire;
+     $this->questionnaireRepository = $questionnaireRepository;
+     $this->extConf = $extConf;
+     $this->localization = $localization;
+     $this->steps = $steps;
+ }
 
 
 	/**
 	 * initializes the actions
 	 */
-	public function initializeAction() {
+	public function initializeAction(): void {
 		parent::initializeAction();
 		if (!is_object($this->questionnaireRepository)) {
             $this->questionnaireRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
@@ -200,6 +138,7 @@ class AbstractController extends ActionController {
 				}
 			}
 		}
+       
 	}
 
 	/**
@@ -208,7 +147,7 @@ class AbstractController extends ActionController {
   * @param ViewInterface $view
   * @return void
   */
- public function initializeView(ViewInterface $view) {
+ public function initializeView(ViewInterface $view): void {
 		if($this->extConf->getEnableFeUserMarker() && is_array($this->user)) {
 			$view->assign('feUser', $this->user);
 		}
@@ -234,7 +173,7 @@ class AbstractController extends ActionController {
 	 * @param integer $severity optional severity code. One of the \TYPO3\CMS\Core\Messaging\FlashMessage constants
 	 * @return void
 	 */
-	public function addNewFlashMessage($action, $severity = AbstractMessage::OK) {
+	public function addNewFlashMessage($action, $severity = \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK): void {
 		$messageLocallangKey = sprintf('flashmessage.%s.%s', $this->request->getControllerName(), $action);
 		$localizedMessage = $this->translate($messageLocallangKey, '');
 		$titleLocallangKey = sprintf('%s.title', $messageLocallangKey);

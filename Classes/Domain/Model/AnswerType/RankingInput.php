@@ -84,10 +84,10 @@ class RankingInput extends DDAreaSequence{
 		$answers = $rep->findByQuestion($question);
         $ranswers = array();
         if ($result){
-			$rQuestions = $repRQ->findByResult($result);
+			$rQuestions = $repRQ->findBy(['result' => $result]);
             foreach ($rQuestions as $rquestion){
                 if ($rquestion->getQuestion()->getUid() == $question->getUid()){
-					$rQAnswers = $repRQA->findByResultquestion($rquestion);
+					$rQAnswers = $repRQA->findBy(['resultquestion' => $rquestion]);
                     foreach ($rQAnswers as $ranswer){
                         $ranswers[$ranswer->getAnswer()->getUid()] = $ranswer->getValue();
                     }

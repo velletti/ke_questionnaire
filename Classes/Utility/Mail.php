@@ -5,6 +5,8 @@ use TYPO3\CMS\Core\Mail\MailMessage;
 use Kennziffer\KeQuestionnaire\Domain\Model\ExtConf;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Exception;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -43,6 +45,9 @@ class Mail {
   * @var MailMessage
   */
  protected $message = NULL;
+ protected $flexform = NULL;
+ protected $plugin = NULL;
+ protected $mailRenderer = NULL;
 
 	/**
   * @var ExtConf
@@ -53,6 +58,68 @@ class Mail {
      $this->message = $message;
      $this->extConf = $extConf;
  }
+
+    /**
+     * @return array
+     */
+    public function getFlexform()
+    {
+        return ($this->flexform ?? []);
+    }
+
+    /**
+     * @param mixed $flexform
+     */
+    public function setPlugin($plugin): void
+    {
+        $this->plugin = $plugin ;
+        $this->flexform = ($plugin && $plugin->getPiFlexForm()['settings']['email']['invite'] ? $plugin->getPiFlexForm()['settings']['email']['invite'] : null );
+    }
+
+    public function init($email , $authCode = NULL) {
+        // get standAlone mail renderer
+        $this->mailRenderer = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->mailRenderer->setLayoutRootPaths(
+            [GeneralUtility::getFileAbsFileName('EXT:ke_questionnaire/Resources/Private/Layouts/')]
+        );
+        $this->mailRenderer->setTemplatePathAndFilename(
+            GeneralUtility::getFileAbsFileName('EXT:ke_questionnaire/Resources/Private/Templates/Backend/CreatedMail.html')
+        );
+
+        $settings = EmConfigurationUtility::getEmConf(false);
+        $settings['fontFamily'] = $settings['fontFamily'] ?? 'Arial, Helvetica, sans-serif';
+        $settings['FontColor'] = $settings['FontColor2'] ?? '#FF221a';
+        $settings['FontColor2'] = $settings['FontColor2'] ?? '#333333';
+        $settings['BackGroundColorBody'] = $settings['BackGroundColorBody'] ?? '#FFFFFF';
+        $settings['BackGroundColorBody2'] = $settings['BackGroundColorBody2'] ?? '#FFFFFF';
+        $settings['BackGroundColor'] = $settings['BackGroundColor'] ?? '#F1F1F1';
+        $settings['BackGroundColor2'] = $settings['BackGroundColor2'] ?? '#A1A1A1';
+
+        $this->mailRenderer->assign("settings", $settings);
+        $this->mailRenderer->assign("signature", false);
+
+        $subject =  $this->flexform['subject'];
+        $text =  $this->flexform['text'];
+
+        $field = 'Email';
+        $text['before'] = str_replace('###' . ($field) . '###', $email, $text['before']);
+        $text['before'] = str_replace('###' . strtoupper($field) . '###', $email, $text['before']);
+        $text['before'] = str_replace('###' . strtolower($field) . '###', $email, $text['before']);
+        $text['after'] = str_replace('###' . ($field) . '###', $email, $text['after']);
+        $text['after'] = str_replace('###' . strtoupper($field) . '###', $email, $text['after']);
+        $text['after'] = str_replace('###' . strtolower($field) . '###', $email, $text['after']);
+
+
+        $this->mailRenderer->assign('authCode',$authCode);
+        $this->mailRenderer->assign('text',$text);
+
+        $plainText = strip_tags( $text['before']) . "\n" . $authCode . "\n" . strip_tags( $text['after'] );
+        $htmlText = $this->mailRenderer->render() ;
+        $this->setSubject($subject);
+        $this->addReceiver($email);
+        $this->setHtml($htmlText ) ;
+        $this->setBody($plainText ) ;
+    }
 
 
 	/**

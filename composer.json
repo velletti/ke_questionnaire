@@ -27,7 +27,7 @@
 
   "autoload": {
     "psr-4": {
-      "Kennziffer\\KeQuestionnaire\\": "Classes"
+      "Kennziffer\\KeQuestionnaire\\": "Classes/"
     }
   },
 

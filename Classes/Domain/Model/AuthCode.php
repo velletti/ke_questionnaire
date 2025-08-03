@@ -143,6 +143,17 @@ class AuthCode extends AbstractEntity {
 		$ac_rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
 		// Generate authcode
 		$loop = 1;
+        $needsMinusDefault = 3 ;
+        if( in_array( $length , [ 4 , 8 , 12 , 16 , 20 , 24 ] )) {
+            $needsMinusDefault = 4 ;
+        }
+        if( in_array( $length , [ 5 , 10 , 15  , 20 , 25 ] )) {
+            $needsMinusDefault = 5 ;
+        }
+        if( in_array( $length , [ 7 , 14 , 21 , 28 ] )) {
+            $needsMinusDefault = 7 ;
+        }
+
 		while($loop){
 			$key = '';
 			list($usec, $sec) = explode(' ', microtime());
@@ -157,19 +168,28 @@ class AuthCode extends AbstractEntity {
                 range('P','Z'),
                 array("m" , "M" , "n" , "N" , "k" , "K" , "j" , "J")
             );
-
+            $needsMinus = $needsMinusDefault ;
             for($i=0; $i<$length; $i++)
             {
                 $key .= $inputs[mt_rand(0,count($inputs)-1)];
-                if( round(($i+1)/($length/2),0) == ($i+1)/($length/2) ) {
-                    $key .= "-" ;
-                }
             }
-            $key = rtrim($key , "-") ;
+            $resultKey= '';
+            for($i=0; $i<$length; $i++)
+            {
+                $resultKey .= substr($key,$i, 1);
+                $needsMinus --;
+                if ( $needsMinus == 0 ) {
+                    $resultKey .= "-" ;
+                    $needsMinus = $needsMinusDefault ;
+                }
+
+            }
+            $key = rtrim($resultKey , "-") ;
 
 			$existent = $ac_rep->findByAuthCodeForPid($key,$pid);
 			if ($existent) $loop = 0;
 		}
+
 		$this->setAuthCode($key);
 		return $key;
 	}

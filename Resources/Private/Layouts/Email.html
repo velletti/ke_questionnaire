@@ -1,0 +1,53 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="font-size: 100%; font-family: '{settings.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Template</title>
+</head>
+<body style="font-size: 100%; font-family: '{settings.fontFamily}'; line-height: 1.65; width: 100% !important; height: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: {settings.BackGroundColorBody}; margin: 0; padding: 0;" bgcolor="{settings.BackGroundColorBody}">
+
+<table class="body-wrap" style="width: 100%; background: {settings.BackGroundColorBody}; margin: 0; padding: 0;" bgcolor="{settings.BackGroundColorBody}">
+    <tr>
+        <td style="max-width: 580px; margin: 0 auto; padding: 0;">
+
+            <!-- Header Section -->
+            <table style="width: 100%; border-collapse: collapse; margin: 0; padding: 0;">
+                <tr>
+                    <td align="center" style="color: {settings.FontColor2}; background: {settings.BackGroundColor2}; padding: 10px;" bgcolor="{settings.BackGroundColor2}">
+                        <f:if condition="{settings.imgUrl}">
+                            <img src="{settings.servername}{settings.imgUrl}" alt="Header Image" style="width: 100%; height: auto; margin-bottom: 10px;" />
+                        </f:if>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Content Section -->
+            <table style="width: 100%; border-collapse: collapse; margin: 0; padding: 0;">
+                <tr>
+                    <td class="content" style="background: {settings.BackGroundColor}; padding: 30px 35px;" bgcolor="{settings.BackGroundColor}">
+                        <f:render section="main" />
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Signature Section -->
+            <f:if condition="{signature}">
+                <table style="width: 100%; border-collapse: collapse; margin: 0; padding: 0;">
+                    <tr>
+                        <td style="background: {settings.BackGroundColor}; padding: 30px 35px;" bgcolor="{settings.BackGroundColor}">
+                            <f:format.raw>{signature}</f:format.raw>
+                        </td>
+                    </tr>
+                </table>
+            </f:if>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

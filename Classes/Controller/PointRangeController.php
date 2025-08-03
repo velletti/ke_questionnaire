@@ -41,15 +41,10 @@ class PointRangeController extends ActionController {
   */
  protected $rangeRepository;
 	
-	/**
-  * inject range repository
-  *
-  * @param RangeRepository $rangeRepository
-  * @return void
-  */
- public function injectRangeRepository(RangeRepository $rangeRepository) {
-		$this->rangeRepository = $rangeRepository;
-	}
+	public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository $rangeRepository)
+ {
+     $this->rangeRepository = $rangeRepository;
+ }
 	
 	/**
   * action show text for range
@@ -57,7 +52,7 @@ class PointRangeController extends ActionController {
   * @param Result $newResult A fresh new result object
   * @return void
   */
- public function showTextAction(Result $result) {
+ public function showTextAction(Result $result): \Psr\Http\Message\ResponseInterface {
 		$ranges = $this->rangeRepository->findAll();
 		if ($ranges !== NULL) {
 			/* @var $range \Kennziffer\KeQuestionnaire\Domain\Model\Range */
@@ -70,6 +65,7 @@ class PointRangeController extends ActionController {
 		}
 		$this->view->assign('result', $result);
 		$this->view->assign('resultText', $resultText);
+  return $this->htmlResponse();
 	}
 }
 ?>

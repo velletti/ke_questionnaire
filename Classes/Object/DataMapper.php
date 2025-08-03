@@ -4,6 +4,7 @@ namespace Kennziffer\KeQuestionnaire\Object;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Exception;
 /***************************************************************
  *  Copyright notice
@@ -53,9 +54,8 @@ class DataMapper {
   * @var ValidatorResolver
   */
  protected $validatorResolver;
- public function __construct( \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer, \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService, \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver)
+ public function __construct( \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService, \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver)
  {
-     $this->objectContainer = $objectContainer;
      $this->reflectionService = $reflectionService;
      $this->validatorResolver = $validatorResolver;
  }
@@ -96,7 +96,7 @@ class DataMapper {
 	 * @return object The object skeleton
 	 */
 	public function createEmptyObject($className) {
-		return $this->objectContainer->getEmptyObject($className);
+		return GeneralUtility::makeInstance ($className);
 	}
 
 	/**

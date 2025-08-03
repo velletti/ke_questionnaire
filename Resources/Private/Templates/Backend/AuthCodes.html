@@ -1,59 +1,90 @@
 {namespace ke=Kennziffer\KeQuestionnaire\ViewHelpers}
-{namespace kep=Kennziffer\KeQuestionnairePremium\ViewHelpers}
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 <f:layout name="Backend" />
-
+<f:asset.css identifier="backendcss" href="{core:normalizedUrl(pathOrUrl: 'EXT:ke_questionnaire/Resources/Public/Css/Backend.css')}"></f:asset.css>
 <f:section name="main">
-	<f:be.container pageTitle="Ke Questionnaire Backend Modules" includeCssFiles="{0: '{f:uri.resource(path:\'Css/Backend.css\')}'}">
-		<f:flashMessages />
-		<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:header" /> "{plugin.header}"</h3>
-		<hr />
-		<f:render partial="Backend/AuthCodesMenu" arguments="{plugin:plugin}"/>
-		<f:if condition="{authCodes}">
-			<f:then>
-				<div class="keq_authCodes_exportlink">
-					<f:link.action action="downloadAuthCodesCsv" controller="Export" arguments="{pluginUid:plugin.uid}"><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.exportCSV" /></f:link.action>
-				</div>				
-				<b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.existing" /></b><br />
-				<br />
+	<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:header" /> </h3>
+	<hr />
+	<a class="btn btn-primary mr-2 mb-2"  href="{be:moduleLink(route:'kequestionnairebe_authcodesmail', arguments: '{function: \'authCodes\',moduleData: \'authCodes\',id: plugin.storagePid, uid: plugin.uid}')}">
+		<core:icon identifier="actions-envelope-open-text"/>
+		<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:menu.mail" />
+	</a>
+	<a class="btn btn-secondary mr-2 mb-2"  href="{be:moduleLink(route:'kequestionnairebe_authcodessimple', arguments: '{function: \'authCodesSimple\',moduleData: \'authCodes\',id: plugin.storagePid, uid: plugin.uid}')}">
+		<core:icon identifier="actions-document-new"/>
+		<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:menu.simple" />
+	</a>
+	<hr />
 
-				<hr>
-				<table>
-                                <f:if condition="{ke:premiumLoaded()}">
-                                    <f:then>
-                                    ... Premium not implemented ...
-									</f:then>
-                                    <f:else>
-					<tr>
-						<th style="width:200px"><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:list.table.authCode" /></th>
-						<th style="width:200px"><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:list.table.email" /></th>
-						<th><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:list.table.participations" /></th>
-					</tr>                                
-                                        <f:for each="{authCodes}" as="code">
-					<tr>
-						<td>{code.authCode}</td>
-						<td>{code.email}</td>
-						<td>
-							<f:for each="{code.AndLoadParticipations}" as="participation">
-								<f:if condition="{participation.finished}">
+	<f:if condition="{authCodes}">
+		<f:then>
+			<div class="keq_authCodes_exportlink">
+			</div>
+			<b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.existing" /></b><br />
+			{plugin.header} (Pid: {plugin.storagePid})<br />
+
+			<hr>
+			<div class="row mb-1  border-bottom">
+				<div class="col-2 col-md-2">
+
+				</div>
+				<div class="col-6 col-md-3"><b></b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:list.table.email" /></b></div>
+				<div class="col-4 col-md-3"><b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:list.table.authCode" /></b></div>
+				<div class="col-12 col-md-4"><b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:list.table.participations" /></b></div>
+			</div>
+
+				<f:for each="{authCodes}" as="code">
+
+					<div class="row mb-1 border-bottom">
+						<div class="col-2">
+							<a class="btn btn-secondary btn-sm mb-1 mr-1"  href="{be:uri.editRecord(uid: code.uid, table: 'tx_kequestionnaire_domain_model_authcode')}">
+								<core:icon identifier="actions-document-open"/>
+							</a>
+							<f:if condition="{code.email}">
+								<a class="btn btn-primary btn-sm mr-1 mb-1" title="{f:translate(key: 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.remind')}"
+								   href="{be:moduleLink(route:'kequestionnairebe_remindandmailauthcodes', arguments: '{function: \'authCodes\',moduleData: \'authCodes\',id: plugin.storagePid, uid: plugin.uid, code: code.uid}')}">
+									<core:icon identifier="actions-envelope-open-text"/>
+								</a>
+							</f:if>
+
+						</div>
+						<div class="col-6 col-md-3">{code.email}</div>
+						<div class="col-4 col-md-3">{code.authCode}</div>
+						<div class="col-12 col-md-4">
+							<f:for each="{code.AndLoadParticipations}" as="p">
+								<f:if condition="{p.finished}">
 									<f:then>
-										<span class="finishedParticipation"><f:link.action action="downloadPdf" controller="Export" arguments="{pdfType:'filled',selectedResult:participation.uid, pluginUid:plugin.uid}">{participation.uid}</f:link.action></span>
+										<span class="finishedParticipation"><f:render section="participation" arguments="{p: p}"></f:render></span>
 									</f:then>
 									<f:else>
-										<span class="openParticipation"><f:link.action action="downloadPdf" controller="Export" arguments="{pdfType:'filled',selectedResult:participation.uid, pluginUid:plugin.uid}">{participation.uid}</f:link.action></span>
+										<span class="openParticipation"><f:render section="participationOpen" arguments="{p: p}"></f:render></span>
 									</f:else>
 								</f:if>
 							</f:for>
-						</td>
-					</tr>
-                                        </f:for>
-                                    </f:else>
-                                </f:if>
-				</table>
-			</f:then>
-			<f:else>
+						</div>
+					</div>
+				</f:for>
+
+		</f:then>
+		<f:else>
+			<h3>
 				<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.none" />
-			</f:else>
-		</f:if>		
-		<hr />
-	</f:be.container>
+			</h3>
+		</f:else>
+	</f:if>
+	<hr>
+
+</f:section>
+
+
+<f:section name="participation">
+	<a class="btn btn-primary btn-smmb-1 mr-1" href="{be:uri.editRecord(uid: p.uid, table: 'tx_kequestionnaire_domain_model_result')}" title="Finished: {p.finished -> f:format.date(format: 'd.m.Y H:i')} | Points: {p.points} of {p.maxPoints}">
+		<core:icon identifier="actions-document-open"/>
+		{p.uid}
+	</a>
+</f:section>
+<f:section name="participationOpen">
+	<a class="btn btn-secondary btn-smmb-1 mr-1"  href="{be:uri.editRecord(uid: p.uid, table: 'tx_kequestionnaire_domain_model_result')}">
+		<core:icon identifier="actions-document-open"/>
+		{p.uid}
+	</a>
 </f:section>

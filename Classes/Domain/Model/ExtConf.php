@@ -116,12 +116,6 @@ class ExtConf implements SingletonInterface {
 		} else {
 			throw new Exception('saveExtConf', 1349685793);
 		}
-        if(ExtensionManagementUtility::isLoaded('ke_questionnaire_premium')) {
-            $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_questionnaire_premium');
-            if (is_array($extConf)) {
-                $this->premium = $extConf;
-            }
-        }
 	}
 
 	/**

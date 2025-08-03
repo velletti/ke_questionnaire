@@ -1,15 +1,22 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 <f:layout name="Backend" />
 
 <f:section name="main">
-	<f:be.container
-			pageTitle="Ke Questionnaire Backend Modules"
-			includeCssFiles="{0: '{f:uri.resource(path:\'Css/Backend.css\')}'}">
-		<f:flashMessages />
-		<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:header" /> "{plugin.header}"</h3>
-		<hr />
-		<f:render partial="Backend/AuthCodesMenu" arguments="{plugin:plugin}"/>
-		<hr />
-		<b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.create" /></b><br />
-		<f:render partial="Backend/CreateAuthCodes" arguments="{plugin:plugin}"/>
-	</f:be.container>
+
+	<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.create" /></h3>
+	<hr />
+	<b>{questionnaire.uid} {questionnaire.header} (Pid: {questionnaire.storagePid})</b><br />
+
+	<form class="form-inline border p-2" name="authCodes" role="form" id="createAuthCodesForm" action="{be:moduleLink(route:'kequestionnairebe_createauthcodes', arguments: '{function: \'createAuthCodes\',moduleData: \'createAuthCodes\',id: id, uid: questionnaire.uid}')}" method="post">
+		<input type="hidden" name="uid" value="{questionnaire.uid}" />
+		<input type="hidden" name="id" value="{questionnaire.storagePid}" />
+
+		<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.createLabel" />: <input type="number" name="amount" value="1" min="1" max="10"/><br>
+		<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:authCodeLength" />: <input type="number" name="length" value="{authCodeLength}" min="3" max="20"/>
+		<br>
+		<br>
+		<input  type="submit" value="{f:translate(key: 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.createSubmit')}" class="btn btn-primary" />
+	</form>
+
+
 </f:section>

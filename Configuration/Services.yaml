@@ -2,9 +2,18 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
-    public: false
+    public: true
   Kennziffer\KeQuestionnaire\:
     resource: '../Classes/*'
   Kennziffer\KeQuestionnaire\Reports\FileAccessReport:
     tags:
       - name: reports.report
+  Kennziffer\KeQuestionnaire\Controller\BackendController:
+    tags: ['backend.controller']
+
+    arguments:
+      $moduleTemplateFactory: '@TYPO3\CMS\Backend\Template\ModuleTemplateFactory'
+      $pageRenderer: '@TYPO3\CMS\Core\Page\PageRenderer'
+      $backendUser: '@TYPO3\CMS\Core\Authentication\BackendUserAuthentication'
+
+

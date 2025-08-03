@@ -629,7 +629,7 @@ class Questionnaire extends AbstractEntity {
      */
     public function getPiFlexForm() {
 
-        $ffs = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Service\\FlexFormService');
+        $ffs = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\FlexFormService::class);
         return $ffs->convertFlexFormContentToArray($this->piFlexForm);
         //return $this->piFlexForm;
     }

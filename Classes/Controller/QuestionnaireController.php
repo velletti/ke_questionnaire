@@ -71,53 +71,22 @@ class QuestionnaireController extends ActionController {
   * @var Mail
   */
  protected $mailSender;
-    
-    /**
-  * injectQuestionnaireRepository
-  *
-  * @param QuestionnaireRepository $questionnaireRepository
-  * @return void
-  */
- public function injectQuestionnaireRepository(QuestionnaireRepository $questionnaireRepository) {
-		$this->questionnaireRepository = $questionnaireRepository;
-	}
-	
-	/**
-  * injectAuthCodeRepository
-  *
-  * @param AuthCodeRepository $authCodeRepository
-  * @return void
-  */
- public function injectAuthCodeRepository(AuthCodeRepository $authCodeRepository) {
-		$this->authCodeRepository = $authCodeRepository;
-	}
-	
-	/**
-  * injectResultRepository
-  *
-  * @param ResultRepository $resultRepository
-  * @return void
-  */
- public function injectResultRepository(ResultRepository $resultRepository) {
-		$this->resultRepository = $resultRepository;
-	}
-	
-	/**
-  * inject mailSender
-  *
-  * @param Mail $mail
-  */
- public function injectMail(Mail $mail) {
-		$this->mailSender = $mail;
-	}
+ public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Utility\Mail $mailSender)
+ {
+     $this->questionnaireRepository = $questionnaireRepository;
+     $this->authCodeRepository = $authCodeRepository;
+     $this->resultRepository = $resultRepository;
+     $this->mailSender = $mailSender;
+ }
 
 	/**
 	 * action list
 	 *
 	 * @return void
 	 */
-	public function listAction() {		
+	public function listAction(): \Psr\Http\Message\ResponseInterface {		
             $this->view->assign('questionnaires',$this->getQuestionnaires());
+            return $this->htmlResponse();
 	}
 	
 	/**
@@ -125,9 +94,10 @@ class QuestionnaireController extends ActionController {
 	 *
 	 * @return void
 	 */
-	public function reclaimAuthCodeAction() {		
-
-	}
+	public function reclaimAuthCodeAction(): \Psr\Http\Message\ResponseInterface
+ {
+     return $this->htmlResponse();
+ }
 	
 	/**
 	 * Checks if the value is valid email
