@@ -57,6 +57,12 @@ return [
         'access' => 'user',
         'name' => 'kequestionnairebe_exportcsv',
     ],
+    'kequestionnairebe_exportcsvinterval' => [
+        'path' => '/kequestionnairebe/exportcsvinterval',
+        'target' => BackendController::class . '::exportCsvIntervalAction',
+        'access' => 'user',
+        'name' => 'kequestionnairebe_exportcsvinterval',
+    ],
     'kequestionnairebe_export' => [
         'path' => '/kequestionnairebe/export',
         'target' => BackendController::class . '::exportAction',

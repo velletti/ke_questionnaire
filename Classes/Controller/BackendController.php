@@ -109,11 +109,27 @@ class BackendController
                 return $this->authCodesMailAction($request, $moduleTemplate);
 
             case 'export':
+            case 'kequestionnairebe_export':
                 $moduleTemplate->setTitle(
                     $title,
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.export')
                 );
                 return $this->exportAction($request, $moduleTemplate);
+            case 'exportcsv':
+            case 'kequestionnairebe_exportcsv':
+                $moduleTemplate->setTitle(
+                    $title,
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.exportcsv')
+                );
+                return $this->exportCsvAction($request, $moduleTemplate);
+            case 'exportcsvinterval':
+            case 'kequestionnairebe_exportcsvinterval':
+                $moduleTemplate->setTitle(
+                    $title,
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.exportcsv')
+                );
+                return $this->exportCsvIntervalAction($request, $moduleTemplate);
+
             case 'analyse':
                 $moduleTemplate->setTitle(
                     $title,
@@ -295,6 +311,7 @@ class BackendController
 
         return $this->authCodesAction($request, $view);
     }
+
     public function authCodesSimpleAction(ServerRequestInterface $request, $view = null): ResponseInterface
     {
         if ( !$view ) {
@@ -367,13 +384,83 @@ class BackendController
         return $this->authCodesAction($request, $view);
     }
     
-    
+    /*   #############################################################################################################
+        * Export action to handle exporting data, e.g., to CSV or other formats.
+        *
+        * @param ServerRequestInterface $request
+        * @param $view
+        * @return ResponseInterface
+        *
+        * Note: The actual export logic should be implemented here.
+    */
     
 
     public function exportAction(ServerRequestInterface $request, $view): ResponseInterface
     {
-        // Implement logic for the export action
-        return $moduleTemplate->renderContent('Export action executed.');
+        $query = $request->getQueryParams();
+        if (is_array($query)) {
+
+            $view->assignMultiple(
+                [
+                    'id' => $query['id'] ?? '0',
+                ],
+            );
+        }
+        $view->assign('questionnaires',$this->questionnaireRepository->findAll());
+        return $view->renderResponse('Backend/Export');
+    }
+
+    public function exportCsvAction(ServerRequestInterface $request, $view = null): ResponseInterface
+    {
+        if ( !$view ) {
+            $view = $this->moduleTemplateFactory->create($request);
+            $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
+            $this->setUpDocHeader($request, $view);
+        }
+        $settings = EmConfigurationUtility::getEmConf(false);
+        $query = $request->getQueryParams();
+        if (is_array($query)) {
+            $view->assignMultiple(
+                [
+                    'id' => $query['id'] ?? '0',
+                    'uid' => $query['uid'] ?? '0',
+                ],
+            );
+            if (isset($query['uid'])) {
+                $view->assign('plugin', $this->questionnaireRepository->findByUid($query['uid']));
+                $fileName = 'export_' . $query['uid'] . '_' . date('Ymd_His') . '.csv';
+                $view->assign('fileName', $fileName);
+                return $view->renderResponse('Backend/ExportCsv');
+            }
+        }
+        return $this->exportAction($request, $view);
+    }
+
+    public function exportCsvIntervalAction(ServerRequestInterface $request, $view = null): ResponseInterface
+    {
+        if ( !$view ) {
+            $view = $this->moduleTemplateFactory->create($request);
+            $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
+            $this->setUpDocHeader($request, $view);
+        }
+        $settings = EmConfigurationUtility::getEmConf(false);
+        $query = $request->getQueryParams();
+        if (is_array($query)) {
+            $view->assignMultiple(
+                [
+                    'id' => $query['id'] ?? '0',
+                    'uid' => $query['uid'] ?? '0',
+                ],
+            );
+            if (isset($query['uid'])) {
+                $view->assign('plugin', $this->questionnaireRepository->findByUid($query['uid']));
+
+                $view->assign('fileName', $fileName);
+                var_dump(json_encode($settings['exportCsvInterval'] ?? []));
+                die;
+            }
+        }
+        return $this->exportAction($request, $view);
     }
 
     public function analyseAction(ServerRequestInterface $request, $view): ResponseInterface

@@ -1,0 +1,43 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+<f:layout name="Backend" />
+
+<f:section name="main">
+	<f:be.pageRenderer
+			includeJavaScriptModules="{
+         0: '@jvelletti/kequestionnaire/ExportCsv.js'
+      }"
+	/>
+	<f:if condition="{id}">
+		<f:then>
+			<f:if condition="{plugin}">
+				<f:then>
+					<h2><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf:list.header" /></h2>
+					<div class="module_list">
+						'{plugin.header}' (Pid: {plugin.storagePid})<br />
+					</div>
+					<div class="progress my-2">
+						<div id="kequest_export-progress"  class="progress-bar progress-bar-success p-1"  role="progressbar" aria-valuenow="0"
+							 aria-valuemin="0" aria-valuemax="{plugin.countResults}" style="width: 0%">
+							0%
+						</div>
+					</div>
+					<div class="my-2">
+						FileName: <b>{fileName}</b>
+					</div>
+					<button class="btn btn-primary" id="kequest_export-start" data-url="{be:moduleLink(route:'kequestionnairebe_exportcsvinterval', arguments: '{function: \'exportcsvinterval\',moduleData: \'exportcsvinterval\',id: plugin.storagePid, uid: plugin.uid}')}" data-uid="{plugin.uid}" data-target="{fileName}" >Start</button>
+
+				</f:then>
+				<f:else>
+					<div class="alert alert-warning">
+						 questionnaire not found
+					</div>
+				</f:else>
+			</f:if>
+		</f:then>
+		<f:else>
+			<div class="module_list">
+				<h4>Select page in Pagetree on the left side.</h4>
+			</div>
+		</f:else>
+	</f:if>
+</f:section>
