@@ -69,6 +69,12 @@ return [
         'access' => 'user',
         'name' => 'kequestionnairebe_export',
     ],
+    'kequestionnairebe_download' => [
+        'path' => '/kequestionnairebe/download',
+        'target' => BackendController::class . '::downloadAction',
+        'access' => 'user',
+        'name' => 'kequestionnairebe_download',
+    ],
     'kequestionnairebe_analyse' => [
         'path' => '/kequestionnairebe/analyse',
         'target' => BackendController::class . '::analyseAction',

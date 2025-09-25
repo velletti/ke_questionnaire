@@ -22,9 +22,11 @@
 						</div>
 					</div>
 					<div class="my-2">
-						FileName: <b>{fileName}</b>
+						FileName: <b>{fileName}</b> <br>
+						Bytes: <b><span id="kequest_export-fileinfo">0</span></b>
 					</div>
-					<button class="btn btn-primary" id="kequest_export-start" data-url="{be:moduleLink(route:'kequestionnairebe_exportcsvinterval', arguments: '{function: \'exportcsvinterval\',moduleData: \'exportcsvinterval\',id: plugin.storagePid, uid: plugin.uid}')}" data-uid="{plugin.uid}" data-target="{fileName}" >Start</button>
+					<button id="kequest_export-start" class="btn btn-primary"  data-url="{be:moduleLink(route:'kequestionnairebe_exportcsvinterval', arguments: '{function: \'exportcsvinterval\',moduleData: \'exportcsvinterval\',id: plugin.storagePid, uid: plugin.uid}')}" data-uid="{plugin.uid}" data-target="{fileName}" >Start</button>
+					<a id="kequest_export-download" class="btn btn-secondary d-none" href="{be:moduleLink(route:'kequestionnairebe_download', arguments: '{function: \'download\',moduleData: \'kequestionnairebe_download\',id: plugin.storagePid, uid: plugin.uid}')}" >Download</a>
 
 				</f:then>
 				<f:else>

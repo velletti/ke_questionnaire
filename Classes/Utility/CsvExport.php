@@ -137,7 +137,17 @@ class CsvExport {
      $this->resultQuestionRepository = $resultQuestionRepository;
      $this->resultAnswerRepository = $resultAnswerRepository;
  }
-	
+
+ public function init() {
+        // todo: rebuild to read it from settings array
+        $this->setSeparator(';');
+        $this->setText('"');
+        $this->setSingleMarker('X');
+        $this->setShowQText(true);
+        $this->setShowAText(true);
+        $this->setTotalPoints(true);
+        $this->setQuestionPoints(true);
+ }
 	
 	/**
 	 * Getter Separator

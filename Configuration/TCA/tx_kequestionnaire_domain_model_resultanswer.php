@@ -108,6 +108,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_answer',
+                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_answer.pid = ###CURRENT_PID### ',
                 'minitems' => 1,
                 'maxitems' => 1,
             ),
@@ -164,6 +165,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultquestion',
+                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_resultquestion.pid = ###CURRENT_PID### ',
                 'maxitems' => 1,
             )
         ),

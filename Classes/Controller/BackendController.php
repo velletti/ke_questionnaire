@@ -6,23 +6,33 @@ namespace Kennziffer\KeQuestionnaire\Controller;
 
 use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
 use Kennziffer\KeQuestionnaire\Utility\EmConfigurationUtility;
+use Kennziffer\KeQuestionnaire\Utility\CsvExport;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
+use Kennziffer\KeQuestionnaire\Utility\Mail;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
-use \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
+
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use Kennziffer\KeQuestionnaire\Utility\Mail;
+
 use TYPO3\CMS\Fluid\View\StandaloneView;
+
 
 class BackendController
 {
@@ -30,8 +40,10 @@ class BackendController
     protected QuestionnaireRepository $questionnaireRepository;
     protected AuthCodeRepository $authCodeRepository;
     protected FlashMessageQueue $flashMessageQueue;
+
     protected FlexFormService $flexFormService;
     CONST MESSAGE_QUEUE_IDENTIFIER = 'kequestionnairebe';
+    protected $pathName = 'typo3temp/ke_questionnaire';
 
     public function __construct(        ModuleTemplateFactory $moduleTemplateFactory,
                                         PageRenderer $pageRenderer,
@@ -68,6 +80,9 @@ class BackendController
                 ),
                 'export' => htmlspecialchars(
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:export')
+                ),
+                'download' => htmlspecialchars(
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:download')
                 ),
                 'analyse' => htmlspecialchars(
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:analyse')
@@ -129,6 +144,13 @@ class BackendController
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.exportcsv')
                 );
                 return $this->exportCsvIntervalAction($request, $moduleTemplate);
+            case 'download':
+            case 'kequestionnairebe_download':
+                $moduleTemplate->setTitle(
+                    $title,
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.download')
+                );
+                return $this->downloadAction($request, $moduleTemplate);
 
             case 'analyse':
                 $moduleTemplate->setTitle(
@@ -433,6 +455,10 @@ class BackendController
                 return $view->renderResponse('Backend/ExportCsv');
             }
         }
+        if (!file_exists(Environment::getPublicPath() . '/' . $this->pathName)) {
+            mkdir(Environment::getPublicPath() . '/' . $this->pathName, 0777);
+            chmod(Environment::getPublicPath() . '/' . $this->pathName, 0777);
+        }
         return $this->exportAction($request, $view);
     }
 
@@ -445,28 +471,97 @@ class BackendController
         }
         $settings = EmConfigurationUtility::getEmConf(false);
         $query = $request->getQueryParams();
+        $body = $request->getParsedBody();
+        $moduleData = $request->getAttribute('moduleData');
+        $responseFactory = GeneralUtility::makeInstance(ResponseFactoryInterface::class) ;
         if (is_array($query)) {
-            $view->assignMultiple(
-                [
-                    'id' => $query['id'] ?? '0',
-                    'uid' => $query['uid'] ?? '0',
-                ],
-            );
-            if (isset($query['uid'])) {
-                $view->assign('plugin', $this->questionnaireRepository->findByUid($query['uid']));
+            // plugin uid and page id must given
+            if (isset($query['uid']) && isset($query['id'])) {
+                $fileNameCheck = 'export_' . $query['uid'] . '_' . date('Ymd') ;
+                $pluginObj = $this->questionnaireRepository->findByUid($query['uid']);
+                $plugin['pages'] = $query['id'];
+                $plugin['header'] = $pluginObj->getHeader();
 
-                $view->assign('fileName', $fileName);
-                var_dump(json_encode($settings['exportCsvInterval'] ?? []));
-                die;
+                if ( str_starts_with( $query['target'] ?? '' , $fileNameCheck ) ) {
+                    $fileName = $query['target'] ;
+                    /** @var ResultRepository $resultRepository */
+                    $resultRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository::class);
+
+                    /** @var CsvExport $csvExport */
+                    $csvExport = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Utility\CsvExport::class);
+                    $csvExport->init() ;
+
+                    if (isset($query['current']) && isset($query['max'])) {
+                        $current = (int)$query['current'];
+                        $max = (int)$query['max'];
+
+                        // now do  the magic export for $current
+
+                        $oldContent = '' ;
+                        if(file_exists(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName)) {
+                            $oldContent = file_get_contents(Environment::getPublicPath() . '/' .$this->pathName ."/". $fileName);
+                        }
+                        if( $query['onlyFinished'] ) {
+                            $csvExport->setResults($resultRepository->findFinishedForPidInterval($this->storagePid, 1, $current));
+                            $csvExport->setResultsRaw($resultRepository->findFinishedForPidIntervalRaw($this->storagePid, 1, $current));
+                        } else {
+                            $csvExport->setResults($resultRepository->findAllForPidInterval( $query['id'] , 1, $current));
+                            $csvExport->setResultsRaw($resultRepository->findAllForPidIntervalRaw( $query['id'] , 1, $current));
+                        }
+
+                        $csvContent = $csvExport->processQbIntervalExport($plugin , $oldContent);
+                        //clear the file
+                        $csvFile = fopen(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName, 'w+b');
+                        //write the js
+                        fwrite($csvFile, $csvContent);
+                        fclose($csvFile);
+                        chmod(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName, 0777);
+
+
+                        $current++ ;
+                    } else {
+                        $current = 0;
+                        $max = 0;
+                    }
+                    $data = [
+                        'current' => $current ,
+                        'max' => $max,
+                        'message' => ( $current <= $max ? 'running' : 'finished' ),
+                        'finished' => ( $current <= $max ? false : true ),
+                        'success' => true,
+                        'length' => strlen($csvContent ?? '' ),
+                    ] ;
+
+                } else {
+                    $data = [
+                        'current' => $current ,
+                        'max' => $max,
+                        'message' => 'ERROR: given filename ' . $query['target']  . ' should start with ' . $fileNameCheck ,
+                        'finished' => true ,
+                        'success' => false,
+                    ] ;
+                }
+
+
+                $response = $responseFactory->createResponse()
+                    ->withHeader('Content-Type', 'application/json; charset=utf-8');
+                $response->getBody()->write(json_encode($data));
+                return $response;
             }
         }
         return $this->exportAction($request, $view);
     }
 
+    public function downloadAction(ServerRequestInterface $request, $view): ResponseInterface
+    {
+        // Implement logic for the analyse action
+        return $view->renderResponse('Backend/Download');
+    }
+
     public function analyseAction(ServerRequestInterface $request, $view): ResponseInterface
     {
         // Implement logic for the analyse action
-        return $moduleTemplate->renderContent('Analyse action executed.');
+        return $view->renderResponse('Backend/Analyze');
     }
 
     public function indexAction(ServerRequestInterface $request, $view): ResponseInterface

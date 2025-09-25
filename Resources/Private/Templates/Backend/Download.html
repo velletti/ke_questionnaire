@@ -1,0 +1,15 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+<f:layout name="Backend" />
+
+<f:section name="main">
+	<f:if condition="{id}">
+		<f:then>
+			Download started ..
+		</f:then>
+		<f:else>
+			<div class="module_list">
+				<h4>Select page in Pagetree on the left side.</h4>
+			</div>
+		</f:else>
+	</f:if>
+</f:section>

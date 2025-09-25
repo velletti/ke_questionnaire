@@ -107,6 +107,8 @@ return array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultanswer',
                 'foreign_field' => 'resultquestion',
+                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_resultanswer.pid = ###CURRENT_PID### ',
+
                 'maxitems'      => 9999,
                 'appearance' => array(
                     'collapseAll' => 1,
@@ -124,6 +126,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_question',
+                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_question.pid = ###CURRENT_PID### ',
                 'minitems' => 1,
                 'maxitems' => 1,
             ),

@@ -7,6 +7,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Domain\Repository\RangeRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 
 /***************************************************************
  *  Copyright notice
@@ -63,10 +66,7 @@ class RangeViewHelper extends AbstractViewHelper {
      */
 	private $result ;
 
-	public function __construct()
- {
- }
-	
+
 	/**
 	 * ranges
 	 *
@@ -74,10 +74,21 @@ class RangeViewHelper extends AbstractViewHelper {
 	 */
 	protected $ranges;
 
+    private ConfigurationManagerInterface $configurationManager;
+    private ContentObjectRenderer $contentObject;
+
+    public function __construct(
+        ConfigurationManagerInterface $configurationManager,
+        ContentObjectRenderer $contentObject
+    ) {
+        $this->configurationManager = $configurationManager;
+        $this->contentObject = $contentObject;
+    }
+
     /** * Constructor *
      * @api */
     public function initializeArguments(): void {
-        $this->registerArgument('questionnaire', '\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question', ' The questionnaire ', true );
+        $this->registerArgument('questionnaire', 'Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire', ' The questionnaire ', true );
         $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
         $this->registerArgument('as', 'string', 'the string the name of the iteration variable  ', false );
         parent::initializeArguments() ;
@@ -143,10 +154,8 @@ class RangeViewHelper extends AbstractViewHelper {
   * @return QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
   */
  private function getRanges(){
-		$this->configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-		$this->contentObj = $this->request->getAttribute('currentContentObject');
-		$uid = $this->contentObj->data['uid'] ;
 
+		$uid = $this->contentObject->data['uid'] ;
 		$this->questionnaire = $this->questionnaire->loadFullObject($this->contentObj->data['uid']);
 		/** @var RangeRepository $rep */
   $rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\RangeRepository');
