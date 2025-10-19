@@ -51,8 +51,8 @@ class ExportCsv {
                 if (data.success) {
                     if (data.finished) {
                         alert(data.message);
-                        document.querySelector("#kequest_export-start").addClass('d-none');
-                        document.querySelector("#kequest_export-download").removeClass('d-none');
+                        document.querySelector("#kequest_export-start").classList.add('d-none');
+                        document.querySelector("#kequest_export-download").classList.remove('d-none');
                     } else {
                         this.LoopUntilFinished(button, data.current, max); // Update current from response
                     }
@@ -62,7 +62,7 @@ class ExportCsv {
             })
             .catch(error => {
                 console.error('Error exporting CSV:', error);
-                alert('An error occurred while exporting the CSV.');
+                alert('An error occurred while exporting the CSV. See browser console for details.');
             })
             .finally(() => {
                 button.classList.remove('loading');

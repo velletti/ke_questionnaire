@@ -360,6 +360,9 @@
 			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.answer" resname="tx_kequestionnaire_domain_model_resultanswer.answer" >
 				<source>Answer</source>
 			</trans-unit>
+            <trans-unit id="tx_kequestionnaire_domain_model_resultanswer.resultquestion" resname="tx_kequestionnaire_domain_model_resultanswer.resultquestion" >
+                <source>Question</source>
+            </trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_resultanswer.value" resname="tx_kequestionnaire_domain_model_resultanswer.value" >
 				<source>Value</source>
 			</trans-unit>

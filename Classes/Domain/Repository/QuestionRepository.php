@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -66,10 +69,11 @@ class QuestionRepository extends Repository {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
         $constraints[] = $query->equals('pid', $pid) ;
-        $constraints[] = $query->logicalNot(
-            $query->equals('type', "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak") ) ;
+      //  $constraints[] = $query->logicalNot(
+      //      $query->equals('type', "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak") ) ;
 
         $query->matching($query->logicalAnd(...$constraints));
+        $this->log( __METHOD__ , $query );
         return $query->execute();
     }
 
@@ -131,5 +135,25 @@ class QuestionRepository extends Repository {
 
 	   return $question;
    }
+
+    private function log( $method , \TYPO3\CMS\Extbase\Persistence\QueryInterface $query ){
+        if ( str_ends_with($_SERVER['SERVER_NAME'] , 'ddev.site' )){
+            $fn =fopen( Environment::getProjectPath() . '/var/log/keq.log' , 'a+' );
+            if ( $fn ){
+                $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
+
+                $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
+                $values = ($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+                foreach (array_reverse( $values ) as $key => $value) {
+                    $from[] = ":" .$key ;
+                    $to[] = "'" . $value . "'" ;
+                }
+                $sqlFinalQuery = str_replace($from , $to , (string) $sqlquery ) ;
+
+
+                fwrite( $fn , date('Y-m-d H:i:s') . ' ' . $method . ' SQL: ' . $sqlFinalQuery . PHP_EOL . PHP_EOL  );
+                fclose( $fn );
+            }
+        }
+    }
 }
-?>

@@ -37,18 +37,4 @@ return [
         'path' => '/kequestionnairebe/export', // Matches the route path in Routes.php
         'iconIdentifier' => 'kequestionnaire-export-plugin',
     ],
-    'kequestionnairebe_download' => [
-        'parent' => 'kequestionnairebe' ,
-        'position' => ['after' => 'kequestionnairebe_authcodes'],
-        'access' => 'user',
-        'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf',
-        'extensionName' => 'KeQuestionnaire',
-        'routes' => [
-            '_default' => [
-                'target' => BackendController::class . '::handleRequest',
-            ],
-        ],
-        'path' => '/kequestionnairebe/download', // Matches the route path in Routes.php
-        'iconIdentifier' => 'kequestionnaire-download-plugin',
-    ],
 ];

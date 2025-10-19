@@ -5,7 +5,7 @@ if (!defined ('TYPO3')) {
 
 return array(
     'ctrl' => array(
-        'title'	=> 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer',
+        'title'	=> 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer',
         'label' => 'answer',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -26,7 +26,7 @@ return array(
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/resultanswer.svg'
     ),
     'types' => array(
-        '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, answer,value,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+        '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, resultquestion,answer,value,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -103,7 +103,7 @@ return array(
         ),
         'answer' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer.answer',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer.answer',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -115,7 +115,7 @@ return array(
         ),
         'value' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer.value',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer.value',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -124,7 +124,7 @@ return array(
         ),
         'col' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer.col',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer.col',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -133,7 +133,7 @@ return array(
         ),
         'clone' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer.clone',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer.clone',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -142,7 +142,7 @@ return array(
         ),
         'clone_title' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer.clone_title',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer.clone_title',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -151,7 +151,7 @@ return array(
         ),
         'additional_value' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer.additional_value',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer.additional_value',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -160,7 +160,7 @@ return array(
         ),
         'resultquestion' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_resultanswer.resultquestion',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultanswer.resultquestion',
             'config' => Array (
                 'type' => 'select',
                 'renderType' => 'selectSingle',

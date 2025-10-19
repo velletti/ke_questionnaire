@@ -1,6 +1,10 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
@@ -122,8 +126,11 @@ class ResultRepository extends Repository {
 		$query->matching($query->equals('pid', $pid));
 		$query->setLimit($interval);
 		$query->setOffset($position);
+        $this->log(__FUNCTION__ , $query  );
 		return $query->execute();
 	}
+
+
 	
 	/**
 	 * find all results for pid
@@ -137,7 +144,7 @@ class ResultRepository extends Repository {
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
 		$query->matching($query->equals('pid', $pid));
-		
+        $this->log(__FUNCTION__ , $query  );
 		return $query->execute(true);
 	}
         
@@ -159,6 +166,7 @@ class ResultRepository extends Repository {
 		$query->matching($query->equals('pid', $pid));
 		$query->setLimit($interval);
 		$query->setOffset($position);
+        $this->log(__FUNCTION__ , $query  );
 		return $query->execute(true);
 	}
     
@@ -225,11 +233,13 @@ class ResultRepository extends Repository {
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->setLimit($interval);
 		$query->setOffset($position);
-		return $query->matching(
+		$query->matching(
 				$query->logicalAnd(
                     $query->greaterThan('finished', 0)
                     , $query->equals('pid', $pid)
-                ))->execute();
+                )) ;
+        $this->log(__FUNCTION__ , $query  );
+        return  $query->execute();
 	}
         
         /**
@@ -249,11 +259,13 @@ class ResultRepository extends Repository {
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->setLimit($interval);
 		$query->setOffset($position);
-		return $query->matching(
+		$query->matching(
 				$query->logicalAnd(
                     $query->greaterThan('finished', 0)
                     , $query->equals('pid', $pid)
-                ))->execute(true);
+                ));
+     $this->log(__FUNCTION__ , $query  );
+     return $query->execute(true);
 	}
     
     /**
@@ -354,7 +366,33 @@ tx_kequestionnaire_domain_model_resultquestion on
 tx_kequestionnaire_domain_model_resultanswer.resultquestion = tx_kequestionnaire_domain_model_resultquestion.uid
 where 
 tx_kequestionnaire_domain_model_resultquestion.result ='.$resultId);
+
 		return $query->execute(true);
 	}
+    private function log( $method , \TYPO3\CMS\Extbase\Persistence\QueryInterface $query ){
+        if ( str_ends_with($_SERVER['SERVER_NAME'] , 'ddev.site' ) || file_exists(Environment::getProjectPath() . '/var/log/_ENABLE_KEQLOG_') ){
+            $fn =fopen( Environment::getProjectPath() . '/var/log/keq.log' , 'a+' );
+            if ( $fn ){
+                /* @var Typo3DbQueryParser $queryParser  */
+                $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
+
+                $sqlqueryParsed = $queryParser->convertQueryToDoctrineQueryBuilder($query) ;
+                if ($sqlqueryParsed ) {
+                    $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
+                    $values = ($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+                    foreach (array_reverse( $values ) as $key => $value) {
+                        $from[] = ":" .$key ;
+                        $to[] = "'" . $value . "'" ;
+                    }
+                    $sqlFinalQuery = str_replace($from , $to , (string) $sqlquery ) ;
+
+
+                    fwrite( $fn , date('Y-m-d H:i:s') . ' Method: "' . $method . '" SQL: '. PHP_EOL  . $sqlFinalQuery . PHP_EOL . PHP_EOL  );
+                    fwrite( $fn , $query->count() . ' records found ' . PHP_EOL . PHP_EOL  );
+                    fclose( $fn );
+                }
+
+            }
+        }
+    }
 }
-?>

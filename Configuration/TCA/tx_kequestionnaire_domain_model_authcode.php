@@ -4,7 +4,7 @@ if (!defined ('TYPO3')) {
 }
 return array(
     'ctrl' => array(
-        'title'	=> 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_authcode',
+        'title'	=> 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode',
         'label' => 'auth_code',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -94,7 +94,7 @@ return array(
         ),
         'auth_code' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_authcode.auth_code',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.auth_code',
             'config' => Array (
                 'type'	 => 'input',
                 'size'	 => '100',
@@ -103,7 +103,7 @@ return array(
         ),
         'email' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_authcode.email',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.email',
             'config' => Array (
                 'type'	 => 'input',
                 'size'	 => '100',
@@ -122,7 +122,7 @@ return array(
         ),
         'lastreminder' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_authcode.lastreminder',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.lastreminder',
             'config' => array(
                 'type' => 'datetime',
                 'size' => 13,
@@ -135,7 +135,7 @@ return array(
         ),
         'firstactive' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_authcode.firstactive',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.firstactive',
             'config' => array(
                 'type' => 'datetime',
                 'size' => 13,

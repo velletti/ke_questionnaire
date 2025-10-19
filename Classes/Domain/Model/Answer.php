@@ -455,23 +455,32 @@ class Answer extends AbstractEntity {
 		foreach ($results as $result){
 			// $rAnswer = $result->getAnswer($question->getUid(), $this->getUid());
                         $rQuestion = $repRQ->findByQuestionAndResultIdRaw($question, $result['uid']);
+            $repRA->logToFile( "Result " . $result['uid'] . " => result Question: " . $rQuestion[0]['uid'] );
 						// $rAnswer = $repRA->findForResultQuestionRaw($rQuestion[0]['uid'] );
 			//JVE: Jörg velletti BUG
                         $rAnswer = $repRA->findForResultQuestionAndAnswerRaw($rQuestion[0]['uid'] , $this->getUid());
-
+            $repRA->logToFile( 'Method:"getCsvLineValues" - Answer:' . $this->getUid() . " => result Answer: " .( isset( $rAnswer[0]['uid'] ) ? $rAnswer[0]['uid'] : 'n/a' ) );
                         $rAnswer = $rAnswer[0];
+
                         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($rQuestion, 'rQuestion');
                         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($rAnswer, 'rAnswer');
                         //exit;
 			if ($rAnswer) {
-				$aL[] = $this->getCsvValueRaw($rAnswer,$options);
-				if ($rAnswer AND $rAnswer['additionalValue']){
+                //$aL[] = $this->getCsvValueRaw($rAnswer,$options);
+                $aL[] = $rAnswer['value'];
+                $repRA->logToFile( 'got Answer:' . var_export($rAnswer['uid'] , true ) . " value: " . $rAnswer['value'] . " => CsvValue: " . $this->getCsvValueRaw($rAnswer,$options)  );
+                if ( !empty($rAnswer['additionalValue'] )){
+                    $repRA->logToFile( 'But has additionalValue: ' . $rAnswer['additionalValue'] );
 					$addL[count($aL)-1] = $rAnswer['additionalValue'];
 					$hasAddL = true;
 				};
-			} else $aL[] = '';
+			} else {
+                $repRA->logToFile( "got NO Answer "  );
+                $aL[] = '' ;
+            };
 		}		
 		if (is_array($aL)){
+            $repRA->logToFile( "AnswerLine Array: " . var_export( $aL , true) );
 			//insert text-markers
 			foreach ($aL as $nr => $value){
 				if (!is_numeric($value)) $aL[$nr] = $options['textMarker'].$value.$options['textMarker'];
@@ -490,7 +499,7 @@ class Answer extends AbstractEntity {
 				$line .= implode($options['separator'],$addLine);
 			}
 		}
-		
+     $repRA->logToFile( "Final AnswerLine  " . $line );
 		return $line;
 	}
 	

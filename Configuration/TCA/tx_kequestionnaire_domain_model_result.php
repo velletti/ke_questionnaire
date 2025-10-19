@@ -5,7 +5,7 @@ if (!defined ('TYPO3')) {
 
 return  array(
     'ctrl' => array(
-        'title'	=> 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_result',
+        'title'	=> 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result',
         'label' => 'finished',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -102,7 +102,7 @@ return  array(
         ),
         'finished' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_result.finished',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.finished',
             'config' => array(
                 'type' => 'number',
                 'size' => 4
@@ -110,7 +110,7 @@ return  array(
         ),
         'questions' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_result.questions',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.questions',
             'config' => array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultquestion',
@@ -127,7 +127,7 @@ return  array(
         ),
         'points' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_result.points',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.points',
             'config' => array(
                 'type' => 'number',
                 'size' => 4
@@ -135,7 +135,7 @@ return  array(
         ),
         'max_points' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_result.max_points',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.max_points',
             'config' => array(
                 'type' => 'number',
                 'size' => 4
@@ -143,7 +143,7 @@ return  array(
         ),
         'fe_user' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_result.fe_user',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.fe_user',
             'config' => array(
                 'type' => 'group',
                 'allowed' => 'fe_users',
@@ -153,7 +153,7 @@ return  array(
         ),
         'auth_code' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xml:tx_kequestionnaire_domain_model_result.auth_code',
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.auth_code',
             'config' => array(
                 'type' => 'group',
                 'allowed' => 'tx_kequestionnaire_domain_model_authcode',

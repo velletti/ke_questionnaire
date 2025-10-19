@@ -428,7 +428,7 @@ class BackendController
                 ],
             );
         }
-        $view->assign('questionnaires',$this->questionnaireRepository->findAll());
+        $view->assign('questionnaires',$this->questionnaireRepository->findByStoragePid($query['id']));
         return $view->renderResponse('Backend/Export');
     }
 
@@ -502,10 +502,10 @@ class BackendController
                             $oldContent = file_get_contents(Environment::getPublicPath() . '/' .$this->pathName ."/". $fileName);
                         }
                         if( $query['onlyFinished'] ) {
-                            $csvExport->setResults($resultRepository->findFinishedForPidInterval($this->storagePid, 1, $current));
+                        //    $csvExport->setResults($resultRepository->findFinishedForPidInterval($this->storagePid, 1, $current));
                             $csvExport->setResultsRaw($resultRepository->findFinishedForPidIntervalRaw($this->storagePid, 1, $current));
                         } else {
-                            $csvExport->setResults($resultRepository->findAllForPidInterval( $query['id'] , 1, $current));
+                        //    $csvExport->setResults($resultRepository->findAllForPidInterval( $query['id'] , 1, $current));
                             $csvExport->setResultsRaw($resultRepository->findAllForPidIntervalRaw( $query['id'] , 1, $current));
                         }
 
@@ -552,10 +552,20 @@ class BackendController
         return $this->exportAction($request, $view);
     }
 
-    public function downloadAction(ServerRequestInterface $request, $view): ResponseInterface
+    public function downloadAction(ServerRequestInterface $request ): ResponseInterface
     {
-        // Implement logic for the analyse action
-        return $view->renderResponse('Backend/Download');
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
+        $this->setUpDocHeader($request, $view);
+
+        $message = GeneralUtility::makeInstance(FlashMessage::class,
+            "See downloads folder in your browser " ,
+            '',
+            FlashMessage::OK
+        );
+        $this->flashMessageQueue->addMessage($message);
+
+        return $this->exportAction($request, $view);
     }
 
     public function analyseAction(ServerRequestInterface $request, $view): ResponseInterface

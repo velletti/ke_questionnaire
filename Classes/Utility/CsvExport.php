@@ -1,6 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
 
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
@@ -8,6 +10,8 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\Question;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -586,16 +590,7 @@ class CsvExport {
 			$rL[] = $result['uid'];
 			$rL[] = '';			
 			$rAnswers = $this->resultRepository->collectRAnswersForCSVRBExport($result['uid']);
-			//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($rAnswers, 'ranswers');
 			foreach ($this->RBStruct as $questionId => $answers){
-				//$resultQuestion = $this->resultQuestionRepository->findByQuestionIdAndResultIdRaw($questionId, $result['uid']);
-				//$resultQuestion = $resultQuestion[0];
-				//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($resultQuestion, 'rQ');
-				/*foreach ($answers as $answerId => $val){
-					$resultAnswer = $this->resultAnswerRepository->findForResultQuestionAndAnswerRaw($resultQuestion['uid'],$answerId);
-					if ($resultAnswer['value'] == $answerId) $rL[] = $this->getSingleMarker();
-					else $rL[] = '';
-				}*/
 				$exportAnswers = array();
 				foreach($rAnswers as $rA){
 					if ($rA['q_uid'] == $questionId){
@@ -608,8 +603,7 @@ class CsvExport {
 						}
 					}
 				}
-				//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($exportAnswers, 'Eanswers');
-				
+
 				foreach ($answers as $answerId => $aVal){
 					$val = '';
 					if ($exportAnswers[$answerId]) {
@@ -635,7 +629,6 @@ class CsvExport {
 		$storagePid = $pids[0];
 		
 		$questions = $this->questionRepository->findAllForPidtoExport($storagePid);
-		
 		return $questions;
 	}
 	
@@ -681,10 +674,11 @@ class CsvExport {
 		$lines = '';
 		$questions = $this->getQuestions($plugin);
 		$counter = 0;
-		
-		foreach ($questions as $question){			
+		foreach ($questions as $question){
 			if ($question->getShortType() == 'Question'){
 				foreach ($question->getAnswers() as $answer){
+
+                    /** @var Answer $answer */
 					if ($answer->exportInCsv()){
 						$options = array();
 						$options['marker'] = $this->getSingleMarker();
@@ -693,38 +687,21 @@ class CsvExport {
 						$options['newline'] = $this->newline;
 						$options['emptyFields'] = 0;
 						$options['showAText'] = $this->getShowAText();
-						if ($answer->getShortType() == 'MatrixHeader' OR $answer->getShortType() == 'ExtendedMatrixHeader'){
-							$answerLine = $answer->getCsvLineValues($this->results,$question, $options, $oldArray, $counter);							
-							$addLines = explode($this->newline,$answerLine);							
-							foreach ($addLines as $mLineId => $mLineValue){
-								if (!is_numeric($mLineValue)) $mAnswerLine = $this->getText().$mLineValue.$this->getText().$this->newline;
-								else $mAnswerLine = $mLineValue.$this->newline;
-								$oldValues = '';
-								if (is_array($oldArray[$counter])){
-									//$oldValues = implode($this->getSeparator(),$oldArray[$counter]);
-									foreach ($oldArray[$counter] as $col => $val){
-										$oldValues .= $this->getText().$val.$this->getText();
-										$oldValues .= $this->getSeparator ();
-									}
-								}
-								if ($oldValues != '') $lines .= $oldValues.$mAnswerLine;
-								else $lines .= $mAnswerLine;
-								$counter ++;
-							}
-						} else {
-							$answerLine = $answer->getCsvLineValues($this->resultsRaw,$question, $options);	
-							$oldValues = '';
-							if (is_array($oldArray[$counter])){
-								//$oldValues = implode($this->getSeparator(),$oldArray[$counter]);
-								foreach ($oldArray[$counter] as $col => $val){
-									$oldValues .= $this->getText().$val.$this->getText();
-									$oldValues .= $this->getSeparator ();
-								}
-							}
-							if ($oldValues != '') $lines .= $oldValues.$answerLine;
-							else $lines .= $answerLine;
-							$counter ++;
-						}
+                        $answerLine = $answer->getCsvLineValues($this->resultsRaw,$question, $options);
+                        $oldValues = '';
+                        if (is_array($oldArray[$counter])){
+                            //$oldValues = implode($this->getSeparator(),$oldArray[$counter]);
+                            foreach ($oldArray[$counter] as $col => $val){
+                                $oldValues .= $this->getText().$val.$this->getText();
+                                $oldValues .= $this->getSeparator ();
+                            }
+                        }
+                        if ($oldValues != '') {
+                            $lines .= $oldValues . $answerLine;
+                        } else {
+                            $lines .= $answerLine;
+                        }
+                        $counter ++;
 					}
 				}
 			}
@@ -886,4 +863,5 @@ class CsvExport {
 		}
 		return $lines;
 	}
+    
 }
