@@ -83,14 +83,6 @@
 				<source>Number all questions</source>
 				<target>Alle Fragen Nummerieren</target>
 			</trans-unit>
-			<trans-unit id="settings.questionNumbering.undependantQuestions" resname="settings.questionNumbering.undependantQuestions"  approved="yes">
-				<source>Number only independant questions</source>
-				<target>Nur unabhängige Fragen nummerieren</target>
-			</trans-unit>
-			<trans-unit id="settings.questionNumbering.groupedQuestions" resname="settings.questionNumbering.groupedQuestions"  approved="yes">
-				<source>Number questions in groups</source>
-				<target>Alle Fragen in Gruppen nummerieren</target>
-			</trans-unit>
 			<trans-unit id="settings.navigationType" resname="settings.navigationType"  approved="yes">
 				<source>Additional navigation</source>
 				<target>Zusätzliche Navigation</target>
@@ -174,10 +166,6 @@
 			<trans-unit id="settings.redirectFinished" resname="settings.redirectFinished"  approved="yes">
 				<source>Redirect-page after submitting the questionnaire</source>
 				<target>Weiterleitung, wenn die Beantwortung beendet wurde</target>
-			</trans-unit>
-			<trans-unit id="settings.dependancy.questionnaire" resname="settings.dependancy.questionnaire"  approved="yes">
-				<source>Dependancy: required submitted questionnaire</source>
-				<target>Abhängigkeit: benötigt abgeschlossenen Fragebogen</target>
 			</trans-unit>
 			<trans-unit id="settings.dependancy.points" resname="settings.dependancy.points"  approved="yes">
 				<source>Dependancy: required points in questionnaire, if 0 it only needs to be finished</source>

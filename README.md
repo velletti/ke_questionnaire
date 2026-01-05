@@ -51,7 +51,7 @@ Things i have done:
 
 - could be still compatible with premium Version of ke_questionnaire (if there is new version), but i did not test this.
 - Not tested with older Versions of TYPO3
-- Not tested dependencies and ranges as not used in my projects
+- removed  dependencies and ranges as not used in my projects
 - Fixed a bug in Export-as-csv file, to allow excel to open the file directly instead of need to open file in Excel as TXT File, select charset etc.
 
 - moved settings.showAvarage to access tab because in layout tab the display conditions does not work as with settings.accessType

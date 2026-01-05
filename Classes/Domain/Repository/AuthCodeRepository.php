@@ -60,8 +60,16 @@ class AuthCodeRepository extends Repository {
 		$pid_cond = $query->equals('pid', $pid);
 		$code_cond = $query->equals('auth_code',$code);
 		$query->matching($query->logicalAnd(...[$pid_cond, $code_cond]));
-		return $query->execute();
+		return $query->execute()->getFirst();
 	}
+    public function findByAuthCodeIdForPid($uid, $pid){
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $pid_cond = $query->equals('pid', $pid);
+        $code_cond = $query->equals('uid',$uid);
+        $query->matching($query->logicalAnd(...[$pid_cond, $code_cond]));
+        return $query->execute()->getFirst();
+    }
 	
 	/**
 	 * find all results for pid

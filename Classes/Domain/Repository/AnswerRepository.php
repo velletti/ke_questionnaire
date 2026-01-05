@@ -90,7 +90,7 @@ class AnswerRepository extends Repository {
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->matching($query->equals('uid', $uid));
         $result = $query->execute();
-        return ($result[0]);
+        return ($result->getFirst());
 	}
 }
 ?>

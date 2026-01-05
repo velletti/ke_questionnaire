@@ -149,7 +149,12 @@ return array(
         ),
         'result' => array(
             'config' => array(
-                'type' => 'passthrough',
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_kequestionnaire_domain_model_resul',
+                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_resul.pid = ###CURRENT_PID### ',
+                'minitems' => 1,
+                'maxitems' => 1,
             ),
         ),
     ),

@@ -37,62 +37,63 @@ use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Question extends AbstractEntity {
+class Question extends AbstractEntity
+{
 
-	/**
-	 * Type
-	 *
-	 * @var string
-	 */
-	protected $type;
-	
-	/**
-	 * Numbering
-	 *
-	 * @var string
-	 */
-	protected $numbering;
-	
-	/**
-	 * Page
-	 *
-	 * @var integer
-	 */
-	protected $page;
-	
-	/**
-  * Group
-  *
-  * @var Group
-  */
- protected $group;
+    /**
+     * Type
+     *
+     * @var string
+     */
+    protected $type;
 
-	/**
-	 * Title
-	 *
-	 * @var string
-	 */
-	protected $title;
+    /**
+     * Numbering
+     *
+     * @var string
+     */
+    protected $numbering;
 
-	/**
-	 * Show title
-	 *
-	 * @var string
-	 */
-	protected $showTitle;
-	/**
-	 * Text
-	 *
-	 * @var string
-	 */
-	protected $text;
+    /**
+     * Page
+     *
+     * @var integer
+     */
+    protected $page;
 
-	/**
-	 * Help Text
-	 *
-	 * @var string
-	 */
-	protected $helpText;
+    /**
+     * Group
+     *
+     * @var Group
+     */
+    protected $group;
+
+    /**
+     * Title
+     *
+     * @var string
+     */
+    protected $title;
+
+    /**
+     * Show title
+     *
+     * @var string
+     */
+    protected $showTitle;
+    /**
+     * Text
+     *
+     * @var string
+     */
+    protected $text;
+
+    /**
+     * Help Text
+     *
+     * @var string
+     */
+    protected $helpText;
 
     /**
      * random answers
@@ -108,277 +109,290 @@ class Question extends AbstractEntity {
      */
     protected $columnCount;
 
-	/**
-  * Image
-  *
-  * @var FileReference
-  */
- protected $image = null;
-
-
-	/**
-	 * Image position
-	 *
-	 * @var string
-	 */
-	protected $imagePosition;
-
-	/**
-	 * Is mandatory
-	 *
-	 * @var boolean
-	 */
-	protected $isMandatory = FALSE;
-
-	/**
-	 * Have the question to be answered correctly?
-	 *
-	 * @var boolean
-	 */
-	protected $mustBeCorrect = FALSE;
-
-	/**
-  * Answers
-  *
-  * @var ObjectStorage<Answer>
-  */
- #[Lazy]
- #[Cascade(['value' => 'remove'])]
- protected $answers;
-    
     /**
-  * Dependancies
-  *
-  * @var ObjectStorage<Dependancy>
-  */
- #[Lazy]
- #[Cascade(['value' => 'remove'])]
- protected $dependancies;
+     * Image
+     *
+     * @var FileReference
+     */
+    protected $image = null;
+
 
     /**
-    * Min answers
-    *
-    * @var int
-	 */
-	protected $minAnswers = 0 ;
+     * Image position
+     *
+     * @var string
+     */
+    protected $imagePosition;
+
+    /**
+     * Is mandatory
+     *
+     * @var boolean
+     */
+    protected $isMandatory = FALSE;
+
+    /**
+     * Have the question to be answered correctly?
+     *
+     * @var boolean
+     */
+    protected $mustBeCorrect = FALSE;
+
+    /**
+     * Answers
+     *
+     * @var ObjectStorage<Answer>
+     */
+    #[Lazy]
+    #[Cascade(['value' => 'remove'])]
+    protected $answers;
+
+
+    /**
+     * Min answers
+     *
+     * @var int
+     */
+    protected $minAnswers = 0;
 
     /**
      * Max answers
      *
      * @var int
      */
-    protected $maxAnswers = 0 ;
+    protected $maxAnswers = 0;
+
+    protected $question;
 
 
     /**
-	 * Css
-	 *
-	 * @var string
-	 */
-	protected $css;
-    
-    /**
-	 * Template
-	 *
-	 * @var string
-	 */
-	protected $template;
-    
-    /**
-	 * Default constructor.
-	 */
-	public function __construct() {
-		// Do not remove the next line: It would break the functionality
-		$this->initStorageObjects();
-	}
+     * Css
+     *
+     * @var string
+     */
+    protected $css;
 
-	/**
-	 * Initializes all ObjectStorage properties.
-	 *
-	 * @return void
-	 */
-	protected function initStorageObjects() {
-		/**
-		 * Do not modify this method!
-		 * It will be rewritten on each save in the extension builder
-		 * You may modify the constructor of this class instead
-		 */
-		$this->answers = new ObjectStorage();
-		$this->dependancies = new ObjectStorage();
+    /**
+     * Template
+     *
+     * @var string
+     */
+    protected $template;
+
+    /**
+     * Default constructor.
+     */
+    public function __construct()
+    {
+        // Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
+    }
+
+    /**
+     * Initializes all ObjectStorage properties.
+     *
+     * @return void
+     */
+    protected function initStorageObjects()
+    {
+        /**
+         * Do not modify this method!
+         * It will be rewritten on each save in the extension builder
+         * You may modify the constructor of this class instead
+         */
+        $this->answers = new ObjectStorage();
 
         $this->image = new ObjectStorage();
-	}
-	
-	/**
-	 * Returns the _localizedUid
-	 *
-	 * @return integer $_localizedUid
-	 */
-	public function getLocalizedUid() {
-		return $this->_localizedUid;
-	}
-	
-	/**
-	 * Returns the type
-	 *
-	 * @return string $type
-	 */
-	public function getType() {
-		return $this->type;
-	}
+    }
 
-	/**
-	 * Sets the type
-	 *
-	 * @param string $type
-	 * @return void
-	 */
-	public function setType($type): void {
-		$this->type = $type;
-	}
-	
-	/**
-	 * Returns the short version of type
-	 * type is the complete class name, but for partials it's better to have shorter type names
-	 *
-	 * @return string $shortType
-	 */
-	public function getShortType() {
-		return substr (strrchr ($this->type, '\\'), 1);
-	}
-	
-	/**
-	 * Returns the page
-	 *
-	 * @return integer $page
-	 */
-	public function getPage() {
-		return $this->page;
-	}
+    /**
+     * Returns the _localizedUid
+     *
+     * @return integer $_localizedUid
+     */
+    public function getLocalizedUid()
+    {
+        return $this->_localizedUid;
+    }
 
-	/**
-	 * Sets the page
-	 *
-	 * @param integer $page
-	 * @return void
-	 */
-	public function setPage($page): void {
-		$this->page = $page;
-	}
-	
-	/**
-	 * Returns the numbering
-	 *
-	 * @return string $numbering
-	 */
-	public function getNumbering() {
-		return $this->numbering;
-	}
+    /**
+     * Returns the type
+     *
+     * @return string $type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 
-	/**
-	 * Sets the numbering
-	 *
-	 * @param string $numbering
-	 * @return void
-	 */
-	public function setNumbering($numbering): void {
-		$this->numbering = $numbering;
-	}
-	
-	/**
-  * Returns the group
-  *
-  * @return Group $group
-  */
- public function getGroup() {
-		return $this->group;
-	}
+    /**
+     * Sets the type
+     *
+     * @param string $type
+     * @return void
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
 
-	/**
-  * Sets the group
-  *
-  * @param Group $group
-  * @return void
-  */
- public function setGroup($group): void {
-		$this->group = $group;
-	}
+    /**
+     * Returns the short version of type
+     * type is the complete class name, but for partials it's better to have shorter type names
+     *
+     * @return string $shortType
+     */
+    public function getShortType()
+    {
+        return substr(strrchr($this->type, '\\'), 1);
+    }
 
-	/**
-	 * Returns the title
-	 *
-	 * @return string $title
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * Returns the page
+     *
+     * @return integer $page
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
 
-	/**
-	 * Sets the title
-	 *
-	 * @param string $title
-	 * @return void
-	 */
-	public function setTitle($title): void {
-		$this->title = $title;
-	}
+    /**
+     * Sets the page
+     *
+     * @param integer $page
+     * @return void
+     */
+    public function setPage($page): void
+    {
+        $this->page = $page;
+    }
 
-	/**
-	 * Returns the showTitle
-	 *
-	 * @return string $showTitle
-	 */
-	public function getShowTitle() {
-		return $this->showTitle;
-	}
+    /**
+     * Returns the numbering
+     *
+     * @return string $numbering
+     */
+    public function getNumbering()
+    {
+        return $this->numbering;
+    }
 
-	/**
-	 * Sets the showTitle
-	 *
-	 * @param string $showTitle
-	 * @return void
-	 */
-	public function setShowTitle($showTitle): void {
-		$this->showTitle = $showTitle;
-	}
-	
-	/**
-	 * Returns the text
-	 *
-	 * @return string $text
-	 */
-	public function getText() {
-		return $this->text;
-	}
+    /**
+     * Sets the numbering
+     *
+     * @param string $numbering
+     * @return void
+     */
+    public function setNumbering($numbering): void
+    {
+        $this->numbering = $numbering;
+    }
 
-	/**
-	 * Sets the text
-	 *
-	 * @param string $text
-	 * @return void
-	 */
-	public function setText($text): void {
-		$this->text = $text;
-	}
+    /**
+     * Returns the group
+     *
+     * @return Group $group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
 
-	/**
-	 * Returns the helpText
-	 *
-	 * @return string $helpText
-	 */
-	public function getHelpText() {
-		return $this->helpText;
-	}
+    /**
+     * Sets the group
+     *
+     * @param Group $group
+     * @return void
+     */
+    public function setGroup($group): void
+    {
+        $this->group = $group;
+    }
 
-	/**
-	 * Sets the helpText
-	 *
-	 * @param string $helpText
-	 * @return void
-	 */
-	public function setHelpText($helpText): void {
-		$this->helpText = $helpText;
-	}
+    /**
+     * Returns the title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Sets the title
+     *
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * Returns the showTitle
+     *
+     * @return string $showTitle
+     */
+    public function getShowTitle()
+    {
+        return $this->showTitle;
+    }
+
+    /**
+     * Sets the showTitle
+     *
+     * @param string $showTitle
+     * @return void
+     */
+    public function setShowTitle($showTitle): void
+    {
+        $this->showTitle = $showTitle;
+    }
+
+    /**
+     * Returns the text
+     *
+     * @return string $text
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Sets the text
+     *
+     * @param string $text
+     * @return void
+     */
+    public function setText($text): void
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * Returns the helpText
+     *
+     * @return string $helpText
+     */
+    public function getHelpText()
+    {
+        return $this->helpText;
+    }
+
+    /**
+     * Sets the helpText
+     *
+     * @param string $helpText
+     * @return void
+     */
+    public function setHelpText($helpText): void
+    {
+        $this->helpText = $helpText;
+    }
 
     /**
      * @return int
@@ -401,139 +415,153 @@ class Question extends AbstractEntity {
      *
      * @return integer $columnPercent
      */
-    public function getColumnPercent() {
-        return round(100 / $this->columnCount ) ;
+    public function getColumnPercent()
+    {
+        return round(100 / $this->columnCount);
     }
 
 
-	/**
-  * Returns the image
-  *
-  * @return FileReference $image
-  */
- public function getImage() {
-		return $this->image;
-	}
+    /**
+     * Returns the image
+     *
+     * @return FileReference $image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
 
-	/**
-  * Sets the image
-  *
-  * @param FileReference $image
-  * @return void
-  */
- public function setImage(FileReference $image): void {
-		$this->image = $image;
-	}
+    /**
+     * Sets the image
+     *
+     * @param FileReference $image
+     * @return void
+     */
+    public function setImage(FileReference $image): void
+    {
+        $this->image = $image;
+    }
 
-	/**
-	 * Returns the imagePosition
-	 *
-	 * @return string $imagePosition
-	 */
-	public function getImagePosition() {
-		return $this->imagePosition;
-	}
+    /**
+     * Returns the imagePosition
+     *
+     * @return string $imagePosition
+     */
+    public function getImagePosition()
+    {
+        return $this->imagePosition;
+    }
 
-	/**
-	 * Sets the imagePosition
-	 *
-	 * @param string $imagePosition
-	 * @return void
-	 */
-	public function setImagePosition($imagePosition): void {
-		$this->imagePosition = $imagePosition;
-	}
+    /**
+     * Sets the imagePosition
+     *
+     * @param string $imagePosition
+     * @return void
+     */
+    public function setImagePosition($imagePosition): void
+    {
+        $this->imagePosition = $imagePosition;
+    }
 
-	/**
-	 * Returns the isMandatory
-	 *
-	 * @return boolean $isMandatory
-	 */
-	public function getIsMandatory() {
-		return (boolean) $this->isMandatory;
-	}
+    /**
+     * Returns the isMandatory
+     *
+     * @return boolean $isMandatory
+     */
+    public function getIsMandatory()
+    {
+        return (boolean)$this->isMandatory;
+    }
 
-	/**
-	 * Sets the isMandatory
-	 *
-	 * @param boolean $isMandatory
-	 * @return void
-	 */
-	public function setIsMandatory($isMandatory): void {
-		$this->isMandatory = $isMandatory;
-	}
+    /**
+     * Sets the isMandatory
+     *
+     * @param boolean $isMandatory
+     * @return void
+     */
+    public function setIsMandatory($isMandatory): void
+    {
+        $this->isMandatory = $isMandatory;
+    }
 
-	/**
-	 * Returns the boolean state of isMandatory
-	 *
-	 * @return boolean
-	 */
-	public function isIsMandatory() {
-		return $this->getIsMandatory();
-	}
+    /**
+     * Returns the boolean state of isMandatory
+     *
+     * @return boolean
+     */
+    public function isIsMandatory()
+    {
+        return $this->getIsMandatory();
+    }
 
-	/**
-	 * Returns the mustBeCorrect
-	 *
-	 * @return boolean $mustBeCorrect
-	 */
-	public function getMustBeCorrect() {
-		return $this->mustBeCorrect;
-	}
+    /**
+     * Returns the mustBeCorrect
+     *
+     * @return boolean $mustBeCorrect
+     */
+    public function getMustBeCorrect()
+    {
+        return $this->mustBeCorrect;
+    }
 
-	/**
-	 * Sets the mustBeCorrect
-	 *
-	 * @param boolean $mustBeCorrect
-	 * @return void
-	 */
-	public function setMustBeCorrect($mustBeCorrect): void {
-		$this->mustBeCorrect = $mustBeCorrect;
-	}
+    /**
+     * Sets the mustBeCorrect
+     *
+     * @param boolean $mustBeCorrect
+     * @return void
+     */
+    public function setMustBeCorrect($mustBeCorrect): void
+    {
+        $this->mustBeCorrect = $mustBeCorrect;
+    }
 
-	/**
-	 * Returns the boolean state of mustBeCorrect
-	 *
-	 * @return boolean
-	 */
-	public function isMustBeCorrect() {
-		return $this->getMustBeCorrect();
-	}
+    /**
+     * Returns the boolean state of mustBeCorrect
+     *
+     * @return boolean
+     */
+    public function isMustBeCorrect()
+    {
+        return $this->getMustBeCorrect();
+    }
 
-	/**
-  * Adds a Answer
-  *
-  * @param Answer $answer
-  * @return void
-  */
- public function addAnswer(Answer $answer): void {
-		$this->answers->attach($answer);
-	}
+    /**
+     * Adds a Answer
+     *
+     * @param Answer $answer
+     * @return void
+     */
+    public function addAnswer(Answer $answer): void
+    {
+        $this->answers->attach($answer);
+    }
 
-	/**
-  * Removes a Answer
-  *
-  * @param Answer $answerToRemove The Answer to be removed
-  * @return void
-  */
- public function removeAnswer(Answer $answerToRemove): void {
-		$this->answers->detach($answerToRemove);
-	}
+    /**
+     * Removes a Answer
+     *
+     * @param Answer $answerToRemove The Answer to be removed
+     * @return void
+     */
+    public function removeAnswer(Answer $answerToRemove): void
+    {
+        $this->answers->detach($answerToRemove);
+    }
 
-	/**
-  * Returns the answers
-  *
-  * @return ObjectStorage|array $answers
-  */
- public function getAnswers() {
-        if ($this->isRandomAnswers()){
+    /**
+     * Returns the answers
+     *
+     * @return ObjectStorage|array $answers
+     */
+    public function getAnswers()
+    {
+        if ($this->isRandomAnswers()) {
             $answers = $this->answers->toArray();
             shuffle($answers);
             return $answers;
         } else {
             return $this->answers;
         }
-	}
+    }
 
     /**
      * @return bool
@@ -556,9 +584,8 @@ class Question extends AbstractEntity {
      */
     public function isMaxAnswers()
     {
-        return $this->maxAnswers > 0 ;
+        return $this->maxAnswers > 0;
     }
-
 
 
     /**
@@ -566,93 +593,46 @@ class Question extends AbstractEntity {
      *
      * @return int
      */
-    public function getAnswerCount() {
-        if ($this->answers ) {
+    public function getAnswerCount()
+    {
+        if ($this->answers) {
             return count($this->answers);
         }
-        return 0 ;
+        return 0;
     }
 
-	/**
-  * Sets the answers
-  *
-  * @param ObjectStorage $answers
-  * @return void
-  */
- public function setAnswers(ObjectStorage $answers): void {
-		$this->answers = $answers;
-	}
-    
     /**
-  * Adds a Dependancy
-  *
-  * @param Dependancy $dependancy
-  * @return void
-  */
- public function addDependancy(Dependancy $dependancy): void {
-		$this->dependancies->attach($dependancy);
-	}
+     * Sets the answers
+     *
+     * @param ObjectStorage $answers
+     * @return void
+     */
+    public function setAnswers(ObjectStorage $answers): void
+    {
+        $this->answers = $answers;
+    }
 
-	/**
-  * Removes a Dependancy
-  *
-  * @param Dependancy $dependancyToRemove The Dependancy to be removed
-  * @return void
-  */
- public function removeDependancy(Dependancy $dependancyToRemove): void {
-		$this->dependancies->detach($dependancyToRemove);
-	}
 
-	/**
-  * Returns the dependancies
-  *
-  * @return ObjectStorage $dependancies
-  */
- public function getDependancies() {
-		return $this->dependancies;
-	}
-
-	/**
-  * Sets the dependancies
-  *
-  * @param ObjectStorage $dependancies
-  * @return void
-  */
- public function setDependancies(ObjectStorage $dependancies): void {
-		$this->dependancies = $dependancies;
-	}
-    
     /**
-	 * Checks the dependancies
-	 *
-	 * @return boolean
-	 */
-	public function IsDependant() {
-            return (boolean) $this->getIsDependant();
-	}
-        public function getIsDependant() {
-            if (count($this->dependancies) > 0) return (boolean) true;
-            else return (boolean) false;
-	}
-    
-    /**
-	 * Returns the css
-	 *
-	 * @return string $css
-	 */
-	public function getCss() {
-		return $this->css;
-	}
+     * Returns the css
+     *
+     * @return string $css
+     */
+    public function getCss()
+    {
+        return $this->css;
+    }
 
-	/**
-	 * Sets the css
-	 *
-	 * @param string $css
-	 * @return void
-	 */
-	public function setCss($css): void {
-		$this->css = $css;
-	}
+    /**
+     * Sets the css
+     *
+     * @param string $css
+     * @return void
+     */
+    public function setCss($css): void
+    {
+        $this->css = $css;
+    }
 
     /**
      * @return int
@@ -687,63 +667,33 @@ class Question extends AbstractEntity {
     }
 
 
+    /**
+     * Returns the template
+     *
+     * @return string $template
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
 
     /**
-	 * Returns the template
-	 *
-	 * @return string $template
-	 */
-	public function getTemplate() {
-		return $this->template;
-	}
+     * Sets the template
+     *
+     * @param string $template
+     * @return void
+     */
+    public function setTemplate($template): void
+    {
+        $this->template = $template;
+    }
 
-	/**
-	 * Sets the template
-	 *
-	 * @param string $template
-	 * @return void
-	 */
-	public function setTemplate($template): void {
-		$this->template = $template;
-	}
-	
-	/**
-  *
-  * @param Result $result
-  * @return boolean
-  */
- public function fullfillsDependancies(Result $result){
-		if ($this->isDependant()){
-			$full = false;
-			$fullcount = 0;
-			//check all dependancies
-			foreach ($this->getDependancies() as $id => $dependancy){
-				//get the resultQuestion
-				$rQuestion = $result->getResultQuestionForQuestion($dependancy->getQuestion());
-				if ($rQuestion){
-					//get the conditions
-					$relConditions = $dependancy->getRelationCondition();
-					//check the conditions for all given answers of this resultQuestion
-					foreach ($rQuestion->getAnswers() as $rAnswer){
-						$fullcount ++;
-						if ($rAnswer->getValue() == $relConditions['compareToAnswer']) {
-							switch ($relConditions['type']){
-								case 'none': $full = true;
-									break;
-								case 'and': 
-										if ($full AND $fullcount > 1) $full = true;
-										else $full = false;
-									break;
-								case 'or':
-										$full = true;
-									break;
-							}						
-						}
-					}
-				}
-			}
-			return $full;
-		} else return true;
-	}
+    /**
+     * Returns the question
+     *
+     * @return Question $question
+     */
+    public function getQuestion() {
+        return $this->question;
+    }
 }
-?>

@@ -118,7 +118,7 @@ class Result extends AbstractEntity {
 	 * @return void
 	 */
 	public function __construct() {
-	$this->initStorageObjects();
+	    $this->initStorageObjects();
 	}
 
 	/**
@@ -127,11 +127,6 @@ class Result extends AbstractEntity {
 	 * @return void
 	 */
 	protected function initStorageObjects() {
-		/**
-		 * Do not modify this method!
-		 * It will be rewritten on each save in the extension builder
-		 * You may modify the constructor of this class instead
-		 */
 		$this->questions = new ObjectStorage();
 	}
 
@@ -201,7 +196,7 @@ class Result extends AbstractEntity {
  public function addOrUpdateQuestion(ResultQuestion $rquestion): void {
 		//check if a resultQuestion with this Question is already here
 		//if no question is given		
-		$rquestion = $this->checkMatrixType($rquestion);
+
 		if (!$this->questionKnown($rquestion)){
 			$this->addQuestion($rquestion);
 		} else {
@@ -209,108 +204,7 @@ class Result extends AbstractEntity {
 			$oldrquestion->setAnswers($rquestion->getAnswers());
 		}
 	}	
-	
-	/**
-  * Checks the Question if it contains MatrixRows and checks their values
-  *
-  * @param ResultQuestion $question
-  * @return ResultQuestion return the question
-  */
- public function checkMatrixType(ResultQuestion $question){
-		$answers = $question->getAnswers();
-		$newAnswers = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
-		foreach ($answers as $answer){
-			//Check for array is value, this indicates the Extendet Matrix Header
-			//Clear the Value and set the MatrixPos so the values will be saved correctly
-			if (is_array($answer->getValue())){
-				$vals = array();
-				foreach ($answer->getValue() as $key => $val){
-					$vals[$key]['value'] = $val;
-					$vals[$key]['radioVal'] = $val;
-				}
-				if ($answer->getMatrixPos()){
-					$allPos = array_merge($answer->getMatrixPos(),$vals);
-					$answer->setMatrixPos($allPos);
-				} else $answer->setMatrixPos($vals);						
-				$answer->setValue(false);
-			}
-			//Work on Values for MatrixRows
-			//For each Column there must be an answer if there is a MatrixPos given
-			if ($answer->getAnswer() AND ($answer->getAnswer()->getType() == 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\MatrixRow' AND $answer->getMatrixPos())){
-				foreach ($answer->getMatrixPos() as $pos_id => $pos){
-					if ($pos['value']){
-						$newAnswer = $this->duplicateAnswer($answer);	
-						$newAnswer->setValue($pos['value']);
-						$newAnswer->setAdditionalValue($pos['additionalValue']);							
-						if ($pos['text'] == 1 OR !is_numeric($pos['value'])){
-							$pos['value'] = $pos_id;
-						} else {
-							//if ($pos['radioVal']) $newAnswer->setValue($pos['value']);
-							//else $newAnswer->setValue($answer->getAnswer()->getUid());
-							//$newAnswer->setAdditionalValue($pos['additionalValue']);
-						}			
-						$newAnswer->setCol($pos['value']);
-                        if ($newAnswer->getAnswer()) $newAnswers->attach($newAnswer);
-					}
-				}
-				if ($answer->getValue()){
-					if ($answer->getAnswer()) $newAnswers->attach($answer);
-				}
-			} else {
-				if ($answer->getAnswer()) $newAnswers->attach($answer);
-			}
-            
-            //Work on cloned rows
-            //For each Column there must be an answer if there is a Clone given
-            if ($answer->getAnswer() AND ($answer->getAnswer()->getType() == 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\MatrixRow' AND $answer->getCloned())){
-                $cloned = $answer->getCloned();
-				$i = 0;
-                foreach ($cloned['title'] as $id => $title){
-					if ($title != ''){
-						$i++;                               
-						foreach ($cloned as $pos_id => $pos){
-							//Input Fields
-							if (is_numeric($pos_id)){
-								if ($pos['value'][$id]){
-								   $newAnswer = $this->duplicateAnswer($answer);	
-								   $newAnswer->setCloneTitle($title);
-								   $newAnswer->setClone($i);
-								   $newAnswer->setValue($pos['value'][$id]);
-								   $newAnswer->setAdditionalValue($pos['additionalValue'][$id]);
-								   if ($pos['text'][$id] == 1 OR !is_numeric($pos['value'][$id])){
-									   $pos['value'][$id] = $pos_id;
-								   } else {
-									   //if ($pos['radioVal'][$id]) $newAnswer->setValue($pos['value'][$id]);
-									   //else $newAnswer->setValue($answer->getAnswer()->getUid());
-									   //$newAnswer->setAdditionalValue($pos['additionalValue'][$id]);
-								   }			
-								   $newAnswer->setCol($pos['value'][$id]);
-								   if ($newAnswer->getAnswer()) $newAnswers->attach($newAnswer);
-							   }
-							//RadioButtons
-							} elseif ($pos_id == 'value' AND is_array($cloned['value'])){
-								if ($cloned['value'][$id]){
-								   $newAnswer = $this->duplicateAnswer($answer);	
-								   $newAnswer->setCloneTitle($title);
-								   $newAnswer->setClone($i);
-								   if ($cloned['value'][$id]) $newAnswer->setValue($cloned['value'][$id]);
-								   else $newAnswer->setValue($answer->getAnswer()->getUid());
-								   $newAnswer->setAdditionalValue($cloned['additionalValue'][$id]);
 
-								   //$newAnswer->setCol($cloned['value'][$id]);
-								   if ($newAnswer->getAnswer()) $newAnswers->attach($newAnswer);
-								}
-							}
-						}                    
-					}
-                }
-            }
-		}
-		$question->setAnswers($newAnswers);
-		
-		return $question;
-	}
-	
 	/**
   *
   * @param Answer $answer
@@ -372,6 +266,21 @@ class Result extends AbstractEntity {
         return $questions ;
     }
 
+
+    /**
+     * Returns the questions
+     *
+     * @param int $question
+     * @return ResultQuestion
+     */
+    public function getResultQuestionByQuestionUid( $question) {
+        $rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+        $rQuestion = $rep->findByQuestionIdAndResultIdRaw($question,$this->getUid() , false);
+        if ($rQuestion ) {
+            return $rQuestion->getFirst();
+        }
+        return null;
+    }
 	
 	/**
   * Returns the questions
@@ -400,14 +309,12 @@ class Result extends AbstractEntity {
 		$rQuestion = $rep->findByQuestionAndResult($question->getQuestion(),$this);
 		if ($rQuestion[0] AND $this->getQuestions()->contains($rQuestion[0])) {
 			$rq = $rQuestion[0];
-			if ($rq->getQuestion()->fullfillsDependancies($this)){
-				$rq->checkAnswers($question->getAnswers());
-			} else {
-				$rq->clearAnswers();
-			}
+           //  $rq->checkAnswers($question->getAnswers());
 			return $rq;
 		}
-		else return FALSE;
+		else {
+            return FALSE;
+        }
 	}
 	
 	/**
@@ -604,110 +511,7 @@ class Result extends AbstractEntity {
 		$average = number_format($average,2,',',' ');
 		return $average;
 	}
-	
-	/**
-	 * check the points for the result object
-	 * @param boolean $reducePointsforWrongAnswers
-	 * @return array
-	 */
-	public function calculatePoints($reducePointsforWrongAnswers=false)
-    {
-        $maxPoints = 0;
-        $pointsForResult = 0;
-        $group = NULL;
-        $groupPoints = 0;
-        $maxGroupPoints = 0;
-        $userId = $GLOBALS['TSFE']->fe_user->user['uid'] ? $GLOBALS['TSFE']->fe_user->user['uid'] : 0;
-        /* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
-        //count for all questions in result
-        $debug = [];
-        foreach ($this->getQuestions() as $resultQuestion) {
-            if ($resultQuestion->getQuestion()) {
-                $debug[] = "resultQuestion ID: " . $resultQuestion->getUid();
-                // check for point calculation
-                $pointsForQuestion = 0;
-                $calcPoints = 0;
-                $wrongAnswersForQuestion = 0;
-                $givenAnswersForQuestion = 0;
-                /* @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
-                if (count($resultQuestion->getAnswers()) > 0) {
-                    $debug[] = "result Answers: " . count($resultQuestion->getAnswers());
-                    //calculate for each answer
-                    foreach ($resultQuestion->getAnswers() as $resultAnswer) {
-                        $debug[] = "result Answer ID: " . $resultAnswer->getUid();
-                        $givenAnswersForQuestion++;
-                        if ($resultAnswer->getAnswer()) {
-                            $debug[] = "result Answer value : " . $resultAnswer->getValue();
-                            $debug[] = "result Answer to get possible Points : " . $resultAnswer->getPoints();
-                            $calcPoints = $resultAnswer->getPoints();
-                            $debug[] = "calulated Points " . $calcPoints;
-                            if ( $reducePointsforWrongAnswers ) {
-                                if ($calcPoints > 0) {
-                                    $pointsForQuestion += $calcPoints;
-                                } else {
-                                    $wrongAnswersForQuestion++;
-                                }
-                            } else {
-                                $pointsForQuestion += $calcPoints;
-                            }
 
-
-                        }
-                        $resultAnswer->setFeCruserId($userId);
-                    }
-                    if ($resultQuestion->getQuestion()->isMaxAnswers() && $reducePointsforWrongAnswers) {
-                        if ($wrongAnswersForQuestion > 0) {
-
-                            $pointsForQuestion = round($pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion) / 2), 0);
-                            $debug[] = "reduced  to : " . $pointsForQuestion;
-                        }
-                    }
-                    if ($pointsForQuestion < 0 && $reducePointsforWrongAnswers ) {
-                        $pointsForQuestion = 0;
-                    }
-                    $debug[] = "Points for this question  : " . $pointsForQuestion;
-                    $pointsForResult += $pointsForQuestion;
-                    $debug[] = "----" ;
-                    $debug[] = "Current total Points  : " . $pointsForResult;
-                    $debug[] = "----" ;
-                }
-
-                //set the points for this questions
-                $resultQuestion->setPoints($pointsForQuestion);
-                $resultQuestion->setFeCruserId($userId);
-
-                //maxPoints are the maximum points for all the questions already part of this result
-                $maxPoints += $resultQuestion->getMaxPoints();
-
-                //if there are groups of questions, thex need to be calculated
-                $groupPoints += $pointsForQuestion;
-                //maximum points for this group
-                $maxGroupPoints += $resultQuestion->getMaxPoints();
-
-                //check the matrix type, relevant for calculation
-                $resultQuestion = $this->checkMatrixType($resultQuestion);
-
-                if ($group and $groupPoints > 0) {
-                    $group->setPoints($groupPoints);
-                    $group->setMaxPoints($maxGroupPoints);
-                }
-                //check Group
-                if ($resultQuestion->getQuestion() instanceof Group) {
-                    $group = $resultQuestion;
-                    $groupPoints = 0;
-                    $maxGroupPoints = 0;
-                }
-            }
-        }
-
-        $debug[] = "--------" ;
-        $debug[] = "set result Points total " . $pointsForResult ;
-        $this->setPoints($pointsForResult);
-        $debug[] = "set Max Points total " . $maxPoints ;
-        $this->setMaxPoints($maxPoints);
-
-        return $debug ;
-	}	
         
         /**
 	 * Returns the addParameter

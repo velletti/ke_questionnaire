@@ -1,8 +1,10 @@
 <div class="keqButtons">
-	<f:if condition="{questionnaire.isFirstPage}">
-		<f:else>
-			<f:form.submit class="btn prev" value="{f:translate(key: 'prevPage')}" />
-		</f:else>
+	<f:if condition="{settings.randomQuestionsMax} == 0">
+		<f:if condition="{questionnaire.isFirstPage}">
+			<f:else>
+				<f:form.submit class="btn prev" value="{f:translate(key: 'prevPage')}" />
+			</f:else>
+		</f:if>
 	</f:if>
 	<f:if condition="{questionnaire.isLastPage}">
 		<f:then>

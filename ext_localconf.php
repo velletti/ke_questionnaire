@@ -12,7 +12,6 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 	array(
         Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'new,create,show,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,end',
         Kennziffer\KeQuestionnaire\Controller\EvaluationController::class => 'show',
-		Kennziffer\KeQuestionnaire\Controller\PointRangeController::class => 'showText',
 		Kennziffer\KeQuestionnaire\Controller\AjaxController::class => 'test',
 		Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	),
@@ -20,7 +19,6 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 	array(
         Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'new,create,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,',
 		Kennziffer\KeQuestionnaire\Controller\EvaluationController::class => '',
-		Kennziffer\KeQuestionnaire\Controller\PointRangeController::class => '',
 		Kennziffer\KeQuestionnaire\Controller\AjaxController::class => 'test',
 		Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
 	)

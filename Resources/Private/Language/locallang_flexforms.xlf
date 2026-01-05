@@ -63,12 +63,6 @@
 			<trans-unit id="settings.questionNumbering.questions" resname="settings.questionNumbering.questions" >
 				<source>Number all questions</source>
 			</trans-unit>
-			<trans-unit id="settings.questionNumbering.undependantQuestions" resname="settings.questionNumbering.undependantQuestions" >
-				<source>Number only independant questions</source>
-			</trans-unit>
-			<trans-unit id="settings.questionNumbering.groupedQuestions" resname="settings.questionNumbering.groupedQuestions" >
-				<source>Number questions in groups</source>
-			</trans-unit>
 			<trans-unit id="settings.navigationType" resname="settings.navigationType" >
 				<source>Additional navigation</source>
 			</trans-unit>
@@ -131,9 +125,6 @@
 			</trans-unit>
 			<trans-unit id="settings.redirectFinished" resname="settings.redirectFinished" >
 				<source>Redirect-page after submitting the questionnaire</source>
-			</trans-unit>
-			<trans-unit id="settings.dependancy.questionnaire" resname="settings.dependancy.questionnaire" >
-				<source>Dependancy: required submitted questionnaire</source>
 			</trans-unit>
 			<trans-unit id="settings.dependancy.points" resname="settings.dependancy.points" >
 				<source>Dependancy: required points in questionnaire, if 0 it only needs to be finished</source>

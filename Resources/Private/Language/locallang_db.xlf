@@ -33,9 +33,6 @@
 			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.Group" resname="tx_kequestionnaire_domain_model_question.type.I.Group" >
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.ConditionalJump" resname="tx_kequestionnaire_domain_model_question.type.I.ConditionalJump" >
-				<source>Conditional Behaviour</source>
-			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.PlausiCheck" resname="tx_kequestionnaire_domain_model_question.type.I.PlausiCheck" >
 				<source>Plausibility Check</source>
 			</trans-unit>
@@ -90,17 +87,8 @@
 			<trans-unit id="tx_kequestionnaire_domain_model_question.min_answers" resname="tx_kequestionnaire_domain_model_question.min_answers" >
 				<source>Minimum number of answers needed for this question</source>
 			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.content_id" resname="tx_kequestionnaire_domain_model_question.content_id" >
-				<source>TYPO3 ContentElement</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.dependancies" resname="tx_kequestionnaire_domain_model_question.dependancies" >
-				<source>Dependancies</source>
-			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_question.to_page" resname="tx_kequestionnaire_domain_model_question.to_page" >
 				<source>Redirect-page</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.direct_jump" resname="tx_kequestionnaire_domain_model_question.direct_jump" >
-				<source>Jump as soon as the condition is reached</source>
 			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_question.javascript" resname="tx_kequestionnaire_domain_model_question.javascript" >
 				<source>Javascript to be executed, instead or before the jump</source>
@@ -428,30 +416,6 @@
 			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_authcode.firstactive" resname="tx_kequestionnaire_domain_model_authcode.firstactive" >
 				<source>First time the authCode was used</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy" resname="tx_kequestionnaire_domain_model_dependancy" >
-				<source>Dependancy</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.answer" resname="tx_kequestionnaire_domain_model_dependancy.answer" >
-				<source>Actvating answer</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation" resname="tx_kequestionnaire_domain_model_dependancy.relation" >
-				<source>Relation type</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.none" resname="tx_kequestionnaire_domain_model_dependancy.relation.none" >
-				<source>None</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.and" resname="tx_kequestionnaire_domain_model_dependancy.relation.and" >
-				<source>AND</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.or" resname="tx_kequestionnaire_domain_model_dependancy.relation.or" >
-				<source>OR</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.not" resname="tx_kequestionnaire_domain_model_dependancy.relation.not" >
-				<source>NOT</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.dquestion" resname="tx_kequestionnaire_domain_model_dependancy.dquestion" >
-				<source>Dependant question</source>
 			</trans-unit>
 		</body>
 	</file>

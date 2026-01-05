@@ -48,12 +48,6 @@
 			<trans-unit id="tx_kequestionnaire_domain_model_question.answers" resname="tx_kequestionnaire_domain_model_question.answers" >
 				<source>Answers</source>
 			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.conent_id" resname="tx_kequestionnaire_domain_model_question.conent_id" >
-				<source>TYPO3 ContentElement</source>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.dependancies" resname="tx_kequestionnaire_domain_model_question.dependancies" >
-				<source>Dependancies</source>
-			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_answer" resname="tx_kequestionnaire_domain_model_answer" >
 				<source>Answers</source>
 			</trans-unit>
@@ -197,12 +191,6 @@
 			</trans-unit>
 			<trans-unit id="authCodeAccess.submit" resname="authCodeAccess.submit" >
 				<source>Submit Authentication Code</source>
-			</trans-unit>
-			<trans-unit id="dependancyAccess.info" resname="dependancyAccess.info" >
-				<source>You need to finish the following questionnaire: </source>
-			</trans-unit>
-			<trans-unit id="dependancyAccess.infoPoints" resname="dependancyAccess.infoPoints" >
-				<source>You need to finish the following questionnaire with a certain amount of points: </source>
 			</trans-unit>
 			<trans-unit id="mail.standard.subject" resname="mail.standard.subject" >
 				<source>You were invited!</source>

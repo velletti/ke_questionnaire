@@ -20,8 +20,8 @@ CREATE TABLE tx_kequestionnaire_domain_model_question (
 	type varchar(255) DEFAULT '' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,
 	show_title tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	text text NULL DEFAULT NULL,
-	help_text text NULL DEFAULT '',
+	text text DEFAULT NULL,
+	help_text text  DEFAULT NULL,
 	image text  NULL DEFAULT NULL,
 	image_position varchar(255) DEFAULT '' NOT NULL,
 	is_mandatory tinyint(1) unsigned DEFAULT '0' NOT NULL,
@@ -32,13 +32,13 @@ CREATE TABLE tx_kequestionnaire_domain_model_question (
 	max_answers int(11) DEFAULT '0' NOT NULL,
 	min_answers int(11) DEFAULT '0' NOT NULL,
 	content_id int(11) unsigned DEFAULT '0' NOT NULL,
-        dependancies int(11) unsigned DEFAULT '0' NOT NULL,
-        to_page  int(11) unsigned DEFAULT '0' NOT NULL,
-        direct_jump tinyint(4) unsigned DEFAULT '0' NOT NULL,
-        javascript text  NULL DEFAULT '',
-        only_js tinyint(4) unsigned DEFAULT '0' NOT NULL,
-        css text  NULL DEFAULT '',
-        template varchar(255) DEFAULT '' NOT NULL,
+    dependancies int(11) unsigned DEFAULT '0' NOT NULL,
+    to_page  int(11) unsigned DEFAULT '0' NOT NULL,
+    direct_jump tinyint(4) unsigned DEFAULT '0' NOT NULL,
+    javascript text   DEFAULT NULL,
+    only_js tinyint(4) unsigned DEFAULT '0' NOT NULL,
+    css text   DEFAULT NULL,
+    template varchar(255) DEFAULT '' NOT NULL,
     
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -257,6 +257,15 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultquestion (
 
 );
 
+CREATE TABLE tx_kequestionnaire_result_resultquestion_mm (
+    uid_local int(11) unsigned DEFAULT '0' NOT NULL,
+    uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
+    sorting int(11) DEFAULT '0' NOT NULL,
+    sorting_foreign int(11) DEFAULT '0' NOT NULL,
+    PRIMARY KEY (uid_local, uid_foreign),
+                                                            KEY uid_foreign (uid_foreign)
+);
+
 #
 # Table structure for table 'tx_kequestionnaire_domain_model_resultanswer'
 #
@@ -307,50 +316,6 @@ CREATE TABLE tx_kequestionnaire_domain_model_resultanswer (
 
 );
 
-#
-# Table structure for table 'tx_kequestionnaire_domain_model_range'
-#
-CREATE TABLE tx_kequestionnaire_domain_model_range (
-
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
-	title varchar(255) DEFAULT '' NOT NULL,
-	text text NULL DEFAULT NULL,
-	points_from int(11) unsigned DEFAULT '0' NOT NULL,
-	points_until int(11) unsigned DEFAULT '0' NOT NULL,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	starttime int(11) unsigned DEFAULT '0' NOT NULL,
-	endtime int(11) unsigned DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(255) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage int(11) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-
-	sorting int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumblob,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l10n_parent,sys_language_uid)
-
-);
-
 
 #
 # Table structure for table 'tx_kequestionnaire_domain_model_authcode'
@@ -385,48 +350,5 @@ CREATE TABLE tx_kequestionnaire_domain_model_authcode (
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY language (l10n_parent,sys_language_uid),
 	KEY auth_code (auth_code)
-
-);
-
-#
-# Table structure for table 'tx_kequestionnaire_domain_model_dependancy'
-#
-CREATE TABLE tx_kequestionnaire_domain_model_dependancy (
-
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
-    relation varchar(255) DEFAULT '' NOT NULL,
-	answer int(11) unsigned DEFAULT '0' NOT NULL,
-    dquestion  int(11) unsigned DEFAULT '0' NOT NULL,
-    
-    tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	fe_cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	starttime int(11) unsigned DEFAULT '0' NOT NULL,
-	endtime int(11) unsigned DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(255) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage int(11) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumblob,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l10n_parent,sys_language_uid)
 
 );

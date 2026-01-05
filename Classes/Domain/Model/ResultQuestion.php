@@ -84,16 +84,22 @@ class ResultQuestion extends AbstractEntity {
     /**
      * Min answers
      *
-     * @var boolean
+     * @var int
      */
     protected $minAnswers = 0 ;
 
     /**
      * Max answers
      *
-     * @var boolean
+     * @var int
      */
     protected $maxAnswers = 0 ;
+    /**
+     * Max answers
+     *
+     * @var int
+     */
+    protected $result = 0 ;
 
 	/**
 	 * Default constructor.
@@ -205,39 +211,12 @@ class ResultQuestion extends AbstractEntity {
   */
  public function checkAnswer($answers, &$resultAnswer): void{
 		if ($resultAnswer->getAnswer()){
-			switch ($resultAnswer->getAnswer()->getSaveType()){
-				case 'replaceAnswer':
-					foreach ($answers as $ranswer){
-						if ($ranswer->getAnswer()->getType() === $resultAnswer->getAnswer()->getType()){
-							$resultAnswer->setAnswer($ranswer->getAnswer());
-							$resultAnswer->setValue($ranswer->getValue());
-							$resultAnswer->setAdditionalValue($ranswer->getAdditionalValue());
-						}
-					}
-					break;
-				case 'matrix':
-					foreach ($answers as $ranswer){
-						if ($ranswer->getAnswer() === $resultAnswer->getAnswer()){
-							$mPos = $ranswer->getMatrixPos();
-							if ($resultAnswer->getCol() AND $mPos[$resultAnswer->getCol()]){
-								$resultAnswer->setValue($mPos[$resultAnswer->getCol()]['value']);								
-							} else {
-								$resultAnswer->setValue($ranswer->getValue());
-								$resultAnswer->setAdditionalValue($ranswer->getAdditionalValue());
-							}
-						}
-					}
-					break;
-				case 'replaceValue':
-				default:
-					foreach ($answers as $ranswer){
-						if ($ranswer->getAnswer() === $resultAnswer->getAnswer()){
-							$resultAnswer->setValue($ranswer->getValue());
-							$resultAnswer->setAdditionalValue($ranswer->getAdditionalValue());
-						}
-					}
-					break;
-			}		
+            foreach ($answers as $ranswer){
+                if ($ranswer->getAnswer() === $resultAnswer->getAnswer()){
+                    $resultAnswer->setValue($ranswer->getValue());
+                    $resultAnswer->setAdditionalValue($ranswer->getAdditionalValue());
+                }
+            }
 		}
 	}
 	
@@ -475,5 +454,16 @@ class ResultQuestion extends AbstractEntity {
 
         return $canBe;
     }
+
+    public function getResult(): int
+    {
+        return $this->result;
+    }
+
+    public function setResult(int $result): void
+    {
+        $this->result = $result;
+    }
+    
+    
 }
-?>

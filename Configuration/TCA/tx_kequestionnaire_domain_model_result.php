@@ -108,23 +108,23 @@ return  array(
                 'size' => 4
             ),
         ),
-        'questions' => array(
+        'questions' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.questions',
-            'config' => array(
+            'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultquestion',
                 'foreign_field' => 'result',
                 'maxitems'      => 999,
-                'appearance' => array(
+                'appearance' => [
                     'collapseAll' => 0,
                     'levelLinksPosition' => 'top',
                     'showSynchronizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                     'showAllLocalizationLink' => 1
-                ),
-            ),
-        ),
+                ],
+            ],
+        ],
         'points' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_result.points',

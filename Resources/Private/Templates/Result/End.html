@@ -1,25 +1,123 @@
 {namespace ke=Kennziffer\KeQuestionnaire\ViewHelpers}
 <f:layout name="Default" />
+<f:section name="unused">
+	<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:flashmessage.Result.mustBeCorrect" />
 
+</f:section>
 <f:section name="main">
 	<f:flashMessages />
 	<div id="keq_loadingDiv">Lädt!</div>
-	<f:if condition="{settings.endText}">
+
+	<f:if condition="{settings.dependancy.points}">
 		<f:then>
-			<f:format.html>{settings.endText}</f:format.html>
+			<f:if condition="{settings.dependancy.points} > {result.points}">
+				<f:then>
+					<div class="alert alert-warning">
+						<h3><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:tx_kequestionnaire_domain_model_result" /></h3>
+						<br>
+						Sie haben den Test leider nicht bestanden. Es müssen mindestens 4 von 6 Fragen korrekt beantworten werden. Sie haben insgesamt 3 Versuche, den Test zu bestehen. Bitte rufen Sie für einen neuen Versuch den Link aus der E-Mail nochmals auf.
+						<br>
+						<br>
+
+						<f:link.action action="new" class="btn btn-primary" arguments="{requestedPage:1,authCode:newResult.authCode}">{settings.descriptionlinktext}</f:link.action>
+						<f:if condition="{settings.hidePoints} == 0">
+
+
+							<f:render partial="Result/Points" arguments="{result:result, settings: settings, average:average, assessmentGroups:assessmentGroups}" />
+
+						</f:if>
+					</div>
+				</f:then>
+				<f:else>
+					<f:if condition="{settings.endText}">
+						<f:then>
+							<div style="height: 32px" class="text-right mb-4">
+								<a href="#" onclick="window.print();return false;" class="btn btndefault hidden-print ">
+									<img src="{core:normalizedUrl(pathOrUrl:'EXT:jve_template/Resources/Public/Icons/print.svg')}" height="18">
+								</a>
+							</div>
+
+
+							<f:format.html>{settings.endText}</f:format.html>
+
+							<f:if condition="{lastQuestion}">
+								<f:for each="{lastQuestion.answers}" as="answer" iteration="itaratAnsw">
+									<b>{answer.answer.title}:</b> {answer.value} <br />
+								</f:for>
+								<br/>
+							</f:if>
+
+							<div class="text-right">
+								<b><f:format.date format="d.m.Y">+1 Seconds</f:format.date><br></b>
+								<f:if condition="{settings.end.signatureImage}">
+									<f:image maxWidth="300" maxHeight="80" src="{settings.end.signatureImage}" alt="signature" ></f:image><br><br>
+								</f:if>
+								{settings.end.signatureName}<br/>
+								{settings.end.signatureSubline}
+							</div>
+						</f:then>
+						<f:else>
+							<div class="well">
+								<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:endText.standard" />
+							</div>
+						</f:else>
+					</f:if>
+
+				</f:else>
+			</f:if>
 		</f:then>
 		<f:else>
-			<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xlf:endText.standard" />
+			<f:if condition="{settings.endText}">
+				<f:then>
+					<div style="height: 150px" class="text-right">
+						<a href="#" onclick="window.print();return false;" class="btn btndefault hidden-print ">
+							<img src="/typo3conf/ext/jve_template/Resources/Public/Icons/print.svg" height="18">
+						</a>
+					</div>
+
+					<f:format.html>{settings.endText}</f:format.html>
+
+					<f:for each="{result.questions}" as="question" iteration="itaratQuest">
+						<f:if condition="{itaratQuest.isLast}">
+							<f:for each="{question.answers}" as="answer" iteration="itaratAnsw">
+								<b>{answer.answer.title}:</b> {answer.value} <br />
+							</f:for>
+							<br/>
+						</f:if>
+					</f:for>
+
+					<div class="text-right">
+						<b><f:format.date format="d.m.Y">+1 Seconds</f:format.date><br></b>
+						<f:if condition="{settings.end.signatureImage}">
+							<f:image maxWidth="300" maxHeight="80" src="{settings.end.signatureImage}" alt="signature" ></f:image><br><br>
+						</f:if>
+						{settings.end.signatureName}<br/>
+						{settings.end.signatureSubline}
+					</div>
+				</f:then>
+				<f:else>
+					<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:endText.standard" />
+				</f:else>
+			</f:if>
+			<f:if condition="{settings.hidePoints} == 0">
+				<f:if condition="{result.maxPoints} > 0">
+					<f:render partial="Result/Points" arguments="{result:result, settings: settings, average:average, assessmentGroups:assessmentGroups}" />
+				</f:if>
+			</f:if>
 		</f:else>
 	</f:if>
-	<f:if condition="{settings.hidePoints} == 0">
-		<f:if condition="{result.maxPoints} > 0">
-			<f:render partial="Result/Points" arguments="{result:result, settings: settings, average:average, assessmentGroups:assessmentGroups}" />
-			<ke:Range questionnaire="{questionnaire}" result="{result}" as="range">
-				<f:render partial="Result/Range" arguments="{range:range}" />
-			</ke:Range>
-		</f:if>
-	</f:if>
 
+	<f:if condition="{settings.PDFdownload}">
+		<div class="keq_fePDFdownload">
+			<f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xml:PDFdownload.info" />
+			<ul>
+				<f:for each="{PDFdownload}" as="download">
+					<li>
+						<f:link.action target="_blank" action="downloadPdf" controller="Export" arguments="{questionnaire:questionnaire.uid,pdfType:download,selectedResult:result.uid}"><f:translate key="LLL:EXT:ke_questionnaire_premium/Resources/Private/Language/locallang.xml:PDFdownload.{download}" /></f:link.action>
+					</li>
+				</f:for>
+			</ul>
+		</div>
+	</f:if>
 
 </f:section>

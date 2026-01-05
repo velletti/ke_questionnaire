@@ -67,10 +67,6 @@
 				<source>TYPO3 ContentElement</source>
 				<target>Typo3 ContentElement</target>
 			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.dependancies" resname="tx_kequestionnaire_domain_model_question.dependancies"  approved="yes">
-				<source>Dependancies</source>
-				<target>Abhängigkeiten</target>
-			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_answer" resname="tx_kequestionnaire_domain_model_answer"  approved="yes">
 				<source>Answers</source>
 				<target>Antwort</target>
@@ -262,14 +258,6 @@
 			<trans-unit id="authCodeAccess.submit" resname="authCodeAccess.submit"  approved="yes">
 				<source>Submit Authentication Code</source>
 				<target>Authentication Code absenden</target>
-			</trans-unit>
-			<trans-unit id="dependancyAccess.info" resname="dependancyAccess.info"  approved="yes">
-				<source>You need to finish the following questionnaire: </source>
-				<target>Sie müssen erst die folgenden Fragebögen abschliessen: </target>
-			</trans-unit>
-			<trans-unit id="dependancyAccess.infoPoints" resname="dependancyAccess.infoPoints"  approved="yes">
-				<source>You need to finish the following questionnaire with a certain amount of points: </source>
-				<target>Sie müssen erst die folgenden Fragebögen mit entsprechender Punktzahl abschliessen: </target>
 			</trans-unit>
 			<trans-unit id="mail.standard.subject" resname="mail.standard.subject"  approved="yes">
 				<source>You were invited!</source>

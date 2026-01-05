@@ -112,14 +112,6 @@
                                     <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.questions</numIndex>
                                     <numIndex index="1">questions</numIndex>
                                 </numIndex>
-                                <numIndex index="4">
-                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.groupedQuestions</numIndex>
-                                    <numIndex index="1">groupedQuestions</numIndex>
-                                </numIndex>
-                                <numIndex index="5">
-                                    <numIndex index="0">LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.questionNumbering.undependantQuestions</numIndex>
-                                    <numIndex index="1">undependantQuestions</numIndex>
-                                </numIndex>
                             </items>
                         </config>
                     </settings.questionNumbering>
@@ -227,21 +219,20 @@
                             <show_thumbs>1</show_thumbs>
                         </config>
                     </settings.redirectFinished>
-
                     <settings.dependancy.points>
-                        <exclude>1</exclude>
-                        <label>
-                            LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.dependancy.points
-                        </label>
-                        <config>
-                            <type>input</type>
-                            <eval>int</eval>
-                            <size>4</size>
-                            <range>
-                                <lower>0</lower>
-                                <upper>9999</upper>
-                            </range>
-                        </config>
+                        <TCEforms>
+                            <exclude>1</exclude>
+                            <label>LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_flexforms.xml:settings.dependancy.points</label>
+                            <config>
+                                <type>input</type>
+                                <eval>int</eval>
+                                <size>4</size>
+                                <range>
+                                    <lower>0</lower>
+                                    <upper>9999</upper>
+                                </range>
+                            </config>
+                        </TCEforms>
                     </settings.dependancy.points>
                 </el>
             </ROOT>

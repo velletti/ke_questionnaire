@@ -43,10 +43,6 @@
 				<source>Group</source>
 				<target>Gruppe</target>
 			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.ConditionalJump" resname="tx_kequestionnaire_domain_model_question.type.I.ConditionalJump"  approved="yes">
-				<source>Conditional Behaviour</source>
-				<target>Konditionelles Verhalten</target>
-			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_question.type.I.PlausiCheck" resname="tx_kequestionnaire_domain_model_question.type.I.PlausiCheck"  approved="yes">
 				<source>Plausibility Check</source>
 				<target>Plausibilitätsprüfung</target>
@@ -122,10 +118,6 @@
 			<trans-unit id="tx_kequestionnaire_domain_model_question.content_id" resname="tx_kequestionnaire_domain_model_question.content_id"  approved="yes">
 				<source>TYPO3 ContentElement</source>
 				<target>TYPO3 Content-Element</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_question.dependancies" resname="tx_kequestionnaire_domain_model_question.dependancies"  approved="yes">
-				<source>Dependancies</source>
-				<target>Abhängigkeiten</target>
 			</trans-unit>
 			<trans-unit id="tx_kequestionnaire_domain_model_question.to_page" resname="tx_kequestionnaire_domain_model_question.to_page"  approved="yes">
 				<source>Redirect-page</source>
@@ -566,38 +558,6 @@
 			<trans-unit id="tx_kequestionnaire_domain_model_authcode.firstactive" resname="tx_kequestionnaire_domain_model_authcode.firstactive"  approved="yes">
 				<source>First time the authCode was used</source>
 				<target>Erster Aufruf des AuthCodes</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy" resname="tx_kequestionnaire_domain_model_dependancy"  approved="yes">
-				<source>Dependancy</source>
-				<target>Abhängigkeit</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.answer" resname="tx_kequestionnaire_domain_model_dependancy.answer"  approved="yes">
-				<source>Actvating answer</source>
-				<target>Aktivierende Antwort</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation" resname="tx_kequestionnaire_domain_model_dependancy.relation"  approved="yes">
-				<source>Relation type</source>
-				<target>Relationstyp</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.none" resname="tx_kequestionnaire_domain_model_dependancy.relation.none"  approved="yes">
-				<source>None</source>
-				<target>Keine</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.and" resname="tx_kequestionnaire_domain_model_dependancy.relation.and"  approved="yes">
-				<source>AND</source>
-				<target>UND</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.or" resname="tx_kequestionnaire_domain_model_dependancy.relation.or"  approved="yes">
-				<source>OR</source>
-				<target>ODER</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.relation.not" resname="tx_kequestionnaire_domain_model_dependancy.relation.not"  approved="yes">
-				<source>NOT</source>
-				<target>NICHT</target>
-			</trans-unit>
-			<trans-unit id="tx_kequestionnaire_domain_model_dependancy.dquestion" resname="tx_kequestionnaire_domain_model_dependancy.dquestion"  approved="yes">
-				<source>Dependant question</source>
-				<target>Abhängige Frage</target>
 			</trans-unit>
 		</body>
 	</file>
