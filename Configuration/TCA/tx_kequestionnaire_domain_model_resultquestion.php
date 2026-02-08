@@ -25,7 +25,7 @@ return array(
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/resultquestion.svg'
     ),
     'types' => array(
-        '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, answers, question,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+        '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, question, points, answers ,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -100,25 +100,6 @@ return array(
                 'type' => 'passthrough',
             ),
         ),
-        'answers' => array(
-            'exclude' => 0,
-            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultquestion.answers',
-            'config' => array(
-                'type' => 'inline',
-                'foreign_table' => 'tx_kequestionnaire_domain_model_resultanswer',
-                'foreign_field' => 'resultquestion',
-                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_resultanswer.pid = ###CURRENT_PID### ',
-
-                'maxitems'      => 9999,
-                'appearance' => array(
-                    'collapseAll' => 1,
-                    'levelLinksPosition' => 'top',
-                    'showSynchronizationLink' => 1,
-                    'showPossibleLocalizationRecords' => 1,
-                    'showAllLocalizationLink' => 1
-                ),
-            ),
-        ),
         'question' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultquestion.question',
@@ -139,6 +120,26 @@ return array(
                 'size' => 4
             ),
         ),
+        'answers' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultquestion.answers',
+            'config' => array(
+                'type' => 'inline',
+                'foreign_table' => 'tx_kequestionnaire_domain_model_resultanswer',
+                'foreign_field' => 'resultquestion',
+                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_resultanswer.pid = ###CURRENT_PID### ',
+
+                'maxitems'      => 9999,
+                'appearance' => array(
+                    'collapseAll' => 1,
+                    'levelLinksPosition' => 'top',
+                    'showSynchronizationLink' => 1,
+                    'showPossibleLocalizationRecords' => 1,
+                    'showAllLocalizationLink' => 1
+                ),
+            ),
+        ),
+
         'page' => array(
             'exclude' => 0,
             'label' => 'Page Number',

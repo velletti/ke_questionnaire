@@ -3,7 +3,7 @@
 	<div class="keqAnswerWrap keqAnswerSingleInput">
 		<f:form.hidden name="newResult[questions][{question.uid}][answers][{answer.uid}][answer]" value="{answer.uid}" />
 		<f:form.hidden name="answerErrors[]" id="keqAnswerError{answer.uid}" value="0" />
-		<div class="answerInfo" id="keq{question.uid}a{answer.uid}info"></div>
+		<div class="answerInfo minHeight1line" id="keq{question.uid}a{answer.uid}info"></div>
 
 		<f:if condition="{answer.preText}"><label>{answer.preText}</label></f:if>
 		<div><f:form.textfield id="keq{question.uid}a{answer.uid}" name="newResult[questions][{question.uid}][answers][{answer.uid}][value]" value="{f:if(condition: resultAnswer.value, then: resultAnswer.value, else: answer.inText)}" style="width:{f:if(condition: answer.width, then: answer.width, else: '30')}em" maxlength="{f:if(condition: answer.maxChars, then: answer.maxChars, else: '255')}" /></div>
@@ -54,7 +54,7 @@
 		if ( val.length > 6 ) {
 			jQuery.ajax({
 				type: "GET",
-				url: 'index.php',
+				url: 'keAnswerValidation.json',
 				data: 'type=2667&tx_kequestionnaire_questionnaire[type]=AnswerValidation&tx_kequestionnaire_questionnaire[arguments][answerUid]='+a_id+'&tx_kequestionnaire_questionnaire[arguments][value]='+val,
 
 				success: function(xdata){

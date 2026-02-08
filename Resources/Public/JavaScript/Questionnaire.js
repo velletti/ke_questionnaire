@@ -122,43 +122,4 @@ jQuery(document).ready(function () {
 	window.checkAnswerErrors();
 	window.checkMandatory();
 
-	window.checkMatrixRadioValues = function (idy) {
-		jQuery.each(jQuery("#" + idy + " input:radio"), function () {
-			if (jQuery(this).prop('checked')) {
-				jQuery(this).parent().children('input:text').prop('disabled', false);
-			} else {
-				jQuery(this).parent().children('input:text').val('');
-				jQuery(this).parent().children('input:text').prop('disabled', true);
-			}
-		});
-	};
-
-	window.checkMatrixCheckboxValues = function (check) {
-		if (jQuery(check).prop('checked')) {
-			jQuery(check).parent().children('input:text').prop('disabled', false);
-		} else {
-			jQuery(check).parent().children('input:text').val('');
-			jQuery(check).parent().children('input:text').prop('disabled', true);
-		}
-	};
-
-	jQuery(".keqMatrixAddClone").on("click", function () {
-		let counter = jQuery(this).parent().parent().siblings().length + 10;
-		let $row = jQuery(this).parent().parent().siblings(".keqClonableRow").clone().removeClass('keqClonableRow');
-		let $inputs = $row.find('input');
-		$inputs.each(function () {
-			jQuery(this).attr('name', jQuery(this).attr('name').replace('1000', counter));
-			if (jQuery(this).attr('id')) jQuery(this).attr('id', jQuery(this).attr('id').replace('clone1000', 'clone' + counter));
-		});
-		$inputs = $row.find('select');
-		$inputs.each(function () {
-			jQuery(this).attr('name', jQuery(this).attr('name').replace('1000', counter));
-			if (jQuery(this).attr('id')) jQuery(this).attr('id', jQuery(this).attr('id').replace('clone1000', 'clone' + counter));
-		});
-		let $labels = $row.find('label');
-		$labels.each(function () {
-			jQuery(this).attr('for', jQuery(this).attr('for').replace('clone1000', 'clone' + counter));
-		});
-		$row.insertBefore(jQuery(this).parent().parent().siblings(".keqClonableRow"));
-	});
 });

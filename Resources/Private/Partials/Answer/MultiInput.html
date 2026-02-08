@@ -49,7 +49,7 @@
 		var this_id = jQuery(this).attr('id');
 		jQuery.ajax({
 			type: "GET",
-			url: 'index.php' ,
+			url: 'keAnswerValidation.json' ,
 			data: 'type=2667&tx_kequestionnaire_questionnaire[type]=AnswerValidation&tx_kequestionnaire_questionnaire[arguments][answerUid]='+a_id+'&tx_kequestionnaire_questionnaire[arguments][value]='+val,
 			async: false,
 			success: function(data){

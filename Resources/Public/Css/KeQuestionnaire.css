@@ -368,7 +368,9 @@
     margin-top: 0.5em;
     margin-left: 24px;
 }
-
+.tx-ke-questionnaire .minHeight1line {
+    min-height: 1.5em;
+}
 @media (max-width: 767px) {
   .tx-ke-questionnaire .keqNavigationTypeDisplay ul li p{width: 80%;}  
   .tx-ke-questionnaire .keqQuestionTitle p{width: 70%}

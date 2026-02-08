@@ -434,6 +434,10 @@ class BackendController
 
     public function exportCsvAction(ServerRequestInterface $request, $view = null): ResponseInterface
     {
+        if (!file_exists(Environment::getPublicPath() . '/' . $this->pathName)) {
+            mkdir(Environment::getPublicPath() . '/' . $this->pathName, 0777);
+            chmod(Environment::getPublicPath() . '/' . $this->pathName, 0777);
+        }
         if ( !$view ) {
             $view = $this->moduleTemplateFactory->create($request);
             $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
@@ -455,10 +459,7 @@ class BackendController
                 return $view->renderResponse('Backend/ExportCsv');
             }
         }
-        if (!file_exists(Environment::getPublicPath() . '/' . $this->pathName)) {
-            mkdir(Environment::getPublicPath() . '/' . $this->pathName, 0777);
-            chmod(Environment::getPublicPath() . '/' . $this->pathName, 0777);
-        }
+
         return $this->exportAction($request, $view);
     }
 
@@ -511,11 +512,25 @@ class BackendController
 
                         $csvContent = $csvExport->processQbIntervalExport($plugin , $oldContent);
                         //clear the file
+                        if (!file_exists(Environment::getPublicPath() . '/' . $this->pathName)) {
+                            mkdir(Environment::getPublicPath() . '/' . $this->pathName, 0777);
+                            chmod(Environment::getPublicPath() . '/' . $this->pathName, 0777);
+                        }
+
                         $csvFile = fopen(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName, 'w+b');
                         //write the js
-                        fwrite($csvFile, $csvContent);
-                        fclose($csvFile);
-                        chmod(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName, 0777);
+                        if( $csvFile) {
+                            fwrite($csvFile, $csvContent);
+                            fclose($csvFile);
+                            chmod(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName, 0777);
+                        }
+                        $data = [
+                            'current' => $current ,
+                            'max' => $max,
+                            'message' => 'ERROR: Error open file ' . Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName  ,
+                            'finished' => true ,
+                            'success' => false,
+                        ] ;
 
 
                         $current++ ;
