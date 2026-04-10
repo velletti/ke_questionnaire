@@ -314,23 +314,7 @@ class CsvExport {
 				
 		return $csv;
 	}
-	
-	/**
-	 * create the CSV string
-	 * 
-	 * @param array $plugin
-	 * @return string
-	 */
-	public function createResultBased($plugin){
-		$csv = '';
-		
-		$csv .= $this->createRBHeader($plugin);
-		$csv .= $this->newline;
-				
-		$csv .= $this->createRBLines($plugin);
-				
-		return $csv;
-	}
+
 	
 	/**
 	 * create the CSV string
@@ -341,13 +325,11 @@ class CsvExport {
 	public function createAuthCodes($authCodes){
 		$this->csv = '';
 		
-                foreach ($authCodes as $code){
+        foreach ($authCodes as $code){
 			$this->csv .= $code->getAuthCode();
 			$this->csv .= $this->newline;
 		}
                 
-                // $this->signalSlotDispatcher->dispatch(__CLASS__, 'createAuthCodes', array($this,$authCodes));
-						
 		return $this->csv;
 	}
 	
@@ -357,7 +339,7 @@ class CsvExport {
 	 * @param array $plugin
 	 * @return string
 	 */
-	protected function createQBHeader($plugin){
+	public function createQBHeader($plugin){
 		$header = '';
 		
 		$header .= $this->text.$plugin['header'].$this->text;
@@ -423,7 +405,7 @@ class CsvExport {
 	 * @param array $plugin
 	 * @return string
 	 */
-	protected function createRBHeader($plugin){
+	public function createRBHeader($plugin , $questions = []){
 		$this->RBStruct = array();
 		$header = '';
 		
@@ -446,24 +428,31 @@ class CsvExport {
 		$qL2[] = 'Question Title';
 		$aL[] = 'Answer ID';
 		$aL2[] = 'Answer Title';
-		$questions = $this->getQuestions($plugin);
+		// $questions = $this->getQuestions($plugin);
 		foreach ($questions as $question){
 			if ($question->getShortType() == 'Question'){
 				$this->RBStruct[$question->getUid()] = array();
-				//$qL[] = $question->getUid();
-				//$qL2[] = $this->text.$question->getTitle().$this->text;
-				
+				$lastQuestionId = -1;
 				foreach ($question->getAnswers() as $answer){
 					if ($answer->exportInCsv()){
 						$this->RBStruct[$question->getUid()][$answer->getUid()] = 1;
-						$qL[] = $question->getUid();
-						$qL2[] = $this->text.$question->getTitle().$this->text;
+                        if ($lastQuestionId == $question->getUid()) {
+                            $qL[] = 0;
+                            $qL2[] = $this->text."".$this->text;
+                        } else {
+                            $qL[] = $question->getUid();
+                            $qL2[] = $this->text.$question->getTitle().$this->text;
+                            $lastQuestionId = $question->getUid();
+                        }
+
 						$aL[] = $answer->getUid();
 						$aL2[] = $this->text.$answer->getTitle().$this->text;
 					}
 				}
 			}
 		}
+        $qL[] = 'Points';
+        $qL[] = 'Finished';
 		$questionHeader = implode($this->separator,$qL).$this->newline;
 		$header .= $questionHeader;				
 		$questionHeader2 = implode($this->separator,$qL2).$this->newline;
@@ -481,7 +470,7 @@ class CsvExport {
 	 * 
 	 * @return string
 	 */
-	protected function createTotalPointsLine(){
+	public function createTotalPointsLine(){
 		$line = '';
 		$aL = array();
 		
@@ -514,7 +503,7 @@ class CsvExport {
   * @param array $qL
   * @return string
   */
- protected function createQuestionPointsLine(Question $question, $qL){
+ public function createQuestionPointsLine(Question $question, $qL){
 		$qL[] = 'Points';
 		if ($this->getShowQText()) $emptyFields = 1;
 		else $emptyFields = 0;
@@ -543,7 +532,7 @@ class CsvExport {
 	 * @param array $plugin
 	 * @return string
 	 */
-	protected function createQBLines($plugin){
+	public function createQBLines($plugin){
 		$lines = '';
 		$questions = $this->getQuestions($plugin);
 		foreach ($questions as $question){
@@ -582,40 +571,57 @@ class CsvExport {
 	 * @param array $plugin
 	 * @return string
 	 */
-	protected function createRBLines($plugin){
-		$lines = '';
-		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->RBStruct, 'struct');
-		foreach ($this->resultsRaw as $result){
-			$rL = array();
-			$rL[] = $result['uid'];
-			$rL[] = '';			
-			$rAnswers = $this->resultRepository->collectRAnswersForCSVRBExport($result['uid']);
-			foreach ($this->RBStruct as $questionId => $answers){
-				$exportAnswers = array();
-				foreach($rAnswers as $rA){
-					if ($rA['q_uid'] == $questionId){
-						if ($answers[$rA['a_uid']] == 1){
-							$exportAnswers[$rA['a_uid']] = $rA['ra_value'];
-							if ($rA['ra_add_value']){
-								if ($rA['a_uid'] == $rA['ra_value']) $exportAnswers[$rA['a_uid']] = $rA['ra_add_value'];
-								else $exportAnswers[$rA['a_uid']] .= ' ('.$rA['ra_add_value'].')';
-							}
-						}
-					}
-				}
+	public function createRBLines($result , $questions ){
+        $resultUid = (int) $result['uid'] ??  0 ;
+        if (!$resultUid || !$questions) return '';
 
-				foreach ($answers as $answerId => $aVal){
-					$val = '';
-					if ($exportAnswers[$answerId]) {
-						if ($exportAnswers[$answerId] == $answerId) $val = $this->getSingleMarker();
-						else $val = $this->getText().$exportAnswers[$answerId].$this->getText();
-					}
-					$rL[] = $val;
-				}
-			}
-			$lines .= implode($this->separator,$rL).$this->newline;
-		}
-		return $lines;
+        $rL = [];
+        $rL[] = $resultUid ;  //6542
+        $rL[] = '';
+
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+
+
+        foreach ($questions as $question){
+            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+            $queryBuilder = $connectionPool->getConnectionForTable('tx_kequestionnaire_domain_model_resultquestion')->createQueryBuilder();
+            $rows = $queryBuilder->select('rq.uid as rq_uid' , 'rq.question as rq_question' , 'ra.uid as ra_uid' , 'ra.answer as ra_answer' , 'ra.value as ra_value' , 'ra.additional_value as ra_additional_value')
+                ->from('tx_kequestionnaire_domain_model_resultquestion' , 'rq')
+                ->leftJoin('rq' , 'tx_kequestionnaire_domain_model_resultanswer' , 'ra' ,
+                    $queryBuilder->expr()->eq('ra.resultquestion', 'rq.uid') )
+                ->where(
+                    $queryBuilder->expr()->eq('rq.result', $queryBuilder->createNamedParameter($resultUid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('rq.question', $queryBuilder->createNamedParameter($question->getUid(), \PDO::PARAM_INT))
+                )->executeQuery()->fetchAllAssociative();
+
+            foreach ( $question->getAnswers() as $answer ) {
+                $val = '';
+                if ( $rows ) {
+                    foreach ($rows as $row){
+                        if ($row['ra_answer'] == $answer->getUid()){
+                            if ($answer->getUid() == $row['ra_value']) {
+                                $val = $this->getSingleMarker();
+                            } else {
+                                $val = $this->getText().$row['ra_value'].$this->getText();
+                            }
+                            if ($row['ra_additional_value']){
+                                if ($val != '') {
+                                    $val .= ' ('.$row['ra_additional_value'].')';
+                                } else {
+                                    $val = $this->getText().$row['ra_additional_value'].$this->getText();
+                                }
+                            }
+                        }
+                    }
+                }
+                $rL[] = $val;
+            }
+        }
+        $rL[] = $result['points'] ?? 0;
+        $rL[] = $result['finished'] ? date( "d.m.Y H:i" ,  $result['finished'] ) : '';
+        return implode($this->separator,$rL).$this->newline;
+
 	}
 	
 	/**
@@ -624,244 +630,15 @@ class CsvExport {
 	 * @param array $plugin
 	 * @return array|\TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface
 	 */
-	protected function getQuestions($plugin) {
+	public function getQuestions($plugin) {
 		$pids = explode(',',$plugin['pages']);
 		$storagePid = $pids[0];
 		
 		$questions = $this->questionRepository->findAllForPidtoExport($storagePid);
 		return $questions;
 	}
-	
-	/**
-	 * start the interval Export
-	 * 
-	 * @param array $plugin
-	 * @param string $csvString
-	 */
-	public function finishIntervalExport($plugin, $csvString){
-		$csv = '';
-		$csvData = $this->parseCsv($csvString);
-        $csv .= $this->createQBHeader($plugin);
-		if ($this->getTotalPoints()) $csv .= $this->createTotalPointsLine();
-		$csv .= $this->newline;
-		$csv .= $this->createQuestionColumns($plugin, $csvData);
-				
-		return $csv;
-	}
-	
-	/**
-	 * start the interval Export
-	 * 
-	 * @param array $plugin
-	 * @param string $csvString
-	 */
-	public function finishRbIntervalExport($plugin, $csvString){
-		$csv = $this->createRBHeader($plugin);
-		//if ($this->getTotalPoints()) $csv .= $this->createTotalPointsLine();
-		$csv .= $csvString;
-				
-		return $csv;
-	}
-	
-	/**
-	 * start the interval Export
-	 * 
-	 * @param array $oldContent
-	 */
-	public function processQbIntervalExport($plugin, $oldContent){
-        $oldArray = array();
-		if ($oldContent) $oldArray = $this->parseCsv($oldContent);
-		$lines = '';
-		$questions = $this->getQuestions($plugin);
-		$counter = 0;
-		foreach ($questions as $question){
-			if ($question->getShortType() == 'Question'){
-				foreach ($question->getAnswers() as $answer){
 
-                    /** @var Answer $answer */
-					if ($answer->exportInCsv()){
-						$options = array();
-						$options['marker'] = $this->getSingleMarker();
-						$options['separator'] = $this->getSeparator();
-						$options['textMarker'] = $this->getText();
-						$options['newline'] = $this->newline;
-						$options['emptyFields'] = 0;
-						$options['showAText'] = $this->getShowAText();
-                        $answerLine = $answer->getCsvLineValues($this->resultsRaw,$question, $options);
-                        $oldValues = '';
-                        if (is_array($oldArray[$counter])){
-                            //$oldValues = implode($this->getSeparator(),$oldArray[$counter]);
-                            foreach ($oldArray[$counter] as $col => $val){
-                                $oldValues .= $this->getText().$val.$this->getText();
-                                $oldValues .= $this->getSeparator ();
-                            }
-                        }
-                        if ($oldValues != '') {
-                            $lines .= $oldValues . $answerLine;
-                        } else {
-                            $lines .= $answerLine;
-                        }
-                        $counter ++;
-					}
-				}
-			}
-		}
-		return $lines;
-	}
-	
-	/**
-	 * start the interval Export
-	 * 
-	 * @param array $oldContent
-	 */
-	public function processRbIntervalExport($plugin, $oldContent){
-		$header = $this->createRBHeader($plugin);
-        $lines = $oldContent.$this->createRBLines($plugin);
-		return $lines;
-	}
-	
-	/**
-	 * process the old CSV Content
-	 * @param string $d
-	 */
-	protected function parseCsv($data){
-		$convert = $this->dos2unix($data);
-		$return_rows = $this->csvstring_to_array($convert, $this->getSeparator(), $this->getText(), $this->newline);
-		return $return_rows;
-	}
-	
-	protected function dos2unix($s) {
-		$s = str_replace("\r\n", "\n", $s);
-		$s = str_replace("\r", "\n", $s);
-		$s = preg_replace("/\n{2,}/", "\n\n", $s);
-		return $s;
-	}
-	
-	function csvstring_to_array($string, $separatorChar = ',', $enclosureChar = '"', $newlineChar = PHP_EOL) {
-		// @author: Klemen Nagode
-		$array = array();
-		$size = strlen($string);
-		$columnIndex = 0;
-		$rowIndex = 0;
-		$fieldValue="";
-		$isEnclosured = false;
-		for($i=0; $i<$size;$i++) {
 
-			$char = $string[$i];
-			$addChar = "";
 
-			if($isEnclosured) {
-				if($char==$enclosureChar) {
-
-					if($i+1<$size && $string[$i+1] ==$enclosureChar){
-						// escaped char
-						$addChar=$char;
-						$i++; // dont check next char
-					}else{
-						$isEnclosured = false;
-					}
-				}else {
-					$addChar=$char;
-				}
-			}else {
-				if($char==$enclosureChar) {
-					$isEnclosured = true;
-				}else {
-
-					if($char==$separatorChar) {
-
-						$array[$rowIndex][$columnIndex] = $fieldValue;
-						$fieldValue="";
-
-						$columnIndex++;
-					}elseif($char==$newlineChar) {
-						echo $char;
-						$array[$rowIndex][$columnIndex] = $fieldValue;
-						$fieldValue="";
-						$columnIndex=0;
-						$rowIndex++;
-					}else {
-						$addChar=$char;
-					}
-				}
-			}
-			if($addChar!=""){
-				$fieldValue.=$addChar;
-
-			}
-		}
-
-		if($fieldValue) { // save last field
-			$array[$rowIndex][$columnIndex] = $fieldValue;
-		}
-		return $array;
-	}
-	
-			
-	/**
-	 * create the lines of the csv
-	 * @param array $plugin
-	 * @param array $csvData
-	 * @return string
-	 */
-	protected function createQuestionColumns($plugin, $csvData){
-		$lines = '';
-		$questions = $this->getQuestions($plugin);
-		$answerCount = 0;
-		foreach ($questions as $question){
-			if ($question->getShortType() == 'Question'){
-				$qL = array();
-				$qL[] = $question->getUid();
-				$qL[] = $this->text.$question->getTitle().$this->text;
-				if ($this->getShowQText()) $qL[] = $this->text.strip_tags($question->getText()).$this->text;
-				if ($this->getQuestionPoints()) $qL = $this->createQuestionPointsLine($question, $qL);			
-				$questionLine = implode($this->separator,$qL).$this->newline;
-				$lines .= $questionLine;
-				
-				foreach ($question->getAnswers() as $answer){
-					if ($answer->exportInCsv()){
-						$options = array();
-						$options['marker'] = $this->getSingleMarker();
-						$options['separator'] = $this->getSeparator();
-						$options['textMarker'] = $this->getText();
-						$options['newline'] = $this->newline;
-						if ($this->getShowQText()) $options['emptyFields'] = 3;
-						else $options['emptyFields'] = 2;
-						$options['showAText'] = $this->getShowAText();
-						$answerLine = $answer->getCsvLineHeader($question, $options);
-						if ($answer->getShortType() == 'MatrixHeader' OR $answer->getShortType() == 'ExtendedMatrixHeader'){
-							$answerLines = explode($this->newline,$answerLine);
-							foreach ($answerLines as $mLineId => $mAnswerLine){
-								$oldValues = '';
-								if ($mAnswerLine != ''){
-									if (is_array($csvData[$answerCount])){
-										foreach ($csvData[$answerCount] as $col => $val){
-											$oldValues .= $this->getText().$val.$this->getText();                                                                
-											$oldValues .= $this->getSeparator();
-										}
-									}
-									$mAnswerLine .= $this->separator.$oldValues.$this->newline;
-									$lines .= $mAnswerLine;
-									$answerCount ++;
-								}
-							}
-						} else {
-							$oldValues = '';
-							if (is_array($csvData[$answerCount])){
-								foreach ($csvData[$answerCount] as $col => $val){
-									$oldValues .= $this->getText().$val.$this->getText();                                                                
-									$oldValues .= $this->getSeparator();
-								}
-							}
-							$answerLine .= $oldValues.$this->newline;
-							$lines .= $answerLine;
-							$answerCount ++;
-						}
-					} else $answerCount ++;
-				}
-			}
-		}
-		return $lines;
-	}
     
 }

@@ -6,10 +6,10 @@ use TYPO3\CMS\Core\Core\Environment;
 
 class debug
 {
-    public static function store($resultId , $debug )
+    public static function store($resultId , $debug , $filename = 'debug_result_update')
     {
         if (File_exists(Environment::getProjectPath() . '/_LOG_KEQ_')) {
-            $file = Environment::getProjectPath() . '/var/log/debug_result_update_' . $resultId  . '.txt';
+            $file = Environment::getProjectPath() . '/var/log/' . $filename . '_' . $resultId  . '.txt';
             $stream = fopen($file, 'a+');
             if ($stream) {
                 fwrite($stream, " ****************** \n");

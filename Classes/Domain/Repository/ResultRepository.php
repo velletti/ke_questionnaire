@@ -228,7 +228,6 @@ class ResultRepository extends Repository {
 		$interval = intval($interval);
 		$position = intval($position);
 		if ($interval == 0) $interval = 1;
-		//\TYPO3\CMS\Core\Utility\GeneralUtility::devlog('arguments','keq',2,array($pid, $interval, $position));
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->setLimit($interval);
@@ -250,18 +249,15 @@ class ResultRepository extends Repository {
   * @param integer $position
   * @return QueryResultInterface All finished results
   */
- public function findFinishedForPidIntervalRaw($pid, $interval, $position) {
-		$interval = intval($interval);
+ public function findFinishedForPidIntervalRaw($pid, $position, $finished = 0) {
 		$position = intval($position);
-		if ($interval == 0) $interval = 1;
-		//\TYPO3\CMS\Core\Utility\GeneralUtility::devlog('arguments','keq',2,array($pid, $interval, $position));
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$query->setLimit($interval);
+		$query->setLimit(1);
 		$query->setOffset($position);
 		$query->matching(
 				$query->logicalAnd(
-                    $query->greaterThan('finished', 0)
+                    $query->greaterThan('finished', $finished)
                     , $query->equals('pid', $pid)
                 ));
      $this->log(__FUNCTION__ , $query  );
@@ -274,12 +270,12 @@ class ResultRepository extends Repository {
   * @param integer $pid
   * @return QueryResultInterface All finished results
   */
- public function countFinishedForPid($pid) {
+ public function countFinishedForPid($pid , $finished = 0) {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		return $query->matching(
 				$query->logicalAnd(
-                    $query->greaterThan('finished', 0)
+                    $query->greaterThan('finished', $finished)
                     , $query->equals('pid', $pid)
                 ))->count();
 	}        
@@ -347,7 +343,9 @@ class ResultRepository extends Repository {
         $query = $this->createQuery();
         $query->statement("DELETE from tx_kequestionnaire_domain_model_resultanswer WHERE resultquestion = 0 ")->execute() ;
 	}
-	
+
+
+        
 	/**
 	 * 
 	 * @param integer $resultId
@@ -369,6 +367,8 @@ tx_kequestionnaire_domain_model_resultquestion.result ='.$resultId);
 
 		return $query->execute(true);
 	}
+
+
     private function log( $method , \TYPO3\CMS\Extbase\Persistence\QueryInterface $query ){
         if ( str_ends_with($_SERVER['SERVER_NAME'] , 'ddev.site' ) || file_exists(Environment::getProjectPath() . '/var/log/_ENABLE_KEQLOG_') ){
             $fn =fopen( Environment::getProjectPath() . '/var/log/keq.log' , 'a+' );

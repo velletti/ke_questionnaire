@@ -49,6 +49,9 @@ class ExportCsv {
                     fileinfo.innerHTML = data.length; // Update file info if available
                 }
                 if (data.success) {
+                    if (data.resultuid) {
+                        document.querySelector("#kequest_export-result-uid").innerHTML(data.resultuid);
+                    }
                     if (data.finished) {
                         alert(data.message);
                         document.querySelector("#kequest_export-start").classList.add('d-none');

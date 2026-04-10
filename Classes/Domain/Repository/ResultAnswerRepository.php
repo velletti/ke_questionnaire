@@ -133,20 +133,7 @@ class ResultAnswerRepository extends Repository
         return $query->count();
     }
 
-    /**
-     * getspecific Result Answer
-     * @param Question $question
-     * @param Result $result
-     */
-    public function getResultAnswersForQuestionAndResult(Question $question, Result $result)
-    {
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
 
-        $query->matching($query->equals('question', $question));
-
-        return $query->execute();
-    }
 
     /**
      *

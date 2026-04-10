@@ -11,6 +11,7 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
 use Kennziffer\KeQuestionnaire\Utility\Mail;
+use \Kennziffer\KeQuestionnaire\Utility\Debug;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -454,7 +455,14 @@ class BackendController
             );
             if (isset($query['uid'])) {
                 $view->assign('plugin', $this->questionnaireRepository->findByUid($query['uid']));
+                /** @var ResultRepository $resultRepository */
+                $resultRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository::class);
+
+                $view->assign('all', $resultRepository->countFinishedForPid($query['id'],  -1) );
+                $view->assign('finished', $resultRepository->countFinishedForPid($query['id'],  0) );
+
                 $fileName = 'export_' . $query['uid'] . '_' . date('Ymd_His') . '.csv';
+
                 $view->assign('fileName', $fileName);
                 return $view->renderResponse('Backend/ExportCsv');
             }
@@ -476,9 +484,11 @@ class BackendController
         $moduleData = $request->getAttribute('moduleData');
         $responseFactory = GeneralUtility::makeInstance(ResponseFactoryInterface::class) ;
         if (is_array($query)) {
+
             // plugin uid and page id must given
             if (isset($query['uid']) && isset($query['id'])) {
                 $fileNameCheck = 'export_' . $query['uid'] . '_' . date('Ymd') ;
+                Debug::store($query['uid'], $query , "debug_csv_interval_export");
                 $pluginObj = $this->questionnaireRepository->findByUid($query['uid']);
                 $plugin['pages'] = $query['id'];
                 $plugin['header'] = $pluginObj->getHeader();
@@ -491,47 +501,55 @@ class BackendController
                     /** @var CsvExport $csvExport */
                     $csvExport = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Utility\CsvExport::class);
                     $csvExport->init() ;
-
+                    $fileWithPath = Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName;
                     if (isset($query['current']) && isset($query['max'])) {
                         $current = (int)$query['current'];
                         $max = (int)$query['max'];
 
-                        // now do  the magic export for $current
-
-                        $oldContent = '' ;
-                        if(file_exists(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName)) {
-                            $oldContent = file_get_contents(Environment::getPublicPath() . '/' .$this->pathName ."/". $fileName);
-                        }
-                        if( $query['onlyFinished'] ) {
-                        //    $csvExport->setResults($resultRepository->findFinishedForPidInterval($this->storagePid, 1, $current));
-                            $csvExport->setResultsRaw($resultRepository->findFinishedForPidIntervalRaw($this->storagePid, 1, $current));
-                        } else {
-                        //    $csvExport->setResults($resultRepository->findAllForPidInterval( $query['id'] , 1, $current));
-                            $csvExport->setResultsRaw($resultRepository->findAllForPidIntervalRaw( $query['id'] , 1, $current));
-                        }
-
-                        $csvContent = $csvExport->processQbIntervalExport($plugin , $oldContent);
-                        //clear the file
                         if (!file_exists(Environment::getPublicPath() . '/' . $this->pathName)) {
                             mkdir(Environment::getPublicPath() . '/' . $this->pathName, 0777);
                             chmod(Environment::getPublicPath() . '/' . $this->pathName, 0777);
                         }
+                        $csvContent= '';
+                        $resultUid= 0;
+                        $questions = $csvExport->getQuestions($plugin) ;
+                        if( $current == 0 ) {
+                            // write headline s to file
+                            $csvContent = $csvExport->createRBHeader($plugin , $questions);
+                        } else {
+                            //add results
+                            if( $query['onlyFinished'] ) {
+                                $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1 , 1) ;
+                            } else {
+                                $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1, -1) ;
+                            }
+                            $resultUid = (int)($rowForCsv[0]['uid'] ?? 0);
+                            if( $resultUid ) {
+                                $csvContent = $csvExport->createRBLines($rowForCsv[0], $questions);
+                            }
+                        }
 
-                        $csvFile = fopen(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName, 'w+b');
+                        $csvFile = fopen($fileWithPath, 'a+');
                         //write the js
-                        if( $csvFile) {
+                        if( $csvFile ) {
                             fwrite($csvFile, $csvContent);
                             fclose($csvFile);
-                            chmod(Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName, 0777);
-                        }
-                        $data = [
-                            'current' => $current ,
-                            'max' => $max,
-                            'message' => 'ERROR: Error open file ' . Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName  ,
-                            'finished' => true ,
-                            'success' => false,
-                        ] ;
+                            chmod($fileWithPath, 0777);
 
+                        } else {
+                            $data = [
+                                'current' => $current ,
+                                'resultuid' => $resultUid ,
+                                'max' => $max,
+                                'message' => ($csvFile ? 'ERROR: no content for row' :'ERROR: could not open file for writing ' . $fileName ) ,
+                                'finished' => true ,
+                                'success' => false,
+                            ] ;
+                            $response = $responseFactory->createResponse()
+                                ->withHeader('Content-Type', 'application/json; charset=utf-8');
+                            $response->getBody()->write(json_encode($data));
+                            return $response;
+                        }
 
                         $current++ ;
                     } else {
@@ -540,16 +558,18 @@ class BackendController
                     }
                     $data = [
                         'current' => $current ,
+                        'resultuid' => $resultUid ,
                         'max' => $max,
                         'message' => ( $current <= $max ? 'running' : 'finished' ),
                         'finished' => ( $current <= $max ? false : true ),
                         'success' => true,
-                        'length' => strlen($csvContent ?? '' ),
+                        'length' => (filesize($fileWithPath) ?? 0 )
                     ] ;
 
                 } else {
                     $data = [
                         'current' => $current ,
+                        'resultuid' => 0 ,
                         'max' => $max,
                         'message' => 'ERROR: given filename ' . $query['target']  . ' should start with ' . $fileNameCheck ,
                         'finished' => true ,
@@ -573,12 +593,44 @@ class BackendController
         $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
         $this->setUpDocHeader($request, $view);
 
-        $message = GeneralUtility::makeInstance(FlashMessage::class,
-            "See downloads folder in your browser " ,
-            '',
-            FlashMessage::OK
-        );
-        $this->flashMessageQueue->addMessage($message);
+        $settings = EmConfigurationUtility::getEmConf(false);
+        $query = $request->getQueryParams();
+        $body = $request->getParsedBody();
+        $moduleData = $request->getAttribute('moduleData');
+        // plugin uid  must given
+        if (isset($query['uid']) ) {
+            $fileNameCheck = 'export_' . $query['uid'] . '_' . date('Ymd') ;
+            if ( str_starts_with( $query['target'] ?? '' , $fileNameCheck ) ) {
+                $fileName = $query['target'] ;
+                $filePath = Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName;
+                if (file_exists($filePath)) {
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($filePath));
+                    readfile($filePath);
+                    unlink($filePath);
+                    exit;
+                } else {
+                    $message = GeneralUtility::makeInstance(FlashMessage::class,
+                        $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:message.fileNotFound', true) . ': ' . $fileName,
+                        '',
+                        FlashMessage::ERROR
+                    );
+                    $this->flashMessageQueue->addMessage($message);
+                }
+            } else {
+                $message = GeneralUtility::makeInstance(FlashMessage::class,
+                    $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:message.fileNameInvalid', true) . ': ' . ($query['target'] ?? '')  . ' should start with ' . $fileNameCheck,
+                    '',
+                    FlashMessage::ERROR
+                );
+                $this->flashMessageQueue->addMessage($message);
+            }
+        }
 
         return $this->exportAction($request, $view);
     }
