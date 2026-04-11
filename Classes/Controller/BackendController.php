@@ -76,6 +76,13 @@ class BackendController
                 'authCodesSimple' => htmlspecialchars(
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:menu.simple')
                 ),
+                'createAuthCodes' => htmlspecialchars(
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:simple.title')
+                ),
+                'createAndMailAuthCodes' => htmlspecialchars(
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.title')
+                ),
+
                 'authCodesMail' => htmlspecialchars(
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:menu.mail')
                 ),
@@ -120,12 +127,21 @@ class BackendController
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:menu.simple')
                 );
                 return $this->authCodesSimpleAction($request, $moduleTemplate);
+
+            case 'createauthcodes':
+            case 'kequestionnairebe_createauthcodes':
+
+
+                return $this->createAuthCodesAction($request);
+
             case 'authcodesmail':
                 $moduleTemplate->setTitle(
                     $title,
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:menu.mail')
                 );
                 return $this->authCodesMailAction($request, $moduleTemplate);
+
+
 
             case 'export':
             case 'kequestionnairebe_export':
@@ -210,7 +226,29 @@ class BackendController
                 $plugin = $this->questionnaireRepository->findByUid($query['uid']);
                 $view->assign('plugin', $plugin);
                 if( $plugin) {
-                    $view->assign('authCodes', $this->authCodeRepository->findAllForPid($plugin->getStoragePid()));
+                    $offset = (int)($query['offset'] ?? 0);
+                    $limit = 20 ;
+                    $total = $this->authCodeRepository->countAllForPid($plugin->getStoragePid());
+                    $view->assign('authCodeCount', $total);
+                    $view->assign('authCodes', $this->authCodeRepository->findForPid($plugin->getStoragePid() ,$limit , $offset));
+                    $view->assign('limit', $limit );
+                    $i = 1 ;
+                    while ($total > $limit) {
+
+                        $pages[] = [
+                            'offset' => ($i - 1) * $limit,
+                            'label' => $i ,
+                            'active' => (($i - 1 ) * $limit == $offset ? true : false )
+                        ];
+                        $i++ ;
+                        $total -= $limit;
+                    }
+                    $pages[] = [
+                        'offset' => ($i - 1) * $limit,
+                        'label' => $i ,
+                        'active' => (($i - 1 ) * $limit == $offset ? true : false )
+                    ];
+                    $view->assign('pages', $pages );
                 } else {
                     $message = GeneralUtility::makeInstance(FlashMessage::class,
                         $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound', true),
@@ -282,21 +320,24 @@ class BackendController
             $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
             foreach ($emails as $key => $email) {
 
-                /** @var AuthCode $newAuthCode */
-                $newAuthCode = new AuthCode() ;
+                if (GeneralUtility::validEmail($email)) {
+                    /** @var AuthCode $newAuthCode */
+                    $newAuthCode = new AuthCode() ;
 
-                $newAuthCode->generateAuthCode($authCodeLength, $pid);
-                $newAuthCode->setPid($pid);
-                $newAuthCode->setEmail($email);
+                    $newAuthCode->generateAuthCode($authCodeLength, $pid);
+                    $newAuthCode->setPid($pid);
+                    $newAuthCode->setEmail($email);
 
-                $this->authCodeRepository->add($newAuthCode);
-                $mailSender = GeneralUtility::makeInstance(Mail::class);
-                $mailSender->setPlugin( $this->questionnaireRepository->findByUid($query['uid'] ));
-                $mailSender->init($email , $newAuthCode) ;
-                $mailSender->sendMail();
+                    $this->authCodeRepository->add($newAuthCode);
+                    $mailSender = GeneralUtility::makeInstance(Mail::class);
+                    $mailSender->setPlugin( $this->questionnaireRepository->findByUid($query['uid'] ));
+                    $mailSender->init($email , $newAuthCode) ;
+                    $mailSender->sendMail();
 
-                $generated++;
-                $persistenceManager->persistAll();
+                    $generated++;
+                    $persistenceManager->persistAll();
+                }
+
             }
 
             $message = GeneralUtility::makeInstance(FlashMessage::class,
@@ -311,7 +352,20 @@ class BackendController
         $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
         $this->setUpDocHeader($request, $view);
 
-        return $this->authCodesAction($request, $view);
+        /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
+        $plugin = $this->questionnaireRepository->findByUid($query['uid'] ?? 0 );
+        $view->assign('plugin', $plugin);
+        if( $plugin) {
+            $view->assign('authCodes', $this->authCodeRepository->findAllForPid($plugin->getStoragePid()));
+        } else {
+            $message = GeneralUtility::makeInstance(FlashMessage::class,
+                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound', true),
+                '',
+                FlashMessage::ERROR
+            );
+            $this->flashMessageQueue->addMessage($message);
+        }
+        return $view->renderResponse('Backend/AuthCodes');
     }
 
 
@@ -372,14 +426,20 @@ class BackendController
     }
 
 
-    public function createAuthCodesAction(ServerRequestInterface $request): ResponseInterface
+    public function createAuthCodesAction(ServerRequestInterface $request ): ResponseInterface
     {
+        $view = $this->moduleTemplateFactory->create($request);
+        $title =  $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab');
+        $view->setTitle(
+            $title,
+            $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authorize.xlf:simple.title')
+        );
+        $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
         $settings = EmConfigurationUtility::getEmConf(false);
         $defaultAuthCodeLength = (int)($settings['authCodeLength'] ?? 10);
         
         $query = $request->getQueryParams();
         $form = $request->getParsedBody();
-
         if (is_array($form)) {
 
             $amount = ($form['amount'] ? (int)$form['amount'] :  1);
@@ -400,8 +460,9 @@ class BackendController
 
                 $this->authCodeRepository->add($newAuthCode);
                 $generated++;
-                $persistenceManager->persistAll();
+
             }
+            $persistenceManager->persistAll();
 
             $message = GeneralUtility::makeInstance(FlashMessage::class,
                 $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodesCreated', true) . ': ' . $generated,
@@ -411,11 +472,22 @@ class BackendController
             $this->flashMessageQueue->addMessage($message);
         }
 
-        $view = $this->moduleTemplateFactory->create($request);
-        $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
-        $this->setUpDocHeader($request, $view);
 
-        return $this->authCodesAction($request, $view);
+        $this->setUpDocHeader($request, $view);
+        /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
+        $plugin = $this->questionnaireRepository->findByUid($query['uid'] ?? 0 );
+        $view->assign('plugin', $plugin);
+        if( $plugin) {
+            $view->assign('authCodes', $this->authCodeRepository->findAllForPid($plugin->getStoragePid()));
+        } else {
+            $message = GeneralUtility::makeInstance(FlashMessage::class,
+                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound', true),
+                '',
+                FlashMessage::ERROR
+            );
+            $this->flashMessageQueue->addMessage($message);
+        }
+        return $view->renderResponse('Backend/AuthCodes');
     }
     
     /*   #############################################################################################################

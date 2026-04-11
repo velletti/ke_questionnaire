@@ -46,6 +46,24 @@ class AuthCodeRepository extends Repository {
 		$query->matching($query->equals('pid', $pid));
 		return $query->execute();
 	}
+
+    /**
+     * find authcodes for a pid
+     *
+     * @param integer $pid
+     * @return Query Result
+     */
+    public function findForPid($pid , $limit = 20 , $offset = 0) {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->matching($query->equals('pid', $pid));
+        $query->setLimit($limit);
+        $query->setOffset($offset);
+        $query->setOrderings([
+            'email' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        ]);
+        return $query->execute();
+    }
 	
 	/**
 	 * find one for string and pid

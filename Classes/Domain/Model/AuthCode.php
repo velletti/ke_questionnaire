@@ -142,7 +142,7 @@ class AuthCode extends AbstractEntity {
 		//get the existent authcodes so no duplicates are created
 		$ac_rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
 		// Generate authcode
-		$loop = 1;
+		$loop = true;
         $needsMinusDefault = 3 ;
         if( in_array( $length , [ 4 , 8 , 12 , 16 , 20 , 24 ] )) {
             $needsMinusDefault = 4 ;
@@ -153,9 +153,10 @@ class AuthCode extends AbstractEntity {
         if( in_array( $length , [ 7 , 14 , 21 , 28 ] )) {
             $needsMinusDefault = 7 ;
         }
-
+        $loops = 0 ;
 		while($loop){
 			$key = '';
+            $loops ++ ;
 			list($usec, $sec) = explode(' ', microtime());
 			mt_srand((float) $sec + ((float) $usec * 100000));
 
@@ -185,9 +186,13 @@ class AuthCode extends AbstractEntity {
 
             }
             $key = strtoupper(rtrim($resultKey , "-")) ;
-
 			$existent = $ac_rep->findByAuthCodeForPid($key,$pid);
-			if ($existent) $loop = 0;
+			if (!$existent) {
+                $loop = false;
+            }
+            if ($loops > 100) {
+                throw new \Exception("Too many loops while generating authcode. Please check the length and the existing authcodes.");
+            }
 		}
 
 		$this->setAuthCode($key);

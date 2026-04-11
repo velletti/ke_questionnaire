@@ -69,7 +69,7 @@ class Mail {
     }
 
     /**
-     * @param mixed $flexform
+     * @param mixed $plugin
      */
     public function setPlugin($plugin): void
     {

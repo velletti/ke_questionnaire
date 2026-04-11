@@ -22,6 +22,22 @@
 			<b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:codes.existing" /></b><br />
 			{plugin.header} (Pid: {plugin.storagePid})<br />
 
+			<f:if condition="{authCodeCount > limit}">
+				<div class="bg-gray">
+					<ul class="pagination pagination-sm mb-0 ">
+						<f:for each="{pages}" as="page" iteration="iterator">
+							<li class="page-item {page.active -> f:if(then: 'active')} mx-1">
+								<a class="btn btn-secondary btn-sm mr-1 mb-1"
+								   href="{be:moduleLink(route: 'kequestionnairebe_authcodes', arguments: '{uid: plugin.uid, id: plugin.storagePid, limit: limit, offset: page.offset}')} "
+								   title="Page {iterator.cycle}">
+									{page.label}
+								</a>
+							</li>
+						</f:for>
+
+					</ul>
+				</div>
+			</f:if>
 			<hr>
 			<div class="row mb-1  border-bottom">
 				<div class="col-2 col-md-2">
@@ -32,37 +48,38 @@
 				<div class="col-12 col-md-4"><b><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:list.table.participations" /></b></div>
 			</div>
 
-				<f:for each="{authCodes}" as="code">
 
-					<div class="row mb-1 border-bottom">
-						<div class="col-2">
-							<a class="btn btn-secondary btn-sm mb-1 mr-1"  href="{be:uri.editRecord(uid: code.uid, table: 'tx_kequestionnaire_domain_model_authcode')}">
-								<core:icon identifier="actions-document-open"/>
+			<f:for each="{authCodes}" as="code">
+
+				<div class="row mb-1 border-bottom">
+					<div class="col-2">
+						<a class="btn btn-secondary btn-sm mb-1 mr-1"  href="{be:uri.editRecord(uid: code.uid, table: 'tx_kequestionnaire_domain_model_authcode')}">
+							<core:icon identifier="actions-document-open"/>
+						</a>
+						<f:if condition="{code.email}">
+							<a class="btn btn-primary btn-sm mr-1 mb-1" title="{f:translate(key: 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.remind')}"
+							   href="{be:moduleLink(route:'kequestionnairebe_remindandmailauthcodes', arguments: '{function: \'authCodes\',moduleData: \'authCodes\',id: plugin.storagePid, uid: plugin.uid, code: code.uid}')}">
+								<core:icon identifier="actions-envelope-open-text"/>
 							</a>
-							<f:if condition="{code.email}">
-								<a class="btn btn-primary btn-sm mr-1 mb-1" title="{f:translate(key: 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:mail.remind')}"
-								   href="{be:moduleLink(route:'kequestionnairebe_remindandmailauthcodes', arguments: '{function: \'authCodes\',moduleData: \'authCodes\',id: plugin.storagePid, uid: plugin.uid, code: code.uid}')}">
-									<core:icon identifier="actions-envelope-open-text"/>
-								</a>
-							</f:if>
+						</f:if>
 
-						</div>
-						<div class="col-6 col-md-3">{code.email}</div>
-						<div class="col-4 col-md-3">{code.authCode}</div>
-						<div class="col-12 col-md-4">
-							<f:for each="{code.AndLoadParticipations}" as="p">
-								<f:if condition="{p.finished}">
-									<f:then>
-										<span class="finishedParticipation"><f:render section="participation" arguments="{p: p}"></f:render></span>
-									</f:then>
-									<f:else>
-										<span class="openParticipation"><f:render section="participationOpen" arguments="{p: p}"></f:render></span>
-									</f:else>
-								</f:if>
-							</f:for>
-						</div>
 					</div>
-				</f:for>
+					<div class="col-6 col-md-3">{code.email}</div>
+					<div class="col-4 col-md-3">{code.authCode}</div>
+					<div class="col-12 col-md-4">
+						<f:for each="{code.AndLoadParticipations}" as="p">
+							<f:if condition="{p.finished}">
+								<f:then>
+									<span class="finishedParticipation"><f:render section="participation" arguments="{p: p}"></f:render></span>
+								</f:then>
+								<f:else>
+									<span class="openParticipation"><f:render section="participationOpen" arguments="{p: p}"></f:render></span>
+								</f:else>
+							</f:if>
+						</f:for>
+					</div>
+				</div>
+			</f:for>
 
 		</f:then>
 		<f:else>
