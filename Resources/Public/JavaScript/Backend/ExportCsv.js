@@ -20,7 +20,7 @@ class ExportCsv {
         const uid = button.getAttribute('data-uid');
         const target = button.getAttribute('data-target');
         const url = button.getAttribute('data-url');
-
+        const onlyFinished = document.querySelector("#kequest_export-only-finished").checked ? 1 : 0; // Assuming there's a checkbox to filter only finished exports
         const progress = document.querySelector("#kequest_export-progress");
         const fileinfo = document.querySelector("#kequest_export-fileinfo"); // Assuming there's an element with id
 
@@ -30,7 +30,7 @@ class ExportCsv {
             progress.textContent = `${Math.round((current / max) * 100)}%`;
 
         }
-        let finalurl = url + "&current=" + current + "&max=" + max + "&uid=" + uid + "&target=" + target;
+        let finalurl = url + "&current=" + current + "&max=" + max + "&uid=" + uid + "&target=" + target + "&onlyFinished=" + onlyFinished;
 
         fetch(finalurl, {
             method: 'GET',

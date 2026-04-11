@@ -80,5 +80,11 @@ return [
         'target' => BackendController::class . '::analyseAction',
         'access' => 'user',
         'name' => 'kequestionnairebe_analyse',
-    ]
+    ],
+    'kequestionnairebe_analyseinterval' => [
+    'path' => '/kequestionnairebe/analyseinterval',
+    'target' => BackendController::class . '::analyseIntervalAction',
+    'access' => 'user',
+    'name' => 'kequestionnairebe_analyseinterval',
+]
 ];

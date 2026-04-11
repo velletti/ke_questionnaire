@@ -37,4 +37,18 @@ return [
         'path' => '/kequestionnairebe/export', // Matches the route path in Routes.php
         'iconIdentifier' => 'kequestionnaire-export-plugin',
     ],
+    'kequestionnairebe_analyse' => [
+        'parent' => 'kequestionnairebe' ,
+        'position' => ['after' => 'kequestionnairebe_export'],
+        'access' => 'user',
+        'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_analyse.xlf',
+        'extensionName' => 'KeQuestionnaire',
+        'routes' => [
+            '_default' => [
+                'target' => BackendController::class . '::handleRequest',
+            ],
+        ],
+        'path' => '/kequestionnairebe/analyse', // Matches the route path in Routes.php
+        'iconIdentifier' => 'kequestionnaire-analyse-plugin',
+    ],
 ];

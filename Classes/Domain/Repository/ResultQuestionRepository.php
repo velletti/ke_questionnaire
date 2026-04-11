@@ -76,8 +76,8 @@ class ResultQuestionRepository extends Repository {
   * @param int $resultId
   * @return QueryResultInterface All finished results
   */
- public function findByQuestionAndResultId($question,$resultId) {
-                $query = $this->createQuery();
+    public function findByQuestionAndResultId($question,$resultId) {
+        $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
         
 		$query->matching(
@@ -88,6 +88,22 @@ class ResultQuestionRepository extends Repository {
         );
 		return $query->execute();
 	}
+
+
+    /**
+     * @param Question $question
+     * @param int $resultId
+     * @return QueryResultInterface All finished results
+     */
+    public function findByQuestionId($questionId) {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $query->matching(
+            $query->equals('question', $questionId),
+        );
+        return $query->execute();
+    }
 	
 	/**
   * @param Question $question
@@ -126,7 +142,7 @@ class ResultQuestionRepository extends Repository {
   * @param int $result
   * @return QueryResultInterface All finished results
   */
- public function findByQuestionIdAndResultIdRaw($question,$resultId , $returnRaw = true) {
+    public function findByQuestionIdAndResultIdRaw($question,$resultId , $returnRaw = true) {
         $query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->matching(

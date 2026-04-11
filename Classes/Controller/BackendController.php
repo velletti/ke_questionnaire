@@ -88,6 +88,9 @@ class BackendController
                 'analyse' => htmlspecialchars(
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:analyse')
                 ),
+                'analyseInterval' => htmlspecialchars(
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:analyse')
+                ),
             ],
         ];
 
@@ -103,7 +106,7 @@ class BackendController
         $function = strtolower( $moduleData->get('function') ?? $moduleData->getModuleIdentifier() );
         $title = $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab');
         switch ($function) {
-            case 'authCodes':
+            case 'authcodes':
             case 'kequestionnairebe_authcodes':
                 $moduleTemplate->setTitle(
                     $title,
@@ -154,11 +157,19 @@ class BackendController
                 return $this->downloadAction($request, $moduleTemplate);
 
             case 'analyse':
+            case 'kequestionnairebe_analyse':
                 $moduleTemplate->setTitle(
                     $title,
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.analyse')
                 );
                 return $this->analyseAction($request, $moduleTemplate);
+            case 'analyseinterval':
+            case 'kequestionnairebe_analyseinterval':
+                $moduleTemplate->setTitle(
+                    $title,
+                    $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.analyse')
+                );
+                return $this->analyseIntervalAction($request, $moduleTemplate);
             default:
                 $moduleTemplate->setTitle(
                     $title,
@@ -487,6 +498,7 @@ class BackendController
 
             // plugin uid and page id must given
             if (isset($query['uid']) && isset($query['id'])) {
+
                 $fileNameCheck = 'export_' . $query['uid'] . '_' . date('Ymd') ;
                 Debug::store($query['uid'], $query , "debug_csv_interval_export");
                 $pluginObj = $this->questionnaireRepository->findByUid($query['uid']);
@@ -519,7 +531,7 @@ class BackendController
                         } else {
                             //add results
                             if( $query['onlyFinished'] ) {
-                                $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1 , 1) ;
+                                $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1 , 0) ;
                             } else {
                                 $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1, -1) ;
                             }
@@ -532,7 +544,9 @@ class BackendController
                         $csvFile = fopen($fileWithPath, 'a+');
                         //write the js
                         if( $csvFile ) {
-                            fwrite($csvFile, $csvContent);
+                            if($csvContent) {
+                                fwrite($csvFile, $csvContent);
+                            }
                             fclose($csvFile);
                             chmod($fileWithPath, 0777);
 
@@ -637,8 +651,120 @@ class BackendController
 
     public function analyseAction(ServerRequestInterface $request, $view): ResponseInterface
     {
-        // Implement logic for the analyse action
-        return $view->renderResponse('Backend/Analyze');
+        $query = $request->getQueryParams();
+        $id = 0 ;
+        $uid = 0 ;
+        if (is_array($query)) {
+            $id = $query['id'] ?? '0';
+            $uid = $query['uid'] ?? '0';
+
+            $view->assignMultiple(
+                [
+                    'id' => $id,
+                    'uid' => $uid,
+                ],
+            );
+        }
+        if ( $uid ) {
+            $questionnaire =  $this->questionnaireRepository->findForUid($uid) ?? null ;
+            if( $questionnaire) {
+                $view->assign('questionnaire',$questionnaire );
+                $questionRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository::class);
+                $questions = $questionRepository->findAllForPidtoExport($id);
+                if ( $questions ) {
+                    $view->assign('questions', $questions);
+                    $view->assign('all', $questions->count() );
+                }
+                $resultRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository::class);
+
+                $view->assign('results', $resultRepository->countFinishedForPid($id,  -1) );
+
+            }
+
+
+
+
+        } else  {
+            $view->assign('questionnaires', $this->questionnaireRepository->findByStoragePid($id ) ?? null);
+
+        }
+
+        return $view->renderResponse('Backend/Analyse');
+    }
+
+    public function analyseIntervalAction(ServerRequestInterface $request, $view = null ): ResponseInterface
+    {
+        if ( !$view ) {
+            $view = $this->moduleTemplateFactory->create($request);
+            $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
+            $this->setUpDocHeader($request, $view);
+        }
+        $settings = EmConfigurationUtility::getEmConf(false);
+        $query = $request->getQueryParams();
+        $body = $request->getParsedBody();
+        $moduleData = $request->getAttribute('moduleData');
+        $responseFactory = GeneralUtility::makeInstance(ResponseFactoryInterface::class) ;
+        if (is_array($query)) {
+
+            // Question uid and page id must given
+            if (isset($query['uid']) && isset($query['id'])) {
+                $max = $query['max'];
+                $questionUid = $query['uid'];
+                $current = $query['current'];
+
+                /** @var ResultQuestionRepository $questionRepository */
+                $questionRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository::class);
+                $results = $questionRepository->findByQuestionId($questionUid);
+                $answers = [];
+                $total = 0 ;
+                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $result */
+                foreach ( $results as $result ) {
+                    $tempAnswers = [];
+                    $temp = $result->getAnswers();
+                    if( $temp ) {
+                        foreach ($temp as $answer) {
+                            $total ++ ;
+                            if( isset($answers[$answer->getAnswer()->getUid()])) {
+                                $answers[$answer->getAnswer()->getUid()]['value'] += 1 ;
+                            } else {
+                                $answers[$answer->getAnswer()->getUid()] = [ 'value'  => 1 , 'uid' => $answer->getAnswer()->getUid() ] ;
+                            }
+                        }
+                    }
+                }
+                $finalAnswers = [];
+                if ($total >0 && is_array($answers) ) {
+                    foreach ($answers as $answer) {
+                        $finalAnswers[] = [
+                            'uid' => $answer['uid'],
+                            'value' => $answer['value'],
+                            'html' => $answer['value'],
+                            'width' => (int)(($answer['value'] / $total )*100) ."%",
+                        ];
+                    }
+                }
+
+                $current ++ ;
+                $data = [
+                    'current' => $current  ,
+                    'questionuid' => $questionUid ,
+                    'total' => $total ,
+                    'answers' => $finalAnswers ,
+                    'max' => $max,
+                    'message' => ( $current <= $max ? 'running' : 'finished' ),
+                    'finished' => ( $current <= $max ? false : true ),
+                    'success' => true,
+                ] ;
+
+
+
+                $response = $responseFactory->createResponse()
+                    ->withHeader('Content-Type', 'application/json; charset=utf-8');
+                $response->getBody()->write(json_encode($data));
+                return $response;
+            }
+        }
+        return $this->exportAction($request, $view);
     }
 
     public function indexAction(ServerRequestInterface $request, $view): ResponseInterface

@@ -10,5 +10,6 @@ return [
     ],
     'imports' => [
         '@jvelletti/kequestionnaire/ExportCsv.js' => 'EXT:ke_questionnaire/Resources/Public/JavaScript/Backend/ExportCsv.js',
+        '@jvelletti/kequestionnaire/Analyse.js' => 'EXT:ke_questionnaire/Resources/Public/JavaScript/Backend/Analyse.js',
     ],
 ];

@@ -16,16 +16,21 @@
 						'{plugin.header}' (Pid: {plugin.storagePid})<br />
 					</div>
 					<div class="progress my-2">
-						<div id="kequest_export-progress"  class="progress-bar progress-bar-success p-1"  role="progressbar" aria-valuenow="0"
+						<div id="kequest_export-progress"  class="progress-bar progress-bar-success py-2"  role="progressbar" aria-valuenow="0"
 							 aria-valuemin="0" aria-valuemax="{all}" style="width: 0%">
 							0%
 						</div>
 					</div>
 					<div class="my-2">
+
 						Results: <b><span id="kequest_export-results">{finished}</span></b> finished of <b>{all}</b><br>
 						Current: <b><span id="kequest_export-result-uid">-</span></b> <br>
 						FileName: <b>{fileName}</b> <br>
 						Bytes: <b><span id="kequest_export-fileinfo">0</span></b>
+
+						<form class="mt-3">
+							<input type="checkbox" checked="checked" value="1" id="kequest_export-only-finished"/> Only finished results<br>
+						</form>
 					</div>
 					<button id="kequest_export-start" class="btn btn-primary"  data-url="{be:moduleLink(route:'kequestionnairebe_exportcsvinterval', arguments: '{function: \'exportcsvinterval\',moduleData: \'exportcsvinterval\',id: plugin.storagePid, uid: plugin.uid}')}" data-uid="{plugin.uid}" data-target="{fileName}" >Start</button>
 					<a id="kequest_export-download" class="btn btn-primary d-none" href="{be:moduleLink(route:'kequestionnairebe_download', arguments: '{function: \'download\',moduleData: \'kequestionnairebe_download\',id: plugin.storagePid, uid: plugin.uid, target: fileName}')}" >Download</a>

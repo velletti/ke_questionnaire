@@ -27,20 +27,6 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'KeQuestionnaire',
-	'QList',
-	array(
-        Kennziffer\KeQuestionnaire\Controller\QuestionnaireController::class => 'list',
-        Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
-	),
-	// non-cacheable actions
-	array(
-        Kennziffer\KeQuestionnaire\Controller\QuestionnaireController::class => 'list',
-        Kennziffer\KeQuestionnaire\Controller\ExportController::class => 'downloadPdf',
-	)
-);
-
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'KeQuestionnaire',
 	'View',
 	array(
         Kennziffer\KeQuestionnaire\Controller\ResultController::class => 'show',

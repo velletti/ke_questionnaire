@@ -1,0 +1,98 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+<f:layout name="Backend" />
+
+<f:section name="main">
+	<f:be.pageRenderer
+			includeJavaScriptModules="{
+         0: '@jvelletti/kequestionnaire/Analyse.js'
+      }"
+	/>
+	<f:if condition="{id}">
+		<f:then>
+			<f:if condition="{questionnaire}">
+				<f:then>
+					<h2>{questionnaire.header}&nbsp;(uid: {questionnaire.uid})</h2>
+					<div class="progress my-2">
+						<div id="kequest_analyse-progress"  class="progress-bar progress-bar-success py-2"  role="progressbar" aria-valuenow="0"
+							 aria-valuemin="0" aria-valuemax="{all}" style="width: 0%">
+							0%
+						</div>
+					</div>
+					<form class="mt-3 d-none">
+						<input type="checkbox" checked="checked" value="1" id="kequest_analyse-only-finished"/> Only finished results<br>
+					</form>
+					<button id="kequest_analyse-start" class="btn btn-primary"  data-url="{be:moduleLink(route:'kequestionnairebe_analyseinterval', arguments: '{function: \'analyseinterval\',moduleData: \'analyseinterval\',id: id, uid: uid}')}" data-uid="{uid}" >Start</button>
+					<a class="btn btn-secondary"  href="{be:moduleLink(route:'kequestionnairebe_analyse', arguments: '{function: \'analyse\',moduleData: \'kequestionnairebe_analyse\',id: id, uid: questionnaire.uid}')}">
+						restart
+					</a>
+					<div class="module_list mt-3" id="keq_analyse_loading">
+						Found <b> {results}</b> Results with <b><span id="kequest_analyse-results">{all}</span></b> Questions. Click start to analyse them.
+						<f:for each="{questions}" as="question" iteration="qIteration">
+							<div class="mt-3">
+								<h3>
+									<f:if condition="{question.showTitle}">
+										<f:then>
+											{question.title}
+										</f:then>
+										<f:else>
+											Question {question.text}
+										</f:else>
+									</f:if>
+									<span class="badge badge-secondary ml-2" id="keq_analyse_total_{question.uid}" titel="Answers total">?</span>
+								</h3>
+								<div id="keq_analyse_question_{qIteration.cycle}" class="keq_analyse_question" data-uid="{question.uid}">
+									<f:for each="{question.answers}" as="answer">
+										<div class="row">
+											<div class="col-6">
+												 - {answer.title}
+											</div>
+											<div class="col-6" id="">
+												<div class="progress my-2">
+													<div id="keq_analyse_answer_{answer.uid}"  class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="0"
+														 aria-valuemin="0" aria-valuemax="0" style="width: 0%">
+														{answer.uid}
+													</div>
+												</div>
+											</div>
+										</div>
+									</f:for>
+								</div>
+							</div>
+						</f:for>
+					</div>
+
+				</f:then>
+				<f:else>
+					<f:if condition="{questionnaires}">
+						<f:then>
+							<h2><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_analyse.xlf:header" /></h2>
+							<hr>
+							<h4><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_analyse.xlf:index_list_header" /></h4>
+							<ul class="keq_list">
+								<f:for each="{questionnaires}" as="questionnaire">
+									<li>
+										<a href="{be:moduleLink(route:'kequestionnairebe_analyse', arguments: '{function: \'analyse\',moduleData: \'kequestionnairebe_analyse\',id: id, uid: questionnaire.uid}')}">
+											{questionnaire.header}&nbsp;(uid: {questionnaire.uid})
+											(<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:count" />{questionnaire.countFinishedResults}/{questionnaire.countResults})
+										</a>
+									</li>
+								</f:for>
+							</ul>
+						</f:then>
+						<f:else>
+							<div class="module_list">
+								No questionnaires found on Pid: '{id}'
+							</div>
+						</f:else>
+					</f:if>
+				</f:else>
+			</f:if>
+
+		</f:then>
+		<f:else>
+			<div class="module_list">
+				<h4>Select page in Pagetree on the left side.</h4>
+			</div>
+		</f:else>
+	</f:if>
+</f:section>
