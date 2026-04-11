@@ -230,7 +230,8 @@ class BackendController
                     $limit = 20 ;
                     $total = $this->authCodeRepository->countAllForPid($plugin->getStoragePid());
                     $view->assign('authCodeCount', $total);
-                    $view->assign('authCodes', $this->authCodeRepository->findForPid($plugin->getStoragePid() ,$limit , $offset));
+                    $currentCodes = $this->authCodeRepository->findForPid($plugin->getStoragePid() , $limit , $offset);
+                    $view->assign('authCodes', $currentCodes);
                     $view->assign('limit', $limit );
                     $i = 1 ;
                     while ($total > $limit) {
