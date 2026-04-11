@@ -50,7 +50,7 @@ class ExportCsv {
                 }
                 if (data.success) {
                     if (data.resultuid) {
-                        document.querySelector("#kequest_export-result-uid").innerHTML(data.resultuid);
+                        document.querySelector("#kequest_export-result-uid").innerHTML = data.resultuid;
                     }
                     if (data.finished) {
                         alert(data.message);
