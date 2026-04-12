@@ -1,0 +1,30 @@
+{namespace ke=Kennziffer\KeQuestionnaire\ViewHelpers}
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+
+<div class="keq-list">
+    <div class="row mb-2 keq-list">
+        <div class="col-1"><b>UID</b></div>
+        <div class="col-2"><b>End Time</b></div>
+        <div class="col-7"><b>Header</b></div>
+        <div class="col-1"><b>Authcodes</b></div>
+        <div class="col-1"><b>Results</b></div>
+    </div>
+
+    <f:for each="{questionnaires}" as="questionnaire">
+        <div class="row" onfocus="this.classList.add('active');" onblur="this.classList.remove('active');" onmouseover="this.classList.add('bg-info');" onmouseout="this.classList.remove('bg-info');">
+            <div class="col-1">
+                <a class="btn btn-sm btn-secondary" href="{be:moduleLink(route:'{route}', arguments: '{function: \'{module}\',moduleData: \'{module}\',id: questionnaire.pid, uid: questionnaire.uid}')}">
+                    {questionnaire.uid}
+                </a>
+            </div>
+            <div class="col-2"><f:format.date format="d.m.Y">{questionnaire.endtime}</f:format.date></div>
+            <div class="col-7">
+                <a href="{be:moduleLink(route:'{route}', arguments: '{function: \'{module}\',moduleData: \'{module}\',id: questionnaire.pid, uid: questionnaire.uid}')}">
+                    {questionnaire.header}
+                </a>
+            </div>
+            <div class="col-1">{questionnaire.countAuthCodes}</div>
+            <div class="col-1">{questionnaire.countResults}</div>
+        </div>
+    </f:for>
+</div>

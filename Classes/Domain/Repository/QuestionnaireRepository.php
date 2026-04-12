@@ -2,6 +2,8 @@
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Kennziffer\KeQuestionnaire\Service\PageService;
 /***************************************************************
  *  Copyright notice
  *
@@ -42,7 +44,8 @@ class QuestionnaireRepository extends Repository {
        public function findAll() {
            $query = $this->createQuery();
            $query->getQuerySettings()->setRespectStoragePage(FALSE);
-           
+
+
            $constraint = $query->logicalAnd(
                $query->equals('ctype','list')
                , $query->equals('list_type','kequestionnaire_questionnaire')
@@ -57,7 +60,6 @@ class QuestionnaireRepository extends Repository {
         * find ke_questionnaires for the storagePid
         * 
 	    * @param integer $storagePid
-        * @return Query Result
         */
        public function findByStoragePid($storagePid) {
            $query = $this->createQuery();
@@ -79,7 +81,6 @@ class QuestionnaireRepository extends Repository {
         * find ke_questionnaires for uids
         * 
         * @param array $uids
-        * @return questionnaires
         */
        public function findForUids($uids) {
 			$uids = explode(',',$uids);
@@ -93,37 +94,56 @@ class QuestionnaireRepository extends Repository {
         * find ke_questionnaires for uid
         * 
         * @param integer $uid
-        * @return questionnaire
         */
        public function findForUid($uid) {
            $query = $this->createQuery();
            $query->getQuerySettings()->setRespectStoragePage(FALSE);
+           $query->getQuerySettings()->setIgnoreEnableFields(true);
 
            $constraint = $query->equals('uid',$uid);
 
            $query->matching($constraint);
-		   $questionnaires = $query->execute();
+           return $query->execute()->getFirst();
 
-		   // jv. $questionnaires ist kein Array! $questionnaires[0] geht deshalb nicht in 7.x
-		   $questionnaire = $questionnaires->getFirst();
-           
-           return $questionnaire;
        }
 
     /**
      * find ke_questionnaires for uid
      *
      * @param integer $uid
-     * @return questionnaire
+     * @return ?\Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire
      */
     public function findForPid($pid) {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
 
         $query->matching($query->equals('pid',$pid));
-        $questionnaires = $query->execute();
+        return  $query->execute()->getFirst();
 
-        return $questionnaires->getFirst();
+    }
+
+
+    /**
+     * find ke_questionnaires for uid
+     *
+     * @param integer $uid
+     */
+    public function findForPidAndBelow($pid) {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        // ignore start Stop date or fe Groups settings
+        $query->getQuerySettings()->setIgnoreEnableFields(true);
+
+        $pageService = GeneralUtility::makeInstance(PageService::class);
+        $pids = $pageService->getPidList($pid, 99);
+        $query->setLimit(99);
+        $query->setOrderings([ "crdate" => "DESC" ]) ;
+        $query->matching(
+            $query->logicalAnd(
+                $query->in('pid',$pids),
+                $query->equals('hidden', 0) )
+        );
+        return $query->execute();
 
     }
        

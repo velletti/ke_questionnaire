@@ -12,16 +12,9 @@
 					</div>
 					<hr>
 					<h4><f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_export.xlf:index_list_header" /></h4>
-					<ul class="keq_list">
-						<f:for each="{questionnaires}" as="questionnaire">
-							<li>
-								<a href="{be:moduleLink(route:'kequestionnairebe_exportcsv', arguments: '{function: \'exportcsv\',moduleData: \'kequestionnairebe_exportcsv\',id: id, uid: questionnaire.uid}')}">
-									{questionnaire.header}&nbsp;(uid: {questionnaire.uid})
-									(<f:translate key="LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:count" />{questionnaire.countFinishedResults}/{questionnaire.countResults})
-								</a>
-							</li>
-						</f:for>
-					</ul>
+					<f:render partial="Backend/ListQuestionaires"
+							  arguments="{questionnaires: questionnaires, uid:uid , id:id , route: 'kequestionnairebe_exportcsv' , module: 'exportcsv'}">
+					</f:render>
 				</f:then>
 				<f:else>
 					<div class="module_list">

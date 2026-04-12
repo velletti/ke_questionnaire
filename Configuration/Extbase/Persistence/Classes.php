@@ -42,6 +42,18 @@ return [
             'pages' => [
                 'fieldName' => 'pages'
             ],
+            'crdate' => [
+                'fieldName' => 'crdate'
+            ],
+            'starttime' => [
+                'fieldName' => 'starttime'
+            ],
+            'endtime' => [
+                'fieldName' => 'endtime'
+            ],
+            'hidden' => [
+                'fieldName' => 'hidden'
+            ],
         ],
     ],
     \Kennziffer\KeQuestionnaire\Domain\Model\Question::class => [

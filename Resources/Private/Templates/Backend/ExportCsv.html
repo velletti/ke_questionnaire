@@ -35,7 +35,7 @@
 					<button id="kequest_export-start" class="btn btn-primary"  data-url="{be:moduleLink(route:'kequestionnairebe_exportcsvinterval', arguments: '{function: \'exportcsvinterval\',moduleData: \'exportcsvinterval\',id: plugin.storagePid, uid: plugin.uid}')}" data-uid="{plugin.uid}" data-target="{fileName}" >Start</button>
 					<a id="kequest_export-download" class="btn btn-primary d-none" href="{be:moduleLink(route:'kequestionnairebe_download', arguments: '{function: \'download\',moduleData: \'kequestionnairebe_download\',id: plugin.storagePid, uid: plugin.uid, target: fileName}')}" >Download</a>
 
-					<a class="btn btn-secondary"  href="{be:moduleLink(route:'kequestionnairebe_exportcsv', arguments: '{function: \'exportcsv\',moduleData: \'kequestionnairebe_exportcsv\',id: id, uid: questionnaire.uid}')}">
+					<a id="kequest_export-restart" class="btn btn-secondary  d-none"  href="{be:moduleLink(route:'kequestionnairebe_exportcsv', arguments: '{function: \'exportcsv\',moduleData: \'kequestionnairebe_exportcsv\',id: id, uid: questionnaire.uid}')}">
 						restart
 					</a>
 

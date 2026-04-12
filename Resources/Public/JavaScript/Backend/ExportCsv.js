@@ -56,6 +56,7 @@ class ExportCsv {
                         alert(data.message);
                         document.querySelector("#kequest_export-start").classList.add('d-none');
                         document.querySelector("#kequest_export-download").classList.remove('d-none');
+                        document.querySelector("#kequest_export-restart").classList.remove('d-none');
                     } else {
                         this.LoopUntilFinished(button, data.current, max); // Update current from response
                     }
@@ -66,6 +67,7 @@ class ExportCsv {
             .catch(error => {
                 console.error('Error exporting CSV:', error);
                 alert('An error occurred while exporting the CSV. See browser console for details.');
+                document.querySelector("#kequest_export-restart").classList.remove('d-none');
             })
             .finally(() => {
                 button.classList.remove('loading');

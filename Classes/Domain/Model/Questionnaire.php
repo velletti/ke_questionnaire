@@ -34,6 +34,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Text;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Typo3Content;
 use TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController;
 
+
 /**
  * This Model is not connected to DB
  * It contains all questions and can deliver some additional informations
@@ -107,6 +108,12 @@ class Questionnaire extends AbstractEntity {
     *
     */
     protected $headerLink;
+
+
+    protected int $hidden;
+    protected int $starttime;
+    protected int $endtime;
+
     /**
     * bodytext
     * @var string
@@ -186,6 +193,35 @@ class Questionnaire extends AbstractEntity {
         $this->crdate = $crdate;
     }
 
+    public function getHidden(): int
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(int $hidden): void
+    {
+        $this->hidden = $hidden;
+    }
+
+    public function getStarttime(): int
+    {
+        return $this->starttime;
+    }
+
+    public function setStarttime(int $starttime): void
+    {
+        $this->starttime = $starttime;
+    }
+
+    public function getEndtime(): int
+    {
+        return $this->endtime;
+    }
+
+    public function setEndtime(int $endtime): void
+    {
+        $this->endtime = $endtime;
+    }
 
 
 
@@ -628,10 +664,8 @@ class Questionnaire extends AbstractEntity {
      * @return $piFlexForm
      */
     public function getPiFlexForm() {
-
         $ffs = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\FlexFormService::class);
         return $ffs->convertFlexFormContentToArray($this->piFlexForm);
-        //return $this->piFlexForm;
     }
     
     /**

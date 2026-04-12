@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kennziffer\KeQuestionnaire\Controller;
 
 use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Utility\EmConfigurationUtility;
 use Kennziffer\KeQuestionnaire\Utility\CsvExport;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
@@ -223,7 +224,7 @@ class BackendController
             );
             if (isset($query['uid'])) {
                 /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
-                $plugin = $this->questionnaireRepository->findByUid($query['uid']);
+                $plugin = $this->questionnaireRepository->findForUid($query['uid']);
                 $view->assign('plugin', $plugin);
                 if( $plugin) {
                     $offset = (int)($query['offset'] ?? 0);
@@ -282,7 +283,14 @@ class BackendController
                 ],
             );
             if (isset($query['uid'])) {
-                $view->assign('questionnaire', $this->questionnaireRepository->findByUid($query['uid']));
+                /** @var Questionnaire $questionnaire */
+                $questionnaire = $this->questionnaireRepository->findForUid($query['uid']) ;
+                if ( $questionnaire ) {
+                    $view->assign('questionnaire', $questionnaire);
+                    $settings = $questionnaire->getPiFlexForm() ??  [];
+                    $view->assign('email', $settings['settings']['email'] ?? null );
+                }
+
                 return $view->renderResponse('Backend/AuthCodesMail');
             }
         }
@@ -331,7 +339,7 @@ class BackendController
 
                     $this->authCodeRepository->add($newAuthCode);
                     $mailSender = GeneralUtility::makeInstance(Mail::class);
-                    $mailSender->setPlugin( $this->questionnaireRepository->findByUid($query['uid'] ));
+                    $mailSender->setPlugin( $this->questionnaireRepository->findForUid($query['uid'] ));
                     $mailSender->init($email , $newAuthCode) ;
                     $mailSender->sendMail();
 
@@ -354,7 +362,7 @@ class BackendController
         $this->setUpDocHeader($request, $view);
 
         /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
-        $plugin = $this->questionnaireRepository->findByUid($query['uid'] ?? 0 );
+        $plugin = $this->questionnaireRepository->findForUid($query['uid'] ?? 0 );
         $view->assign('plugin', $plugin);
         if( $plugin) {
             $view->assign('authCodes', $this->authCodeRepository->findAllForPid($plugin->getStoragePid()));
@@ -381,7 +389,7 @@ class BackendController
         $query = $request->getQueryParams();
         if (is_array($query) && isset($query['code'])) {
 
-            $AuthCode = $this->authCodeRepository->findByUid((int)$query['code']);
+            $AuthCode = $this->authCodeRepository->findForUid((int)$query['code']);
             if (!$AuthCode) {
                 $message = GeneralUtility::makeInstance(FlashMessage::class,
                     $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodeNotFound', true),
@@ -392,7 +400,7 @@ class BackendController
                 return $this->authCodesAction($request, $view);
             }
             $mailSender = GeneralUtility::makeInstance(Mail::class);
-            $mailSender->setPlugin( $this->questionnaireRepository->findByUid($query['uid'] ));
+            $mailSender->setPlugin( $this->questionnaireRepository->findForUid($query['uid'] ));
             $mailSender->init($AuthCode->getEmail() , $AuthCode->getAuthCode()) ;
             $mailSender->sendMail();
 
@@ -419,7 +427,7 @@ class BackendController
                 ],
             );
             if (isset($query['uid'])) {
-                $view->assign('questionnaire', $this->questionnaireRepository->findByUid($query['uid']));
+                $view->assign('questionnaire', $this->questionnaireRepository->findForUid($query['uid']));
                 return $view->renderResponse('Backend/AuthCodesSimple');
             }
         }
@@ -476,7 +484,7 @@ class BackendController
 
         $this->setUpDocHeader($request, $view);
         /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
-        $plugin = $this->questionnaireRepository->findByUid($query['uid'] ?? 0 );
+        $plugin = $this->questionnaireRepository->findForUid($query['uid'] ?? 0 );
         $view->assign('plugin', $plugin);
         if( $plugin) {
             $view->assign('authCodes', $this->authCodeRepository->findAllForPid($plugin->getStoragePid()));
@@ -513,7 +521,7 @@ class BackendController
                 ],
             );
         }
-        $view->assign('questionnaires',$this->questionnaireRepository->findByStoragePid($query['id']));
+        $view->assign('questionnaires',$this->questionnaireRepository->findForPidAndBelow($query['id']));
         return $view->renderResponse('Backend/Export');
     }
 
@@ -538,7 +546,7 @@ class BackendController
                 ],
             );
             if (isset($query['uid'])) {
-                $view->assign('plugin', $this->questionnaireRepository->findByUid($query['uid']));
+                $view->assign('plugin', $this->questionnaireRepository->findForUid($query['uid']));
                 /** @var ResultRepository $resultRepository */
                 $resultRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository::class);
 
@@ -574,7 +582,7 @@ class BackendController
 
                 $fileNameCheck = 'export_' . $query['uid'] . '_' . date('Ymd') ;
                 Debug::store($query['uid'], $query , "debug_csv_interval_export");
-                $pluginObj = $this->questionnaireRepository->findByUid($query['uid']);
+                $pluginObj = $this->questionnaireRepository->findForUid($query['uid']);
                 $plugin['pages'] = $query['id'];
                 $plugin['header'] = $pluginObj->getHeader();
 
@@ -754,11 +762,8 @@ class BackendController
 
             }
 
-
-
-
         } else  {
-            $view->assign('questionnaires', $this->questionnaireRepository->findByStoragePid($id ) ?? null);
+            $view->assign('questionnaires', $this->questionnaireRepository->findForPidAndBelow($id ) ?? null);
 
         }
 
@@ -843,15 +848,16 @@ class BackendController
     public function indexAction(ServerRequestInterface $request, $view): ResponseInterface
     {
         $query = $request->getQueryParams();
-        if (is_array($query)) {
 
+        if (is_array($query)) {
+            $pid = $query['id'] ?? '0';
             $view->assignMultiple(
                 [
-                    'id' => $query['id'] ?? '0',
+                    'id' => (int)$query['id'] ?? '0',
                 ],
             );
         }
-        $view->assign('questionnaires',$this->questionnaireRepository->findAll());
+        $view->assign('questionnaires',$this->questionnaireRepository->findForPidAndBelow( (int)$pid ?? 0));
         return $view->renderResponse('Backend/Index');
     }
 }
