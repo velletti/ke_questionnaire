@@ -37,11 +37,7 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
  *
  */
 class Analysis {	
-	/**
-  * @var jqPlot
-  */
- protected $jqPlot;
-	
+
 	/**
   * lokalization
   *
@@ -54,9 +50,8 @@ class Analysis {
 	 * @var array
 	 */
 	protected $settings;
- public function __construct(\Kennziffer\KeQuestionnaire\Utility\JqPlot $jqPlot, \Kennziffer\KeQuestionnaire\Utility\Localization $localization)
+ public function __construct( \Kennziffer\KeQuestionnaire\Utility\Localization $localization)
  {
-     $this->jqPlot = $jqPlot;
      $this->localization = $localization;
  }
 	
@@ -78,7 +73,6 @@ class Analysis {
   */
  public function createParticipationAnalysis($results, Questionnaire $questionnaire){
 		$data = $this->createParticipationData($results);
-		return $this->jqPlot->createLineChart('participation_chart_'.$questionnaire->getUid(), $data);
 	}
     
     /**
@@ -121,7 +115,6 @@ class Analysis {
                 case 'Checkbox':
 				case 'DataPrivacy':
 						$divs .= '<div id="chart_'.$type.'_'.$atype.'_'.$question->getUid().'" style="height:300px; width:500px;"></div>'."\n";
-						$charts .= $this->jqPlot->getChart($chartType, $type.'_'.$atype, $values, $question)."\n";
 						$divs .= $this->createLineOutput($values, true);
 					break;
                 case 'MatrixHeader':
@@ -134,7 +127,6 @@ class Analysis {
 										case 'Radiobutton':
 										case 'Checkbox':
 											$divs .= '<div id="chart_'.$type.'_'.$atype.'_'.$rtype.'_'.$nr.'_'.$question->getUid().'" style="height:300px; width:500px;"></div>'."\n";
-											$charts .= $this->jqPlot->getChart($chartType, $type.'_'.$atype.'_'.$rtype.'_'.$nr, $rvalues, $question)."\n";
 											break;
 										case 'SingleInput':
 										case 'SingleSelect':
@@ -156,7 +148,6 @@ class Analysis {
 						if ($data['answer']) $divs .= '<h5>'.$data['answer']->getTitle().'</h5>';
 						else $divs .= '<h5>...</h5>';
 						$divs .= '<div id="chart_'.$type.'_'.$atype.'_'.$nr.'_'.$question->getUid().'" style="height:300px; width:500px;"></div>'."\n";
-						$charts .= $this->jqPlot->getChart($chartType, $type.'_'.$atype.'_'.$nr, $plotValues, $question, $data['labels'])."\n";
 					}
 					break;
 				case 'DDImage':
@@ -172,7 +163,6 @@ class Analysis {
 						$plotValues = $data;
 						$divs .= '<h5> Area '.$area.'</h5>';
 						$divs .= '<div id="chart_'.$type.'_'.$atype.'_'.$area.'_'.$question->getUid().'" style="height:300px; width:500px;"></div>'."\n";
-						$charts .= $this->jqPlot->getChart($chartType, $type.'_'.$atype.'_'.$area, $plotValues, $question, array())."\n";
 					}
 					break;
 				case 'DDAreaImage':
