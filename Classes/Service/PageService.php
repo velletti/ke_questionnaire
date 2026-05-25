@@ -6,8 +6,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 
 class PageService
 {
-    public function __construct(private readonly ConnectionPool $connectionPool)
+    private ConnectionPool $connectionPool;
+    public function __construct()
     {
+        $this->connectionPool = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConnectionPool::class);
     }
     /**
      * Get a list of PIDs starting from a given page and limited by a depth.

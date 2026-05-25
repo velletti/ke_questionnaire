@@ -1,5 +1,6 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -101,10 +102,13 @@ class ResultQuestion extends AbstractEntity {
      */
     protected $result = 0 ;
 
+    private PersistenceManager $persistenceManager;
+
 	/**
 	 * Default constructor.
 	 */
-	public function __construct(private readonly PersistenceManager $persistenceManager) {
+	public function __construct() {
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
 		// Do not remove the next line: It would break the functionality
 		$this->initStorageObjects();
 	}

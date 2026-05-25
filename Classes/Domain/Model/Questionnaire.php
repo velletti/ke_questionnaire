@@ -58,6 +58,8 @@ class Questionnaire extends AbstractEntity {
   */
  protected $questions;
 
+    private FlexFormService $flexFormService ;
+
 	/**
 	 * QuestionsByPage  JVE: Nov. 2016:
 	 * Jörg velletti changed TYPE from 'protected' to 'public' to be able to overwrite in serviceSlot!!!
@@ -235,7 +237,8 @@ class Questionnaire extends AbstractEntity {
 	 * each model needs an constructor:
 	 * http://wiki.typo3.org/Exception/v4/1297759968
 	 */
-	public function __construct(private readonly FlexFormService $flexFormService) {
+	public function __construct() {
+        $this->flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
 	}
 
 	/**
