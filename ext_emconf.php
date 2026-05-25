@@ -12,17 +12,15 @@
 
 $EM_CONF['ke_questionnaire'] = array(
 	'title' => 'Questionnaire',
-	'description' => 'Fork of Kennziffer LTS 7 version. adapted for LTS 11 / 12  !! Easily create any type of questionnaire, survey, poll, quiz or eLearning. The results may be evaluated and displayed graphically at any time. See further information - also about the premium version - at www.ke-questionnaire.de',
+	'description' => 'Fork of Kennziffer LTS 7 version. Adapted for LTS 13 !! reduced to the core functionality of a questionnaire. ',
 	'category' => 'plugin',
-	'author' => 'kennziffer.com',
-	'author_email' => 'info@kennziffer.com',
-	'author_company' => 'www.kennziffer.com',
+	'author' => 'velletti.de',
+	'author_email' => 'typo3@velletti.de',
 	'state' => 'beta',
-	'version' => '12.4.7',
+	'version' => '13.4.0',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '12.4.0-12.4.99',
-			'friendsoftypo3/tt-address' => '9.0.0-9.9.9',
+			'typo3' => '13.4.0-13.4.99',
 		),
 		'conflicts' => array(
 		),
