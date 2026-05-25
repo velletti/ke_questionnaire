@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
 
+use Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -130,7 +131,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string $text
 	 */
-	public function getText(): string
+	#[\Override]
+    public function getText(): string
     {
 		return $this->text;
 	}
@@ -141,7 +143,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $text
 	 * @return void
 	 */
-	public function setText($text): void {
+	#[\Override]
+    public function setText($text): void {
 		$this->text = $text;
 	}
 
@@ -150,7 +153,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string|null $helpText
 	 */
-	public function getHelpText(): ?string
+	#[\Override]
+    public function getHelpText(): ?string
     {
 		return $this->helpText;
 	}
@@ -161,7 +165,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $helpText
 	 * @return void
 	 */
-	public function setHelpText($helpText): void {
+	#[\Override]
+    public function setHelpText($helpText): void {
 		$this->helpText = $helpText;
 	}
 
@@ -170,7 +175,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string|null $image
 	 */
-	public function getImage(): ?string
+	#[\Override]
+    public function getImage(): ?string
     {
 		return $this->image;
 	}
@@ -181,7 +187,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $image
 	 * @return void
 	 */
-	public function setImage($image): void {
+	#[\Override]
+    public function setImage($image): void {
 		$this->image = $image;
 	}
 
@@ -190,7 +197,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return string $imagePosition
 	 */
-	public function getImagePosition(): string
+	#[\Override]
+    public function getImagePosition(): string
     {
 		return $this->imagePosition;
 	}
@@ -201,7 +209,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param string $imagePosition
 	 * @return void
 	 */
-	public function setImagePosition($imagePosition): void {
+	#[\Override]
+    public function setImagePosition($imagePosition): void {
 		$this->imagePosition = $imagePosition;
 	}
 
@@ -210,13 +219,16 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean $isMandatory
 	 */
-	public function getIsMandatory(): bool
+	#[\Override]
+    public function getIsMandatory(): bool
     {
 		// Check if one answer is a DataPrivacy. If yes, the the question is always mandatory
-		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AnswerRepository');
+		$rep = GeneralUtility::makeinstance(AnswerRepository::class);
 		$answers = $rep->findByQuestion($this);
 		foreach ($answers as $answer){
-			if ($answer->getShortType() == 'DataPrivacy') $this->isMandatory = true;
+			if ($answer->getShortType() == 'DataPrivacy') {
+                $this->isMandatory = true;
+            }
 		}
 		return (boolean) $this->isMandatory;
 	}
@@ -227,7 +239,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param boolean $isMandatory
 	 * @return void
 	 */
-	public function setIsMandatory($isMandatory): void {
+	#[\Override]
+    public function setIsMandatory($isMandatory): void {
 		$this->isMandatory = $isMandatory;
 	}
 
@@ -236,7 +249,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean
 	 */
-	public function isIsMandatory(): bool
+	#[\Override]
+    public function isIsMandatory(): bool
     {
 		return $this->getIsMandatory();
 	}
@@ -246,7 +260,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean $mustBeCorrect
 	 */
-	public function getMustBeCorrect(): bool
+	#[\Override]
+    public function getMustBeCorrect(): bool
     {
 		return $this->mustBeCorrect;
 	}
@@ -257,7 +272,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param boolean $mustBeCorrect
 	 * @return void
 	 */
-	public function setMustBeCorrect($mustBeCorrect): void {
+	#[\Override]
+    public function setMustBeCorrect($mustBeCorrect): void {
 		$this->mustBeCorrect = $mustBeCorrect;
 	}
 
@@ -266,7 +282,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean
 	 */
-	public function isMustBeCorrect(): bool
+	#[\Override]
+    public function isMustBeCorrect(): bool
     {
 		return $this->getMustBeCorrect();
 	}
@@ -277,6 +294,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   * @param Answer $answer
   * @return void
   */
+ #[\Override]
  public function addAnswer(Answer $answer): void {
 		$this->answers->attach($answer);
 	}
@@ -287,6 +305,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   * @param Answer $answerToRemove The Answer to be removed
   * @return void
   */
+ #[\Override]
  public function removeAnswer(Answer $answerToRemove): void {
 		$this->answers->detach($answerToRemove);
 	}
@@ -296,6 +315,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   *
   * @return ObjectStorage<Answer> $answers
   */
+ #[\Override]
  public function getAnswers() {
 		if ($this->isRandomAnswers()){
 			$answers = $this->answers->toArray();
@@ -312,6 +332,7 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
   * @param ObjectStorage<Answer> $answers
   * @return void
   */
+ #[\Override]
  public function setAnswers(ObjectStorage $answers): void {
 		$this->answers = $answers;
 	}
@@ -332,7 +353,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param boolean $randomAnswers
 	 * @return void
 	 */
-	public function setRandomAnswers(bool $randomAnswers):void
+	#[\Override]
+    public function setRandomAnswers(bool $randomAnswers):void
     {
 		$this->randomAnswers = $randomAnswers;
 	}
@@ -342,7 +364,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return boolean
 	 */
-	public function isRandomAnswers():bool
+	#[\Override]
+    public function isRandomAnswers():bool
     {
 		return $this->getRandomAnswers();
 	}
@@ -352,7 +375,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $columnCount
 	 */
-	public function getColumnCount(): int
+	#[\Override]
+    public function getColumnCount(): int
     {
 		return $this->columnCount;
 	}
@@ -362,7 +386,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $columnPercent
 	 */
-	public function getColumnPercent() {
+	#[\Override]
+    public function getColumnPercent() {
 		return 100 / $this->columnCount;
 	}
 
@@ -372,7 +397,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param integer $columnCount
 	 * @return void
 	 */
-	public function setColumnCount(int $columnCount):void
+	#[\Override]
+    public function setColumnCount(int $columnCount):void
     {
 		$this->columnCount = $columnCount;
 	}
@@ -382,7 +408,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $maxAnswers
 	 */
-	public function getMaxAnswers(): int
+	#[\Override]
+    public function getMaxAnswers(): int
     {
 		return $this->maxAnswers;
 	}
@@ -393,7 +420,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param integer $maxAnswers
 	 * @return void
 	 */
-	public function setMaxAnswers($maxAnswers): void {
+	#[\Override]
+    public function setMaxAnswers($maxAnswers): void {
 		$this->maxAnswers = $maxAnswers;
 	}
 	
@@ -402,7 +430,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 *
 	 * @return integer $minAnswers
 	 */
-	public function getMinAnswers(): int
+	#[\Override]
+    public function getMinAnswers(): int
     {
 		return $this->minAnswers;
 	}
@@ -413,7 +442,8 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 	 * @param integer $minAnswers
 	 * @return void
 	 */
-	public function setMinAnswers($minAnswers): void {
+	#[\Override]
+    public function setMinAnswers($minAnswers): void {
 		$this->minAnswers = $minAnswers;
 	}
 	
@@ -429,13 +459,19 @@ class Question extends \Kennziffer\KeQuestionnaire\Domain\Model\Question {
 		foreach ($this->getAnswers() as $answer){
                     switch ($answer->getShortType()){
                         case 'SemanticDifferential':
-                                if ($max < $answer->getMaxPoints()) $max = $answer->getMaxPoints();
+                                if ($max < $answer->getMaxPoints()) {
+                                    $max = $answer->getMaxPoints();
+                                }
                             break;
                         case 'Checkbox':
-                                if ($answer->getPoints() > 0) $max += $answer->getPoints();
+                                if ($answer->getPoints() > 0) {
+                                    $max += $answer->getPoints();
+                                }
                             break;
                         default:
-                                if ($max < $answer->getPoints()) $max = $answer->getPoints();
+                                if ($max < $answer->getPoints()) {
+                                    $max = $answer->getPoints();
+                                }
                             break;
                     }
 		}

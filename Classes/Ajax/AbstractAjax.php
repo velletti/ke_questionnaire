@@ -53,7 +53,7 @@ abstract class AbstractAjax implements AjaxInterface {
 	 */
 	public function convertAjaxFormArray($values) {
 		if ($values['formData']){
-			parse_str($values['formData'],$formData);
+			parse_str((string) $values['formData'],$formData);
 			$values['formData'] = $formData;
 		}
 		return $values;

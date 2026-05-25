@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use Kennziffer\KeQuestionnaire\Validation\AbstractValidation;
 /***************************************************************
@@ -74,10 +75,12 @@ class SingleSelect extends Answer {
 	* @return array $selectValues
 	*/
 	public function getSelectValuesArray() {
-		$values = array();
+		$values = [];
 		foreach (explode("\n",$this->selectValues) as $line){
 			$temp = explode(':',$line);
-			if ($temp[1] == '') $temp[1] = $temp[0];
+			if ($temp[1] == '') {
+                $temp[1] = $temp[0];
+            }
 			$values[trim($temp[0])] = trim($temp[1]);
 		}
 		
@@ -89,7 +92,8 @@ class SingleSelect extends Answer {
 	*
 	* @return string $comparisonText
 	*/
-	public function getComparisonText() {
+	#[\Override]
+    public function getComparisonText() {
 		return $this->comparisonText;
 	}
 
@@ -99,7 +103,8 @@ class SingleSelect extends Answer {
 	* @param string $comparisonText
 	* @return void
 	*/
-	public function setComparisonText($comparisonText): void {
+	#[\Override]
+    public function setComparisonText($comparisonText): void {
 		$this->comparisonText = $comparisonText;
 	}
 
@@ -109,10 +114,12 @@ class SingleSelect extends Answer {
 	 * @return array
 	 */
 	public function getComparisonTextArray() {
-		$values = array();
+		$values = [];
 		foreach (explode("\n",$this->comparisonText) as $line){
 			$temp = explode(':',$line);
-			if ($temp[1] == '') $temp[1] = $temp[0];
+			if ($temp[1] == '') {
+                $temp[1] = $temp[0];
+            }
 			$values[trim($temp[0])] = trim($temp[1]);
 		}
 
@@ -125,15 +132,20 @@ class SingleSelect extends Answer {
      * @param string $value value
      * @return boolean
      */
-	public function isValid(string $value){
+	#[\Override]
+    public function isValid(string $value){
 		$class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
 		if (class_exists($class)) {
-			$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
+			$validator = GeneralUtility::makeinstance($class);
 			if ($validator instanceof AbstractValidation) {
 				/* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
 				return $validator->isValid($value, $this);
-			} else return false;
-		} else return false;
+			} else {
+                return false;
+            }
+		} else {
+            return false;
+        }
 	}
 }
 ?>

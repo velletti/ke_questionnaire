@@ -1,14 +1,13 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
 
-use Mpdf\Tag\A;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
-use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Group;
 /***************************************************************
  *  Copyright notice
  *
@@ -215,7 +214,7 @@ class Result extends AbstractEntity {
 		$availableProperties = ObjectAccess::getGettablePropertyNames($answer);
 		$newAnswer = new ResultAnswer();
 		foreach ($availableProperties as $propertyName) {
-			if (ObjectAccess::isPropertySettable($newAnswer, $propertyName) && !in_array($propertyName, array('uid','pid','resultquestion'))) {
+			if (ObjectAccess::isPropertySettable($newAnswer, $propertyName) && !in_array($propertyName, ['uid','pid','resultquestion'])) {
 				$propertyValue = ObjectAccess::getProperty($answer, $propertyName);
 				ObjectAccess::setProperty($newAnswer, $propertyName, $propertyValue);
 			}
@@ -274,7 +273,7 @@ class Result extends AbstractEntity {
      * @return ResultQuestion
      */
     public function getResultQuestionByQuestionUid( $question) {
-        $rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+        $rep = GeneralUtility::makeinstance(ResultQuestionRepository::class);
         $rQuestion = $rep->findByQuestionIdAndResultIdRaw($question,$this->getUid() , false);
         if ($rQuestion ) {
             return $rQuestion->getFirst();
@@ -289,9 +288,9 @@ class Result extends AbstractEntity {
   * @return ResultQuestion
   */
  public function getResultQuestionForQuestion(Question $question) {
-		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 		$rQuestion = $rep->findByQuestionAndResult($question,$this);
-		if ($rQuestion[0] AND $this->getQuestions()->contains($rQuestion[0])) {
+		if ($rQuestion[0] && $this->getQuestions()->contains($rQuestion[0])) {
 			return $rQuestion[0];
 		} else {
 			return false;
@@ -305,9 +304,9 @@ class Result extends AbstractEntity {
   * @return ResultQuestion
   */
  public function questionKnown($question) {
-		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 		$rQuestion = $rep->findByQuestionAndResult($question->getQuestion(),$this);
-		if ($rQuestion[0] AND $this->getQuestions()->contains($rQuestion[0])) {
+		if ($rQuestion[0] && $this->getQuestions()->contains($rQuestion[0])) {
 			$rq = $rQuestion[0];
            //  $rq->checkAnswers($question->getAnswers());
 			return $rq;
@@ -326,7 +325,7 @@ class Result extends AbstractEntity {
   * @return ResultAnswer
   */
  public function getAnswer($questionUid, $answerUid, $columnUid = 0) {
-		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 		$resultQuestion = $rep->findByQuestionAndResult($questionUid, $this);
 		$resultQuestion = $resultQuestion[0];
 		
@@ -334,11 +333,11 @@ class Result extends AbstractEntity {
 			foreach ($resultQuestion->getAnswers() as $resultAnswer) {
 				$answer = $resultAnswer->getAnswer();
 				if ($answer){
-					if ($columnUid == 0 AND $resultAnswer->getAnswer()->getShortType() == "MatrixRow") {
-						if ($answerUid == $resultAnswer->getAnswer()->getUid() AND $columnUid == intval($resultAnswer->getCol()) AND $resultAnswer->getValue() != $resultAnswer->getAnswer()->getUid()) {
+					if ($columnUid == 0 && $resultAnswer->getAnswer()->getShortType() == "MatrixRow") {
+						if ($answerUid == $resultAnswer->getAnswer()->getUid() && $columnUid == intval($resultAnswer->getCol()) && $resultAnswer->getValue() != $resultAnswer->getAnswer()->getUid()) {
 							return $resultAnswer;
 						} 
-					} elseif ($answerUid == $resultAnswer->getAnswer()->getUid() AND $columnUid == intval($resultAnswer->getCol())) {
+					} elseif ($answerUid == $resultAnswer->getAnswer()->getUid() && $columnUid == intval($resultAnswer->getCol())) {
 						return $resultAnswer;
 					} 
 				}
@@ -356,17 +355,15 @@ class Result extends AbstractEntity {
   * @return ResultAnswer
   */
  public function getRadioAnswer($questionUid, $answerUid, $columnUid) {
-		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$rep = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 		$resultQuestion = $rep->findByQuestionAndResult($questionUid, $this);
 		$resultQuestion = $resultQuestion[0];
 		
 		if ($resultQuestion){
 			foreach ($resultQuestion->getAnswers() as $resultAnswer) {
 				$answer = $resultAnswer->getAnswer();
-				if ($answer){
-					if ($answerUid == $resultAnswer->getAnswer()->getUid() AND $columnUid == $resultAnswer->getValue()) {
-						return $resultAnswer;
-					} 
+				if ($answer && ($answerUid == $resultAnswer->getAnswer()->getUid() && $columnUid == $resultAnswer->getValue())){
+					return $resultAnswer; 
 				}
 			}
 		}
@@ -380,7 +377,7 @@ class Result extends AbstractEntity {
   * @return ResultAnswer
   */
  public function getResultAnswer($answerUid) {
-		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
+		$rep = GeneralUtility::makeinstance(ResultAnswerRepository::class);
 		return $rep->findByUid($answerUid);
 	}
 
@@ -438,11 +435,7 @@ class Result extends AbstractEntity {
   * @return void
   */
  public function setFeUser( $feUser): void {
-     if ( is_array($feUser)) {
-         $this->feUser = ($feUser['uid'] ?? 0) ;
-     } else {
-         $this->feUser = 0;
-     }
+     $this->feUser = is_array($feUser) ? $feUser['uid'] ?? 0 : 0;
 
 	}
 
@@ -500,14 +493,16 @@ class Result extends AbstractEntity {
 		$qCount = 0;
 		foreach ($this->getQuestions() as $rQuestion){
 			if ($rQuestion->getMaxPoints() > 0){
-				if ($all){
-					$qCount ++;
-				} else {
-					if (count($rQuestion->getAnswers()) > 0) $qCount ++;
-				}
+				if ($all) {
+                    $qCount ++;
+                } elseif (count($rQuestion->getAnswers()) > 0) {
+                    $qCount ++;
+                }
 			}
 		}		
-                if ($qCount > 0) $average = $this->getPoints() / $qCount;
+                if ($qCount > 0) {
+                    $average = $this->getPoints() / $qCount;
+                }
 		$average = number_format($average,2,',',' ');
 		return $average;
 	}

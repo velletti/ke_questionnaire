@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
 /***************************************************************
  *  Copyright notice
@@ -37,8 +40,8 @@ class Checkbox extends Radiobutton {
 	 *
 	 * @return string $saveTxpe
 	 */
-	public function getSaveType() {
+	#[\Override]
+    public function getSaveType() {
 		return 'replaceValue';
 	}
 }
-?>

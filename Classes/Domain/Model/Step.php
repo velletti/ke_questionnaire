@@ -83,14 +83,10 @@ class Step extends AbstractEntity {
 	 */
 	public function setType($type): void {
 		$type = strtolower($type);
-		switch ($type) {
-			case 'forward':
-			case 'redirect':
-				$this->type = $type;
-				break;
-			default:
-				$this->type = 'redirect';
-		}
+		$this->type = match ($type) {
+            'forward', 'redirect' => $type,
+            default => 'redirect',
+        };
 	}
 
 	/**

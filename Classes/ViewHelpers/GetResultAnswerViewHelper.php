@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
@@ -50,7 +53,7 @@ class GetResultAnswerViewHelper extends AbstractViewHelper {
     /** * Constructor *
      * @api */
     public function initializeArguments(): void {
-        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', true );
+        $this->registerArgument('result', Result::class, ' The result ', true );
         $this->registerArgument('questionUid', 'integer', 'the question id  ', true );
         $this->registerArgument('answerUid', 'integer', 'the answer id  ', true );
         parent::initializeArguments() ;
@@ -61,7 +64,8 @@ class GetResultAnswerViewHelper extends AbstractViewHelper {
 	 *
 	 * @return
 	 */
-	public function render() {
+	#[\Override]
+    public function render() {
 
         /** @var Result $result */
         $result = $this->arguments['result'] ;
@@ -71,10 +75,10 @@ class GetResultAnswerViewHelper extends AbstractViewHelper {
 		$resultQuestions = $result->getQuestions();
 		/* @var $resultQuestion \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion */
 		foreach ($resultQuestions as $resultQuestion) {
-			if ($resultQuestion->getQuestion() AND $questionUid == $resultQuestion->getQuestion()->getUid()) {
+			if ($resultQuestion->getQuestion() && $questionUid == $resultQuestion->getQuestion()->getUid()) {
 				/* @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
 				foreach ($resultQuestion->getAnswers()->toArray() as $resultAnswer) {
-					if ($resultAnswer->getAnswer() AND $answerUid == $resultAnswer->getAnswer()->getUid()) {
+					if ($resultAnswer->getAnswer() && $answerUid == $resultAnswer->getAnswer()->getUid()) {
 						return $resultAnswer;
 					}
 				}
@@ -83,4 +87,3 @@ class GetResultAnswerViewHelper extends AbstractViewHelper {
 		return NULL;
 	}
 }
-?>

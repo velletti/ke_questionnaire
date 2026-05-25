@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Utility;
 /***************************************************************
  *  Copyright notice
@@ -41,9 +44,11 @@ class ArrayUtility {
 	 * @return array Array without NULL values
 	 */
 	public static function removeNullValues($nullArray, $hasObjectsInside = false) {
-		if (!is_array($nullArray)) return $nullArray;
+		if (!is_array($nullArray)) {
+            return $nullArray;
+        }
 		if ($hasObjectsInside) {
-			return array_filter($nullArray, array(__CLASS__, 'isNotNull'));
+			return array_filter($nullArray, self::isNotNull(...));
 		} else {
 			return array_flip(array_flip($nullArray));
 		}
@@ -60,4 +65,3 @@ class ArrayUtility {
 	}
 
 }
-?>

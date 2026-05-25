@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -152,7 +155,9 @@ class Chart extends AbstractEntity {
 	public function addData($title, $value = 1): void {
 		if(isset($this->data[$key])) {
 			$this->data[$key] += $value;
-		} else $this->data[$key] = $value;
+		} else {
+            $this->data[$key] = $value;
+        }
 	}
 
 	public function getVariables() {
@@ -165,4 +170,3 @@ class Chart extends AbstractEntity {
 	}
 
 }
-?>

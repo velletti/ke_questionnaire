@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Object;
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
@@ -54,7 +55,7 @@ class DataMapper {
   * @var ValidatorResolver
   */
  protected $validatorResolver;
- public function __construct( \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService, \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver)
+ public function __construct( ReflectionService $reflectionService, ValidatorResolver $validatorResolver)
  {
      $this->reflectionService = $reflectionService;
      $this->validatorResolver = $validatorResolver;
@@ -68,7 +69,7 @@ class DataMapper {
 	 * @return array An array of objects of the given class
 	 */
 	public function map($className, array $rows) {
-		$objectStorage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$objectStorage = GeneralUtility::makeinstance(ObjectStorage::class);
 		foreach ($rows as $row) {
 			/* @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
 			$objectStorage->attach($this->mapSingleRow($className, $row));
@@ -107,34 +108,24 @@ class DataMapper {
 	 * @return object
 	 */
 	public function mapProperties($object, array $row) {
-		$className = get_class($object);
+		$className = $object::class;
 		foreach ($row as $propertyName => $propertyValue) {
-			$method = 'set' . ucfirst($propertyName);
-			if (!method_exists($object, $method)) continue;
+			$method = 'set' . ucfirst((string) $propertyName);
+			if (!method_exists($object, $method)) {
+                continue;
+            }
 			$propertyData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$propertyValue = NULL;
 			if ($row[$propertyName] !== NULL) {
-				switch ($propertyData->getType()) {
-					case 'integer':
-						$propertyValue = (int) $row[$propertyName];
-					break;
-					case 'float':
-						$propertyValue = (float) $row[$propertyName];
-					break;
-					case 'boolean':
-						$propertyValue = (boolean) $row[$propertyName];
-					break;
-					case 'string':
-						$propertyValue = (string) $row[$propertyName];
-					break;
-					case 'array':
-						$propertyValue = (array) $row[$propertyName];
-					break;
-					default:
-						$propertyValue = $row[$propertyName];
-					break;
-				}
-			}
+                $propertyValue = match ($propertyData->getType()) {
+                    'integer' => (int) $row[$propertyName],
+                    'float' => (float) $row[$propertyName],
+                    'boolean' => (boolean) $row[$propertyName],
+                    'string' => (string) $row[$propertyName],
+                    'array' => (array) $row[$propertyName],
+                    default => $row[$propertyName],
+                };
+            }
 
 			if ($propertyValue !== NULL) {
 				$validators = $this->validatorResolver->getBaseValidatorConjunction($className);
@@ -142,12 +133,12 @@ class DataMapper {
 				foreach ($validators as $validator) {
 					$error = $validator->validate($propertyValue);
 					if ($error->hasErrors()) {
-						$errorMessage = array(
+						$errorMessage = [
 							'className' => $className,
 							'propertyName' => $propertyName,
 							'code' => $error->getFirstError()->getCode(),
 							'message' => $error->getFirstError()->getMessage(),
-						);
+						];
 						throw new Exception('dataMapperValidation', 1354704589, $errorMessage);
 					}
 				}

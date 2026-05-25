@@ -48,4 +48,3 @@ class Email extends AbstractValidation {
 	}
 
 }
-?>

@@ -33,6 +33,7 @@ namespace Kennziffer\KeQuestionnaire\Ajax;
  */
 class AutoSave extends AbstractAjax {
 	
+    public $info;
     /**
   * @var Dispatcher
   */
@@ -48,7 +49,7 @@ class AutoSave extends AbstractAjax {
 	 * @return string In most cases JSON
 	 */
 	public function processAjaxRequest(array $arguments) {
-		$this->info = array();
+		$this->info = [];
       //  $this->signalSlotDispatcher->dispatch(__CLASS__, 'ajaxAutoSave', array($this->convertAjaxFormArray($arguments), $this));
 		$json = $this->convertValueToJson($this->info['resultUid']);
 		return trim($json);

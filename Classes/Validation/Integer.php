@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Validation;
 /***************************************************************
  *  Copyright notice
@@ -47,4 +50,3 @@ class Integer extends AbstractValidation {
 	}
 
 }
-?>

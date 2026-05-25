@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
 
+use Kennziffer\KeQuestionnaire\Object\DataMapper;
+use Kennziffer\KeQuestionnaire\Domain\Model\Step;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
@@ -10,10 +13,7 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\ExtConf;
 use Kennziffer\KeQuestionnaire\Utility\Localization;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3Fluid\Fluid\View\ViewInterface;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 /***************************************************************
  *  Copyright notice
@@ -59,7 +59,7 @@ class AbstractController extends ActionController {
   *
   * @var QuestionRepository
   */
- var $questionRepository;
+ public $questionRepository;
     
     /**
   * questionnaireRepository
@@ -73,14 +73,14 @@ class AbstractController extends ActionController {
   *
   * @var AuthCodeRepository
   */
- var $authCodeRepository;
+ public $authCodeRepository;
 
 	/**
   * questionnaire
   *
   * @var Questionnaire
   */
- var $questionnaire;
+ public $questionnaire;
 
 	/**
   * @var ExtConf
@@ -96,14 +96,14 @@ class AbstractController extends ActionController {
   * @var ObjectStorage
   */
  protected $steps;
- public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, 
-                             \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository, 
-                             \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository, 
-                             \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $questionnaire, 
-                             \Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository, 
-                             \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf, 
-                             \Kennziffer\KeQuestionnaire\Utility\Localization $localization, 
-                             \TYPO3\CMS\Extbase\Persistence\ObjectStorage $steps
+ public function __construct(ResultRepository $resultRepository, 
+                             QuestionRepository $questionRepository, 
+                             AuthCodeRepository $authCodeRepository, 
+                             Questionnaire $questionnaire, 
+                             QuestionnaireRepository $questionnaireRepository, 
+                             ExtConf $extConf, 
+                             Localization $localization, 
+                             ObjectStorage $steps
  )
  {
      $this->resultRepository = $resultRepository;
@@ -136,16 +136,14 @@ class AbstractController extends ActionController {
 
 		// initialize steps
         // todo V12
-		if ($this->steps AND $this->steps->count() == 0  ) {
-			if (is_array($this->settings['--No-working-steps--not-working']) && count($this->settings['steps'])) {
-				/* @var $dataMapper \Kennziffer\KeQuestionnaire\Object\DataMapper */
-				$dataMapper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Object\DataMapper');
-				$steps = $dataMapper->map('Kennziffer\KeQuestionnaire\Domain\Model\Step', $this->settings['steps']);
-				foreach ($steps as $step) {
+		if (($this->steps and $this->steps->count() == 0) && (is_array($this->settings['--No-working-steps--not-working']) && count($this->settings['steps']))) {
+            /* @var $dataMapper \Kennziffer\KeQuestionnaire\Object\DataMapper */
+            $dataMapper = GeneralUtility::makeinstance(DataMapper::class);
+            $steps = $dataMapper->map(Step::class, $this->settings['steps']);
+            foreach ($steps as $step) {
 					$this->steps->attach($step);
 				}
-			}
-		}
+        }
        
 	}
 
@@ -156,7 +154,8 @@ class AbstractController extends ActionController {
 	 *
 	 * @return string
 	 */
-	protected function getErrorFlashMessage() {
+	#[\Override]
+    protected function getErrorFlashMessage(): bool|string {
         $defaultFlashMessage = parent::getErrorFlashMessage();
 		$locallangKey = sprintf('error.%s.%s', $this->request->getControllerName(), $this->actionMethodName);
                 
@@ -170,7 +169,7 @@ class AbstractController extends ActionController {
 	 * @param integer $severity optional severity code. One of the \TYPO3\CMS\Core\Messaging\FlashMessage constants
 	 * @return void
 	 */
-	public function addNewFlashMessage($action, $severity = \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK): void {
+	public function addNewFlashMessage($action, $severity = ContextualFeedbackSeverity::OK): void {
 		$messageLocallangKey = sprintf('flashmessage.%s.%s', $this->request->getControllerName(), $action);
 		$localizedMessage = $this->translate($messageLocallangKey, '');
 		$titleLocallangKey = sprintf('%s.title', $messageLocallangKey);
@@ -221,7 +220,7 @@ class AbstractController extends ActionController {
 		}
 
 		$method = $nextStep->getType();
-		$this->$method($nextStep->getAction(), $nextStep->getController(), $nextStep->getExtension(), array('result' => $result));
+		$this->$method($nextStep->getAction(), $nextStep->getController(), $nextStep->getExtension(), ['result' => $result]);
 	}
     
     /**

@@ -51,7 +51,7 @@ class RenderPartialViewHelper extends RenderViewHelper {
 	/**
 	 * @var array
 	 */
-	var $oldPaths = array();
+	public $oldPaths = [];
 
 	public function __construct()
  {
@@ -60,6 +60,7 @@ class RenderPartialViewHelper extends RenderViewHelper {
 
     /** * Constructor *
      * @api */
+    #[\Override]
     public function initializeArguments(): void {
         parent::initializeArguments() ;
     }
@@ -69,14 +70,15 @@ class RenderPartialViewHelper extends RenderViewHelper {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	#[\Override]
+    public function render() {
         $partial = $this->arguments['partial'] ;
         $arguments = $this->arguments['arguments'] ;
         if (file_exists($partial)){
             // Overload arguments with own extension local settings (to pass own settings to external partial)
             $arguments = $this->loadSettingsIntoArguments($arguments);
 			
-            $path_parts = pathinfo($partial);
+            $path_parts = pathinfo((string) $partial);
             $path = realpath($path_parts['dirname']);
             $partial = $path_parts['filename'];
             

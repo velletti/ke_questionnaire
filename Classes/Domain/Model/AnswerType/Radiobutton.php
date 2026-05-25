@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
 
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
@@ -66,7 +69,8 @@ class Radiobutton extends Answer {
   * @param array $options
   * @return string
   */
- public function getCsvValue(ResultAnswer $rAnswer, $options = array()){
+ #[\Override]
+ public function getCsvValue(ResultAnswer $rAnswer, $options = []){
 		if ($rAnswer->getValue() == $this->getUid()) {// OR $rAnswer->getCol() == $this->getUid()){
 			return $options['marker'];
 		} else {
@@ -80,7 +84,8 @@ class Radiobutton extends Answer {
 	 * @param array $options
 	 * @return string
 	 */
-	public function getCsvValueRaw(array $rAnswer, $options = array()){
+	#[\Override]
+    public function getCsvValueRaw(array $rAnswer, $options = []){
         if ($rAnswer['value'] == $this->getUid()) {// OR $rAnswer->getCol() == $this->getUid()){
 			return $options['marker'];
 		} else {
@@ -93,8 +98,8 @@ class Radiobutton extends Answer {
 	 *
 	 * @return string $saveTxpe
 	 */
-	public function getSaveType() {
+	#[\Override]
+    public function getSaveType() {
 		return 'replaceAnswer';
 	}
 }
-?>

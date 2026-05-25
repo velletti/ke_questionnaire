@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use Kennziffer\KeQuestionnaire\Validation\Email;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
@@ -44,7 +47,7 @@ class QuestionnaireController extends ActionController {
 	 * @var ViewInterface
 	 * @api
 	 */
-	var $view = NULL;
+	public $view = NULL;
         
     /**
   * questionnaireRepository
@@ -71,7 +74,7 @@ class QuestionnaireController extends ActionController {
   * @var Mail
   */
  protected $mailSender;
- public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository $authCodeRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Utility\Mail $mailSender)
+ public function __construct(QuestionnaireRepository $questionnaireRepository, AuthCodeRepository $authCodeRepository, ResultRepository $resultRepository, Mail $mailSender)
  {
      $this->questionnaireRepository = $questionnaireRepository;
      $this->authCodeRepository = $authCodeRepository;
@@ -84,7 +87,7 @@ class QuestionnaireController extends ActionController {
 	 *
 	 * @return void
 	 */
-	public function listAction(): \Psr\Http\Message\ResponseInterface {		
+	public function listAction(): ResponseInterface {		
             $this->view->assign('questionnaires',$this->getQuestionnaires());
             return $this->htmlResponse();
 	}
@@ -94,7 +97,7 @@ class QuestionnaireController extends ActionController {
 	 *
 	 * @return void
 	 */
-	public function reclaimAuthCodeAction(): \Psr\Http\Message\ResponseInterface
+	public function reclaimAuthCodeAction(): ResponseInterface
  {
      return $this->htmlResponse();
  }
@@ -106,14 +109,18 @@ class QuestionnaireController extends ActionController {
 	 * @return boolean
 	 */
 	public function isValidEmail($value){
-		$class = 'Kennziffer\\KeQuestionnaire\\Validation\\Email';
+		$class = Email::class;
 		if (class_exists($class)) {
-			$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
+			$validator = GeneralUtility::makeinstance($class);
 			if ($validator instanceof ValidationAbstractValidation) {
 				/* @var $validator \Kennziffer\KeQuestionnaire\ValidationAbstractValidation */
 				return $validator->isValid($value, $this);
-			} else return false;
-		} else return false;
+			} else {
+                return false;
+            }
+		} else {
+            return false;
+        }
 	}
     
     
@@ -123,11 +130,16 @@ class QuestionnaireController extends ActionController {
      * @return array
      */
     private function getQuestionnaires(){
-        if ($this->settings['questionnaires']) $questionnaires = $this->questionnaireRepository->findForUids($this->settings['questionnaires']);
-        else $questionnaires = $this->questionnaireRepository->findAll();
+        if ($this->settings['questionnaires']) {
+            $questionnaires = $this->questionnaireRepository->findForUids($this->settings['questionnaires']);
+        } else {
+            $questionnaires = $this->questionnaireRepository->findAll();
+        }
 		
-		$list = array();
-		if ($GLOBALS['TSFE']->fe_user) $user_id = $GLOBALS['TSFE']->fe_user->user['uid'];
+		$list = [];
+		if ($this->request->getAttribute('frontend.user')) {
+            $user_id = $this->request->getAttribute('frontend.user')->user['uid'];
+        }
 		switch ($this->settings['listType']){
 			case 'all':
 					$list = $questionnaires;
@@ -144,7 +156,7 @@ class QuestionnaireController extends ActionController {
 			case 'unused':
 					if ($user_id){
 						foreach ($questionnaires as $questionnaire){
-							if (count($questionnaire->getUserResults($user_id)) == 0){
+							if (count($questionnaire->getUserResults($user_id)) === 0){
 								$list[] = $questionnaire;
 							}
 						}

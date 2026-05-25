@@ -55,16 +55,14 @@ class ArrayValueViewHelper extends AbstractViewHelper {
 	/**
      * @return mixed
 	 */	 	
-	public function render() {
+	#[\Override]
+    public function render() {
         $array = $this->arguments['array'] ;
         $key = $this->arguments['key'] ;
-        if(is_array($array)) {
-			if(array_key_exists($key, $array)) {
-				return $array[$key];
-			}
+        if(is_array($array) && array_key_exists($key, $array)) {
+			return $array[$key];
 		}
 		return NULL;
 	}
 
 }
-?>

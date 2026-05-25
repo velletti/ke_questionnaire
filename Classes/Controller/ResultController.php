@@ -2,9 +2,19 @@
 
 namespace Kennziffer\KeQuestionnaire\Controller;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
+use Kennziffer\KeQuestionnaire\Utility\Debug;
+use Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Kennziffer\KeQuestionnaire\Domain\Model\Question;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
@@ -14,7 +24,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
@@ -23,7 +32,6 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer;
-use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 
 
@@ -61,26 +69,31 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 class ResultController extends AbstractController
 {
 
+    public $user;
+    public $authCode;
+    public $temp_result;
+    public $oldResult;
+    public $newResult;
     /**
      * The current view, as resolved by resolveView()
      *
      * @var ViewInterface
      * @api
      */
-    var $view = NULL;
+    public $view = NULL;
 
     /**
      * @var Result
      */
-    var $result;
+    public $result;
     /**
      * @var int
      */
-    var $userUid = 0;
+    public $userUid = 0;
 
-    var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion|null $lastQuestion = null;
+    public ResultQuestion|null $lastQuestion = null;
 
-    public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository $questionnaireRepository)
+    public function __construct(QuestionnaireRepository $questionnaireRepository, private readonly PersistenceManager $persistenceManager, private readonly ConfigurationManagerInterface $configurationManagerInterface)
     {
         $this->questionnaireRepository = $questionnaireRepository;
         $this->resultRepository = GeneralUtility::makeInstance(ResultRepository::class);
@@ -90,6 +103,7 @@ class ResultController extends AbstractController
     /**
      * initializes the actions
      */
+    #[\Override]
     public function initializeAction(): void
     {
         parent::initializeAction();
@@ -110,12 +124,14 @@ class ResultController extends AbstractController
         }
 
         //check jsKey for the created js-file
-        $jsKey = substr($this->userUid, 0, 10) . '_keqjs';
-        $GLOBALS['TSFE']->fe_user->setKey('ses', 'keq_jskey', $jsKey);
+        $jsKey = substr((string) $this->userUid, 0, 10) . '_keqjs';
+        $this->request->getAttribute('frontend.user')->setKey('ses', 'keq_jskey', $jsKey);
         //maybe better to erase the js file every time
         $pathname = 'typo3temp/ke_questionnaire';
         $filename = $pathname . '/' . $jsKey . '.js';
-        if (file_exists(Environment::getPublicPath() . '/' . $filename)) unlink($filename);
+        if (file_exists(Environment::getPublicPath() . '/' . $filename)) {
+            unlink($filename);
+        }
     }
 
     /**
@@ -131,15 +147,15 @@ class ResultController extends AbstractController
     #[IgnoreValidation([])]
     public function newAction(
         Result $newResult = NULL, ?int $requestedPage = 0 ,
-        \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $questions = NULL): ResponseInterface
+        QueryResultInterface $questions = NULL): ResponseInterface
 
     {
-        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = $this->persistenceManager;
         $debug = [];
         if ($newResult == NULL) {
             $debug[] = 'Line ' . __LINE__ . " | "  . 'Create new Result Object ';
             /** @var Result $newResult */
-            $newResult = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Model\Result');
+            $newResult = GeneralUtility::makeinstance(Result::class);
             $newResult->setFeCruserId($this->userUid ?? 0);
             if ($this->user) {
                 $newResult->setFeUser($this->user);
@@ -184,7 +200,7 @@ class ResultController extends AbstractController
         if ( $newResult && $newResult->getUid() ) {
             $debug[] = 'Line ' . __LINE__ . " | "  . 'New Result Uid: ' . $newResult->getUid();
             /* @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionsRepository */
-            $resultQuestionsRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+            $resultQuestionsRepository = GeneralUtility::makeinstance(ResultQuestionRepository::class);
             $resultQuestions = $resultQuestionsRepository->findByResultId($newResult->getUid());
             if( $resultQuestions && count( $resultQuestions ) > 0 ) {
                 $debug[] = 'Line ' . __LINE__ . " | "  . 'Found existing ResultQuestions for Result Uid: ' . $newResult->getUid() . ' - count: ' . count( $resultQuestions );
@@ -205,7 +221,7 @@ class ResultController extends AbstractController
             }
         }
 
-        if (! $questions || count($questions) == 0 ) {
+        if (! $questions || count($questions) === 0 ) {
             $debug [] = 'Line ' . __LINE__ . " | "  . 'Set Questions for Page: ' . $requestedPage;
             //set the requested page
             $this->questionnaire->setPage($requestedPage);
@@ -218,14 +234,14 @@ class ResultController extends AbstractController
             }
 
             /**
-             * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository
+             * @var ResultQuestionRepository $resultQuestionRepository
              */
-            $resultQuestionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository');
+            $resultQuestionRepository = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 
             foreach ($questions as $question) {
                 /** @var Question $question */
                 $debug[] = 'Line ' . __LINE__ . " | "  . ' Question Uid: ' . $question->getUid() . ' - ' . $question->getTitle();
-                $resultQuestion = new \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion();
+                $resultQuestion = new ResultQuestion();
                 $resultQuestion->setQuestion($question);
                 $resultQuestion->setPid($newResult->getPid());
                 $resultQuestion->setPage($this->questionnaire->getPage() );
@@ -251,7 +267,7 @@ class ResultController extends AbstractController
 
         $this->view->assign('questionnaire', $this->questionnaire);
         $this->view->assign('newResult', $newResult);
-        \Kennziffer\KeQuestionnaire\Utility\Debug::store(($newResult ? $newResult->getUid() : 0), $debug);
+        Debug::store(($newResult ? $newResult->getUid() : 0), $debug);
         return $this->htmlResponse();
 
     }
@@ -265,7 +281,7 @@ class ResultController extends AbstractController
      */
     public function setStoragePid($storagePid): void
     {
-        $configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+        $configurationManager = $this->configurationManagerInterface;
         //fallback to current pid if no storagePid is defined
         $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $currentPid['persistence']['storagePid'] = $storagePid;
@@ -280,21 +296,21 @@ class ResultController extends AbstractController
     {
         //to get correct updates it is needed that a clone of the actual result is created
         //the temp_result stores the current newResult-data
-        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = $this->persistenceManager;
 
         if ($this->request->hasArgument("newResult")) {
             $this->temp_result = $this->request->getArgument('newResult');
 
             /**
-             * @var \Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository $answerRepository
-             * @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository
+             * @var AnswerRepository $answerRepository
+             * @var ResultQuestionRepository $resultQuestionRepository
              * @var ResultAnswerRepository $resultAnswerRepository
              */
-            $resultQuestionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository');
+            $resultQuestionRepository = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 
 
-            $answerRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Repository\AnswerRepository');
-            $resultAnswerRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository');
+            $answerRepository = GeneralUtility::makeinstance(AnswerRepository::class);
+            $resultAnswerRepository = GeneralUtility::makeinstance(ResultAnswerRepository::class);
             if (array_key_exists('__identity', $this->temp_result) && $this->temp_result['__identity'] > 0) {
 
                 $debug = [];
@@ -316,7 +332,7 @@ class ResultController extends AbstractController
                                 $debug[] = 'Line ' . __LINE__ . " | "  . 'ResultQuestion found ';
                             }  else {
                                 $debug[] = 'Line ' . __LINE__ . " | "  . 'Create New ResultQuestion  ' . intval($formquestion['question']);
-                                $resultQuestion = new \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion();
+                                $resultQuestion = new ResultQuestion();
                                 $question = $this->questionRepository->findByUidFree(intval($formquestion['question']));
                                 $resultQuestion->setQuestion($question);
                                 $resultQuestion->setPid($result->getPid());
@@ -338,7 +354,7 @@ class ResultController extends AbstractController
                                     if ($formAnswer['value'] || $formAnswer['answer']) {
                                         $answer = $answerRepository->findByUidFree(intval($formAnswer['answer']));
                                         /** @var ResultAnswer $resultAnswer */
-                                        $resultAnswer = new \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer();
+                                        $resultAnswer = new ResultAnswer();
                                         $resultAnswer->setPid($result->getPid());
                                         $resultAnswer->setResultquestion($resultQuestion);
                                         $resultAnswer->setFeCruserId($this->userUid);
@@ -349,8 +365,8 @@ class ResultController extends AbstractController
                                         }
 
                                         if (
-                                            $answer->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton" ||
-                                            $answer->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox"
+                                            $answer->getType() == Radiobutton::class ||
+                                            $answer->getType() == Checkbox::class
 
                                         ) {
                                             $resultAnswer->setValue($formAnswer['answer']);
@@ -416,7 +432,7 @@ class ResultController extends AbstractController
                     }
                     $persistenceManager->persistAll();
                 }
-                \Kennziffer\KeQuestionnaire\Utility\Debug::store(($result ? $result->getUid()  : 0), $debug);
+                Debug::store(($result ? $result->getUid()  : 0), $debug);
             }
         }
         $this->newResult = $result;
@@ -428,7 +444,7 @@ class ResultController extends AbstractController
      *
      * @param integer $currentPage check, validate and save the results of this page
      * @param integer $requestedPage after checking the questions of currentPage redirect to this page
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      * @throws StopActionException
      * @throws UnsupportedRequestTypeException
      * @throws IllegalObjectTypeException
@@ -452,7 +468,9 @@ class ResultController extends AbstractController
         $pid = $this->questionnaire->getStoragePid();
         //get all questions for this questionnaire
         $this->questionnaire->setQuestions($this->questionRepository->findAll());
-        if ($this->user) $newResult->setFeUser($this->user);
+        if ($this->user) {
+            $newResult->setFeUser($this->user);
+        }
         $newResult->setFeCruserId($this->userUid);
         //check for the Access-Type
         switch ($this->settings['accessType']) {
@@ -481,7 +499,7 @@ class ResultController extends AbstractController
         $debug[] = "Line " . __LINE__ . " | "  . 'Calculate Points for correct Answers ';
         $debug[] = $this->calculatePoints($this->settings['reducePointsforWrongAnswers'] , $result );
 
-        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = $this->persistenceManager;
         $persistenceManager->persistAll();
 
         //TOdo jv  2025 : check this
@@ -502,7 +520,7 @@ class ResultController extends AbstractController
                 ));*/
 
                 // JVE - Jörg velletti Nov 2016 Changed hardCoded Template
-                $TemplateRootPaths = $this->view->getTemplateRootPaths();
+                $TemplateRootPaths = $this->view->getRenderingContext()->getTemplatePaths()->getTemplateRootPaths();
                 foreach ($TemplateRootPaths as $templatePath) {
                     $tempTemplatePathAndFilename = $templatePath . '/Result/End.html';
                     if (is_file($tempTemplatePathAndFilename)) {
@@ -510,7 +528,7 @@ class ResultController extends AbstractController
                     }
                 }
 
-                $this->view->setTemplatePathAndFilename($templatePathAndFilename);
+                $this->view->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($templatePathAndFilename);
                 // JVE - Jörg velletti Nov 2016 Changed hardCoded Template
 
                 $this->view->assign('result', $newResult);
@@ -534,7 +552,7 @@ class ResultController extends AbstractController
             $this->view->assign('questionnaire', $this->questionnaire);
             $this->view->assign('newResult', $newResult);
         }
-        \Kennziffer\KeQuestionnaire\Utility\Debug::store(($result->getUid() ?? 0), $debug);
+        Debug::store(($result->getUid() ?? 0), $debug);
 
         return $this->htmlResponse();
     }
@@ -545,10 +563,10 @@ class ResultController extends AbstractController
      * @param Result $result
      * @return void
      */
-    public function showAction(Result $result = NULL): \Psr\Http\Message\ResponseInterface
+    public function showAction(Result $result = NULL): ResponseInterface
     {
-        if (!$result) {
-            $this->addFlashMessage(LocalizationUtility::translate('feView.noResultError'), LocalizationUtility::translate('feView.noResultErrorTitle'), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+        if (!$result instanceof Result) {
+            $this->addFlashMessage(LocalizationUtility::translate('feView.noResultError'), LocalizationUtility::translate('feView.noResultErrorTitle'), ContextualFeedbackSeverity::WARNING);
         } else {
             $questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
             $this->view->assign('questionnaire', $questionnaire[0]);
@@ -575,17 +593,13 @@ class ResultController extends AbstractController
 
             if ($resultQuestion->getQuestion() && $resultQuestion->getPage() == ($requestedPage)) {
                 // check if the question has to be answered correctly
-                if ($resultQuestion->getQuestion()->getMustBeCorrect()) {
-                    if (!$resultQuestion->isAnsweredCorrectly()) {
-                        return 'mustBeCorrect';
-                    }
+                if ($resultQuestion->getQuestion()->getMustBeCorrect() && !$resultQuestion->isAnsweredCorrectly()) {
+                    return 'mustBeCorrect';
                 }
 
                 // check if question is mandatory
-                if ($resultQuestion->getQuestion()->getIsMandatory()) {
-                    if (!$resultQuestion->isAnswered()) {
-                        return 'mandatory';
-                    }
+                if ($resultQuestion->getQuestion()->getIsMandatory() && !$resultQuestion->isAnswered()) {
+                    return 'mandatory';
                 }
             }
         }
@@ -607,11 +621,13 @@ class ResultController extends AbstractController
      */
     public function moveToAction($action, ?Result $result, $page = 1, $flashMessage = '')
     {
-        if (!empty($flashMessage)) $this->addNewFlashMessage($flashMessage, \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
-        return $this->redirect(($action ?? 'new'), NULL, NULL, array(
+        if (!empty($flashMessage)) {
+            $this->addNewFlashMessage($flashMessage, ContextualFeedbackSeverity::ERROR);
+        }
+        return $this->redirect(($action ?? 'new'), NULL, NULL, [
             'newResult' => $result,
             'requestedPage' => $page
-        ));
+        ]);
     }
 
     /**
@@ -625,11 +641,7 @@ class ResultController extends AbstractController
     public function getSavedAndMergedResult(Result $newResult)
     {
         $uid = $newResult->getUid();
-        if ($uid === NULL) {
-            $result = $this->addResult($newResult);
-        } else {
-            $result = $this->updateResult($newResult);
-        }
+        $result = $uid === NULL ? $this->addResult($newResult) : $this->updateResult($newResult);
         return $result;
     }
 
@@ -644,7 +656,7 @@ class ResultController extends AbstractController
         $formResult = $this->modifyResultBeforeSave($formResult);
         $this->resultRepository->add($formResult);
 
-        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = $this->persistenceManager;
         $persistenceManager->persistAll();
 
         return $formResult;
@@ -660,11 +672,7 @@ class ResultController extends AbstractController
     {
         //merge the old and the new result-data
         $dbResult = $this->oldResult;
-        if ($dbResult) {
-            $updatedResult = $this->addQuestionToDbResult($formResult, $dbResult);
-        } else {
-            $updatedResult = $formResult;
-        }
+        $updatedResult = $dbResult ? $this->addQuestionToDbResult($formResult, $dbResult) : $formResult;
 
         $updatedResult->setPoints($updatedResult->getPoints() + $formResult->getPoints());
         $updatedResult->setMaxPoints($updatedResult->getMaxPoints() + $formResult->getMaxPoints());
@@ -672,7 +680,7 @@ class ResultController extends AbstractController
         $result = $this->modifyResultBeforeSave($updatedResult);
         $this->resultRepository->update($result);
 
-        $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+        $persistenceManager = $this->persistenceManager;
         $persistenceManager->persistAll();
 
         return $result;
@@ -687,7 +695,7 @@ class ResultController extends AbstractController
     public function modifyResultBeforeSave(Result $result)
     {
         // set timestamp for finished if last page was reached
-        if ($this->questionnaire and $this->questionnaire->getIsFinished()) {
+        if ($this->questionnaire && $this->questionnaire->getIsFinished()) {
             $result->setFinished(time());
         }
 
@@ -706,7 +714,7 @@ class ResultController extends AbstractController
         $formQuestions = $formResult->getQuestions();
 
         foreach ($formQuestions as $fQuestion) {
-            if ($fQuestion->getQuestion() and $fQuestion->getQuestion()->getType() == 'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question') {
+            if ($fQuestion->getQuestion() && $fQuestion->getQuestion()->getType() == \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class) {
                 $dbResult->addOrUpdateQuestion($fQuestion);
             }
         }
@@ -720,7 +728,7 @@ class ResultController extends AbstractController
      *
      * @return void
      */
-    public function feUserAccessAction(): \Psr\Http\Message\ResponseInterface
+    public function feUserAccessAction(): ResponseInterface
     {
         return $this->htmlResponse();
     }
@@ -754,12 +762,8 @@ class ResultController extends AbstractController
         if (!$authCode) {
             //direct call with &authCode= in URI
             if ($_REQUEST['authCode'] || $this->request->hasArgument('code')) {
-                if ($this->request->hasArgument('code')) {
-                    $code = $this->request->getArgument('code');
-                } else {
-                    $code = $_REQUEST['authCode'];
-                }
-                $code = trim($code);
+                $code = $this->request->hasArgument('code') ? $this->request->getArgument('code') : $_REQUEST['authCode'];
+                $code = trim((string) $code);
                 $debug[] = 'Line ' . __LINE__ . " | "  . 'checkAuthCode From Request URI: ' . $code;
                 $authCode = $this->authCodeRepository->findByAuthCodeForPid($code, $pid);
                 $debug[] = 'Line ' . __LINE__ . " | "  . 'Load from DB : from PID:  ' . $pid . " => " . var_export(($authCode ? $authCode->getUid() : null), true);
@@ -781,14 +785,14 @@ class ResultController extends AbstractController
                 $this->authCode->setFirstactive(time());
                 $this->authCodeRepository->update($this->authCode);
 
-                $persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+                $persistenceManager = $this->persistenceManager;
                 $persistenceManager->persistAll();
             }
             return true;
 
         } elseif ($code) {
             //if no VALID authCode is given, return false but throw also warning
-            $this->addFlashMessage(LocalizationUtility::translate('reclaimAuthcode.notFoundTitle', 'KeQuestionnaire'), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+            $this->addFlashMessage(LocalizationUtility::translate('reclaimAuthcode.notFoundTitle', 'KeQuestionnaire'), '', ContextualFeedbackSeverity::WARNING);
             return false;
         }
         // echo "<pre>Line: " . __LINE__ . "\n" ;
@@ -803,7 +807,7 @@ class ResultController extends AbstractController
      *
      * @return void
      */
-    public function authCodeAccessAction(): \Psr\Http\Message\ResponseInterface
+    public function authCodeAccessAction(): ResponseInterface
     {
         return $this->htmlResponse();
     }
@@ -835,7 +839,7 @@ class ResultController extends AbstractController
      *
      * @return void
      */
-    public function maxParticipationsAction(): \Psr\Http\Message\ResponseInterface
+    public function maxParticipationsAction(): ResponseInterface
     {
         return $this->htmlResponse();
     }
@@ -847,20 +851,24 @@ class ResultController extends AbstractController
      */
     private function checkRestart(Result $result)
     {
-        if ($this->settings['accessType'] != 'free' and $this->settings['restart']) {
+        if ($this->settings['accessType'] != 'free' && $this->settings['restart']) {
             //fetch the last participation of the user
             if ($result->getFeUser()) {
                 $parts = $this->resultRepository->findBy(['feUser' => $result->getFeUser()])->toArray();
                 if (count($parts) > 0) {
                     $last = $parts[count($parts) - 1];
-                    if (!$last->getFinished()) $result = $last;
+                    if (!$last->getFinished()) {
+                        $result = $last;
+                    }
                 }
                 //or the authCode
-            } elseif ($result->getAuthCode()) {
+            } elseif ($result->getAuthCode() instanceof AuthCode) {
                 $parts = $this->resultRepository->findBy(['authCode' => $result->getAuthCode()])->toArray();
                 if (count($parts) > 0) {
                     $last = $parts[count($parts) - 1];
-                    if (!$last->getFinished()) $result = $last;
+                    if (!$last->getFinished()) {
+                        $result = $last;
+                    }
                 }
             }
         }
@@ -874,9 +882,11 @@ class ResultController extends AbstractController
      * @return void
      */
     #[IgnoreValidation([])]
-    public function endAction(Result $result = NULL): \Psr\Http\Message\ResponseInterface
+    public function endAction(Result $result = NULL): ResponseInterface
     {
-        if (!$result) $result = $this->resultRepository->findByUid($this->request->getArgument('result'));
+        if (!$result instanceof Result) {
+            $result = $this->resultRepository->findByUid($this->request->getArgument('result'));
+        }
         $questionnaire = $this->questionnaireRepository->findByStoragePid($result->getPid());
 
         $this->view->assign('result', $result);
@@ -895,10 +905,10 @@ class ResultController extends AbstractController
         $questions = $this->questionnaire->getQuestions();
         if ($questions->count()) {
             $page = 1;
-            $pages = array();
+            $pages = [];
             // seperate all questions for each page
             foreach ($questions as $question) {
-                if ($question->getType() == "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak") {
+                if ($question->getType() == PageBreak::class) {
                     $page++;
                     continue;
                 }
@@ -907,7 +917,7 @@ class ResultController extends AbstractController
             $randomQuestionsMax = $this->settings['randomQuestionsMax'];
             foreach ($pages as $page => $questions) {
 
-                $pageStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+                $pageStorage = GeneralUtility::makeInstance(ObjectStorage::class);
                 shuffle($questions);
                 $i = 0;
 
@@ -932,7 +942,7 @@ class ResultController extends AbstractController
      */
     public function calculatePoints($reducePointsforWrongAnswers=false , Result $result = NULL)
     {
-        $resultQuestionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository');
+        $resultQuestionRepository = GeneralUtility::makeinstance(ResultQuestionRepository::class);
         $questions = $resultQuestionRepository->findByResultId($result->getUid());
         $maxPoints = 0;
         $pointsForResult = 0;
@@ -980,12 +990,9 @@ class ResultController extends AbstractController
                         }
                         $resultAnswer->setFeCruserId($this->userUid);
                     }
-                    if ($resultQuestion->getQuestion()->isMaxAnswers() && $reducePointsforWrongAnswers) {
-                        if ($wrongAnswersForQuestion > 0) {
-
-                            $pointsForQuestion = round($pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion) / 2), 0);
-                            $debug[] = "reduced  to : " . $pointsForQuestion;
-                        }
+                    if ($resultQuestion->getQuestion()->isMaxAnswers() && $reducePointsforWrongAnswers && $wrongAnswersForQuestion > 0) {
+                        $pointsForQuestion = round($pointsForQuestion / (($givenAnswersForQuestion + $wrongAnswersForQuestion) / 2), 0);
+                        $debug[] = "reduced  to : " . $pointsForQuestion;
                     }
                     if ($pointsForQuestion < 0 && $reducePointsforWrongAnswers ) {
                         $debug[] = "Points for this question set to minimum = 0 ";

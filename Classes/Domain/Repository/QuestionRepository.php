@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
@@ -42,9 +43,9 @@ class QuestionRepository extends Repository {
 	/**
 	 * @var array
 	 */
-	protected $defaultOrderings = array(
+	protected $defaultOrderings = [
 		'sorting' => QueryInterface::ORDER_ASCENDING
-	);
+	];
 	
 	/**
   * find all questions for pid
@@ -70,7 +71,7 @@ class QuestionRepository extends Repository {
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
         $constraints[] = $query->equals('pid', $pid) ;
         $constraints[] = $query->logicalNot(
-            $query->equals('type', "Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak")
+            $query->equals('type', PageBreak::class)
         ) ;
 
         $query->matching($query->logicalAnd(...$constraints));
@@ -137,8 +138,8 @@ class QuestionRepository extends Repository {
 	   return $question;
    }
 
-    private function log( $method , \TYPO3\CMS\Extbase\Persistence\QueryInterface $query ){
-        if ( str_ends_with($_SERVER['SERVER_NAME'] , 'ddev.site' )){
+    private function log( $method , QueryInterface $query ): void{
+        if ( str_ends_with((string) $_SERVER['SERVER_NAME'] , 'ddev.site' )){
             $fn =fopen( Environment::getProjectPath() . '/var/log/keq.log' , 'a+' );
             if ( $fn ){
                 $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);

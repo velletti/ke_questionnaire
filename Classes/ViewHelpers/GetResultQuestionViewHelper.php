@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Kennziffer\KeQuestionnaire\Domain\Model\Result;
@@ -50,7 +53,7 @@ class GetResultQuestionViewHelper extends AbstractViewHelper {
     /** * Constructor *
      * @api */
     public function initializeArguments(): void {
-        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', ' The result ', true );
+        $this->registerArgument('result', Result::class, ' The result ', true );
         $this->registerArgument('questionUid', 'integer', 'the question id  ', true );
         parent::initializeArguments() ;
     }
@@ -60,7 +63,8 @@ class GetResultQuestionViewHelper extends AbstractViewHelper {
 	 *
 	 * @return
 	 */
-	public function render() {
+	#[\Override]
+    public function render() {
         /** @var Result $result */
         $result = $this->arguments['result'] ;
         $questionUid = $this->arguments['questionUid'] ;
@@ -75,4 +79,3 @@ class GetResultQuestionViewHelper extends AbstractViewHelper {
 		return NULL;
 	}
 }
-?>

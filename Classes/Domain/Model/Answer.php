@@ -1,6 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
 
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use Kennziffer\KeQuestionnaire\Validation\AbstractValidation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -374,16 +376,22 @@ class Answer extends AbstractEntity {
      * @return boolean
      */
     public function isValid(string $value){
-        if ($value){
+        if ($value !== '' && $value !== '0'){
             $class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
             if (class_exists($class)) {
-                $validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
+                $validator = GeneralUtility::makeinstance($class);
                 if ($validator instanceof AbstractValidation) {
                     /* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
                     return $validator->isValid($value, $this);
-                } else return false;
-            } else return false;
-        } else return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
 
@@ -420,9 +428,9 @@ class Answer extends AbstractEntity {
   * @param array options
   * @return string
   */
- public function getCsvLineHeader(Question $question, $options = array()) {
-		$aL = array();
-		$addL = array();
+ public function getCsvLineHeader(Question $question, $options = []) {
+		$aL = [];
+		$addL = [];
 		$hasAddL = false;
 		//start-columns of the line
 		for ($i = 0; $i < $options['emptyFields']; $i++){
@@ -447,11 +455,11 @@ class Answer extends AbstractEntity {
   * @param array options
   * @return string
   */
- public function getCsvLineValues(array $results, Question $question, $options = array()) {
+ public function getCsvLineValues(array $results, Question $question, $options = []) {
 		$line = '';
 		//for each results get the values
-		$repRA = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
-        $repRQ = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
+		$repRA = GeneralUtility::makeinstance(ResultAnswerRepository::class);
+        $repRQ = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 		foreach ($results as $result){
 			// $rAnswer = $result->getAnswer($question->getUid(), $this->getUid());
                         $rQuestion = $repRQ->findByQuestionAndResultIdRaw($question, $result['uid']);
@@ -459,7 +467,7 @@ class Answer extends AbstractEntity {
 						// $rAnswer = $repRA->findForResultQuestionRaw($rQuestion[0]['uid'] );
 			//JVE: Jörg velletti BUG
                         $rAnswer = $repRA->findForResultQuestionAndAnswerRaw($rQuestion[0]['uid'] , $this->getUid());
-            $repRA->logToFile( 'Method:"getCsvLineValues" - Answer:' . $this->getUid() . " => result Answer: " .( isset( $rAnswer[0]['uid'] ) ? $rAnswer[0]['uid'] : 'n/a' ) );
+            $repRA->logToFile( 'Method:"getCsvLineValues" - Answer:' . $this->getUid() . " => result Answer: " .( $rAnswer[0]['uid'] ?? 'n/a' ) );
                         $rAnswer = $rAnswer[0];
 
                         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($rQuestion, 'rQuestion');
@@ -483,17 +491,23 @@ class Answer extends AbstractEntity {
             $repRA->logToFile( "AnswerLine Array: " . var_export( $aL , true) );
 			//insert text-markers
 			foreach ($aL as $nr => $value){
-				if (!is_numeric($value)) $aL[$nr] = $options['textMarker'].$value.$options['textMarker'];
+				if (!is_numeric($value)) {
+                    $aL[$nr] = $options['textMarker'].$value.$options['textMarker'];
+                }
 			}
 			//implode the csv
 			$line = implode($options['separator'],$aL).$options['newline'];
 			//if there is additional text add a line
 			if ($hasAddL){
-				$addLine = array();
-				foreach ($aL as $nr => $value){
+				$addLine = [];
+				foreach (array_keys($aL) as $nr){
 					if ($addL[$nr])	{
-						if (!is_numeric($addL[$nr])) $addLine[] = $options['textMarker'].$addL[$nr].$options['textMarker'];
-					} else $addLine[] = '';
+						if (!is_numeric($addL[$nr])) {
+                            $addLine[] = $options['textMarker'].$addL[$nr].$options['textMarker'];
+                        }
+					} else {
+                        $addLine[] = '';
+                    }
 
 				}
 				$line .= implode($options['separator'],$addLine);
@@ -510,7 +524,7 @@ class Answer extends AbstractEntity {
   * @param array options
   * @return string
   */
- public function getCsvLine(array $results, Question $question, $options = array()) {
+ public function getCsvLine(array $results, Question $question, $options = []) {
 		
 		$line = $this->getCsvLineHeader($question, $options);
 		$line .= $this->getCsvLineValues($results, $question, $options);
@@ -524,7 +538,7 @@ class Answer extends AbstractEntity {
   * @param array $options
   * @return string
   */
- public function getCsvValue(ResultAnswer $rAnswer, $options = array()){
+ public function getCsvValue(ResultAnswer $rAnswer, $options = []){
 		return $rAnswer->getValue();
 	}
         
@@ -534,7 +548,7 @@ class Answer extends AbstractEntity {
 	 * @param array $options
 	 * @return string
 	 */
-	public function getCsvValueRaw(array $rAnswer, $options = array()){
+	public function getCsvValueRaw(array $rAnswer, $options = []){
 		return $rAnswer['value'];
 	}
     

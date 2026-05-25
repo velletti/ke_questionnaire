@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 if (!defined ('TYPO3')) {
 	die ('Access denied.');
 }
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title'	=> 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode',
         'label' => 'auth_code',
         'tstamp' => 'tstamp',
@@ -15,141 +17,141 @@ return array(
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
-        ),
+        ],
         'searchFields' => 'auth_code,',
         'iconfile' => 'EXT:ke_questionnaire/Resources/Public/Icons/authcode.svg'
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, auth_code, email, lastreminder,firstactive,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'),
-    ),
-    'palettes' => array(),
-    'columns' => array(
-        'sys_language_uid' => array(
+    ],
+    'types' => [
+        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, auth_code, email, lastreminder,firstactive,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'],
+    ],
+    'palettes' => [],
+    'columns' => [
+        'sys_language_uid' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => ['type' => 'language'],
-        ),
-        'l10n_parent' => array(
+        ],
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('label' => '', 'value' => 0),
-                ),
+                'items' => [
+                    ['label' => '', 'value' => 0],
+                ],
                 'foreign_table' => 'tx_kequestionnaire_domain_model_authcode',
                 'foreign_table_where' => 'AND tx_kequestionnaire_domain_model_authcode.pid=###CURRENT_PID### AND tx_kequestionnaire_domain_model_authcode.sys_language_uid IN (-1,0)',
-            ),
-        ),
-        'l10n_diffsource' => array(
-            'config' => array(
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough',
-            ),
-        ),
-        't3ver_label' => array(
+            ],
+        ],
+        't3ver_label' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-            ),
-        ),
-        'starttime' => array(
+            ],
+        ],
+        'starttime' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'datetime',
                 'size' => 13,
                 'checkbox' => 0,
                 'default' => 0,
-                'behaviour' => array(
+                'behaviour' => [
                     'allowLanguageSynchronization' => true ,
-                ) ,
-            ),
-        ),
-        'endtime' => array(
+                ] ,
+            ],
+        ],
+        'endtime' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'datetime',
                 'size' => 13,
                 'checkbox' => 0,
                 'default' => 0,
-                'behaviour' => array(
+                'behaviour' => [
                     'allowLanguageSynchronization' => true ,
-                ) ,
-            ),
-        ),
-        'auth_code' => array(
+                ] ,
+            ],
+        ],
+        'auth_code' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.auth_code',
-            'config' => Array (
+            'config' =>  [
                 'type'	 => 'input',
                 'size'	 => '100',
                 'max'	  => '255'
-            )
-        ),
-        'email' => array(
+            ]
+        ],
+        'email' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.email',
-            'config' => Array (
+            'config' =>  [
                 'type'	 => 'input',
                 'size'	 => '100',
                 'max'	  => '255'
-            )
-        ),
-        'fe_user' => array(
-            'config' => array(
+            ]
+        ],
+        'fe_user' => [
+            'config' => [
                 'type' => 'passthrough',
-            ),
-        ),
-        'tt_address' => array(
-            'config' => array(
+            ],
+        ],
+        'tt_address' => [
+            'config' => [
                 'type' => 'passthrough',
-            ),
-        ),
-        'lastreminder' => array(
+            ],
+        ],
+        'lastreminder' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.lastreminder',
-            'config' => array(
+            'config' => [
                 'type' => 'datetime',
                 'size' => 13,
                 'checkbox' => 0,
                 'default' => 0,
-                'behaviour' => array(
+                'behaviour' => [
                     'allowLanguageSynchronization' => true ,
-                ) ,
-            ),
-        ),
-        'firstactive' => array(
+                ] ,
+            ],
+        ],
+        'firstactive' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_authcode.firstactive',
-            'config' => array(
+            'config' => [
                 'type' => 'datetime',
                 'size' => 13,
                 'checkbox' => 0,
                 'default' => 0,
-                'behaviour' => array(
+                'behaviour' => [
                     'allowLanguageSynchronization' => true ,
-                ) ,
-            ),
-        ),
-        'crdate' => array(
-            'config' => array(
+                ] ,
+            ],
+        ],
+        'crdate' => [
+            'config' => [
                 'type' => 'passthrough',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

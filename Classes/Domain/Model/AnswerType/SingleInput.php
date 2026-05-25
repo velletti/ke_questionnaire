@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 use Kennziffer\KeQuestionnaire\Validation\AbstractValidation;
 /***************************************************************
@@ -103,7 +104,8 @@ class SingleInput extends Answer {
 	 *
 	 * @return integer $width
 	 */
-	public function getWidth() {
+	#[\Override]
+    public function getWidth() {
 		return $this->width;
 	}
 
@@ -114,7 +116,8 @@ class SingleInput extends Answer {
 	 * @param integer $width
 	 * @return void
 	 */
-	public function setWidth($width): void {
+	#[\Override]
+    public function setWidth($width): void {
 		$this->width = $width;
 	}
 
@@ -199,7 +202,8 @@ class SingleInput extends Answer {
 	*
 	* @return string $validationType
 	*/
-	public function getValidationType() {
+	#[\Override]
+    public function getValidationType() {
 		return $this->validationType;
 	}
 
@@ -209,7 +213,8 @@ class SingleInput extends Answer {
 	* @param string $validationType
 	* @return void
 	*/
-	public function setValidationType($validationType): void {
+	#[\Override]
+    public function setValidationType($validationType): void {
 		$this->validationType = $validationType;
 	}
 
@@ -218,7 +223,8 @@ class SingleInput extends Answer {
 	*
 	* @return string $validationText
 	*/
-	public function getValidationText() {
+	#[\Override]
+    public function getValidationText() {
 		return $this->validationText;
 	}
 
@@ -228,7 +234,8 @@ class SingleInput extends Answer {
 	* @param string $validationText
 	* @return void
 	*/
-	public function setValidationText($validationText): void {
+	#[\Override]
+    public function setValidationText($validationText): void {
 		$this->validationText = $validationText;
 	}
     
@@ -237,7 +244,8 @@ class SingleInput extends Answer {
 	 *
 	 * @return integer $validationKeysAmount
 	 */
-	public function getValidationKeysAmount() {
+	#[\Override]
+    public function getValidationKeysAmount() {
 		return $this->validationKeysAmount;
 	}
 
@@ -247,7 +255,8 @@ class SingleInput extends Answer {
 	 * @param integer $validationKeysAmount
 	 * @return void
 	 */
-	public function setValidationKeysAmount($validationKeysAmount): void {
+	#[\Override]
+    public function setValidationKeysAmount($validationKeysAmount): void {
 		$this->validationKeysAmount = $validationKeysAmount;
 	}
     
@@ -256,7 +265,8 @@ class SingleInput extends Answer {
 	*
 	* @return string $comparisonText
 	*/
-	public function getComparisonText() {
+	#[\Override]
+    public function getComparisonText() {
 		return $this->comparisonText;
 	}
 
@@ -266,7 +276,8 @@ class SingleInput extends Answer {
 	* @param string $comparisonText
 	* @return void
 	*/
-	public function setComparisonText($comparisonText): void {
+	#[\Override]
+    public function setComparisonText($comparisonText): void {
 		$this->comparisonText = $comparisonText;
 	}
 
@@ -276,17 +287,24 @@ class SingleInput extends Answer {
      * @param string $value value
      * @return boolean
      */
-	public function isValid(string $value){
-		if ($value){
+	#[\Override]
+    public function isValid(string $value){
+		if ($value !== '' && $value !== '0'){
 			$class = 'Kennziffer\\KeQuestionnaire\\Validation\\' . ucfirst($this->getValidationType());
 			if (class_exists($class)) {
-				$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($class);
+				$validator = GeneralUtility::makeinstance($class);
 				if ($validator instanceof AbstractValidation) {
 					/* @var $validator \Kennziffer\KeQuestionnaire\Validation\AbstractValidation */
 					return $validator->isValid($value, $this);
-				} else return false;
-			} else return false;
-		} else return true;
+				} else {
+                    return false;
+                }
+			} else {
+                return false;
+            }
+		} else {
+            return true;
+        }
 	}
     
     /**
@@ -299,28 +317,44 @@ class SingleInput extends Answer {
 	 */
 	function is_date($value, $format){
 		// find separator
-		$separator_only = str_replace(array('m','d','y'),'', $format);
+		$separator_only = str_replace(['m','d','y'],'', $format);
 		$separator = $separator_only[0]; // separator is first character
 
-		if(!$separator) return false;
-		if(substr_count($value,$separator)!=2) return false;
+		if (!$separator) {
+            return false;
+        }
+		if (substr_count($value,$separator) !== 2) {
+            return false;
+        }
 
 		// check for numbers
 		$numbers=explode($separator,$value);
 
 		foreach($numbers as $number){
-			if(substr_count($number,".")>0) return false;
-			if(!is_numeric($number)) return false;
+			if (substr_count($number,".")>0) {
+                return false;
+            }
+			if (!is_numeric($number)) {
+                return false;
+            }
 		}
 
 		$formatParts=explode($separator,$format);
 
 		$i=0;$m=0;$d=0;$y=0;
 		for($i=0;$i<3;$i++){
-			if(substr_count($formatParts[$i],"m")>0) $m=$numbers[$i];
-			if(substr_count($formatParts[$i],"d")>0) $d=$numbers[$i];
-			if(substr_count($formatParts[$i],"y")>0) $y=$numbers[$i];
-            if(substr_count($formatParts[$i],"Y")>0) $y=$numbers[$i];
+			if (substr_count($formatParts[$i],"m")>0) {
+                $m=$numbers[$i];
+            }
+			if (substr_count($formatParts[$i],"d")>0) {
+                $d=$numbers[$i];
+            }
+			if (substr_count($formatParts[$i],"y")>0) {
+                $y=$numbers[$i];
+            }
+            if (substr_count($formatParts[$i],"Y")>0) {
+                $y=$numbers[$i];
+            }
 		}
 
 		return (boolean)checkdate($m,$d,$y);

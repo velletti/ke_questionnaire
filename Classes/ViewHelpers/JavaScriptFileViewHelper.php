@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Core\Environment;
@@ -60,13 +63,16 @@ class JavaScriptFileViewHelper extends AbstractViewHelper {
 	 * ViewHelper to bundle the javascript in a single file and include this
 	 * 
 	 */
-	public function render(): void {
+	#[\Override]
+    public function render(): void {
         $key = $this->arguments['key'] ;
         $filename = $this->arguments['filename'] ;
         $footer = $this->arguments['footer'] ;
 
-		if ($footer) $GLOBALS['TSFE']->additionalFooterData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
-		else  $GLOBALS['TSFE']->additionalHeaderData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
+		if ($footer) {
+            $GLOBALS['TSFE']->additionalFooterData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
+        } else {
+            $GLOBALS['TSFE']->additionalHeaderData['ke_questionnaire_'.$key] = '<script type="text/javascript" src="'.$filename."?".filemtime(Environment::getPublicPath() . '/' .$filename).'"></script>';
+        }
 	}	
 }
-?>

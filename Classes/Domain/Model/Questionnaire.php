@@ -23,6 +23,13 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Service\FlexFormService;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionnaireRepository;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -32,7 +39,6 @@ use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Html;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Text;
 use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Typo3Content;
-use TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController;
 
 
 /**
@@ -79,18 +85,18 @@ class Questionnaire extends AbstractEntity {
 	 *
 	 * @var array
 	 */
-	var $settings;
+	public $settings;
 	
 	/**
     * uid
     * @var int
     */
-    protected $uid;
+    protected ?int $uid = null;
     /**
     * pid
     * @var int
     */
-    protected $pid;
+    protected ?int $pid = null;
     /**
     * sorting
     * @var int
@@ -229,7 +235,7 @@ class Questionnaire extends AbstractEntity {
 	 * each model needs an constructor:
 	 * http://wiki.typo3.org/Exception/v4/1297759968
 	 */
-	public function __construct() {
+	public function __construct(private readonly FlexFormService $flexFormService) {
 	}
 
 	/**
@@ -292,7 +298,9 @@ class Questionnaire extends AbstractEntity {
 		$nextPage = ($this->page + 1);
 		if ($nextPage > count($this->questionsByPage)) {
 			return $this->page;
-		} else return ($this->page + 1);
+		} else {
+            return ($this->page + 1);
+        }
 	}
 
 	/**
@@ -332,8 +340,11 @@ class Questionnaire extends AbstractEntity {
 	 * @return boolean $isFinishedPage
 	 */
 	public function getIsFinished() {
-		if ($this->page == $this->requestedPage) return true;
-		else return false;
+		if ($this->page == $this->requestedPage) {
+            return true;
+        } else {
+            return false;
+        }
 	}
 
 	/**
@@ -342,8 +353,8 @@ class Questionnaire extends AbstractEntity {
   * @return QueryResultInterface $questions
   */
  public function getQuestions() {
-		if (count($this->questions)==0){
-			$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionRepository');
+		if (count($this->questions) === 0){
+			$rep = GeneralUtility::makeinstance(QuestionRepository::class);
 			$this->setQuestions($rep->findAllForPid($this->getStoragePid()));
 		}
 		return $this->questions;
@@ -355,10 +366,10 @@ class Questionnaire extends AbstractEntity {
 	 * @return object $questions
 	 */
 	public function getSelectQuestions() {
-		$qStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$qStorage = GeneralUtility::makeInstance(ObjectStorage::class);
 		/** @var Question $question */
         foreach ($this->getQuestions() as $question){
-			if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question
+			if($question instanceof Question
             || $question->getShortType() == 'Question' ) {
 				$qStorage->attach($question);
 			}
@@ -373,9 +384,9 @@ class Questionnaire extends AbstractEntity {
 	 * @return object $questions
 	 */
 	public function getNavigationQuestions() {
-		$qStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$qStorage = GeneralUtility::makeInstance(ObjectStorage::class);
 		foreach ($this->questions as $question){
-			if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question
+			if($question instanceof Question
                 || $question->getShortType() == 'Question'
                 || $question instanceof Group
                 || $question->getShortType() == 'Group'
@@ -393,7 +404,7 @@ class Questionnaire extends AbstractEntity {
 	 * @return array $pages
 	 */
 	public function getNavigationPages() {
-		$pages = array();
+		$pages = [];
         
         for ($i = 1; $i <= $this->getCountPages(); $i++){
             $pages[] = $i;
@@ -412,16 +423,16 @@ class Questionnaire extends AbstractEntity {
  public function setQuestions(QueryResultInterface $questions): void {
 		$questions = $this->checkNumbering($questions);
 		$this->questions = $questions;
-		$this->questionsByPage = array();
+		$this->questionsByPage = [];
 
 		if($questions->count()) {			
 			$page = 1;
-			$pageStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+			$pageStorage = GeneralUtility::makeInstance(ObjectStorage::class);
 			
 			// seperate all questions for each page
 			foreach($questions as $question) {
 				if($question instanceof PageBreak) {
-					$pageStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+					$pageStorage = GeneralUtility::makeInstance(ObjectStorage::class);
 					$page++;
 					continue;
 				}
@@ -457,7 +468,7 @@ class Questionnaire extends AbstractEntity {
 				$question->setPage($page);
 				//check for groups
 				if($question instanceof Group) {
-					if ($this->settings['questionNumbering'] == 'groupedQuestions' OR $this->settings['questionNumbering'] == 'grouped'){
+					if ($this->settings['questionNumbering'] == 'groupedQuestions' || $this->settings['questionNumbering'] == 'grouped'){
 						$questionCounter = 0;
 						$groupCounter ++;
 						$question->setNumbering($groupCounter);
@@ -465,10 +476,7 @@ class Questionnaire extends AbstractEntity {
 					$group = $question;
 				}
 				//create numbering for HTML, Question, Text, Typo3Content
-				if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question 
-						OR $question instanceof Html
-						OR $question instanceof Text
-						OR $question instanceof Typo3Content
+				if($question instanceof Question || $question instanceof Html || $question instanceof Text || $question instanceof Typo3Content
 				) {
 					//set a group
 					$question->setGroup($group);
@@ -480,7 +488,7 @@ class Questionnaire extends AbstractEntity {
 								$question->setNumbering($questionCounter);
 							break;
 						case 'questions':
-								if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question) { 
+								if($question instanceof Question) { 
 									$questionCounter++;
 									$question->setNumbering($questionCounter);
 								}
@@ -490,7 +498,7 @@ class Questionnaire extends AbstractEntity {
 								$question->setNumbering($groupCounter.'.'.$questionCounter);
 							break;
 						case 'groupedQuestions':
-								if($question instanceof \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question) { 
+								if($question instanceof Question) { 
 									$questionCounter++;
 									$question->setNumbering($groupCounter.'.'.$questionCounter);
 								}
@@ -510,11 +518,13 @@ class Questionnaire extends AbstractEntity {
      * @return results
      */
     public function getUserResults($userId = false){
-        if (!$userId) $userId = $GLOBALS['TSFE']->fe_user->user['uid'];
+        if (!$userId) {
+            $userId = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['uid'];
+        }
         if ($userId > 0){
-			$querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+			$querySettings = GeneralUtility::makeinstance(Typo3QuerySettings::class);
 			$querySettings->setRespectStoragePage(FALSE);
-			$resultRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
+			$resultRepository = GeneralUtility::makeinstance(ResultRepository::class);
 			$resultRepository->setDefaultQuerySettings($querySettings);
 			$results = $resultRepository->findByFeUserAndPid($userId,$this->getStoragePid());
 
@@ -529,12 +539,15 @@ class Questionnaire extends AbstractEntity {
      * @return results
      */
     public function countResults($finished = true){
-        $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = GeneralUtility::makeinstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(FALSE);
-        $resultRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
+        $resultRepository = GeneralUtility::makeinstance(ResultRepository::class);
         $resultRepository->setDefaultQuerySettings($querySettings);
-        if ($finished) $counter = $resultRepository->countFinishedForPid($this->getStoragePid());
-        else $counter = $resultRepository->countAllForPid($this->getStoragePid());
+        if ($finished) {
+            $counter = $resultRepository->countFinishedForPid($this->getStoragePid());
+        } else {
+            $counter = $resultRepository->countAllForPid($this->getStoragePid());
+        }
 
         return $counter;
     }
@@ -545,9 +558,9 @@ class Questionnaire extends AbstractEntity {
      * @return integer
      */
     public function countAuthCodes(){
-        $querySettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = GeneralUtility::makeinstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(FALSE);
-        $resultRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
+        $resultRepository = GeneralUtility::makeinstance(AuthCodeRepository::class);
         $resultRepository->setDefaultQuerySettings($querySettings);
         $counter = $resultRepository->countAllForPid($this->getStoragePid());
 
@@ -598,6 +611,7 @@ class Questionnaire extends AbstractEntity {
     *
     * @return int|null $pid
     */
+    #[\Override]
     public function getPid(): ?int {
         return $this->pid;
     }
@@ -664,7 +678,7 @@ class Questionnaire extends AbstractEntity {
      * @return $piFlexForm
      */
     public function getPiFlexForm() {
-        $ffs = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\FlexFormService::class);
+        $ffs = $this->flexFormService;
         return $ffs->convertFlexFormContentToArray($this->piFlexForm);
     }
     
@@ -686,12 +700,12 @@ class Questionnaire extends AbstractEntity {
   * @return Result
   */
  public function getCompareResult(){
-		$result = GeneralUtility::makeInstance('Kennziffer\KeQuestionnaire\Domain\Model\Result');
+		$result = GeneralUtility::makeInstance(Result::class);
 		foreach ($this->getQuestions() as $question){
-			$rquestion = GeneralUtility::makeInstance('Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion');
+			$rquestion = GeneralUtility::makeInstance(ResultQuestion::class);
 			$rquestion->setQuestion($question);
 			foreach ($question->getAnswers() as $answer){
-				$ranswer = GeneralUtility::makeInstance('Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer');
+				$ranswer = GeneralUtility::makeInstance(ResultAnswer::class);
 				switch ($answer->getShortType()){
 					case 'SingleInput':
 					case 'MultiInput':
@@ -702,7 +716,9 @@ class Questionnaire extends AbstractEntity {
 							}
 						break;
 					case 'Radiobutton':
-							if ($answer->isCorrectAnswer()) $ranswer->setAnswer($answer);
+							if ($answer->isCorrectAnswer()) {
+                                $ranswer->setAnswer($answer);
+                            }
 						break;
 					case 'Checkbox':
 							if ($answer->isCorrectAnswer()) {
@@ -727,7 +743,7 @@ class Questionnaire extends AbstractEntity {
      */
     public function loadFullObject($uid){
         //$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
-		$rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\QuestionnaireRepository');
+		$rep = GeneralUtility::makeinstance(QuestionnaireRepository::class);
 		return $rep->findForUid($uid);
     }
 

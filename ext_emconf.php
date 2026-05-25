@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 ########################################################################
 # Extension Manager/Repository config file for ext: "ke_questionnaire"
 #
@@ -9,8 +11,7 @@
 # Only the data in the array - anything else is removed by next write.
 # "version" and "dependencies" must not be touched!
 ########################################################################
-
-$EM_CONF['ke_questionnaire'] = array(
+$EM_CONF['ke_questionnaire'] = [
 	'title' => 'Questionnaire',
 	'description' => 'Fork of Kennziffer LTS 7 version. Adapted for LTS 13 !! reduced to the core functionality of a questionnaire. ',
 	'category' => 'plugin',
@@ -18,13 +19,13 @@ $EM_CONF['ke_questionnaire'] = array(
 	'author_email' => 'typo3@velletti.de',
 	'state' => 'beta',
 	'version' => '13.4.0',
-	'constraints' => array(
-		'depends' => array(
-			'typo3' => '13.4.0-13.4.99',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
-);
+	'constraints' => [
+		'depends' => [
+			'typo3' => '13.0.0-13.4.99',
+		],
+		'conflicts' => [
+		],
+		'suggests' => [
+		],
+	],
+];

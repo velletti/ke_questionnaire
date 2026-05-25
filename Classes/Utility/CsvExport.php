@@ -1,8 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
 
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
@@ -10,7 +11,6 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository;
 use Kennziffer\KeQuestionnaire\Domain\Model\Question;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
-use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 
 /***************************************************************
  *  Copyright notice
@@ -43,7 +43,12 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
  *
  */
 class CsvExport {
-	/**
+	public $csv;
+    /**
+     * @var mixed[]|never[][]
+     */
+    public $RBStruct;
+    /**
 	 * Field separator
 	 * @var string
 	 */
@@ -129,12 +134,12 @@ class CsvExport {
 	 * New Line for csv
 	 * @var string
 	 */
-	var $newline = "\n";
+	public $newline = "\n";
         
         /**
   * @var Dispatcher
   */
- public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository $resultRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionRepository, \Kennziffer\KeQuestionnaire\Domain\Repository\ResultAnswerRepository $resultAnswerRepository)
+ public function __construct(QuestionRepository $questionRepository, ResultRepository $resultRepository, ResultQuestionRepository $resultQuestionRepository, ResultAnswerRepository $resultAnswerRepository, private readonly ConnectionPool $connectionPool)
  {
      $this->questionRepository = $questionRepository;
      $this->resultRepository = $resultRepository;
@@ -142,7 +147,7 @@ class CsvExport {
      $this->resultAnswerRepository = $resultAnswerRepository;
  }
 
- public function init() {
+ public function init(): void {
         // todo: rebuild to read it from settings array
         $this->setSeparator(';');
         $this->setText('"');
@@ -307,7 +312,9 @@ class CsvExport {
 		$csv = '';
 		
 		$csv .= $this->createQBHeader($plugin);
-		if ($this->getTotalPoints()) $csv .= $this->createTotalPointsLine();
+		if ($this->getTotalPoints()) {
+            $csv .= $this->createTotalPointsLine();
+        }
 		$csv .= $this->newline;
 				
 		$csv .= $this->createQBLines($plugin);
@@ -347,49 +354,69 @@ class CsvExport {
 		
 		$header .= 'Question ID'.$this->getSeparator();
 		$header .= 'Question-Title'.$this->getSeparator();
-		if ($this->getShowQText()) $header .= 'Question-Text'.$this->getSeparator();
+		if ($this->getShowQText()) {
+            $header .= 'Question-Text'.$this->getSeparator();
+        }
 		$header .= 'Answer-Title'.$this->getSeparator();
-		if ($this->getShowAText()) $header .= 'Answer-Text'.$this->getSeparator();
+		if ($this->getShowAText()) {
+            $header .= 'Answer-Text'.$this->getSeparator();
+        }
 		$header .= $this->newline;
 		
-		if ($this->getShowQText()) $header .= $this->getSeparator();
+		if ($this->getShowQText()) {
+            $header .= $this->getSeparator();
+        }
 		$header .= $this->getSeparator();
 		$header .= 'Participation';
 		$header .= $this->getSeparator();
-		if ($this->getShowAText()) $header .= $this->getSeparator();
+		if ($this->getShowAText()) {
+            $header .= $this->getSeparator();
+        }
 		foreach ($this->resultsRaw as $result){
 			$header .= $this->getSeparator();
 			$header .= $result['uid'];
 		}
 		$header.= $this->newline;
 
-        if ($this->getShowQText()) $header .= $this->getSeparator();
+        if ($this->getShowQText()) {
+            $header .= $this->getSeparator();
+        }
         $header .= $this->getSeparator();
         $header .= 'AuthCode';
         $header .= $this->getSeparator();
-        if ($this->getShowAText()) $header .= $this->getSeparator();
+        if ($this->getShowAText()) {
+            $header .= $this->getSeparator();
+        }
         foreach ($this->resultsRaw as $result){
             $header .= $this->getSeparator();
             $header .= $result['auth_code'];
         }
         $header.= $this->newline;
 
-        if ($this->getShowQText()) $header .= $this->getSeparator();
+        if ($this->getShowQText()) {
+            $header .= $this->getSeparator();
+        }
         $header .= $this->getSeparator();
         $header .= 'FeUser ID';
         $header .= $this->getSeparator();
-        if ($this->getShowAText()) $header .= $this->getSeparator();
+        if ($this->getShowAText()) {
+            $header .= $this->getSeparator();
+        }
         foreach ($this->resultsRaw as $result){
             $header .= $this->getSeparator();
             $header .= $result['fe_user'];
         }
         $header.= $this->newline;
 
-        if ($this->getShowQText()) $header .= $this->getSeparator();
+        if ($this->getShowQText()) {
+            $header .= $this->getSeparator();
+        }
         $header .= $this->getSeparator();
         $header .= 'finished';
         $header .= $this->getSeparator();
-        if ($this->getShowAText()) $header .= $this->getSeparator();
+        if ($this->getShowAText()) {
+            $header .= $this->getSeparator();
+        }
         foreach ($this->resultsRaw as $result){
             $header .= $this->getSeparator();
             $header .= date( "d.m. H:i" ,  $result['finished'] );
@@ -406,7 +433,7 @@ class CsvExport {
 	 * @return string
 	 */
 	public function createRBHeader($plugin , $questions = []){
-		$this->RBStruct = array();
+		$this->RBStruct = [];
 		$header = '';
 		
 		$header .= $this->text.$plugin['header'].$this->text;
@@ -416,10 +443,10 @@ class CsvExport {
 		$header .= 'Question ID'.$this->getSeparator();
 		
 		$empty_cols = 1;
-		$qL = array();
-		$qL2 = array();		
-		$aL = array();
-		$aL2 = array();
+		$qL = [];
+		$qL2 = [];		
+		$aL = [];
+		$aL2 = [];
 		for ($i = 0; $i < $empty_cols; $i++){
 			$qL2[] = '';
 			$aL[] = '';
@@ -431,7 +458,7 @@ class CsvExport {
 		// $questions = $this->getQuestions($plugin);
 		foreach ($questions as $question){
 			if ($question->getShortType() == 'Question'){
-				$this->RBStruct[$question->getUid()] = array();
+				$this->RBStruct[$question->getUid()] = [];
 				$lastQuestionId = -1;
 				foreach ($question->getAnswers() as $answer){
 					if ($answer->exportInCsv()){
@@ -472,12 +499,11 @@ class CsvExport {
 	 */
 	public function createTotalPointsLine(){
 		$line = '';
-		$aL = array();
+		$aL = [];
 		
 		$aL[] = '';
 		$aL[] = 'Total Points';
-		if ($this->getShowQText()) $emptyFields = 2;
-		else $emptyFields = 1;
+		$emptyFields = $this->getShowQText() ? 2 : 1;
 		for ($i = 0; $i < $emptyFields; $i++){
 			$aL[] = '';
 		}		
@@ -485,12 +511,16 @@ class CsvExport {
 			$aL[] = '';
 		}		
 		foreach ($this->results as $result){
-			if ($result->getPoints() == 0) $result->calculatePoints();
+			if ($result->getPoints() == 0) {
+                $result->calculatePoints();
+            }
 			$aL[] = $result->getPoints();
 		}
 
 		foreach ($aL as $nr => $value){
-			if (!is_numeric($value)) $aL[$nr] = $this->getText().$value.$this->getText();
+			if (!is_numeric($value)) {
+                $aL[$nr] = $this->getText().$value.$this->getText();
+            }
 		}
 		$line = implode($this->separator,$aL).$this->newline;
 		return $line;
@@ -505,8 +535,7 @@ class CsvExport {
   */
  public function createQuestionPointsLine(Question $question, $qL){
 		$qL[] = 'Points';
-		if ($this->getShowQText()) $emptyFields = 1;
-		else $emptyFields = 0;
+		$emptyFields = $this->getShowQText() ? 1 : 0;
 		for ($i = 0; $i < $emptyFields; $i++){
 			$qL[] = '';
 		}		
@@ -517,7 +546,9 @@ class CsvExport {
             foreach ($this->results as $result){
                 if ( $result->getQuestions() ) {
                     foreach ($result->getQuestions() as $rquestion){
-                        if ($rquestion && $rquestion->getQuestion() && $rquestion->getQuestion()->getUid() == $question->getUid()) $qL[] = $rquestion->getPoints();
+                        if ($rquestion && $rquestion->getQuestion() && $rquestion->getQuestion()->getUid() == $question->getUid()) {
+                            $qL[] = $rquestion->getPoints();
+                        }
                     }
                 }
 
@@ -537,24 +568,27 @@ class CsvExport {
 		$questions = $this->getQuestions($plugin);
 		foreach ($questions as $question){
 			if ($question->getShortType() == 'Question'){
-				$qL = array();
+				$qL = [];
 				$qL[] = $question->getUid();
 				$qL[] = $this->text.$question->getTitle().$this->text;
-				if ($this->getShowQText()) $qL[] = $this->text.strip_tags($question->getText()).$this->text;
-				if ($this->getQuestionPoints()) $qL = $this->createQuestionPointsLine($question, $qL);			
+				if ($this->getShowQText()) {
+                    $qL[] = $this->text.strip_tags((string) $question->getText()).$this->text;
+                }
+				if ($this->getQuestionPoints()) {
+                    $qL = $this->createQuestionPointsLine($question, $qL);
+                }			
 				$questionLine = implode($this->separator,$qL).$this->newline;
 				$lines .= $questionLine;
 				
 				/** @var Answer $answer */
     foreach ($question->getAnswers() as $answer){
 					if ($answer->exportInCsv()){
-						$options = array();
+						$options = [];
 						$options['marker'] = $this->getSingleMarker();
 						$options['separator'] = $this->getSeparator();
 						$options['textMarker'] = $this->getText();
 						$options['newline'] = $this->newline;
-						if ($this->getShowQText()) $options['emptyFields'] = 3;
-						else $options['emptyFields'] = 2;
+						$options['emptyFields'] = $this->getShowQText() ? 3 : 2;
 						$options['showAText'] = $this->getShowAText();
 
 						$answerLine = $answer->getCsvLine($this->resultsRaw,$question, $options);
@@ -573,26 +607,28 @@ class CsvExport {
 	 */
 	public function createRBLines($result , $questions ){
         $resultUid = (int) $result['uid'] ??  0 ;
-        if (!$resultUid || !$questions) return '';
+        if (!$resultUid || !$questions) {
+            return '';
+        }
 
         $rL = [];
         $rL[] = $resultUid ;  //6542
         $rL[] = '';
 
-        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = $this->connectionPool;
 
 
         foreach ($questions as $question){
-            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $connectionPool->getConnectionForTable('tx_kequestionnaire_domain_model_resultquestion')->createQueryBuilder();
             $rows = $queryBuilder->select('rq.uid as rq_uid' , 'rq.question as rq_question' , 'ra.uid as ra_uid' , 'ra.answer as ra_answer' , 'ra.value as ra_value' , 'ra.additional_value as ra_additional_value')
                 ->from('tx_kequestionnaire_domain_model_resultquestion' , 'rq')
                 ->leftJoin('rq' , 'tx_kequestionnaire_domain_model_resultanswer' , 'ra' ,
                     $queryBuilder->expr()->eq('ra.resultquestion', 'rq.uid') )
                 ->where(
-                    $queryBuilder->expr()->eq('rq.result', $queryBuilder->createNamedParameter($resultUid, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('rq.question', $queryBuilder->createNamedParameter($question->getUid(), \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('rq.result', $queryBuilder->createNamedParameter($resultUid, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('rq.question', $queryBuilder->createNamedParameter($question->getUid(), Connection::PARAM_INT))
                 )->executeQuery()->fetchAllAssociative();
 
             foreach ( $question->getAnswers() as $answer ) {
@@ -636,7 +672,7 @@ class CsvExport {
 	 * @return array|\TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface
 	 */
 	public function getQuestions($plugin) {
-		$pids = explode(',',$plugin['pages']);
+		$pids = explode(',',(string) $plugin['pages']);
 		$storagePid = $pids[0];
 		
 		$questions = $this->questionRepository->findAllForPidtoExport($storagePid);

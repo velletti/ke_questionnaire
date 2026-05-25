@@ -38,7 +38,8 @@ use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
  */
 class Analysis {	
 
-	/**
+	public $signalData;
+ /**
   * lokalization
   *
   * @var Localization
@@ -50,7 +51,7 @@ class Analysis {
 	 * @var array
 	 */
 	protected $settings;
- public function __construct( \Kennziffer\KeQuestionnaire\Utility\Localization $localization)
+ public function __construct( Localization $localization)
  {
      $this->localization = $localization;
  }
@@ -71,7 +72,7 @@ class Analysis {
   * @param array $results
   * @param Questionnaire $questionnaire
   */
- public function createParticipationAnalysis($results, Questionnaire $questionnaire){
+ public function createParticipationAnalysis($results, Questionnaire $questionnaire): void{
 		$data = $this->createParticipationData($results);
 	}
     
@@ -82,7 +83,7 @@ class Analysis {
      * @param array $results
      */
     public function createQuestionAnalysis(Question $question, $results) {
-		$charts = array();
+		$charts = [];
 		//create Data and Chart for all participations
         $adata = $this->createQuestionDataArray('all', $question, $results);
 		$charts['all'] = $this->createChartWithData('all', $adata, $question);
@@ -145,14 +146,17 @@ class Analysis {
 				case 'SingleSelect':				
 					foreach ($values as $nr => $data){
 						$plotValues = $data['values'];
-						if ($data['answer']) $divs .= '<h5>'.$data['answer']->getTitle().'</h5>';
-						else $divs .= '<h5>...</h5>';
+						if ($data['answer']) {
+                            $divs .= '<h5>'.$data['answer']->getTitle().'</h5>';
+                        } else {
+                            $divs .= '<h5>...</h5>';
+                        }
 						$divs .= '<div id="chart_'.$type.'_'.$atype.'_'.$nr.'_'.$question->getUid().'" style="height:300px; width:500px;"></div>'."\n";
 					}
 					break;
 				case 'DDImage':
 					//rework the values so the basis of the chart is the Area not the image
-					$reworked = array();
+					$reworked = [];
 					foreach ($values as $nr => $data){
 						foreach ($data['values'] as $area => $tvalues){
 							$reworked[$area][$data['answer']->getTitle()]['value'] += $tvalues['value'];
@@ -205,10 +209,10 @@ class Analysis {
 			}
 		}
 		
-		$returner = array(
+		$returner = [
 			'chart' => $charts,
 			'div' => $divs
-		);
+		];
 		return $returner;
 	}
 	
@@ -222,8 +226,7 @@ class Analysis {
 	public function createLineOutput($values, $useAdditionalValues = FALSE){
 		$lines = '';
 		foreach ($values as $data){
-			if ($useAdditionalValues) $lineValues = $data['additionalValues'];
-			else $lineValues = $data['value'];
+			$lineValues = $useAdditionalValues ? $data['additionalValues'] : $data['value'];
 			
 			if (is_array($lineValues)){
 				$lines .= '<h5>'.$data['answer']->getTitle().'</h5>';
@@ -269,14 +272,16 @@ class Analysis {
      * @param array $results
      */
     public function createQuestionDataArray($type, Question $question, $results){
-		$answers = array();
-		$resultQuestionRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultQuestionRepository');
-		$resultAnswerRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultAnswerRepository');
+		$answers = [];
+		$resultQuestionRepository = GeneralUtility::makeinstance(ResultQuestionRepository::class);
+		$resultAnswerRepository = GeneralUtility::makeinstance(ResultAnswerRepository::class);
 		
 		foreach ($question->getAnswers() as $answer){
 			switch ($answer->getShortType()){
 				case 'Radiobutton':
-					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                        $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                    }
 					//get the corresponding ranswers and count
 					$answers[$answer->getShortType()][$answer->getUid()]['value'] = $resultAnswerRepository->countResultAnswersForAnswer($answer);
 
@@ -287,17 +292,22 @@ class Analysis {
 							$answers[$answer->getShortType()][$answer->getUid()]['additionalValues'][] = $rAnswer->getAdditionalValue();
 						}
 					}
-					if(is_array($answers[$answer->getShortType()][$answer->getUid()]['additionalValues']))
-						$answers[$answer->getShortType()][$answer->getUid()]['additionalValues'] = array_unique($answers[$answer->getShortType()][$answer->getUid()]['additionalValues']);
+					if (is_array($answers[$answer->getShortType()][$answer->getUid()]['additionalValues'])) {
+                        $answers[$answer->getShortType()][$answer->getUid()]['additionalValues'] = array_unique($answers[$answer->getShortType()][$answer->getUid()]['additionalValues']);
+                    }
 
 					break;
 				case 'DataPrivacy':
-					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                        $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                    }
 					//get the corresponding ranswers and count					
 					$answers[$answer->getShortType()][$answer->getUid()]['value'] = $resultAnswerRepository->countResultAnswersForAnswer($answer);
 					break;
 				case 'Checkbox':
-					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                        $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                    }
 					//get the corresponding ranswers and count					
 					$answers[$answer->getShortType()][$answer->getUid()]['value'] = $resultAnswerRepository->countResultAnswersForAnswerAndValue($answer);
 
@@ -308,8 +318,9 @@ class Analysis {
 							$answers[$answer->getShortType()][$answer->getUid()]['additionalValues'][] = $rAnswer->getAdditionalValue();
 						}
 					}
-					if(is_array($answers[$answer->getShortType()][$answer->getUid()]['additionalValues']))
-						$answers[$answer->getShortType()][$answer->getUid()]['additionalValues'] = array_unique($answers[$answer->getShortType()][$answer->getUid()]['additionalValues']);
+					if (is_array($answers[$answer->getShortType()][$answer->getUid()]['additionalValues'])) {
+                        $answers[$answer->getShortType()][$answer->getUid()]['additionalValues'] = array_unique($answers[$answer->getShortType()][$answer->getUid()]['additionalValues']);
+                    }
 
 					break;
 				case 'SemanticDifferential':					
@@ -324,18 +335,28 @@ class Analysis {
 						$ranswers = $resultAnswerRepository->findForAnswerRaw($answer);
 						foreach ($ranswers as $ranswer){
 							$singleVal = $ranswer['value'];
-							if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
-							if (!$answers[$answer->getShortType()][$answer->getUid()]['values'][$singleVal]['value']) $answers[$answer->getShortType()][$answer->getUid()]['values'][$singleVal]['value'] = 0;
+							if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                                $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                            }
+							if (!$answers[$answer->getShortType()][$answer->getUid()]['values'][$singleVal]['value']) {
+                                $answers[$answer->getShortType()][$answer->getUid()]['values'][$singleVal]['value'] = 0;
+                            }
 							$answers[$answer->getShortType()][$answer->getUid()]['values'][$singleVal]['value'] ++;
 						}
 					break;
 				case 'MatrixHeader':
-					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+					if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                        $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                    }
 					//for each row
 					foreach ($answer->getRows($question) as $row){
-						if (!$answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()]['answer'] = $row;
+						if (!$answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()]['answer']) {
+                            $answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()]['answer'] = $row;
+                        }
 						foreach ($answer->getCols() as $column){
-							if (!$answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()][$column->getShortType()][$column->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()][$column->getShortType()][$column->getUid()]['answer'] = $column;
+							if (!$answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()][$column->getShortType()][$column->getUid()]['answer']) {
+                                $answers[$answer->getShortType()][$answer->getUid()]['rows'][$row->getUid()][$column->getShortType()][$column->getUid()]['answer'] = $column;
+                            }
 							if (!$row->isTitleLine()){
 								switch ($column->getShortType()){
 									case 'Radiobutton':
@@ -362,7 +383,9 @@ class Analysis {
 							$resultQuestion = $resultQuestionRepository->findByQuestionAndResultRaw($question, $result);
 							$rAnswers = $resultAnswerRepository->findForResultQuestionRaw($resultQuestion[0]['uid']);
 							$line = $answer->getUserText($rAnswers, $question);											
-							if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+							if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                                $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                            }
 							$answers[$answer->getShortType()][$answer->getUid()]['value'][] = $line;
 						}
 					break;
@@ -371,30 +394,40 @@ class Analysis {
 				case 'RankingInput':
 						foreach ($results as $result){
 							$line = $answer->getRankingLine($result, $question);												
-							if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+							if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                                $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                            }
 							$answers[$answer->getShortType()][$answer->getUid()]['value'][] = $line;
 						}
 					break;										
 				case 'SingleInput':
 				case 'MultiInput':																				
-						if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+						if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                            $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                        }
 						foreach ($results as $result){
 							$resultQuestion = $resultQuestionRepository->findByQuestionAndResultRaw($question, $result);
 							$rAnswers = $resultAnswerRepository->findForResultQuestionRaw($resultQuestion[0]['uid']);
 							foreach ($rAnswers as $ranswer)	{
-								if ($answer->getUid() == $ranswer['answer']) $answers[$answer->getShortType()][$answer->getUid()]['value'][] = $ranswer['value'];
+								if ($answer->getUid() == $ranswer['answer']) {
+                                    $answers[$answer->getShortType()][$answer->getUid()]['value'][] = $ranswer['value'];
+                                }
 							}
 						}						
 					break;
 				case 'DDAreaImage':
 				case 'DDAreaSequence':
 				case 'DDAreaSimpleScale':
-						if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+						if (!$answers[$answer->getShortType()][$answer->getUid()]['answer']) {
+                            $answers[$answer->getShortType()][$answer->getUid()]['answer'] = $answer;
+                        }
 					break;
 				default:
 						$this->signalData = false;
 						// $this->signalSlotDispatcher->dispatch(__CLASS__, 'createQuestionDataArray', array($type, $question, $results, $this));
-						if ($this->signalData) $answers = $this->signalData;												
+						if ($this->signalData) {
+                            $answers = $this->signalData;
+                        }												
 					break;
 			}
 		}	
@@ -407,22 +440,34 @@ class Analysis {
 	 * @param array $results
 	 */
 	public function createParticipationData($results){
-		$data = array();
+		$data = [];
 		$data['finished']['title'] = $this->localization->translate('participationChart.finished');
 		$data['all']['title'] = $this->localization->translate('participationChart.all');
         
         foreach ($results as $result){
 			if (is_array($result)){
 				$date = date('Y-m-d',$result['crdate']);
-				if (!$data['finished']['dates'][$date]) $data['finished']['dates'][$date] = 0;
-				if (!$data['all']['dates'][$date]) $data['all']['dates'][$date] = 0;
-				if ($result['finished'] > 0) $data['finished']['dates'][$date] ++;
+				if ($data['finished']['dates'][$date] === 0) {
+                    $data['finished']['dates'][$date] = 0;
+                }
+				if ($data['all']['dates'][$date] === 0) {
+                    $data['all']['dates'][$date] = 0;
+                }
+				if ($result['finished'] > 0) {
+                    $data['finished']['dates'][$date] ++;
+                }
 				$data['all']['dates'][$date] ++;			
 			} else {
 				$date = date('Y-m-d',$result->getCrdate());
-				if (!$data['finished']['dates'][$date]) $data['finished']['dates'][$date] = 0;
-				if (!$data['all']['dates'][$date]) $data['all']['dates'][$date] = 0;
-				if ($result->getFinished() > 0) $data['finished']['dates'][$date] ++;
+				if ($data['finished']['dates'][$date] === 0) {
+                    $data['finished']['dates'][$date] = 0;
+                }
+				if ($data['all']['dates'][$date] === 0) {
+                    $data['all']['dates'][$date] = 0;
+                }
+				if ($result->getFinished() > 0) {
+                    $data['finished']['dates'][$date] ++;
+                }
 				$data['all']['dates'][$date] ++;			
 			}
 		}

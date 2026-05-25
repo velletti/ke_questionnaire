@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 /***************************************************************
  *  Copyright notice
@@ -60,7 +61,7 @@ class AuthCodeRepository extends Repository {
         $query->setLimit($limit);
         $query->setOffset($offset);
         $query->setOrderings([
-            'email' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+            'email' => QueryInterface::ORDER_ASCENDING
         ]);
         return $query->execute();
     }

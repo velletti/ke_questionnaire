@@ -41,7 +41,7 @@ class Validation extends AbstractAjax {
   */
  protected $questionRepository;
 
-	public function __construct(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository $questionRepository)
+	public function __construct(QuestionRepository $questionRepository)
  {
      $this->questionRepository = $questionRepository;
  }
@@ -55,7 +55,9 @@ class Validation extends AbstractAjax {
 	public function processAjaxRequest(array $arguments) {
 		/* @var $question \Kennziffer\KeQuestionnaire\Domain\Model\Question */
 		$question = $this->questionRepository->findByUid($arguments['questionUid']);
-		if($question === NULL) return '';
+		if ($question === NULL) {
+            return '';
+        }
 		
 		return $question->getTitle();
 	}

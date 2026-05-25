@@ -3,7 +3,6 @@ namespace Kennziffer\KeQuestionnaire\Domain\Model;
 use TYPO3\CMS\Core\SingletonInterface;
 use Kennziffer\KeQuestionnaire\Exception;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -108,7 +107,7 @@ class ExtConf implements SingletonInterface {
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_questionnaire');
         if (is_array($extConf)) {
 			foreach ($extConf as $key => $value) {
-				$methodName = 'set' . ucfirst($key);
+				$methodName = 'set' . ucfirst((string) $key);
 				if (method_exists($this, $methodName)) {
 					$this->$methodName($value);
 				}

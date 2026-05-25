@@ -39,7 +39,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AnswerValidation extends AbstractAjax {
 
-	/**
+	public $settings;
+ /**
   * lokalization
   *
   * @var Localization
@@ -47,7 +48,7 @@ class AnswerValidation extends AbstractAjax {
  protected $localization;	
 	
 
-	public function __construct(\Kennziffer\KeQuestionnaire\Utility\Localization $localization, private \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
+	public function __construct(Localization $localization, private readonly ConnectionPool $connectionPool)
  {
      $this->localization = $localization;
  }
@@ -63,7 +64,7 @@ class AnswerValidation extends AbstractAjax {
         // the validation Array should contain
         // error => 0 no error / 1 error
         // info => textmessage to be displayed
-        $validation = array();
+        $validation = [];
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = $this->connectionPool;
@@ -89,23 +90,17 @@ class AnswerValidation extends AbstractAjax {
             switch($validationType) {
                 case "email":
                     try {
-                        if ( GeneralUtility::validEmail($arguments['value']) ) {
-                            if (filter_var($arguments['value'], FILTER_VALIDATE_EMAIL)) {
-                                $isValid = true;
-                            }
+                        if ( GeneralUtility::validEmail($arguments['value']) && filter_var($arguments['value'], FILTER_VALIDATE_EMAIL) ) {
+                            $isValid = true;
                         }
-                    } catch (InvalidEmail $invalid) {
+                    } catch (InvalidEmail) {
                         $isValid = false ;
                     }
 
                     break;
 
                 case "date":
-                    if( strpos( $pattern , ".")) {
-                        $split = "." ;
-                    } else {
-                        $split = "-" ;
-                    }
+                    $split = strpos( (string) $pattern , ".") ? "." : "-";
                     $dateArray =  GeneralUtility::trimExplode($split , $arguments['value'] , true) ;
 
                     switch($pattern) {
@@ -133,11 +128,11 @@ class AnswerValidation extends AbstractAjax {
                     }
                     break ;
                 case "string":
-                    $isValid = ( strlen( $arguments['value'] ) > 0 )  ;
+                    $isValid = ( (string) $arguments['value'] !== '' )  ;
                     break ;
 
                 case "string2chars":
-                    $isValid = ( strlen( $arguments['value'] ) > 1 )  ;
+                    $isValid = ( strlen( (string) $arguments['value'] ) > 1 )  ;
                     break ;
 
             }
@@ -145,7 +140,7 @@ class AnswerValidation extends AbstractAjax {
         }
 
         if( !$this->localization ) {
-            $this->localization = GeneralUtility::makeInstance( "Kennziffer\\KeQuestionnaire\\Utility\\Localization" ) ;
+            $this->localization = GeneralUtility::makeInstance( Localization::class ) ;
         }
 
 		if ($isValid){

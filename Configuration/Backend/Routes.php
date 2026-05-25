@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Kennziffer\KeQuestionnaire\Controller\BackendController;
 
 return [

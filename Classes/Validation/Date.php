@@ -50,10 +50,9 @@ class Date extends AbstractValidation {
         if (((int) $version[0] >= 5 && (int) $version[1] >= 2 && (int) $version[2] > 17)) {
             $d = \DateTime::createFromFormat($format, $date);
         } else {
-            $d = new \DateTime(date($format, strtotime($date)));
+            $d = new \DateTime(date($format, strtotime((string) $date)));
         }
         return $d && $d->format($format) == $date;
     }
 
 }
-?>

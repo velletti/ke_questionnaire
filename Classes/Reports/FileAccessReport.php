@@ -23,6 +23,7 @@ namespace Kennziffer\KeQuestionnaire\Reports;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 use TYPO3\CMS\Reports\Status;
 use Kennziffer\KeQuestionnaire\Exception;
@@ -52,7 +53,7 @@ class FileAccessReport implements StatusProviderInterface {
 	/**
 	 * @var array
 	 */
-	protected $staticStateResponseData = array();
+	protected $staticStateResponseData = [];
 
 	public function getLabel(): string
 	{
@@ -67,20 +68,20 @@ class FileAccessReport implements StatusProviderInterface {
 	 */
 	public function getStatus(): array
 	{
-		$statusArray = array();
+		$statusArray = [];
 		$failState = '';
 
 		$this->init();
 		$failState = $this->checkStatus();
 
-		list($title, $value, $message, $severity) = $this->staticStateResponseData[$failState];
+		[$title, $value, $message, $severity] = $this->staticStateResponseData[$failState];
 
 		$status = GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Reports\\Status',
+			Status::class,
 			$title,
 			$value,
 			$message,
-            ($severity ?? \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK)
+            ($severity ?? ContextualFeedbackSeverity::OK)
 		);
 
 		$statusArray[] = $status;
@@ -97,32 +98,32 @@ class FileAccessReport implements StatusProviderInterface {
 		$this->tmpFileAndPath = Environment::getPublicPath() . '/' . 'typo3temp/ke_questionnaire/pdf/TEST';
 		$this->siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
-		$this->staticStateResponseData = array(
-			'ok' => array(
+		$this->staticStateResponseData = [
+			'ok' => [
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.ok'),
 				'',
-				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK
-			),
-			'writeFail' => array(
+				ContextualFeedbackSeverity::OK
+			],
+			'writeFail' => [
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning.details'),
-				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
-			),
-			'tmpFileReadable' => array(
+				ContextualFeedbackSeverity::WARNING
+			],
+			'tmpFileReadable' => [
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.error'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.error.explanation'),
-				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
-			),
-			'unknownErrorCheckingTmpFile' => array(
+				ContextualFeedbackSeverity::ERROR
+			],
+			'unknownErrorCheckingTmpFile' => [
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.title'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning'),
 				$GLOBALS['LANG']->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang.xml:report.fileAccess.warning.unknown'),
-				\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
-			)
-		);
+				ContextualFeedbackSeverity::WARNING
+			]
+		];
 	}
 
 	/**
@@ -134,9 +135,9 @@ class FileAccessReport implements StatusProviderInterface {
 		$failState = '';
 
 		$failState = $this->createAndCheckTmpFile();
-		$failState = (!strlen($failState))?$this->checkTmpFileReadable():$failState;
+		$failState = ((string) $failState === '')?$this->checkTmpFileReadable():$failState;
 
-		if(!strlen(trim($failState))) {
+		if(trim($failState) === '') {
 			$failState = 'ok';
 		}
 
@@ -184,7 +185,7 @@ Allow from 127.0.0.1
 	 * @return string
 	 */
 	protected function checkTmpFileReadable() {
-		$responseHeaders = array();
+		$responseHeaders = [];
 
 		//try to read test file
 		$url = $this->siteUrl . 'typo3temp/ke_questionnaire/pdf/TEST' ;
@@ -203,7 +204,7 @@ Allow from 127.0.0.1
 			if(intval($responseHeaders['http_code']) === 200) {
 				return 'tmpFileReadable';
 			}
-		} catch (\Exception $e) {
+		} catch (\Exception) {
 			return 'tmpFileNotReadable';
 		}
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Validation;
 
 /***************************************************************
@@ -49,4 +52,3 @@ abstract class AbstractValidation {
 	abstract public function isValid($value, $model);
 
 }
-?>

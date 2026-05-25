@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Kennziffer\KeQuestionnaire\Controller;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
+use Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion;
 use Kennziffer\KeQuestionnaire\Domain\Model\AuthCode;
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use Kennziffer\KeQuestionnaire\Utility\EmConfigurationUtility;
@@ -21,24 +26,17 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 
 class BackendController
 {
-    protected ModuleTemplateFactory $moduleTemplateFactory;
     protected QuestionnaireRepository $questionnaireRepository;
     protected AuthCodeRepository $authCodeRepository;
     protected FlashMessageQueue $flashMessageQueue;
@@ -47,15 +45,13 @@ class BackendController
     CONST MESSAGE_QUEUE_IDENTIFIER = 'kequestionnairebe';
     protected $pathName = 'typo3temp/ke_questionnaire';
 
-    public function __construct(        ModuleTemplateFactory $moduleTemplateFactory,
-                                        PageRenderer $pageRenderer,
-                                        BackendUserAuthentication $backendUser)
+    public function __construct(        protected ModuleTemplateFactory $moduleTemplateFactory,
+                                        private readonly PageRenderer $pageRenderer,
+                                        private readonly BackendUserAuthentication $backendUser,
+                                        private readonly PersistenceManager $persistenceManager)
 
     {
 
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->backendUser = $backendUser;
         $this->flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
 
         $this->questionnaireRepository = GeneralUtility::makeInstance(QuestionnaireRepository::class);
@@ -171,7 +167,7 @@ class BackendController
                     $title,
                     $languageService->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:module.menu.download')
                 );
-                return $this->downloadAction($request, $moduleTemplate);
+                return $this->downloadAction($request);
 
             case 'analyse':
             case 'kequestionnairebe_analyse':
@@ -223,7 +219,7 @@ class BackendController
                 ],
             );
             if (isset($query['uid'])) {
-                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
+                /** @var Questionnaire $plugin */
                 $plugin = $this->questionnaireRepository->findForUid($query['uid']);
                 $view->assign('plugin', $plugin);
                 if( $plugin) {
@@ -240,7 +236,7 @@ class BackendController
                         $pages[] = [
                             'offset' => ($i - 1) * $limit,
                             'label' => $i ,
-                            'active' => (($i - 1 ) * $limit == $offset ? true : false )
+                            'active' => (($i - 1) * $limit === $offset )
                         ];
                         $i++ ;
                         $total -= $limit;
@@ -248,14 +244,14 @@ class BackendController
                     $pages[] = [
                         'offset' => ($i - 1) * $limit,
                         'label' => $i ,
-                        'active' => (($i - 1 ) * $limit == $offset ? true : false )
+                        'active' => (($i - 1) * $limit === $offset )
                     ];
                     $view->assign('pages', $pages );
                 } else {
                     $message = GeneralUtility::makeInstance(FlashMessage::class,
-                        $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound', true),
+                        $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound'),
                         '',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                     $this->flashMessageQueue->addMessage($message);
                 }
@@ -307,9 +303,9 @@ class BackendController
         if (is_array($form)) {
 
             $emails = strip_tags($form['emails'] ?? '');
-            if (strpos($emails, ',') !== false) {
+            if (str_contains($emails, ',')) {
                 $emails = GeneralUtility::trimExplode(',', $emails, true);
-            } elseif (strpos($emails, ',') !== false) {
+            } elseif (strpos($emails, ',')) {
                 $emails = GeneralUtility::trimExplode(';', $emails, true);
             } else {
                 $emails = GeneralUtility::trimExplode("\n", $emails, true);
@@ -326,7 +322,7 @@ class BackendController
             $generated = 0 ;
 
             /* @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
-            $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+            $persistenceManager = $this->persistenceManager;
             foreach ($emails as $key => $email) {
 
                 if (GeneralUtility::validEmail($email)) {
@@ -350,9 +346,9 @@ class BackendController
             }
 
             $message = GeneralUtility::makeInstance(FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodesCreated', true) . ': ' . $generated,
+                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodesCreated') . ': ' . $generated,
                 '',
-                FlashMessage::OK
+                ContextualFeedbackSeverity::OK
             );
             $this->flashMessageQueue->addMessage($message);
         }
@@ -361,16 +357,16 @@ class BackendController
         $view->assign("flashMessageQueueIdentifier" , self::MESSAGE_QUEUE_IDENTIFIER);
         $this->setUpDocHeader($request, $view);
 
-        /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
+        /** @var Questionnaire $plugin */
         $plugin = $this->questionnaireRepository->findForUid($query['uid'] ?? 0 );
         $view->assign('plugin', $plugin);
         if( $plugin) {
             $view->assign('authCodes', $this->authCodeRepository->findAllForPid($plugin->getStoragePid()));
         } else {
             $message = GeneralUtility::makeInstance(FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound', true),
+                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound'),
                 '',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             $this->flashMessageQueue->addMessage($message);
         }
@@ -392,9 +388,9 @@ class BackendController
             $AuthCode = $this->authCodeRepository->findForUid((int)$query['code']);
             if (!$AuthCode) {
                 $message = GeneralUtility::makeInstance(FlashMessage::class,
-                    $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodeNotFound', true),
+                    $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodeNotFound'),
                     '',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
                 $this->flashMessageQueue->addMessage($message);
                 return $this->authCodesAction($request, $view);
@@ -456,7 +452,7 @@ class BackendController
             $pid = (int)($form['id'] ?? 0);
 
             /* @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
-            $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+            $persistenceManager = $this->persistenceManager;
 
             //create the codes and store them in the storagepid of the plugin
             $generated = 0 ;
@@ -474,25 +470,25 @@ class BackendController
             $persistenceManager->persistAll();
 
             $message = GeneralUtility::makeInstance(FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodesCreated', true) . ': ' . $generated,
+                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.authCodesCreated') . ': ' . $generated,
                 '',
-                FlashMessage::OK
+                ContextualFeedbackSeverity::OK
             );
             $this->flashMessageQueue->addMessage($message);
         }
 
 
         $this->setUpDocHeader($request, $view);
-        /** @var \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire $plugin */
+        /** @var Questionnaire $plugin */
         $plugin = $this->questionnaireRepository->findForUid($query['uid'] ?? 0 );
         $view->assign('plugin', $plugin);
         if( $plugin) {
             $view->assign('authCodes', $this->authCodeRepository->findAllForPid($plugin->getStoragePid()));
         } else {
             $message = GeneralUtility::makeInstance(FlashMessage::class,
-                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound', true),
+                $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod_authcode.xlf:message.questionnaireNotFound'),
                 '',
-                FlashMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             $this->flashMessageQueue->addMessage($message);
         }
@@ -548,7 +544,7 @@ class BackendController
             if (isset($query['uid'])) {
                 $view->assign('plugin', $this->questionnaireRepository->findForUid($query['uid']));
                 /** @var ResultRepository $resultRepository */
-                $resultRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository::class);
+                $resultRepository = GeneralUtility::makeInstance(ResultRepository::class);
 
                 $view->assign('all', $resultRepository->countFinishedForPid($query['id'],  -1) );
                 $view->assign('finished', $resultRepository->countFinishedForPid($query['id'],  0) );
@@ -575,109 +571,102 @@ class BackendController
         $body = $request->getParsedBody();
         $moduleData = $request->getAttribute('moduleData');
         $responseFactory = GeneralUtility::makeInstance(ResponseFactoryInterface::class) ;
-        if (is_array($query)) {
+        // plugin uid and page id must given
+        if (is_array($query) && (isset($query['uid']) && isset($query['id']))) {
+            $fileNameCheck = 'export_' . $query['uid'] . '_' . date('Ymd') ;
+            Debug::store($query['uid'], $query , "debug_csv_interval_export");
+            $pluginObj = $this->questionnaireRepository->findForUid($query['uid']);
+            $plugin['pages'] = $query['id'];
+            $plugin['header'] = $pluginObj->getHeader();
+            if ( str_starts_with( $query['target'] ?? '' , $fileNameCheck ) ) {
+                $fileName = $query['target'] ;
+                /** @var ResultRepository $resultRepository */
+                $resultRepository = GeneralUtility::makeInstance(ResultRepository::class);
 
-            // plugin uid and page id must given
-            if (isset($query['uid']) && isset($query['id'])) {
+                /** @var CsvExport $csvExport */
+                $csvExport = GeneralUtility::makeInstance(CsvExport::class);
+                $csvExport->init() ;
+                $fileWithPath = Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName;
+                if (isset($query['current']) && isset($query['max'])) {
+                    $current = (int)$query['current'];
+                    $max = (int)$query['max'];
 
-                $fileNameCheck = 'export_' . $query['uid'] . '_' . date('Ymd') ;
-                Debug::store($query['uid'], $query , "debug_csv_interval_export");
-                $pluginObj = $this->questionnaireRepository->findForUid($query['uid']);
-                $plugin['pages'] = $query['id'];
-                $plugin['header'] = $pluginObj->getHeader();
-
-                if ( str_starts_with( $query['target'] ?? '' , $fileNameCheck ) ) {
-                    $fileName = $query['target'] ;
-                    /** @var ResultRepository $resultRepository */
-                    $resultRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository::class);
-
-                    /** @var CsvExport $csvExport */
-                    $csvExport = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Utility\CsvExport::class);
-                    $csvExport->init() ;
-                    $fileWithPath = Environment::getPublicPath() . '/' . $this->pathName ."/". $fileName;
-                    if (isset($query['current']) && isset($query['max'])) {
-                        $current = (int)$query['current'];
-                        $max = (int)$query['max'];
-
-                        if (!file_exists(Environment::getPublicPath() . '/' . $this->pathName)) {
-                            mkdir(Environment::getPublicPath() . '/' . $this->pathName, 0777);
-                            chmod(Environment::getPublicPath() . '/' . $this->pathName, 0777);
-                        }
-                        $csvContent= '';
-                        $resultUid= 0;
-                        $questions = $csvExport->getQuestions($plugin) ;
-                        if( $current == 0 ) {
-                            // write headline s to file
-                            $csvContent = $csvExport->createRBHeader($plugin , $questions);
-                        } else {
-                            //add results
-                            if( $query['onlyFinished'] ) {
-                                $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1 , 0) ;
-                            } else {
-                                $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1, -1) ;
-                            }
-                            $resultUid = (int)($rowForCsv[0]['uid'] ?? 0);
-                            if( $resultUid ) {
-                                $csvContent = $csvExport->createRBLines($rowForCsv[0], $questions);
-                            }
-                        }
-
-                        $csvFile = fopen($fileWithPath, 'a+');
-                        //write the js
-                        if( $csvFile ) {
-                            if($csvContent) {
-                                fwrite($csvFile, $csvContent);
-                            }
-                            fclose($csvFile);
-                            chmod($fileWithPath, 0777);
-
-                        } else {
-                            $data = [
-                                'current' => $current ,
-                                'resultuid' => $resultUid ,
-                                'max' => $max,
-                                'message' => ($csvFile ? 'ERROR: no content for row' :'ERROR: could not open file for writing ' . $fileName ) ,
-                                'finished' => true ,
-                                'success' => false,
-                            ] ;
-                            $response = $responseFactory->createResponse()
-                                ->withHeader('Content-Type', 'application/json; charset=utf-8');
-                            $response->getBody()->write(json_encode($data));
-                            return $response;
-                        }
-
-                        $current++ ;
-                    } else {
-                        $current = 0;
-                        $max = 0;
+                    if (!file_exists(Environment::getPublicPath() . '/' . $this->pathName)) {
+                        mkdir(Environment::getPublicPath() . '/' . $this->pathName, 0777);
+                        chmod(Environment::getPublicPath() . '/' . $this->pathName, 0777);
                     }
-                    $data = [
-                        'current' => $current ,
-                        'resultuid' => $resultUid ,
-                        'max' => $max,
-                        'message' => ( $current <= $max ? 'running' : 'finished' ),
-                        'finished' => ( $current <= $max ? false : true ),
-                        'success' => true,
-                        'length' => (filesize($fileWithPath) ?? 0 )
-                    ] ;
+                    $csvContent= '';
+                    $resultUid= 0;
+                    $questions = $csvExport->getQuestions($plugin) ;
+                    if( $current === 0 ) {
+                        // write headline s to file
+                        $csvContent = $csvExport->createRBHeader($plugin , $questions);
+                    } else {
+                        //add results
+                        if( $query['onlyFinished'] ) {
+                            $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1 , 0) ;
+                        } else {
+                            $rowForCsv = $resultRepository->findFinishedForPidIntervalRaw($query['id'],  $current -1, -1) ;
+                        }
+                        $resultUid = (int)($rowForCsv[0]['uid'] ?? 0);
+                        if( $resultUid !== 0 ) {
+                            $csvContent = $csvExport->createRBLines($rowForCsv[0], $questions);
+                        }
+                    }
 
+                    $csvFile = fopen($fileWithPath, 'a+');
+                    //write the js
+                    if( $csvFile ) {
+                        if($csvContent) {
+                            fwrite($csvFile, $csvContent);
+                        }
+                        fclose($csvFile);
+                        chmod($fileWithPath, 0777);
+
+                    } else {
+                        $data = [
+                            'current' => $current ,
+                            'resultuid' => $resultUid ,
+                            'max' => $max,
+                            'message' => ($csvFile ? 'ERROR: no content for row' :'ERROR: could not open file for writing ' . $fileName ) ,
+                            'finished' => true ,
+                            'success' => false,
+                        ] ;
+                        $response = $responseFactory->createResponse()
+                            ->withHeader('Content-Type', 'application/json; charset=utf-8');
+                        $response->getBody()->write(json_encode($data));
+                        return $response;
+                    }
+
+                    $current++ ;
                 } else {
-                    $data = [
-                        'current' => $current ,
-                        'resultuid' => 0 ,
-                        'max' => $max,
-                        'message' => 'ERROR: given filename ' . $query['target']  . ' should start with ' . $fileNameCheck ,
-                        'finished' => true ,
-                        'success' => false,
-                    ] ;
+                    $current = 0;
+                    $max = 0;
                 }
+                $data = [
+                    'current' => $current ,
+                    'resultuid' => $resultUid ,
+                    'max' => $max,
+                    'message' => ( $current <= $max ? 'running' : 'finished' ),
+                    'finished' => ( $current > $max ),
+                    'success' => true,
+                    'length' => (filesize($fileWithPath) ?? 0 )
+                ] ;
 
-
-                $response = $responseFactory->createResponse()
-                    ->withHeader('Content-Type', 'application/json; charset=utf-8');
-                $response->getBody()->write(json_encode($data));
-                return $response;
+            } else {
+                $data = [
+                    'current' => $current ,
+                    'resultuid' => 0 ,
+                    'max' => $max,
+                    'message' => 'ERROR: given filename ' . $query['target']  . ' should start with ' . $fileNameCheck ,
+                    'finished' => true ,
+                    'success' => false,
+                ] ;
             }
+            $response = $responseFactory->createResponse()
+                ->withHeader('Content-Type', 'application/json; charset=utf-8');
+            $response->getBody()->write(json_encode($data));
+            return $response;
         }
         return $this->exportAction($request, $view);
     }
@@ -711,17 +700,17 @@ class BackendController
                     exit;
                 } else {
                     $message = GeneralUtility::makeInstance(FlashMessage::class,
-                        $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:message.fileNotFound', true) . ': ' . $fileName,
+                        $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:message.fileNotFound') . ': ' . $fileName,
                         '',
-                        FlashMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                     $this->flashMessageQueue->addMessage($message);
                 }
             } else {
                 $message = GeneralUtility::makeInstance(FlashMessage::class,
-                    $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:message.fileNameInvalid', true) . ': ' . ($query['target'] ?? '')  . ' should start with ' . $fileNameCheck,
+                    $this->getLanguageService()->sL('LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf:message.fileNameInvalid') . ': ' . ($query['target'] ?? '')  . ' should start with ' . $fileNameCheck,
                     '',
-                    FlashMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
                 $this->flashMessageQueue->addMessage($message);
             }
@@ -750,13 +739,13 @@ class BackendController
             $questionnaire =  $this->questionnaireRepository->findForUid($uid) ?? null ;
             if( $questionnaire) {
                 $view->assign('questionnaire',$questionnaire );
-                $questionRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\QuestionRepository::class);
+                $questionRepository = GeneralUtility::makeInstance(QuestionRepository::class);
                 $questions = $questionRepository->findAllForPidtoExport($id);
                 if ( $questions ) {
                     $view->assign('questions', $questions);
                     $view->assign('all', $questions->count() );
                 }
-                $resultRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository::class);
+                $resultRepository = GeneralUtility::makeInstance(ResultRepository::class);
 
                 $view->assign('results', $resultRepository->countFinishedForPid($id,  -1) );
 
@@ -782,65 +771,57 @@ class BackendController
         $body = $request->getParsedBody();
         $moduleData = $request->getAttribute('moduleData');
         $responseFactory = GeneralUtility::makeInstance(ResponseFactoryInterface::class) ;
-        if (is_array($query)) {
-
-            // Question uid and page id must given
-            if (isset($query['uid']) && isset($query['id'])) {
-                $max = $query['max'];
-                $questionUid = $query['uid'];
-                $current = $query['current'];
-
-                /** @var ResultQuestionRepository $questionRepository */
-                $questionRepository = GeneralUtility::makeInstance(\Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository::class);
-                $results = $questionRepository->findByQuestionId($questionUid);
-                $answers = [];
-                $total = 0 ;
-                /** @var \Kennziffer\KeQuestionnaire\Domain\Model\ResultQuestion $result */
-                foreach ( $results as $result ) {
-                    $tempAnswers = [];
-                    $temp = $result->getAnswers();
-                    if( $temp ) {
-                        foreach ($temp as $answer) {
-                            $total ++ ;
-                            if( isset($answers[$answer->getAnswer()->getUid()])) {
-                                $answers[$answer->getAnswer()->getUid()]['value'] += 1 ;
-                            } else {
-                                $answers[$answer->getAnswer()->getUid()] = [ 'value'  => 1 , 'uid' => $answer->getAnswer()->getUid() ] ;
-                            }
+        // Question uid and page id must given
+        if (is_array($query) && (isset($query['uid']) && isset($query['id']))) {
+            $max = $query['max'];
+            $questionUid = $query['uid'];
+            $current = $query['current'];
+            /** @var ResultQuestionRepository $questionRepository */
+            $questionRepository = GeneralUtility::makeInstance(ResultQuestionRepository::class);
+            $results = $questionRepository->findByQuestionId($questionUid);
+            $answers = [];
+            $total = 0 ;
+            /** @var ResultQuestion $result */
+            foreach ( $results as $result ) {
+                $tempAnswers = [];
+                $temp = $result->getAnswers();
+                if( $temp ) {
+                    foreach ($temp as $answer) {
+                        $total ++ ;
+                        if( isset($answers[$answer->getAnswer()->getUid()])) {
+                            $answers[$answer->getAnswer()->getUid()]['value'] += 1 ;
+                        } else {
+                            $answers[$answer->getAnswer()->getUid()] = [ 'value'  => 1 , 'uid' => $answer->getAnswer()->getUid() ] ;
                         }
                     }
                 }
-                $finalAnswers = [];
-                if ($total >0 && is_array($answers) ) {
-                    foreach ($answers as $answer) {
-                        $finalAnswers[] = [
-                            'uid' => $answer['uid'],
-                            'value' => $answer['value'],
-                            'html' => $answer['value'],
-                            'width' => (int)(($answer['value'] / $total )*100) ."%",
-                        ];
-                    }
-                }
-
-                $current ++ ;
-                $data = [
-                    'current' => $current  ,
-                    'questionuid' => $questionUid ,
-                    'total' => $total ,
-                    'answers' => $finalAnswers ,
-                    'max' => $max,
-                    'message' => ( $current <= $max ? 'running' : 'finished' ),
-                    'finished' => ( $current <= $max ? false : true ),
-                    'success' => true,
-                ] ;
-
-
-
-                $response = $responseFactory->createResponse()
-                    ->withHeader('Content-Type', 'application/json; charset=utf-8');
-                $response->getBody()->write(json_encode($data));
-                return $response;
             }
+            $finalAnswers = [];
+            if ($total >0 && is_array($answers) ) {
+                foreach ($answers as $answer) {
+                    $finalAnswers[] = [
+                        'uid' => $answer['uid'],
+                        'value' => $answer['value'],
+                        'html' => $answer['value'],
+                        'width' => (int)(($answer['value'] / $total )*100) ."%",
+                    ];
+                }
+            }
+            $current ++ ;
+            $data = [
+                'current' => $current  ,
+                'questionuid' => $questionUid ,
+                'total' => $total ,
+                'answers' => $finalAnswers ,
+                'max' => $max,
+                'message' => ( $current <= $max ? 'running' : 'finished' ),
+                'finished' => ( $current > $max ),
+                'success' => true,
+            ] ;
+            $response = $responseFactory->createResponse()
+                ->withHeader('Content-Type', 'application/json; charset=utf-8');
+            $response->getBody()->write(json_encode($data));
+            return $response;
         }
         return $this->exportAction($request, $view);
     }

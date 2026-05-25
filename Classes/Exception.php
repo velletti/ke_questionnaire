@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Kennziffer\KeQuestionnaire\Utility\Localization;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -44,10 +47,12 @@ class Exception extends \TYPO3\CMS\Core\Exception {
 	 * @param $previous [optional]
 	 */
 	public function __construct ($key = '', $code = 0, $arguments = NULL, $previous = NULL) {
-		$localization = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\KeQuestionnaire\Utility\Localization');
+		$localization = GeneralUtility::makeinstance(Localization::class);
 		/* @var $localization \Kennziffer\KeQuestionnaire\Utility\Localization */
 		$message = $localization->translate($key, 'exception.xml', $arguments);
-		if(empty($message)) $message = $key;
+		if (empty($message)) {
+            $message = $key;
+        }
 		parent::__construct($message, $code, $previous);
 	}
 }

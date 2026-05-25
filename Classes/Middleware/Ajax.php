@@ -36,7 +36,7 @@ class Ajax implements MiddlewareInterface
 
         $path = $request->getUri()->getPath() ;
 
-        if( is_array($_gp) && key_exists("tx_kequestionnaire_questionnaire" ,$_gp ) && strpos("..." . $path , "keAnswerValidation.json" ) > 1 ) {
+        if( is_array($_gp) && array_key_exists("tx_kequestionnaire_questionnaire" ,$_gp ) && strpos("..." . $path , "keAnswerValidation.json" ) > 1 ) {
             $arguments = $_gp['tx_kequestionnaire_questionnaire']  ;
             $type = $arguments['type'] ;
             $requestedClassName = 'Kennziffer\\KeQuestionnaire\\Ajax\\' . $type;

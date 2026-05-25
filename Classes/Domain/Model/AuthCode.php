@@ -1,6 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
 
+use Kennziffer\KeQuestionnaire\Domain\Repository\AuthCodeRepository;
+use Kennziffer\KeQuestionnaire\Domain\Repository\ResultRepository;
+use FriendsOfTYPO3\TtAddress\Domain\Model\Address;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -67,7 +70,7 @@ class AuthCode extends AbstractEntity {
         
   /**
   * TtAddress
-  * @var FriendsOfTYPO3\TtAddress\Domain\Model\Address|null
+  * @var Address|null
   */
  protected $ttAddress;
         
@@ -138,9 +141,9 @@ class AuthCode extends AbstractEntity {
 	 * @param integer §pid
 	 */
 	public function generateAuthCode($length, $pid){
-        $length = ( $length ?? 10 );
+        $length ??= 10;
 		//get the existent authcodes so no duplicates are created
-		$ac_rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\AuthCodeRepository');
+		$ac_rep = GeneralUtility::makeinstance(AuthCodeRepository::class);
 		// Generate authcode
 		$loop = true;
         $needsMinusDefault = 3 ;
@@ -157,7 +160,7 @@ class AuthCode extends AbstractEntity {
 		while($loop){
 			$key = '';
             $loops ++ ;
-			list($usec, $sec) = explode(' ', microtime());
+			[$usec, $sec] = explode(' ', microtime());
 			mt_srand((float) $sec + ((float) $usec * 100000));
 
             $inputs = array_merge(
@@ -167,7 +170,7 @@ class AuthCode extends AbstractEntity {
                 range(2,9),
                 range('A','H'),
                 range('P','Z'),
-                array("m" , "M" , "n" , "N" , "k" , "K" , "j" , "J")
+                ["m" , "M" , "n" , "N" , "k" , "K" , "j" , "J"]
             );
             $needsMinus = $needsMinusDefault ;
             for($i=0; $i<$length; $i++)
@@ -179,7 +182,7 @@ class AuthCode extends AbstractEntity {
             {
                 $resultKey .= substr($key,$i, 1);
                 $needsMinus --;
-                if ( $needsMinus == 0 ) {
+                if ( $needsMinus === 0 ) {
                     $resultKey .= "-" ;
                     $needsMinus = $needsMinusDefault ;
                 }
@@ -191,7 +194,7 @@ class AuthCode extends AbstractEntity {
                 $loop = false;
             }
             if ($loops > 100) {
-                throw new \Exception("Too many loops while generating authcode. Please check the length and the existing authcodes.");
+                throw new \Exception("Too many loops while generating authcode. Please check the length and the existing authcodes.", 7733482695);
             }
 		}
 
@@ -213,7 +216,7 @@ class AuthCode extends AbstractEntity {
 	 */
 	public function getAndLoadParticipations() {
             if (!$this->participations ){
-                    $rep = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('Kennziffer\\KeQuestionnaire\\Domain\\Repository\\ResultRepository');
+                    $rep = GeneralUtility::makeinstance(ResultRepository::class);
                     $this->participations = $rep->findForAuthCode($this);
             }
             return $this->participations;
@@ -226,11 +229,7 @@ class AuthCode extends AbstractEntity {
   * @return void
   */
  public function setFeUser(?int $feUser): void {
-     if(is_array($feUser)) {
-         $feUser = ($feUser['uid'] ?? null);
-     } else  {
-        $feUser = null;
-     }
+     $feUser = is_array($feUser) ? $feUser['uid'] ?? null : null;
 	}
 
 	/**

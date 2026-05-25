@@ -96,7 +96,9 @@ class Localization {
 		// set locallang file
 		if (empty($locallangFile)) {
 			$this->setLocallangFile('locallang.xml');
-		} else $this->setLocallangFile ($locallangFile);
+		} else {
+            $this->setLocallangFile ($locallangFile);
+        }
 
 		// build path
 		$path = 'LLL:EXT:ke_questionnaire/' . $this->locallangPath . $this->locallangFile;

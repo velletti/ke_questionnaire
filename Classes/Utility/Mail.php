@@ -54,7 +54,7 @@ class Mail {
   * @var ExtConf
   */
  protected $extConf;
- public function __construct(\TYPO3\CMS\Core\Mail\MailMessage $message, \Kennziffer\KeQuestionnaire\Domain\Model\ExtConf $extConf)
+ public function __construct(MailMessage $message, ExtConf $extConf, private readonly UriBuilder $uriBuilder)
  {
      $this->message = $message;
      $this->extConf = $extConf;
@@ -77,24 +77,20 @@ class Mail {
         $this->flexform = ($plugin && $plugin->getPiFlexForm()['settings']['email']['invite'] ? $plugin->getPiFlexForm()['settings']['email']['invite'] : null );
     }
 
-    public function init($email , $authCode) {
+    public function init($email , $authCode): void {
         // get standAlone mail renderer
         $this->mailRenderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->mailRenderer->setLayoutRootPaths(
-            [GeneralUtility::getFileAbsFileName('EXT:ke_questionnaire/Resources/Private/Layouts/')]
-        );
-        $this->mailRenderer->setTemplatePathAndFilename(
-            GeneralUtility::getFileAbsFileName('EXT:ke_questionnaire/Resources/Private/Templates/Backend/CreatedMail.html')
-        );
+        $this->mailRenderer->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:ke_questionnaire/Resources/Private/Layouts/')]);
+        $this->mailRenderer->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:ke_questionnaire/Resources/Private/Templates/Backend/CreatedMail.html'));
 
         $settings = EmConfigurationUtility::getEmConf(false);
-        $settings['fontFamily'] = $settings['fontFamily'] ?? 'Arial, Helvetica, sans-serif';
+        $settings['fontFamily'] ??= 'Arial, Helvetica, sans-serif';
         $settings['FontColor'] = $settings['FontColor2'] ?? '#FF221a';
-        $settings['FontColor2'] = $settings['FontColor2'] ?? '#333333';
-        $settings['BackGroundColorBody'] = $settings['BackGroundColorBody'] ?? '#FFFFFF';
-        $settings['BackGroundColorBody2'] = $settings['BackGroundColorBody2'] ?? '#FFFFFF';
-        $settings['BackGroundColor'] = $settings['BackGroundColor'] ?? '#F1F1F1';
-        $settings['BackGroundColor2'] = $settings['BackGroundColor2'] ?? '#A1A1A1';
+        $settings['FontColor2'] ??= '#333333';
+        $settings['BackGroundColorBody'] ??= '#FFFFFF';
+        $settings['BackGroundColorBody2'] ??= '#FFFFFF';
+        $settings['BackGroundColor'] ??= '#F1F1F1';
+        $settings['BackGroundColor2'] ??= '#A1A1A1';
 
         $this->mailRenderer->assign("settings", $settings);
         $this->mailRenderer->assign("signature", false);
@@ -115,7 +111,7 @@ class Mail {
         try {
             /** @var UriBuilder $uriBuilder */
 
-            $uriBuilder = GeneralUtility::makeInstance( UriBuilder::class ) ;
+            $uriBuilder = $this->uriBuilder ;
             $uri = $uriBuilder->reset()
                 ->setTargetPageUid($pid)
                 ->setAbsoluteUriScheme('https')
@@ -132,7 +128,7 @@ class Mail {
         $this->mailRenderer->assign('authCode',$authCode);
         $this->mailRenderer->assign('text',$text);
 
-        $plainText = strip_tags( $text['before']) . "\n" . $authCode . "\n" . strip_tags( $text['after'] );
+        $plainText = strip_tags( (string) $text['before']) . "\n" . $authCode . "\n" . strip_tags( $text['after'] );
         $htmlText = $this->mailRenderer->render() ;
         $this->setSubject($subject);
         $this->addReceiver($email);
@@ -149,31 +145,35 @@ class Mail {
 	public function getBody() {
 		if(!$this->message->getBody()) {
 			// if body is not try to get attached children like HTML parts
-			if(count($this->message->getChildren())) {
+			if(count($this->message->getChildren()) > 0) {
 				return $this->message->getChildren();
-			} else return '';
-		} else return $this->message->getBody();
+			} else {
+                return '';
+            }
+		} else {
+            return $this->message->getBody();
+        }
 	}
 
 	/**
-	 * Sets the body
-	 *
-	 * @param string $body
-	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	public function setBody($body) {
+     * Sets the body
+     *
+     * @param string $body
+     * @return Mail
+     */
+    public function setBody($body) {
 	    $body = strip_tags( str_replace(  "</p>" , "\n" , $body) ) ;
 		$this->message->text($body , 'utf-8');
 		return $this;
 	}
 
 	/**
-	 * Sets the html
-	 *
-	 * @param string $html
-	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	public function setHtml($html) {
+     * Sets the html
+     *
+     * @param string $html
+     * @return Mail
+     */
+    public function setHtml($html) {
 		$this->message->html($html, 'utf-8');
 		return $this;
 	}
@@ -188,12 +188,12 @@ class Mail {
 	}
 
 	/**
-	 * Sets the subject
-	 *
-	 * @param string $subject
-	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	public function setSubject($subject) {
+     * Sets the subject
+     *
+     * @param string $subject
+     * @return Mail
+     */
+    public function setSubject($subject) {
 		$this->message->setSubject($subject);
 		return $this;
 	}
@@ -208,13 +208,13 @@ class Mail {
 	}
 
 	/**
-	 * Sets the from
-	 *
-	 * @param string $from The from email address
-	 * @param string $name The from name
-	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	public function setFrom($from, $name = NULL) {
+     * Sets the from
+     *
+     * @param string $from The from email address
+     * @param string $name The from name
+     * @return Mail
+     */
+    public function setFrom($from, $name = NULL) {
 		$this->message->setFrom($from, $name);
 		return $this;
 	}
@@ -229,25 +229,25 @@ class Mail {
 	}
 
 	/**
-	 * Sets the receivers
-	 * By using this method the key should be the mail address
-	 *
-	 * @param array $receivers
-	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	public function setReceivers($receivers) {
+     * Sets the receivers
+     * By using this method the key should be the mail address
+     *
+     * @param array $receivers
+     * @return Mail
+     */
+    public function setReceivers($receivers) {
 		$this->message->setTo($receivers);
 		return $this;
 	}
 
 	/**
-	 * Add a receiver
-	 *
-	 * @param string $receiver The receivers email address
-	 * @param string $name The receivers name
-	 * @return \Kennziffer\KeQuestionnaire\Utility\Mail
-	 */
-	public function addReceiver($receiver, $name = NULL) {
+     * Add a receiver
+     *
+     * @param string $receiver The receivers email address
+     * @param string $name The receivers name
+     * @return Mail
+     */
+    public function addReceiver($receiver, $name = NULL) {
 		$this->message->addTo($receiver, $name);
 		return $this;
 	}
@@ -260,9 +260,11 @@ class Mail {
 	public function sendMail() {
 		if($this->validateMessage()) {
 			$number = $this->message->send();
-			$this->message = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+			$this->message = GeneralUtility::makeInstance(MailMessage::class);
 			return $number;
-		} else return 0;
+		} else {
+            return 0;
+        }
 	}
 
 	/**
@@ -273,25 +275,21 @@ class Mail {
 	protected function validateMessage() {
 		if(!$this->getFrom()) {
 			// first: try to get an alternative mail address and sender name from extConf
-			if($this->extConf->getEmailAddress()) {
-				if($this->extConf->getEmailSender()) {
+			if ($this->extConf->getEmailAddress()) {
+                if($this->extConf->getEmailSender()) {
 					$this->setFrom($this->extConf->getEmailAddress(), $this->extConf->getEmailSender());
 				} else {
 					$this->setFrom($this->extConf->getEmailAddress());
 				}
-			} else {
-				// second: try to get an alternative mail address and sender name from INSTALL_TOOL
-				if (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])) {
-					// third: no email address found. EXIT
-					throw new Exception('mailNoFrom', 1349702098);
-				} else {
-					if (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])) {
-						$this->setFrom($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']);
-					} else {
+            } elseif (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])) {
+                // second: try to get an alternative mail address and sender name from INSTALL_TOOL
+                // third: no email address found. EXIT
+                throw new Exception('mailNoFrom', 1349702098);
+            } elseif (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])) {
+                $this->setFrom($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']);
+            } else {
 						$this->setFrom($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'], $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']);
 					}
-				}
-			}
 		}
 		if(count($this->getReceivers()) === 0) {
 			throw new Exception('mailNoReceivers', 1349702831);

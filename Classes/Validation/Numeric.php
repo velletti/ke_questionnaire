@@ -46,8 +46,9 @@ class Numeric extends AbstractValidation {
 		if (!is_numeric($value)) {
 			$value = str_replace(',', '.', $value);
 			return (is_numeric($value));
-		} else return true;
+		} else {
+            return true;
+        }
 	}
 
 }
-?>

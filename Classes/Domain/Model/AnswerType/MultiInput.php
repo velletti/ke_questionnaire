@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Domain\Model\AnswerType;
 /***************************************************************
  *  Copyright notice
@@ -56,7 +59,8 @@ class MultiInput extends SingleInput {
 	 *
 	 * @return integer $width
 	 */
-	public function getWidth() {
+	#[\Override]
+    public function getWidth() {
 		return $this->width;
 	}
 
@@ -66,7 +70,8 @@ class MultiInput extends SingleInput {
 	 * @param integer $width
 	 * @return void
 	 */
-	public function setWidth($width): void
+	#[\Override]
+    public function setWidth($width): void
     {
 		$this->width = $width;
 	}
@@ -76,7 +81,8 @@ class MultiInput extends SingleInput {
 	 *
 	 * @return integer $height
 	 */
-	public function getHeight() {
+	#[\Override]
+    public function getHeight() {
 		return $this->height;
 	}
 
@@ -86,7 +92,8 @@ class MultiInput extends SingleInput {
 	 * @param integer $height
 	 * @return void
 	 */
-	public function setHeight($height): void {
+	#[\Override]
+    public function setHeight($height): void {
 		$this->height = $height;
 	}
 

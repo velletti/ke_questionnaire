@@ -1,8 +1,18 @@
 <?php
 declare(strict_types=1);
 
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
+use Kennziffer\KeQuestionnaire\Domain\Model\Question;
+use Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput;
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect;
+use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
+
 return [
-    \Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire::class => [
+    Questionnaire::class => [
         'tableName' => 'tt_content',
         'properties' => [
             'uid' => [
@@ -56,47 +66,47 @@ return [
             ],
         ],
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\Question::class => [
-        'subclasses' => ['Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question' => 'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question',
-            'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak' => 'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak',
+    Question::class => [
+        'subclasses' => [\Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class => \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class,
+            PageBreak::class => PageBreak::class,
         ],
     ],
     \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class => [
-        'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question',
+        'recordType' => \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class,
         'tableName' => 'tx_kequestionnaire_domain_model_question',
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak::class => [
-        'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\PageBreak',
+    PageBreak::class => [
+        'recordType' => PageBreak::class,
         'tableName' => 'tx_kequestionnaire_domain_model_question',
     ],
 
-    \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton::class => [
-        'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton',
+    Radiobutton::class => [
+        'recordType' => Radiobutton::class,
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox::class => [
-        'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox',
+    Checkbox::class => [
+        'recordType' => Checkbox::class,
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput::class => [
-        'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput',
+    SingleInput::class => [
+        'recordType' => SingleInput::class,
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput::class => [
-        'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput',
+    MultiInput::class => [
+        'recordType' => MultiInput::class,
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect::class => [
-        'recordType' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect',
+    SingleSelect::class => [
+        'recordType' => SingleSelect::class,
         'tableName' => 'tx_kequestionnaire_domain_model_answer',
     ],
-    \Kennziffer\KeQuestionnaire\Domain\Model\Answer::class => [
+    Answer::class => [
         'subclasses' => [
-            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton',
-            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Checkbox',
-            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleInput',
-            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\MultiInput',
-            'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect' => 'Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\SingleSelect',
+            Radiobutton::class => Radiobutton::class,
+            Checkbox::class => Checkbox::class,
+            SingleInput::class => SingleInput::class,
+            MultiInput::class => MultiInput::class,
+            SingleSelect::class => SingleSelect::class,
         ],
     ],
 

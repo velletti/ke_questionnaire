@@ -46,17 +46,23 @@ class Keywords extends AbstractValidation {
 		$keywords = GeneralUtility::trimExplode(',', $model->getValidationText());
 		$keyword_counter = 0;
 		$to_match = $model->getValidationKeysAmount();
-		if ($to_match > count($keywords)) $to_match = count($keywords);
+		if ($to_match > count($keywords)) {
+            $to_match = count($keywords);
+        }
 		foreach ($keywords as $key){
-			$pos = strpos($value, $key);
-			if (is_integer($pos)) $keyword_counter ++;
-			if ($to_match > 0){
-				if ($keyword_counter >= $to_match) return true;
-			} else {
-				if ($keyword_counter == count($keywords)) return true;
-			}
+			$pos = strpos((string) $value, $key);
+			if (is_int($pos)) {
+                $keyword_counter ++;
+            }
+			if ($to_match > 0) {
+                if ($keyword_counter >= $to_match) {
+                    return true;
+                }
+            } elseif ($keyword_counter === count($keywords)) {
+                return true;
+            }
 		}
+        return null;
 	}
 
 }
-?>

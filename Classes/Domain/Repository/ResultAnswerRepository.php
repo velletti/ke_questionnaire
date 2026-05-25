@@ -23,13 +23,11 @@ namespace Kennziffer\KeQuestionnaire\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\Repository;
-use Kennziffer\KeQuestionnaire\Domain\Model\Question;
-use Kennziffer\KeQuestionnaire\Domain\Model\Result;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use Kennziffer\KeQuestionnaire\Domain\Model\Answer;
 
@@ -229,7 +227,7 @@ class ResultAnswerRepository extends Repository
 
         return $query->execute();
     }
-    private function log( $method , \TYPO3\CMS\Extbase\Persistence\QueryInterface $query ){
+    private function log( $method , QueryInterface $query ): void{
         $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
 
         $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
@@ -241,8 +239,8 @@ class ResultAnswerRepository extends Repository
         $sqlFinalQuery = str_replace($from , $to , (string) $sqlquery ) ;
         $this->logToFile( 'Method: "' . $method . '" SQL: ' . PHP_EOL . $sqlFinalQuery ) ;
     }
-    public function logToFile(  $text ){
-        if ( str_ends_with($_SERVER['SERVER_NAME'] , 'ddev.site' ) || file_exists(Environment::getProjectPath() . '/var/log/_ENABLE_KEQLOG_') ){
+    public function logToFile(  $text ): void{
+        if ( str_ends_with((string) $_SERVER['SERVER_NAME'] , 'ddev.site' ) || file_exists(Environment::getProjectPath() . '/var/log/_ENABLE_KEQLOG_') ){
             $fn =fopen( Environment::getProjectPath() . '/var/log/keq.log' , 'a+' );
             if ( $fn ){
                 fwrite( $fn , date('Y-m-d H:i:s') . ' ' . $text . PHP_EOL . PHP_EOL  );

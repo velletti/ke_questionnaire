@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 use Kennziffer\KeQuestionnaire\Controller\BackendController;
 
 return [
     'kequestionnairebe' => [
         'labels' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_mod.xlf',
         'iconIdentifier' => 'kequestionnaire-plugin',
-        'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
+        'navigationComponent' => '@typo3/backend/tree/page-tree-element',
         'position' => ['after' => 'web'],
         'access' => 'user',
     ],

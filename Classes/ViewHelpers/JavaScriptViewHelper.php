@@ -63,7 +63,8 @@ class JavaScriptViewHelper extends AbstractViewHelper {
 	 * ViewHelper to bundle the javascript in a single file and include this
 	 * 
 	 */
-	public function render(): void {
+	#[\Override]
+    public function render(): void {
         $this->always = $this->arguments['alwaysreplace'] ;
 		$this->cacheJavaScript($this->renderChildren());
 	}
@@ -72,12 +73,12 @@ class JavaScriptViewHelper extends AbstractViewHelper {
 	 * write the Javascript in the file
 	 */
 	public function cacheJavaScript ($script): void{
-		if (trim($script) != ''){
+		if (trim((string) $script) !== ''){
 			$endOfFile = "\n});// end of file";
 			$beginningOfFile = "jQuery(document).ready(function() {\n";
 			
 			//get the stored jsKey
-			$jsKey = date("d-m-y-H-i-s-") . $GLOBALS['TSFE']->fe_user->getKey('ses', 'keq_jskey');
+			$jsKey = date("d-m-y-H-i-s-") . $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->getKey('ses', 'keq_jskey');
 			//get the file
 			$pathName = 'typo3temp/ke_questionnaire';
 			$fileName = $pathName . '/' . $jsKey . '.js';
@@ -100,12 +101,12 @@ class JavaScriptViewHelper extends AbstractViewHelper {
 			}
 
 			if ($oldContent == '') {
-				$content = $beginningOfFile . $script . $endOfFile;
-			} else {
-				if (strpos($oldContent, $script) === FALSE) {
-					$content = str_replace($endOfFile, $script . $endOfFile, $oldContent);
-				} else $content = $oldContent;
-			}
+                $content = $beginningOfFile . $script . $endOfFile;
+            } elseif (!str_contains($oldContent, (string) $script)) {
+                $content = str_replace($endOfFile, $script . $endOfFile, $oldContent);
+            } else {
+                $content = $oldContent;
+            }
 			//clear the file
             $jsFile = fopen(Environment::getPublicPath() . '/' . $fileName, 'w+b');
 

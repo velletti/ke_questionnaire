@@ -51,15 +51,16 @@ class CheckAnsweredQuestionViewHelper extends AbstractViewHelper {
     /** * Constructor *
      * @api */
     public function initializeArguments(): void {
-        $this->registerArgument('question', '\Kennziffer\KeQuestionnaire\Domain\Model\Question', ' The question ', true );
-        $this->registerArgument('result', '\Kennziffer\KeQuestionnaire\Domain\Model\Result', 'the Result object  ', false );
+        $this->registerArgument('question', Question::class, ' The question ', true );
+        $this->registerArgument('result', Result::class, 'the Result object  ', false );
         parent::initializeArguments() ;
     }
 
 	/**
      * @return mixed The finally rendered child nodes.
 	 */	 	
-	public function render() {
+	#[\Override]
+    public function render() {
 	    /** @var Result $result */
         $result = $this->arguments['result'] ;
         /** @var Question $question */
@@ -70,11 +71,12 @@ class CheckAnsweredQuestionViewHelper extends AbstractViewHelper {
 			if ($rQuestion->getQuestion() === $question){
 			    /** @var Answer $rAnswer */
                 foreach ($rQuestion->getAnswers() as $rAnswer){
-					if ($rAnswer->getValue() != '') return $this->renderChildren();					
+					if ($rAnswer->getValue() != '') {
+                        return $this->renderChildren();
+                    }					
 				}
 			}
 		}        
 	}
 
 }
-?>

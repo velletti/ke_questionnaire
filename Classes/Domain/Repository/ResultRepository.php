@@ -1,9 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -119,7 +119,9 @@ class ResultRepository extends Repository {
 	public function findAllForPidInterval($pid, $interval, $position) {	
 		$interval = intval($interval);
 		$position = intval($position);
-		if ($interval == 0) $interval = 1;
+		if ($interval === 0) {
+            $interval = 1;
+        }
 		
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
@@ -159,7 +161,9 @@ class ResultRepository extends Repository {
 	public function findAllForPidIntervalRaw($pid, $interval, $position) {	
 		$interval = intval($interval);
 		$position = intval($position);
-		if ($interval == 0) $interval = 1;
+		if ($interval === 0) {
+            $interval = 1;
+        }
 		
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
@@ -227,7 +231,9 @@ class ResultRepository extends Repository {
  public function findFinishedForPidInterval($pid, $interval, $position) {
 		$interval = intval($interval);
 		$position = intval($position);
-		if ($interval == 0) $interval = 1;
+		if ($interval === 0) {
+            $interval = 1;
+        }
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->setLimit($interval);
@@ -369,8 +375,8 @@ tx_kequestionnaire_domain_model_resultquestion.result ='.$resultId);
 	}
 
 
-    private function log( $method , \TYPO3\CMS\Extbase\Persistence\QueryInterface $query ){
-        if ( str_ends_with($_SERVER['SERVER_NAME'] , 'ddev.site' ) || file_exists(Environment::getProjectPath() . '/var/log/_ENABLE_KEQLOG_') ){
+    private function log( $method , QueryInterface $query ): void{
+        if ( str_ends_with((string) $_SERVER['SERVER_NAME'] , 'ddev.site' ) || file_exists(Environment::getProjectPath() . '/var/log/_ENABLE_KEQLOG_') ){
             $fn =fopen( Environment::getProjectPath() . '/var/log/keq.log' , 'a+' );
             if ( $fn ){
                 /* @var Typo3DbQueryParser $queryParser  */

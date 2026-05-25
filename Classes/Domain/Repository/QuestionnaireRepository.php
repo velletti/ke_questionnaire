@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
+use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Service\PageService;
@@ -41,6 +42,7 @@ class QuestionnaireRepository extends Repository {
         * 
         * @return Query Result
         */
+       #[\Override]
        public function findAll() {
            $query = $this->createQuery();
            $query->getQuerySettings()->setRespectStoragePage(FALSE);
@@ -111,7 +113,7 @@ class QuestionnaireRepository extends Repository {
      * find ke_questionnaires for uid
      *
      * @param integer $uid
-     * @return ?\Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire
+     * @return ?Questionnaire
      */
     public function findForPid($pid) {
         $query = $this->createQuery();

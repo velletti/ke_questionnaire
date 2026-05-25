@@ -1,11 +1,14 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Service;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PageService
 {
+    public function __construct(private readonly ConnectionPool $connectionPool)
+    {
+    }
     /**
      * Get a list of PIDs starting from a given page and limited by a depth.
      *
@@ -33,11 +36,11 @@ class PageService
             return;
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $rows = $queryBuilder
             ->select('uid')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($parentPage, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($parentPage, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAllAssociative();
 

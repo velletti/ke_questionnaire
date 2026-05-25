@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Utility;
 
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
@@ -37,7 +38,7 @@ class TyposcriptUtility{
 
         $rootLine = $rootlineService->get() ;
 
-        $extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+        $extendedTemplateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
         $extendedTemplateService->tt_track = 0;
 		// $extendedTemplateService->init();
@@ -49,18 +50,16 @@ class TyposcriptUtility{
             $extendedTemplateService->matchAlternative = $conditions ;
         }
 		$extendedTemplateService->generateConfig();
-        if( $getConstants ) {
+        if ($getConstants) {
             if(!empty($extKey)){
                 $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup_constants['plugin.'][$extKey . '.']);
             }else{
                 $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup_constants);
             }
-        } else {
-            if(!empty($extKey)){
-                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup['plugin.'][$extKey . '.']);
-            }else{
-                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup);
-            }
+        } elseif (!empty($extKey)) {
+            $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup['plugin.'][$extKey . '.']);
+        } else{
+            $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup);
         }
 
 		return $typoScript;
@@ -75,7 +74,7 @@ class TyposcriptUtility{
 	 */
 	private static function removeDotsFromTypoScriptArray($array) {
 
-		$newArray = Array();
+		$newArray = [];
 
 		if(is_array($array)){
 
@@ -84,7 +83,7 @@ class TyposcriptUtility{
 				if (is_array($val)) {
 
 					// Remove last character (dot)
-					$newKey = substr($key, 0, -1);
+					$newKey = substr((string) $key, 0, -1);
 					$newVal = self::removeDotsFromTypoScriptArray($val);
 
 				} else {

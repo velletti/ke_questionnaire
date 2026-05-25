@@ -1,9 +1,9 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -104,7 +104,7 @@ class ResultQuestion extends AbstractEntity {
 	/**
 	 * Default constructor.
 	 */
-	public function __construct() {
+	public function __construct(private readonly PersistenceManager $persistenceManager) {
 		// Do not remove the next line: It would break the functionality
 		$this->initStorageObjects();
 	}
@@ -191,8 +191,9 @@ class ResultQuestion extends AbstractEntity {
 				if ($checkAnswer->getCol() > 0){
 					$found = false;
 					foreach ($this->getAnswers() as $answer){
-						if ($answer->getAnswer() === $checkAnswer->getAnswer() 
-								AND $answer->getCol() == $checkAnswer->getCol()) $found = true;
+						if ($answer->getAnswer() === $checkAnswer->getAnswer() && $answer->getCol() == $checkAnswer->getCol()) {
+                            $found = true;
+                        }
 					}
 					if (!$found){
 						$this->addAnswer($checkAnswer);
@@ -239,7 +240,7 @@ class ResultQuestion extends AbstractEntity {
  public function removeAnswer(ResultAnswer $answerToRemove): void {
 	    try {
             $this->answers->detach($answerToRemove);
-        } catch(\Exception $e){
+        } catch(\Exception){
 	        // ignore it detach throws an error !!
         }
 	}
@@ -267,7 +268,7 @@ class ResultQuestion extends AbstractEntity {
 			$rAnswer->setClone(0);
 			$rAnswer->setCloneTitle('');
 		}
-		$persistenceManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+		$persistenceManager = $this->persistenceManager;
 		$persistenceManager->persistAll();
 	}
 
@@ -293,7 +294,7 @@ class ResultQuestion extends AbstractEntity {
 	 * @return array $answers
 	 */
 	public function getClonedAnswers() {
-		$cloned = array();
+		$cloned = [];
         foreach ($this->answers as $answer){
             if ($answer->getClone() > 0) {
                 $cloned[$answer->getClone()]['title'] = $answer->getCloneTitle();
@@ -375,7 +376,7 @@ class ResultQuestion extends AbstractEntity {
 	 * @return integer $maxPoints
 	 */
 	public function getMaxPoints() {
-		if ($this->maxPoints == 0 AND $this->getQuestion()->getShortType() == 'Question' AND method_exists($this->getQuestion(), 'getMaxPoints')){
+		if ($this->maxPoints == 0 && $this->getQuestion()->getShortType() == 'Question' && method_exists($this->getQuestion(), 'getMaxPoints')){
 			$this->maxPoints = $this->getQuestion()->getMaxPoints();
 		}
 		return $this->maxPoints;
@@ -418,7 +419,7 @@ class ResultQuestion extends AbstractEntity {
 	 * return boolean
 	 */
 	public function isAnsweredCorrectly() {
-		if(count($this->getAnswers())){
+		if(count($this->getAnswers()) > 0){
 			foreach ($this->getAnswers() as $answer) {
 				if ($answer->canBeAnsweredCorrectly()){
 					$answer->setResultquestion($this);
@@ -429,8 +430,9 @@ class ResultQuestion extends AbstractEntity {
 			}
 			return true;
 		}
-		else
-			return false;
+		else {
+            return false;
+        }
 
 	}
 	
@@ -441,15 +443,16 @@ class ResultQuestion extends AbstractEntity {
      */
 	public function canBeAnsweredCorrectly() {
 	    $canBe = false;
-		if($this->getQuestion()->getType() == 'Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question') {
-			if (count($this->getAnswers())) {
+		if($this->getQuestion()->getType() == \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class) {
+			if (count($this->getAnswers()) > 0) {
 				foreach ($this->getAnswers() as $answer) {
 					if ($answer->canBeAnsweredCorrectly()) {
 						$canBe = true;
 					}
 				}
-			} else
-				$canBe = true;
+			} else {
+                $canBe = true;
+            }
 		}
 
         return $canBe;

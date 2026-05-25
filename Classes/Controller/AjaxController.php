@@ -1,6 +1,8 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 /***************************************************************
@@ -43,13 +45,15 @@ class AjaxController extends ActionController {
   * @return string In most cases JSON
   */
  #[IgnoreValidation([])]
- public function ajaxAction($type, $arguments = array()): \Psr\Http\Message\ResponseInterface {
+ public function ajaxAction($type, $arguments = []): ResponseInterface {
 		$requestedClassName = 'Kennziffer\\KeQuestionnaire\\Ajax\\' . $type;
 		if (class_exists($requestedClassName)) {
-			$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance($requestedClassName);
+			$object = GeneralUtility::makeinstance($requestedClassName);
 			$object->settings = $this->settings;
 			return $this->htmlResponse($object->processAjaxRequest($arguments));
-		} else return $this->htmlResponse('');
+		} else {
+            return $this->htmlResponse('');
+        }
   return $this->htmlResponse();
 	}
 }

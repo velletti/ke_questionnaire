@@ -1,6 +1,7 @@
 <?php
 namespace Kennziffer\KeQuestionnaire\Domain\Model;
 
+use Kennziffer\KeQuestionnaire\Domain\Model\AnswerType\Radiobutton;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /***************************************************************
@@ -161,7 +162,7 @@ class ResultAnswer extends AbstractEntity {
 		// if we add for each radiobutton a hidden field for the value col, we have more than one entry in DB
 		// so this is only solveable if we add ONE hidden field for ALL radiobuttons.
 		// if you can fix this with JavaScript then you can remove this part.
-		if ($this->getAnswer()->getType() == 'Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\Radiobutton') {
+		if ($this->getAnswer()->getType() == Radiobutton::class) {
 			$this->setValue($this->getAnswer()->getUid());
 		}
 	}
@@ -233,20 +234,24 @@ class ResultAnswer extends AbstractEntity {
 			case 'Checkbox':
 				//get correct answers. It is possible to have multiple correct answer
 				$answers = $this->getResultquestion()->getQuestion()->getAnswers();
-				$correctAnswersUids = array();
+				$correctAnswersUids = [];
 				foreach($answers as $answer){
 					/** @var $answer \Kennziffer\KeQuestionnaire\Domain\Model\Answer */
-					if($answer->getIsCorrectAnswer()) $correctAnswersUids[] = (int) $answer->getUid();
+					if ($answer->getIsCorrectAnswer()) {
+                        $correctAnswersUids[] = (int) $answer->getUid();
+                    }
 				}
 				array_unique($correctAnswersUids);
 				sort($correctAnswersUids);
 
-				/** @var ObjectStorage<\Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer> $resultAnswers */
+				/** @var ObjectStorage<ResultAnswer> $resultAnswers */
     $resultAnswers = $this->getResultquestion()->getAnswers();
-				$resultAnswerUids = array();
+				$resultAnswerUids = [];
 				foreach($resultAnswers as $resultAnswer){
 					/** @var $resultAnswer \Kennziffer\KeQuestionnaire\Domain\Model\ResultAnswer */
-					if($resultAnswer->getValue()) $resultAnswerUids[] = (int) $resultAnswer->getValue();
+					if ($resultAnswer->getValue()) {
+                        $resultAnswerUids[] = (int) $resultAnswer->getValue();
+                    }
 				}
 				array_unique($resultAnswerUids);
 				sort($resultAnswerUids);
@@ -261,34 +266,43 @@ class ResultAnswer extends AbstractEntity {
 					//if( intval($this->getValue()) ==  $firstAnswer ) return true;
 					//else return false;
 				}
-				else return false;
+				else {
+                    return false;
+                }
 			break;
 			case 'Radiobutton':
-					if ($this->getAnswer()->getIsCorrectAnswer()) return true;
-					else return false;
+					if ($this->getAnswer()->getIsCorrectAnswer()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
 				break;
 			case 'SingleInput':
 			case 'MultiInput':
-					if ($this->getAnswer()->isValid($this->getValue())) return true;
-					else return false;
+					if ($this->getAnswer()->isValid($this->getValue())) {
+                        return true;
+                    } else {
+                        return false;
+                    }
 				break;
 			case 'SingleSelect':
 				$correctAnswers = $this->getAnswer()->getComparisonTextArray();
-				if(in_array($this->getValue(), $correctAnswers) || isset($correctAnswers[$this->getValue()]))
-					return true;
-				return
-					false;
+                return in_array($this->getValue(), $correctAnswers) || isset($correctAnswers[$this->getValue()]);
 				break;
 			case 'ClozeText':
 			case 'ClozeTextDD':
 					if ($this->getAnswer()->getUserText($this->getResultquestion()->getAnswers(),$this->getResultquestion()->getQuestion(), false) == $this->getAnswer()->getText()){
 						return true;
-					} else return false;
+					} else {
+                        return false;
+                    }
 				break;
 			case 'DDImage':
 					if ($this->getAnswer()->getAreaIndex() == $this->getValue()) {
 							return true;
-					} else return false;
+					} else {
+                        return false;
+                    }
 				break;
 			default:
 					return false;
@@ -314,8 +328,11 @@ class ResultAnswer extends AbstractEntity {
 				break;
 			case 'SingleInput':
 			case 'MultiInput':
-					if ($this->getAnswer()->getValidationType() == 'compareText' OR $this->getAnswer()->getValidationType() == 'keywords' ) return true;
-					else return false;
+					if ($this->getAnswer()->getValidationType() == 'compareText' || $this->getAnswer()->getValidationType() == 'keywords') {
+                        return true;
+                    } else {
+                        return false;
+                    }
 				break;
 			default:
 				// no correct answer possible

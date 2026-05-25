@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kennziffer\KeQuestionnaire\Domain\Model\QuestionType;
 
 use Kennziffer\KeQuestionnaire\Domain\Model\Question;
@@ -34,4 +37,3 @@ use Kennziffer\KeQuestionnaire\Domain\Model\Question;
  */
 class PageBreak extends Question {
 }
-?>

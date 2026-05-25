@@ -16,7 +16,7 @@ namespace Kennziffer\KeQuestionnaire\Utility ;
  *
  * inspirerd from Georg Ringer news Extension
  */
-use TYPO3\CMS\Core\Core\Environment;
+
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
