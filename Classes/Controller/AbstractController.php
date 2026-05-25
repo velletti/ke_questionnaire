@@ -155,7 +155,8 @@ class AbstractController extends ActionController {
 	 * @return string
 	 */
 	#[\Override]
-    protected function getErrorFlashMessage(): bool|string {
+    protected function getErrorFlashMessage(): bool|string
+    {
         $defaultFlashMessage = parent::getErrorFlashMessage();
 		$locallangKey = sprintf('error.%s.%s', $this->request->getControllerName(), $this->actionMethodName);
                 
