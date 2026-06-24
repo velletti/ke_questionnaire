@@ -641,12 +641,15 @@ class CsvExport {
                             } else {
                                 $row['ra_value'] = str_replace( $this->getText(), " ", $row['ra_value'] );
                                 $row['ra_value'] =strip_tags(nl2br($row['ra_value']) );
+                                $row['ra_value'] =str_replace( "\r" , " " , $row['ra_value'] );
+                                $row['ra_value'] =str_replace( "\n" , " " , $row['ra_value'] );
                                 $val = $this->getText().$row['ra_value'].$this->getText();
                             }
                             if ($row['ra_additional_value']){
                                 $row['ra_additional_value'] = str_replace( $this->getText(), " ", $row['ra_additional_value'] );
                                 $row['ra_additional_value'] = strip_tags(nl2br($row['ra_additional_value']) );
-
+                                $row['ra_additional_value'] =str_replace( "\r" , " " , $row['ra_additional_value'] );
+                                $row['ra_additional_value'] =str_replace( "\n" , " " , $row['ra_additional_value'] );
                                 if ($val != '') {
                                     $val .= ' ('.$row['ra_additional_value'].')';
                                 } else {

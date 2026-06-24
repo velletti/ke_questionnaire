@@ -2,6 +2,8 @@
 namespace Kennziffer\KeQuestionnaire\Domain\Repository;
 
 use Kennziffer\KeQuestionnaire\Domain\Model\Questionnaire;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Kennziffer\KeQuestionnaire\Service\PageService;
@@ -139,15 +141,40 @@ class QuestionnaireRepository extends Repository {
         $pageService = GeneralUtility::makeInstance(PageService::class);
         $pids = $pageService->getPidList($pid, 99);
         $query->setLimit(99);
-        $query->setOrderings([ "crdate" => "DESC" ]) ;
+        $query->setOrderings([ "endtime" => "DESC" ]) ;
         $query->matching(
             $query->logicalAnd(
                 $query->in('pid',$pids),
-                $query->equals('hidden', 0) )
+                $query->equals('hidden', 0),
+                $query->equals('Ctype', 'kequestionnaire_questionnaire')
+            )
         );
+        // $this->debugQuery($query);
         return $query->execute();
 
     }
-       
+    function debugQuery($query): void {
+        $search = [];
+        $replace = [];
+        // new way to debug typo3 db queries
+        $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
+        $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
+        echo $querystr ;
+        echo "<hr>" ;
+        $queryParams = array_reverse ( $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+        var_dump($queryParams);
+        $querystr .= ($query->getLimit() ?  " LIMIT " . $query->getLimit() : '' ) . ( $query->getOffset()  ? " OFFSET " . $query->getOffset() : '' ) ;
+        echo "<hr>" ;
+
+        foreach ($queryParams as $key => $value ) {
+            $search[] = ":" . $key ;
+            $replace[] = "'$value'" ;
+
+        }
+        echo str_replace( $search , $replace , (string) $querystr ) ;
+        /** @var QueryResult $result */
+        $result = $query->execute() ;
+        echo "<hr>Anzahl: " .  $result->count() ;
+        die;
+    }
 }
-?>

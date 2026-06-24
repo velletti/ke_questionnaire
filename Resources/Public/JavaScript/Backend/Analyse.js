@@ -9,6 +9,7 @@ class Analyse {
             button.addEventListener('click', (evt) => {
                 evt.preventDefault();
                 const progress = document.querySelector("#kequest_analyse-progress");
+                document.querySelector("#keq_analyse_scriptversion").innerHTML = "23.6.2026 - v15 "; // Update script version
                 const current =  1; // Initialize current
                 const max = parseInt(progress.getAttribute('aria-valuemax'), 10) || 0; // Initialize max
                 this.LoopUntilFinished(button, current, max);
@@ -23,6 +24,7 @@ class Analyse {
         const url = button.getAttribute('data-url');
         const onlyFinished = document.querySelector("#kequest_analyse-only-finished").checked ? 1 : 0; // Assuming there's a checkbox to filter only finished exports
         const progress = document.querySelector("#kequest_analyse-progress");
+
         // question Uid
         const uidDiv = document.querySelector("#keq_analyse_question_" + current);
         const uid = uidDiv ? uidDiv.getAttribute('data-uid') : null;
@@ -59,6 +61,32 @@ class Analyse {
                                 answerDiv.setAttribute('aria-valuemax', answer.max ? answer.max : 0);
                                 answerDiv.style.width = answer.width ? answer.width : '0%';
                                 answerDiv.innerHTML = answer.html; // Update answer HTML
+                                const answerDivHtml = document.querySelector("#keq_analyse_answer_" + answer.uid + "_html");
+                                if (answerDivHtml) {
+                                    answerDivHtml.innerHTML = answer.html; // Update answer HTML
+                                }
+                                if(answer.input) {
+                                    const inputElement = document.querySelector("#keq_analyse_answer_" +  answer.uid + "_input" );
+                                    if(inputElement) {
+                                        inputElement.innerHTML = answer.input; // Update input value
+                                        inputElement.classList.add('border');
+                                        inputElement.classList.add('p-2');
+                                        inputElement.classList.add('mx-3');
+
+                                        const toggleDiv = document.querySelector("#keq_analyse_answer_" + answer.uid + "_toggle");
+                                        if (toggleDiv) {
+
+                                            toggleDiv.style.cursor = 'row-resize';
+                                            toggleDiv.addEventListener('click', () => {
+                                                inputElement.classList.toggle('show');
+                                            });
+                                            const toggleDivArrow = document.querySelector("#keq_analyse_answer_" + answer.uid + "_toggle .d-none");
+                                            if (toggleDivArrow) {
+                                                toggleDivArrow.classList.remove('d-none');
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         });
                     }

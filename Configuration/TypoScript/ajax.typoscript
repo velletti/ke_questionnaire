@@ -8,12 +8,22 @@ keqAjaxResponse {
     headerData >
     config {
         no_cache = 1
-        disableAllHeaderCode = 1
-        additionalHeaders.10.header = Content-type:text/plain; charset=utf-8
+
+        # Ersetzt das veraltete disableAllHeaderCode
+        disablePageHeaderAndFooter = 1
+
+        # Neue Syntax für HTTP-Header ab v12/v13
+        headers {
+            10 {
+                header = Content-Type: text/plain; charset=utf-8
+            }
+        }
+
         xhtml_cleaning = 0
         admPanel = 0
         debug = 0
     }
+
     10 = USER_INT
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
@@ -22,11 +32,10 @@ keqAjaxResponse {
         vendorName = Kennziffer
         controller = Ajax
         action = ajax
-        switchableControllerActions {
-            Ajax {
-                1 = ajax
-            }
-        }
+
+        # switchableControllerActions wurde ersatzlos entfernt.
+        # Die Ziel-Action wird oben über "action = ajax" definiert.
+
         settings < plugin.tx_kequestionnaire.settings
         persistence < plugin.tx_kequestionnaire.persistence
     }

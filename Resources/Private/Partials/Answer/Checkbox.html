@@ -1,19 +1,26 @@
 {namespace ke=Kennziffer\KeQuestionnaire\ViewHelpers}
 <f:alias map="{resultAnswer: '{ke:getResultAnswer(result: newResult, questionUid: question.uid, answerUid: answer.uid)}'}">
 	<f:form.hidden name="newResult[questions][{question.uid}][answers][{answer.uid}][answer]" value="{answer.uid}" />
-	<div class="keqAnswerWrap keqAnswerCheckbox">	
+	<div class="keqAnswerWrap keqAnswerCheckbox d-flex flex-wrap align-items-center">
 		<f:form.checkbox id="keq{question.uid}a{answer.uid}" name="newResult[questions][{question.uid}][answers][{answer.uid}][value]"
 						 value="{answer.uid}"
 						 checked="{f:if(condition: '{resultAnswer.value}=={answer.uid}', then: 'true', else: 'false')}"
 						 data="{mandatory: question.isMandatory, minAnswers: question.minAnswers, maxAnswers: question.maxAnswers}"
 		/>
-		<label for="keq{question.uid}a{answer.uid}" class="radio_checkbox">&nbsp;</label>
+		<label for="keq{question.uid}a{answer.uid}" class="radio_checkbox mb-0 mr-2">&nbsp;</label>
+
 		<f:if condition="{answer.text}">
 			<f:then><f:format.html>{answer.text}</f:format.html></f:then>
 			<f:else>{answer.title}</f:else>
 		</f:if>
+
 		<f:if condition="{answer.showTextfield}">
-			<f:form.textfield name="newResult[questions][{question.uid}][answers][{answer.uid}][additionalValue]" disabled="{f:if(condition: '{resultAnswer.value}=={answer.uid}', then: '', else: 'disabled')}" value="{f:if(condition: resultAnswer.additionalValue, then: resultAnswer.additionalValue, else: '')}"/>
+			<f:form.textfield
+					class="form-control w-100 flex-lg-grow-1 w-lg-auto ml-lg-4 mt-2 mt-lg-0"
+					name="newResult[questions][{question.uid}][answers][{answer.uid}][additionalValue]"
+					disabled="{f:if(condition: '{resultAnswer.value}=={answer.uid}', then: '', else: 'disabled')}"
+					value="{f:if(condition: resultAnswer.additionalValue, then: resultAnswer.additionalValue, else: '')}"
+			/>
 		</f:if>
 	</div>
 </f:alias>

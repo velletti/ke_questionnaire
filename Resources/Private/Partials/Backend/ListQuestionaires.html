@@ -11,7 +11,7 @@
     </div>
 
     <f:for each="{questionnaires}" as="questionnaire">
-        <div class="row" onfocus="this.classList.add('active');" onblur="this.classList.remove('active');" onmouseover="this.classList.add('bg-info');" onmouseout="this.classList.remove('bg-info');">
+        <div class="row my-1" onfocus="this.classList.add('active');" onblur="this.classList.remove('active');" onmouseover="this.classList.add('bg-info');" onmouseout="this.classList.remove('bg-info');">
             <div class="col-1">
                 <a class="btn btn-sm btn-secondary" href="{be:moduleLink(route:'{route}', arguments: '{function: \'{module}\',moduleData: \'{module}\',id: questionnaire.pid, uid: questionnaire.uid}')}">
                     {questionnaire.uid}

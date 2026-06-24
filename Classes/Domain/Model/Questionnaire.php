@@ -252,7 +252,7 @@ class Questionnaire extends AbstractEntity {
 
 			return $this->questionsByPage[$page];
 		} else {
-			return $this->questionsForPage;
+			return $this->questionsByPage[1];
 		}
 	}
 
@@ -424,8 +424,10 @@ class Questionnaire extends AbstractEntity {
   * @return void
   */
  public function setQuestions(QueryResultInterface $questions): void {
-		$questions = $this->checkNumbering($questions);
-		$this->questions = $questions;
+     // JVE 2026 :  looks strange that this exists twice !
+     // $questions = $this->checkNumbering($questions);
+
+     $this->questions = $questions;
 		$this->questionsByPage = [];
 
 		if($questions->count()) {			
@@ -433,8 +435,10 @@ class Questionnaire extends AbstractEntity {
 			$pageStorage = GeneralUtility::makeInstance(ObjectStorage::class);
 			
 			// seperate all questions for each page
-			foreach($questions as $question) {
-				if($question instanceof PageBreak) {
+            /** @var Question $question */
+            foreach($questions as $question) {
+				if($question->getType()  == PageBreak::class ) {
+                    unset($pageStorage);
 					$pageStorage = GeneralUtility::makeInstance(ObjectStorage::class);
 					$page++;
 					continue;

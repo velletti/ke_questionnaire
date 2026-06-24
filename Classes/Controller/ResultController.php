@@ -162,6 +162,7 @@ class ResultController extends AbstractController
 
             }
             $pid = $this->questionnaire->getStoragePid();
+
             //check for the Access-Type
 
             switch ($this->settings['accessType']) {
@@ -184,14 +185,14 @@ class ResultController extends AbstractController
 
                     break;
             }
-            // $newResult = $this->checkRestart($newResult);
-            //check if the max participations are reached
-            if (!$this->checkMaxParticipations()) {
-                return $this->redirect('maxParticipations');
-            }
+
             $this->resultRepository->add($newResult);
             $persistenceManager->persistAll();
 
+            //check if the max participations are reached
+            if (!$this->checkMaxParticipations($newResult)) {
+                return $this->redirect('maxParticipations');
+            }
             //get the correct requested start-page
             if ($requestedPage == 0 && !$this->settings['description']) {
                 $requestedPage = 1;
@@ -229,10 +230,10 @@ class ResultController extends AbstractController
             $questions = $this->questionRepository->findAll();
             $this->questionnaire->setQuestions($questions);
             if ($this->settings['randomQuestionsMax'] > 0) {
+                $debug [] = 'Line ' . __LINE__ . " | "  . 'shuffle  Questions ' ;
                 $this->shuffleQuestions();
-                $questions = $this->questionnaire->getQuestionsForPage($requestedPage);
             }
-
+            $questions = $this->questionnaire->getQuestionsForPage($requestedPage);
             /**
              * @var ResultQuestionRepository $resultQuestionRepository
              */
@@ -240,7 +241,7 @@ class ResultController extends AbstractController
 
             foreach ($questions as $question) {
                 /** @var Question $question */
-                $debug[] = 'Line ' . __LINE__ . " | "  . ' Question Uid: ' . $question->getUid() . ' - ' . $question->getTitle();
+                $debug[] = 'Line ' . __LINE__ . " | "  . ' After Shuffle, / paging: Question Uid: ' . $question->getUid() . ' - ' . $question->getTitle();
                 $resultQuestion = new ResultQuestion();
                 $resultQuestion->setQuestion($question);
                 $resultQuestion->setPid($newResult->getPid());
@@ -322,11 +323,11 @@ class ResultController extends AbstractController
                     $this->oldResult = clone $result;
 
                     if (array_key_exists('questions', $this->temp_result) && count($this->temp_result['questions']) > 0) {
-                        $debug[] = 'questions found in temp_result: ' . count($this->temp_result['questions']);
+                        $debug[] = "line: " . __LINE__ .' questions found in temp_result: ' . count($this->temp_result['questions']);
                         foreach ($this->temp_result['questions'] as $formquestion) {
                             /** @var ResultQuestion $resultQuestion */
                             $resultQuestion = $result->getResultQuestionByQuestionUid(intval($formquestion['question']));
-                            $debug[] = '$form question ID: ' . intval($formquestion['question']);
+                            $debug[] = "line: " . __LINE__ .' $form question ID: ' . intval($formquestion['question']);
 
                             if ($resultQuestion) {
                                 $debug[] = 'Line ' . __LINE__ . " | "  . 'ResultQuestion found ';
@@ -351,58 +352,78 @@ class ResultController extends AbstractController
 
                                     $isAnswered = false;
                                     $answeredValue = false;
-                                    if ($formAnswer['value'] || $formAnswer['answer']) {
+                                    if ( $formAnswer['answer'] && $formAnswer['answer'] > 0 ) {
                                         $answer = $answerRepository->findByUidFree(intval($formAnswer['answer']));
+                                        $debug[] = 'Line ' . __LINE__ . " | "  . 'Answer Type : ' . $answer->getType() ;
                                         /** @var ResultAnswer $resultAnswer */
                                         $resultAnswer = new ResultAnswer();
                                         $resultAnswer->setPid($result->getPid());
                                         $resultAnswer->setResultquestion($resultQuestion);
                                         $resultAnswer->setFeCruserId($this->userUid);
-                                        if ($formAnswer['additional_value']) {
-                                            $resultAnswer->setAdditionalValue($formAnswer['additional_value']);
+                                        if ($formAnswer['additionalValue']) {
+                                            $resultAnswer->setAdditionalValue( strip_tags($formAnswer['additionalValue']));
+                                            $debug[] = 'Line ' . __LINE__ . " | " . 'Additional value : ' . $formAnswer['additionalValue'];
                                         } else {
                                             $resultAnswer->setAdditionalValue('');
                                         }
 
                                         if (
-                                            $answer->getType() == Radiobutton::class ||
                                             $answer->getType() == Checkbox::class
-
                                         ) {
                                             $resultAnswer->setValue($formAnswer['answer']);
                                             if ($formAnswer['answer'] && $formAnswer['value']) {
-                                                $debug[] = 'Line ' . __LINE__ . " | "  . 'Special Type radio/Checkbox Button: ' . $formAnswer['answer'];
+
+                                                $debug[] = 'Line ' . __LINE__ . " | " . 'Special Type Checkbox : ' . $formAnswer['answer'];
+                                                //   $debug[] = var_export( $formAnswer , true ) ;
+                                                $debug[] = 'Line ' . __LINE__ . " | " . 'Title of  Answer used: ' . $formAnswer['answer'];
+                                                $answeredValue = $answer->getTitle();
+                                                $isAnswered = true;
+                                            } else {
+                                                $isAnswered = false;
+                                              //  $debug[] = 'Line ' . __LINE__ . " | " . 'No Answer value in array ?? ' . var_export($formAnswer, true);
+                                            }
+
+
+                                        } else if (
+                                            $answer->getType() == Radiobutton::class
+                                        ) {
+                                            $resultAnswer->setValue($formAnswer['answer']);
+                                                $debug[] = 'Line ' . __LINE__ . " | "  . 'Special Type : ' . $formAnswer['answer'];
                                                 //   $debug[] = var_export( $formAnswer , true ) ;
                                                 $debug[] = 'Line ' . __LINE__ . " | "  . 'Title of  Answer used: ' . $formAnswer['answer'];
                                                 $answeredValue = $answer->getTitle();
                                                 $isAnswered = true;
-                                            }
+
                                         } else {
                                             $resultAnswer->setValue($formAnswer['value']);
                                             if ($formAnswer['value']) {
-                                                $debug[] = 'Line ' . __LINE__ . " | "  . 'Answer value used: ' . $formAnswer['value'];
-                                                $answeredValue = $formAnswer['value'];
+                                                $debug[] = 'Line ' . __LINE__ . " | "  . 'Answer value used: ' . strip_tags($formAnswer['value']);
+                                                $answeredValue = strip_tags( $formAnswer['value']);
                                                 $isAnswered = true;
                                             } else {
                                                 $isAnswered = false;
-                                                // $debug[] = 'Line ' . __LINE__ . " | "  . 'No Answer value in array ?? ' . var_export($formAnswer , true ) ;
+                                               // $debug[] = 'Line ' . __LINE__ . " | "  . 'No Answer value in array ?? ' . var_export($formAnswer , true ) ;
                                             }
                                         }
 
-                                        $oldResultAnswer = $resultAnswerRepository->findForResultQuestionAndAnswerRaw(
+                                        $oldResultAnswers = $resultAnswerRepository->findForResultQuestionAndAnswerRaw(
                                             $resultQuestion->getUid(),
                                             $answer->getUid(),
                                             false);
-                                        if ($oldResultAnswer && $oldResultAnswer->getFirst() instanceof ResultAnswer) {
-                                            $debug[] = 'Line ' . __LINE__ . " | "  . 'removed Old Answer with Id: ' . $oldResultAnswer->getFirst()->getUid();
-                                            $resultAnswerRepository->remove($oldResultAnswer->getFirst());
+                                        if ($oldResultAnswers && $oldResultAnswers->getFirst() instanceof ResultAnswer) {
+                                            $debug[] = 'Line ' . __LINE__ . " | " . 'removed Old Answer with Id: ' . $oldResultAnswers->getFirst()->getUid();
+                                            $resultAnswerRepository->remove($oldResultAnswers->getFirst());
+                                            while ($oldResultAnswer = $oldResultAnswers->next()) {
+                                                $debug[] = 'Line ' . __LINE__ . " | " . 'removed Old Answer with Id: ' . $oldResultAnswer->getUid();
+                                                $resultAnswerRepository->remove($oldResultAnswer);
+                                            }
                                         }
 
                                         if ($isAnswered) {
                                             $resultAnswer->setAnswer($answer);
                                             $resultAnswer->setValue($answeredValue);
-                                            $debug[] = 'Line ' . __LINE__ . " | "  . 'Adding Answer ' . $answer . " with value " . $answeredValue . ' to Question: ' . $resultQuestion->getQuestion()->getUid();
-                                            $debug[] = 'Line ' . __LINE__ . " | "  . 'Answer Value is ' . $resultAnswer->getValue();
+                                            $debug[] = 'Line ' . __LINE__ . " | "  . 'Adding Answer ' . (string)$answer . " with value " . $answeredValue . ' to Question: ' . $resultQuestion->getQuestion()->getUid();
+                                            $debug[] = 'Line ' . __LINE__ . " | "  . 'Answer Value is: "' . $resultAnswer->getValue() . '"';
                                             $resultQuestion->addAnswer($resultAnswer);
                                         }
                                         unset($resultAnswer);
@@ -415,6 +436,7 @@ class ResultController extends AbstractController
 
                             }
                             $this->lastQuestion = $resultQuestion;
+                            $result->addQuestion($resultQuestion);
                             unset($resultQuestion);
                         }
                     }
@@ -493,8 +515,11 @@ class ResultController extends AbstractController
             return $this->moveToAction('new', $newResult, $currentPage, $isValid);
         }
 
-        //rework the result so all given answers to all questions (not only current page) are stored
+        //rework the result so all given answers to all questions (not only current page) are used for calculation of points and result
+
         $result = $this->getSavedAndMergedResult($newResult);
+
+
         //calculate the points of the questions and the result
         $debug[] = "Line " . __LINE__ . " | "  . 'Calculate Points for correct Answers ';
         $debug[] = $this->calculatePoints($this->settings['reducePointsforWrongAnswers'] , $result );
@@ -507,6 +532,7 @@ class ResultController extends AbstractController
 
         // check for last page
         if ($currentPage == $requestedPage) {
+            $debug[] = "Line " . __LINE__ . " | "  . 'current Page $currentPage  == requestedPage $requestedPage ';
             //if there is a redirect page, redirect
             //else forward to endAction
             if ($this->settings['redirectFinished']) {
@@ -538,6 +564,9 @@ class ResultController extends AbstractController
             //if not last page, set all stuff for questionnaire-page
         } else {
             //set the next page
+            $debug[] = "Line " . __LINE__ . " | "  . 'set Page  requestedPage  ' . $requestedPage;
+
+
             $this->questionnaire->setPage($requestedPage);
             //get questions
             $questions = $this->questionRepository->findAll();
@@ -547,7 +576,7 @@ class ResultController extends AbstractController
                 $this->questionnaire->settings['startTime'] = time();
             }
             $questions = $this->questionnaire->getQuestionsForPage($requestedPage);
-
+            $debug[] = "Line " . __LINE__ . " | "  . 'we have  ' . $this->questionnaire->getCountPages() . ' pages in this questionnaire ';
             $this->view->assign('questions', $questions);
             $this->view->assign('questionnaire', $this->questionnaire);
             $this->view->assign('newResult', $newResult);
@@ -640,9 +669,11 @@ class ResultController extends AbstractController
      */
     public function getSavedAndMergedResult(Result $newResult)
     {
-        $uid = $newResult->getUid();
-        $result = $uid === NULL ? $this->addResult($newResult) : $this->updateResult($newResult);
-        return $result;
+        if( $newResult->getUid() > 0 ) {
+           return $this->updateResult($newResult);
+        } else {
+            return $this->addResult($newResult);
+        }
     }
 
     /**
@@ -714,9 +745,9 @@ class ResultController extends AbstractController
         $formQuestions = $formResult->getQuestions();
 
         foreach ($formQuestions as $fQuestion) {
-            if ($fQuestion->getQuestion() && $fQuestion->getQuestion()->getType() == \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class) {
+           // if ($fQuestion->getQuestion() && $fQuestion->getQuestion()->getType() == \Kennziffer\KeQuestionnaire\Domain\Model\QuestionType\Question::class) {
                 $dbResult->addOrUpdateQuestion($fQuestion);
-            }
+           // }
         }
         $formResult->setQuestions($dbResult->getQuestions());
         return $formResult;
@@ -817,16 +848,21 @@ class ResultController extends AbstractController
      *
      * @return void
      */
-    public function checkMaxParticipations()
+    public function checkMaxParticipations($newResult)
     {
         if ($this->settings['participations']['max'] > 0) {
             if ($this->settings['accessType'] == 'free') {
                 $counted = $this->resultRepository->findAll()->count();
+                $debug = ['Line ' . __LINE__ . " | "  . 'AccessType: free - Counted Results: ' . $counted];
             } elseif ($this->settings['accessType'] == 'feUser') {
                 $counted = $this->resultRepository->findFinishedResultsByUser($this->user)->count();
+                $debug = ['Line ' . __LINE__ . " | "  . 'AccessType: feUser - Counted Results: ' . $counted];
             } elseif ($this->settings['accessType'] == 'authCode') {
                 $counted = $this->resultRepository->findFinishedResultsByAuthCode($this->authCode ? $this->authCode->getUid() : null)->count();
+                $debug = ['Line ' . __LINE__ . " | "  . 'AccessType: authCode ' . ($this->authCode->getUid() ?? 0 ) . ' - Counted Results: ' . $counted];
             }
+            $debug[] = 'Line ' . __LINE__ . " | "  . 'Max Participations allowed: ' . $this->settings['participations']['max'];
+            Debug::store(($newResult ? $newResult->getUid() : 0), $debug);
             if ($counted >= $this->settings['participations']['max']) {
                 return false;
             }

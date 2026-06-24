@@ -13,7 +13,6 @@ if (!defined('TYPO3')) {
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-
 ExtensionUtility::configurePlugin(
 	'KeQuestionnaire',
 	'Questionnaire',
@@ -21,14 +20,12 @@ ExtensionUtility::configurePlugin(
         ResultController::class => 'new,create,show,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,end',
         EvaluationController::class => 'show',
 		AjaxController::class => 'test',
-		ExportController::class => 'downloadPdf',
 	],
 	// non-cacheable actions
 	[
         ResultController::class => 'new,create,feUserAccess,maxParticipations,authCodeAccess,dependancyAccess,',
 		EvaluationController::class => '',
 		AjaxController::class => 'test',
-		ExportController::class => 'downloadPdf',
 	],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );

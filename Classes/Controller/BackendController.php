@@ -776,23 +776,62 @@ class BackendController
             $max = $query['max'];
             $questionUid = $query['uid'];
             $current = $query['current'];
-            /** @var ResultQuestionRepository $questionRepository */
-            $questionRepository = GeneralUtility::makeInstance(ResultQuestionRepository::class);
-            $results = $questionRepository->findByQuestionId($questionUid);
+            /** @var ResultQuestionRepository $resultQuestionRepository */
+            $resultQuestionRepository = GeneralUtility::makeInstance(ResultQuestionRepository::class);
+            $results = $resultQuestionRepository->findByQuestionId($questionUid);
             $answers = [];
+            $debug = [] ;
             $total = 0 ;
             /** @var ResultQuestion $result */
             foreach ( $results as $result ) {
                 $tempAnswers = [];
                 $temp = $result->getAnswers();
                 if( $temp ) {
+                    $total ++ ;
                     foreach ($temp as $answer) {
-                        $total ++ ;
-                        if( isset($answers[$answer->getAnswer()->getUid()])) {
-                            $answers[$answer->getAnswer()->getUid()]['value'] += 1 ;
-                        } else {
-                            $answers[$answer->getAnswer()->getUid()] = [ 'value'  => 1 , 'uid' => $answer->getAnswer()->getUid() ] ;
+
+                        if( str_ends_with((string) $_SERVER['SERVER_NAME'] , 'ddev.site' )) {
+                            $debug[] = "Value of " . $answer->getUid() . " = " . $answer->getValue() . " Type :" . $answer->getAnswer()->getType() ;
                         }
+                        if(
+                            $answer->getAnswer()->getType() == "Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\Checkbox"
+                        ) {
+                            if ($answer->getValue()) {
+                                if (isset($answers[$answer->getAnswer()->getUid()])) {
+                                    $answers[$answer->getAnswer()->getUid()]['value'] += 1;
+                                } else {
+                                    $answers[$answer->getAnswer()->getUid()] = ['value' => 1, 'uid' => $answer->getAnswer()->getUid() , 'input' => ''] ;
+                                }
+                            }
+                        } elseif ($answer->getAnswer()->getType() == "Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\MultiInput") {
+                            if ($answer->getValue() && trim($answer->getValue()) !== '' && trim($answer->getValue()) !== 'N/A') {
+                                if (isset($answers[$answer->getAnswer()->getUid()])) {
+                                    $answers[$answer->getAnswer()->getUid()]['value'] += 1;
+                                    $answers[$answer->getAnswer()->getUid()]['input'] .= "<br>" . nl2br( $answer->getValue());
+                                } else {
+                                    $answers[$answer->getAnswer()->getUid()] = ['value' => 1, 'uid' => $answer->getAnswer()->getUid() , 'input' => $answer->getValue()] ;
+                                }
+                            }
+                        } elseif ($answer->getAnswer()->getType() == "Kennziffer\\KeQuestionnaire\\Domain\\Model\\AnswerType\\SingleInput") {
+                            if ($answer->getValue() && trim($answer->getValue()) !== '' && trim($answer->getValue()) !== 'N/A') {
+                                if (isset($answers[$answer->getAnswer()->getUid()])) {
+                                    $answers[$answer->getAnswer()->getUid()]['value'] += 1;
+                                    $answers[$answer->getAnswer()->getUid()]['input'] .= "<br>" . nl2br( $answer->getValue());
+                                } else {
+                                    $answers[$answer->getAnswer()->getUid()] = ['value' => 1, 'uid' => $answer->getAnswer()->getUid() , 'input' => $answer->getValue()] ;
+                                }
+                            }
+                        } else {
+                            if( isset($answers[$answer->getAnswer()->getUid()])) {
+                                $answers[$answer->getAnswer()->getUid()]['value'] += 1 ;
+                            } else {
+                                $answers[$answer->getAnswer()->getUid()] = [ 'value'  => 1 , 'uid' => $answer->getAnswer()->getUid() , 'input' => ''] ;
+                            }
+                        }
+                        if( $answer->getAdditionalValue() ) {
+                            $answers[$answer->getAnswer()->getUid()]['input'] = $answer->getAdditionalValue() ;
+                        }
+
                     }
                 }
             }
@@ -802,7 +841,8 @@ class BackendController
                     $finalAnswers[] = [
                         'uid' => $answer['uid'],
                         'value' => $answer['value'],
-                        'html' => $answer['value'],
+                        'html' => $answer['value'] . " (" . (int)(($answer['value'] / $total )*100) ."%)",
+                        'input' => ($answer['input'] ? nl2br($answer['input']) : ''),
                         'width' => (int)(($answer['value'] / $total )*100) ."%",
                     ];
                 }
@@ -817,7 +857,9 @@ class BackendController
                 'message' => ( $current <= $max ? 'running' : 'finished' ),
                 'finished' => ( $current > $max ),
                 'success' => true,
+                'debug' => $debug
             ] ;
+
             $response = $responseFactory->createResponse()
                 ->withHeader('Content-Type', 'application/json; charset=utf-8');
             $response->getBody()->write(json_encode($data));

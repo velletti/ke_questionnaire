@@ -74,7 +74,7 @@ class AnswerValidation extends AbstractAjax {
         $queryBuilder->where( $expr->eq('uid',
             $queryBuilder->createNamedParameter($arguments['answerUid'],
                 Connection::PARAM_INT)) ) ;
-        $response = $queryBuilder->execute()->fetchAssociative();
+        $response = $queryBuilder->executeQuery()->fetchAssociative();
 
 
 
@@ -131,7 +131,9 @@ class AnswerValidation extends AbstractAjax {
                     $isValid = ( (string) $arguments['value'] !== '' )  ;
                     break ;
 
+                case "string2":
                 case "string2chars":
+                    $response['validation_type'] = "string2char" ;
                     $isValid = ( strlen( (string) $arguments['value'] ) > 1 )  ;
                     break ;
 
@@ -150,6 +152,12 @@ class AnswerValidation extends AbstractAjax {
 			$validation['error'] = 1;
 			$validation['info'] = $this->localization->translate('answerValidation.' . $response['validation_type'] ) .' ' . $pattern ;
 		}
+        if( $_ENV['TYPO3_CONTEXT'] === 'Development' || strpos($_SERVER['SERVER_NAME'] , 'dev') !== false ) {
+            $validation['debug'] = [
+                'arguments' => $arguments ,
+                'response' => $response ,
+            ] ;
+        }
 		
 		$json = $this->convertValueToJson($validation);
 		return trim($json);
