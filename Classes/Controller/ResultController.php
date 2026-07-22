@@ -327,12 +327,13 @@ class ResultController extends AbstractController
                         foreach ($this->temp_result['questions'] as $formquestion) {
                             /** @var ResultQuestion $resultQuestion */
                             $resultQuestion = $result->getResultQuestionByQuestionUid(intval($formquestion['question']));
+                            $debug[] = " *********** " ;
                             $debug[] = "line: " . __LINE__ .' $form question ID: ' . intval($formquestion['question']);
 
                             if ($resultQuestion) {
-                                $debug[] = 'Line ' . __LINE__ . " | "  . 'ResultQuestion found ';
+                                $debug[] = 'Line ' . __LINE__ . " | "  . 'ResultQuestion found Uid: ' .$resultQuestion->getUid() ;
                             }  else {
-                                $debug[] = 'Line ' . __LINE__ . " | "  . 'Create New ResultQuestion  ' . intval($formquestion['question']);
+                                $debug[] = 'Line ' . __LINE__ . " | "  . 'Create NEW ResultQuestion  ' . intval($formquestion['question']);
                                 $resultQuestion = new ResultQuestion();
                                 $question = $this->questionRepository->findByUidFree(intval($formquestion['question']));
                                 $resultQuestion->setQuestion($question);
@@ -358,7 +359,8 @@ class ResultController extends AbstractController
                                         /** @var ResultAnswer $resultAnswer */
                                         $resultAnswer = new ResultAnswer();
                                         $resultAnswer->setPid($result->getPid());
-                                        $resultAnswer->setResultquestion($resultQuestion);
+                                        // jv.: setting Result Question ID is done by AddAnswer to Question !!!
+                                        //$resultAnswer->setResultquestion($resultQuestion);
                                         $resultAnswer->setFeCruserId($this->userUid);
                                         if ($formAnswer['additionalValue']) {
                                             $resultAnswer->setAdditionalValue( strip_tags($formAnswer['additionalValue']));
@@ -424,20 +426,22 @@ class ResultController extends AbstractController
                                             $resultAnswer->setValue($answeredValue);
                                             $debug[] = 'Line ' . __LINE__ . " | "  . 'Adding Answer ' . (string)$answer . " with value " . $answeredValue . ' to Question: ' . $resultQuestion->getQuestion()->getUid();
                                             $debug[] = 'Line ' . __LINE__ . " | "  . 'Answer Value is: "' . $resultAnswer->getValue() . '"';
+                                            // $resultAnswerRepository->add($resultAnswer);
+                                            // manuuel add numbers of answers
                                             $resultQuestion->addAnswer($resultAnswer);
                                         }
-                                        unset($resultAnswer);
+
                                     }
                                     $resultQuestionRepository->update($resultQuestion);
                                     $persistenceManager->persistAll();
-
+                                    // unset($resultAnswer);
 
                                 }
 
                             }
                             $this->lastQuestion = $resultQuestion;
                             $result->addQuestion($resultQuestion);
-                            unset($resultQuestion);
+                            // unset($resultQuestion);
                         }
                     }
                 } else {

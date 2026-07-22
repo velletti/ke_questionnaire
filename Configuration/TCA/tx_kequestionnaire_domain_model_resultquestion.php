@@ -123,21 +123,18 @@ return [
             ],
         ],
         'answers' => [
-            'exclude' => 0,
+            'exclude' => false,
             'label' => 'LLL:EXT:ke_questionnaire/Resources/Private/Language/locallang_db.xlf:tx_kequestionnaire_domain_model_resultquestion.answers',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultanswer',
                 'foreign_field' => 'resultquestion',
-                'foreign_table_where' => ' AND tx_kequestionnaire_domain_model_resultanswer.pid = ###CURRENT_PID### ',
-
-                'maxitems'      => 9999,
+                // 'foreign_table_where' WURDE ENTFERNT (Ungültig für type inline)
+                'maxitems' => 9999,
                 'appearance' => [
-                    'collapseAll' => 1,
+                    'collapseAll' => true,
                     'levelLinksPosition' => 'top',
-                    'showSynchronizationLink' => 1,
-                    'showPossibleLocalizationRecords' => 1,
-                    'showAllLocalizationLink' => 1
+                    'showPossibleLocalizationRecords' => true,
                 ],
             ],
         ],
