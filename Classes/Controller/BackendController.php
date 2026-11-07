@@ -24,6 +24,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -210,6 +214,19 @@ class BackendController
     public function authCodesAction(ServerRequestInterface $request, $view): ResponseInterface
     {
         $query = $request->getQueryParams();
+        $pageId = (int)($query['id'] ?? 0);
+        if ($pageId > 0) {
+            $previewAttributes = PreviewUriBuilder::create($pageId)->buildDispatcherDataAttributes();
+            if ($previewAttributes !== null) {
+                $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+                $previewButton = $buttonBar->makeLinkButton()
+                    ->setHref('#')
+                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                    ->setIcon(GeneralUtility::makeInstance(IconFactory::class)->getIcon('actions-view-page', IconSize::SMALL))
+                    ->setDataAttributes($previewAttributes);
+                $buttonBar->addButton($previewButton, ButtonBar::BUTTON_POSITION_LEFT);
+            }
+        }
 
         if (is_array($query)) {
             $view->assignMultiple(
