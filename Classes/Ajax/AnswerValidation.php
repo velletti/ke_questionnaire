@@ -81,7 +81,7 @@ class AnswerValidation extends AbstractAjax {
         if ( $response ) {
 		    $validationType = $response['validation_type'] ;
 
-            if ( !$this->settings['answer']['validation'] ) {
+            if (empty($this->settings['answer']['validation'])) {
                 $this->settings['answer']['validation'] = [
                     "date" => "d.m.Y" , "numeric" => "," , "email" => "name@domain.end" , "string" => "1 char" ,  "string2char" => "2 chars or more" , ] ;
             }
@@ -89,8 +89,9 @@ class AnswerValidation extends AbstractAjax {
 
             switch($validationType) {
                 case "email":
+                    $value = trim((string)($arguments['value'] ?? ''));
                     try {
-                        if ( GeneralUtility::validEmail($arguments['value']) && filter_var($arguments['value'], FILTER_VALIDATE_EMAIL) ) {
+                        if ( GeneralUtility::validEmail($value) && filter_var($value, FILTER_VALIDATE_EMAIL) ) {
                             $isValid = true;
                         }
                     } catch (InvalidEmail) {
@@ -102,6 +103,10 @@ class AnswerValidation extends AbstractAjax {
                 case "date":
                     $split = strpos( (string) $pattern , ".") ? "." : "-";
                     $dateArray =  GeneralUtility::trimExplode($split , $arguments['value'] , true) ;
+                    // Partial input is also validated while the user is typing.
+                    if (count($dateArray) !== 3 || !ctype_digit(implode('', $dateArray))) {
+                        break;
+                    }
 
                     switch($pattern) {
                         case "d-m-Y" :
@@ -152,7 +157,7 @@ class AnswerValidation extends AbstractAjax {
 			$validation['error'] = 1;
 			$validation['info'] = $this->localization->translate('answerValidation.' . $response['validation_type'] ) .' ' . $pattern ;
 		}
-        if( $_ENV['TYPO3_CONTEXT'] === 'Development' || strpos($_SERVER['SERVER_NAME'] , 'dev') !== false ) {
+        if (($_ENV['TYPO3_CONTEXT'] ?? '') === 'Development' || strpos($_SERVER['SERVER_NAME'] ?? '', 'dev') !== false) {
             $validation['debug'] = [
                 'arguments' => $arguments ,
                 'response' => $response ,

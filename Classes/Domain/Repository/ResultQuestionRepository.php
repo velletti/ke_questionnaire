@@ -104,6 +104,27 @@ class ResultQuestionRepository extends Repository {
         );
         return $query->execute();
     }
+
+    /**
+     * Restrict analysis to existing, eligible results on the selected page.
+     *
+     * @param int[] $resultIds
+     * @return QueryResultInterface|array
+     */
+    public function findByQuestionIdAndResultIds(int $questionId, array $resultIds): QueryResultInterface|array
+    {
+        if ($resultIds === []) {
+            return [];
+        }
+
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->matching($query->logicalAnd(
+            $query->equals('question', $questionId),
+            $query->in('result', $resultIds)
+        ));
+        return $query->execute();
+    }
 	
 	/**
   * @param Question $question

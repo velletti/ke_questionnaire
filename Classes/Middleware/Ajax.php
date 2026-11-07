@@ -42,7 +42,7 @@ class Ajax implements MiddlewareInterface
             $requestedClassName = 'Kennziffer\\KeQuestionnaire\\Ajax\\' . $type;
             if (class_exists($requestedClassName)) {
                 $object = GeneralUtility::makeInstance($requestedClassName) ;
-                $object->settings = $this->settings;
+                $object->settings = [];
                 $result = $object->processAjaxRequest($arguments['arguments']);
             } else {
                 $result = '';
@@ -52,7 +52,7 @@ class Ajax implements MiddlewareInterface
                 $body = new Stream('php://temp', 'rw');
                 $body->write($result);
                 return (new Response())
-                    ->withHeader('content-type',  'text/json; charset=utf-8')
+                    ->withHeader('content-type',  'application/json; charset=utf-8')
                     ->withBody($body)
                     ->withStatus(200);
 

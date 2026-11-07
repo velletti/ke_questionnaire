@@ -764,7 +764,8 @@ class BackendController
                 }
                 $resultRepository = GeneralUtility::makeInstance(ResultRepository::class);
 
-                $view->assign('results', $resultRepository->countFinishedForPid($id,  -1) );
+                // Show all results on this page; per-question analysis has its own filters.
+                $view->assign('results', $resultRepository->countAllForPid($id) );
 
             }
 
@@ -795,16 +796,25 @@ class BackendController
             $current = $query['current'];
             /** @var ResultQuestionRepository $resultQuestionRepository */
             $resultQuestionRepository = GeneralUtility::makeInstance(ResultQuestionRepository::class);
-            $results = $resultQuestionRepository->findByQuestionId($questionUid);
+            $onlyFinished = (bool)($query['onlyFinished'] ?? true);
+            $resultRepository = GeneralUtility::makeInstance(ResultRepository::class);
+            $eligibleResults = $onlyFinished
+                ? $resultRepository->findFinishedForPidRaw((int)$query['id'])
+                : $resultRepository->findAllForPidRaw((int)$query['id']);
+            $results = $resultQuestionRepository->findByQuestionIdAndResultIds(
+                (int)$questionUid,
+                array_column($eligibleResults, 'uid')
+            );
             $answers = [];
             $debug = [] ;
-            $total = 0 ;
+            // Base percentages on all eligible participations, including skipped optional questions.
+            $total = count($eligibleResults);
             /** @var ResultQuestion $result */
             foreach ( $results as $result ) {
                 $tempAnswers = [];
                 $temp = $result->getAnswers();
-                if( $temp ) {
-                    $total ++ ;
+                // ObjectStorage is truthy even when it contains no answers.
+                if ($temp && count($temp) > 0) {
                     foreach ($temp as $answer) {
 
                         if( str_ends_with((string) $_SERVER['SERVER_NAME'] , 'ddev.site' )) {
@@ -858,6 +868,7 @@ class BackendController
                     $finalAnswers[] = [
                         'uid' => $answer['uid'],
                         'value' => $answer['value'],
+                        'max' => $total,
                         'html' => $answer['value'] . " (" . (int)(($answer['value'] / $total )*100) ."%)",
                         'input' => ($answer['input'] ? nl2br($answer['input']) : ''),
                         'width' => (int)(($answer['value'] / $total )*100) ."%",

@@ -110,6 +110,8 @@ jQuery(document).ready(function () {
 	});
 
 	jQuery(".tx-ke-questionnaire form").on("submit", function () {
+		// Recheck current values, including autofill, before using cached validation flags.
+		jQuery(this).find('.keqAnswerSingleInput input[type="text"]').trigger('keqValidate');
 		if (!checkMandatorySubmit()) {
 			return false;
 		}

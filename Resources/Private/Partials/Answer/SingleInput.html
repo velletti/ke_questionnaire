@@ -15,7 +15,10 @@
 	 * Checks the Answer for the inside Text and replaces it with zero if focused
 	 */
 	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>").focus( function() {
-		if(this.value=='<f:format.raw>{answer.inText}</f:format.raw>') this.value='';
+		if(this.value=='<f:format.raw>{answer.inText}</f:format.raw>') {
+			this.value='';
+			jQuery(this).trigger('input');
+		}
 	});
 </ke:JavaScript>
 <f:if condition="{question.isMandatory}">
@@ -23,7 +26,7 @@
 	/*
 	 * When the length of all input field values is > 0
 	 */
-	jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>" ).on( "change", function() {
+	jQuery( "#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>" ).on( "input change keqValidate", function() {
 		check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>();
 	});
 	check_keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw> = function() {
@@ -41,53 +44,78 @@
 <!-- Javascript to check the Validationtypes for the InputField-->
 <f:if condition="{answer.validationType}">
 	<ke:JavaScript>
-	/*
-	 * Checks the Answer for the type of the chosen validation
-	 */
-	jQuery("#keq<f:format.raw>{question.uid}</f:format.raw>a<f:format.raw>{answer.uid}</f:format.raw>")
-		.on( "input" , function() {
+	(function () {
 		var a_id = <f:format.raw>{answer.uid}</f:format.raw>;
 		var q_id = <f:format.raw>{question.uid}</f:format.raw>;
-		var val = jQuery(this).val();
-		var this_id = jQuery(this).attr('id');
+		var field = jQuery('#keq'+q_id+'a'+a_id);
+		var info = jQuery('#keq'+q_id+'a'+a_id+'info').attr('aria-live', 'polite');
+		var timer, request, lastValue;
+		var sequence = 0;
 
-		if ( val.length > 6 ) {
-			jQuery.ajax({
-				type: "GET",
-				url: 'keAnswerValidation.json',
-				data: 'type=2667&tx_kequestionnaire_questionnaire[type]=AnswerValidation&tx_kequestionnaire_questionnaire[arguments][answerUid]='+a_id+'&tx_kequestionnaire_questionnaire[arguments][value]='+val,
-
-				success: function(xdata){
-					// xdata = jQuery.parseJSON(jQuery.trim(data));
-
-					jQuery("#keqAnswerError"+a_id).val(xdata.error);
-					jQuery("#"+this_id+"info").html(xdata.info);
-					if(jQuery("#keqAnswerError"+a_id).length > 0) {
-						jQuery("html, body").animate({
-							scrollTop: jQuery("#"+this_id+"info").offset().top -100
-						}, 700);
-					}
-
-					/*
-					 *	if question property "must_be_correct" was set additionally,
-					 *	there will be a second "error"-marker-field (related to the question),
-					 *	which has to be adjusted.
-					 */
-					if(jQuery("#keqAnswerErrorQ"+q_id).length > 0) {
-						jQuery("#keqAnswerErrorQ"+q_id).val(xdata.error);
-					}
-
-					checkAnswerErrors();
-				},
-				error: function(x,y,z){
-					alert('An error has occurred:\n' + x + '\n' + y + '\n' + z);
-				}
-			});
-		} else {
-			if(jQuery("#keqAnswerErrorQ"+q_id).length > 0) {
-				jQuery("#keqAnswerErrorQ"+q_id).val( 1 );
-			}
+		function setError(error) {
+			jQuery('#keqAnswerError'+a_id).val(error);
+			jQuery('#keqAnswerErrorQ'+q_id).val(error);
+			checkAnswerErrors();
 		}
-	});
+
+		function validate(force) {
+			var value = field.val();
+			if (!force && value === lastValue) return;
+			lastValue = value;
+			var current = ++sequence;
+			clearTimeout(timer);
+			if (request) request.abort();
+			setError(1);
+			info.text('Prüfung läuft …');
+
+			function isCurrent() {
+				return current === sequence && field.val() === value;
+			}
+			function failed() {
+				if (!isCurrent()) return;
+				setError(1);
+				info.text('Die Eingabe konnte nicht geprüft werden. Bitte erneut versuchen. ');
+				jQuery('<button type="button"></button>').text('Erneut prüfen')
+					.on('click', function () { validate(true); }).appendTo(info);
+			}
+			timer = setTimeout(function () {
+				request = jQuery.ajax({
+					type: 'GET',
+					url: 'keAnswerValidation.json',
+					dataType: 'json',
+					timeout: 10000,
+					data: {
+						type: 2667,
+						'tx_kequestionnaire_questionnaire[type]': 'AnswerValidation',
+						'tx_kequestionnaire_questionnaire[arguments][answerUid]': a_id,
+						'tx_kequestionnaire_questionnaire[arguments][value]': value
+					},
+					success: function (data) {
+						if (!isCurrent()) return;
+						if (!data || (data.error !== 0 && data.error !== 1) || typeof data.info !== 'string') {
+							failed();
+							return;
+						}
+						info.text(data.info);
+						setError(data.error);
+					},
+					error: function (xhr, status) {
+						if (status !== 'abort') failed();
+					}
+				});
+			}, force ? 0 : 300);
+		}
+		field.on('input change keqValidate', function () { validate(false); });
+		jQuery(window).on('pageshow focus', function () { validate(false); });
+		// Some autofill providers change values without dispatching input/change.
+		var autofillTimer = setInterval(function () {
+			if (!document.documentElement.contains(field[0])) {
+				clearInterval(autofillTimer);
+				return;
+			}
+			if (field.val() !== lastValue) field.trigger('keqValidate');
+		}, 500);
+		validate(false);
+	})();
 	</ke:JavaScript>
 </f:if>
