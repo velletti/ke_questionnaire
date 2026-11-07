@@ -1,4 +1,4 @@
-**Fork for TYPO3 12 LTS**
+**Fork for TYPO3 13.4 LTS**
 
 This is NOT the offical Version of ke_questionnaire!
 =======================================================
@@ -6,7 +6,7 @@ I just made a fork and made changes, that enables the USE of TYPO3 11.5
 and i only use SOME of the features of ke_questionnaire, so i do not test everything.
 But: - Checkbox, Options and Export functions in backend are working
 
-Adjustments for LTS 12 are in work, but not ready
+Adjustments for LTS 13.4 are in work, but not ready
 
 ### installation
 
@@ -20,7 +20,7 @@ add this to you main composer.json
 
 then run 
 
-    composer req velletti/ke-questionnaire ^12.4 
+    composer req velletti/ke-questionnaire ^13.4 
 
 
 

@@ -2,6 +2,8 @@
 
 namespace Kennziffer\KeQuestionnaire\Controller;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository;
@@ -228,7 +230,14 @@ class ResultController extends AbstractController
             $this->questionnaire->setPage($requestedPage);
             //get the questions and add them to the questionnaire
             $questions = $this->questionRepository->findAll();
+
+            // update newResult Number of Questions
+
+
             $this->questionnaire->setQuestions($questions);
+            $newResult->setQuestions($questions);
+            $persistenceManager->persistAll();
+
             if ($this->settings['randomQuestionsMax'] > 0) {
                 $debug [] = 'Line ' . __LINE__ . " | "  . 'shuffle  Questions ' ;
                 $this->shuffleQuestions();
@@ -240,16 +249,21 @@ class ResultController extends AbstractController
             $resultQuestionRepository = GeneralUtility::makeinstance(ResultQuestionRepository::class);
 
             foreach ($questions as $question) {
-                /** @var Question $question */
-                $debug[] = 'Line ' . __LINE__ . " | "  . ' After Shuffle, / paging: Question Uid: ' . $question->getUid() . ' - ' . $question->getTitle();
-                $resultQuestion = new ResultQuestion();
-                $resultQuestion->setQuestion($question);
-                $resultQuestion->setPid($newResult->getPid());
-                $resultQuestion->setPage($this->questionnaire->getPage() );
-                $resultQuestion->setResult($newResult->getUid());
+                $existingResultQuestion = ($resultQuestionRepository->findByQuestionAndResultIdRaw($question, $newResult->getUid())[0] ?? false ) ;
+                if (!$existingResultQuestion) {
+                    /** @var Question $question */
+                    $debug[] = 'Line ' . __LINE__ . " | " . ' After Shuffle, / paging: Question Uid: ' . $question->getUid() . ' - ' . $question->getTitle();
+                    $resultQuestion = new ResultQuestion();
+                    $resultQuestion->setQuestion($question);
+                    $resultQuestion->setPid($newResult->getPid());
+                    $resultQuestion->setPage($this->questionnaire->getPage());
+                    $resultQuestion->setResult($newResult->getUid());
 
-                $resultQuestionRepository->add($resultQuestion);
-                $persistenceManager->persistAll();
+                    $resultQuestionRepository->add($resultQuestion);
+                    $persistenceManager->persistAll();
+                }  else {
+                    $debug[] = 'Line ' . __LINE__ . " | " . ' Existing Question Uid: ' . $question->getUid() . ' - ' . $question->getTitle();
+                }
             }
 
 
@@ -348,6 +362,7 @@ class ResultController extends AbstractController
                             }
 
                             $debug[] = '$formquestion Answers: ' . count($formquestion['answers'] ?? 0);
+                            $numberOfAnswers = 0 ;
                             if ( isset( $formquestion['answers'] ) && is_array($formquestion['answers'])) {
                                 foreach ($formquestion['answers'] as $formAnswer) {
 
@@ -360,7 +375,7 @@ class ResultController extends AbstractController
                                         $resultAnswer = new ResultAnswer();
                                         $resultAnswer->setPid($result->getPid());
                                         // jv.: setting Result Question ID is done by AddAnswer to Question !!!
-                                        //$resultAnswer->setResultquestion($resultQuestion);
+                                        $resultAnswer->setResultquestion($resultQuestion);
                                         $resultAnswer->setFeCruserId($this->userUid);
                                         if ($formAnswer['additionalValue']) {
                                             $resultAnswer->setAdditionalValue( strip_tags($formAnswer['additionalValue']));
@@ -426,21 +441,37 @@ class ResultController extends AbstractController
                                             $resultAnswer->setValue($answeredValue);
                                             $debug[] = 'Line ' . __LINE__ . " | "  . 'Adding Answer ' . (string)$answer . " with value " . $answeredValue . ' to Question: ' . $resultQuestion->getQuestion()->getUid();
                                             $debug[] = 'Line ' . __LINE__ . " | "  . 'Answer Value is: "' . $resultAnswer->getValue() . '"';
-                                            // $resultAnswerRepository->add($resultAnswer);
-                                            // manuuel add numbers of answers
-                                            $resultQuestion->addAnswer($resultAnswer);
+                                            $resultAnswerRepository->add($resultAnswer);
+                                            $persistenceManager->persistAll();
+                                            $numberOfAnswers ++ ;
                                         }
 
                                     }
-                                    $resultQuestionRepository->update($resultQuestion);
-                                    $persistenceManager->persistAll();
+
                                     // unset($resultAnswer);
 
                                 }
+                                $resultQuestionRepository->update($resultQuestion) ;
+                                $persistenceManager->persistAll();
+                                $debug[] = 'Line ' . __LINE__ . " | "  . 'Number of Answers for : "' . $resultQuestion->getUid() . '" is ' . $numberOfAnswers ;
+                                // now update field answers to $numberOfAnswers  in result Question where uid = $resultQuestion->getUid()
+
+                                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_kequestionnaire_domain_model_resultquestion');
+                                $query = $queryBuilder
+                                    ->update('tx_kequestionnaire_domain_model_resultquestion')
+                                    ->set('answers' ,  $numberOfAnswers )
+                                    ->where(
+                                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($resultQuestion->getUid(), \TYPO3\CMS\Core\Database\Connection::PARAM_INT))
+                                    );
+
+                                $updateAnswersField = $query->executeStatement()  ;
+
+                                //  do it manually
+
 
                             }
                             $this->lastQuestion = $resultQuestion;
-                            $result->addQuestion($resultQuestion);
+                            // $result->addQuestion($resultQuestion);
                             // unset($resultQuestion);
                         }
                     }

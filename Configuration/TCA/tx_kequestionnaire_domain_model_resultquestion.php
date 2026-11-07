@@ -129,7 +129,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_kequestionnaire_domain_model_resultanswer',
                 'foreign_field' => 'resultquestion',
-                // 'foreign_table_where' WURDE ENTFERNT (Ungültig für type inline)
                 'maxitems' => 9999,
                 'appearance' => [
                     'collapseAll' => true,
