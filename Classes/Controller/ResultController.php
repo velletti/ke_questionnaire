@@ -200,6 +200,10 @@ class ResultController extends AbstractController
                 $requestedPage = 1;
             }
         }
+        $pages = [];
+        $this->questionnaire->setPage($requestedPage);
+        $this->questionnaire->setQuestions($this->questionRepository->findAll());
+
         if ( $newResult && $newResult->getUid() ) {
             $debug[] = 'Line ' . __LINE__ . " | "  . 'New Result Uid: ' . $newResult->getUid();
             /* @var \Kennziffer\KeQuestionnaire\Domain\Repository\ResultQuestionRepository $resultQuestionsRepository */
@@ -207,11 +211,9 @@ class ResultController extends AbstractController
             $resultQuestions = $resultQuestionsRepository->findByResultId($newResult->getUid());
             if( $resultQuestions && count( $resultQuestions ) > 0 ) {
                 $debug[] = 'Line ' . __LINE__ . " | "  . 'Found existing ResultQuestions for Result Uid: ' . $newResult->getUid() . ' - count: ' . count( $resultQuestions );
-                $questions = [];
-                $pages = [];
-
                 foreach ( $resultQuestions as $resultQuestion ) {
                     /** @var ResultQuestion $resultQuestion */
+                    $newResult->addQuestion($resultQuestion);
                     $page = $resultQuestion->getPage();
                     $pages[$page][] = $resultQuestion->getQuestion();
                     $debug[] = 'Line ' . __LINE__ . " | " . ' Question Uid: ' . $resultQuestion->getQuestion()->getUid() . ' - ' . $resultQuestion->getQuestion()->getTitle();
@@ -220,27 +222,20 @@ class ResultController extends AbstractController
                 foreach ($pages as $page => $questionsOnPage ) {
                     $this->questionnaire->setShuffledQuestionsByPage($questionsOnPage, $page );
                 }
+                $questions = $pages[$requestedPage] ?? ($requestedPage == 0 ? ($pages[1] ?? null) : null);
 
             }
         }
 
         if (! $questions || count($questions) === 0 ) {
             $debug [] = 'Line ' . __LINE__ . " | "  . 'Set Questions for Page: ' . $requestedPage;
-            //set the requested page
-            $this->questionnaire->setPage($requestedPage);
-            //get the questions and add them to the questionnaire
-            $questions = $this->questionRepository->findAll();
-
-            // update newResult Number of Questions
-
-
-            $this->questionnaire->setQuestions($questions);
-            $newResult->setQuestions($questions);
-            $persistenceManager->persistAll();
-
             if ($this->settings['randomQuestionsMax'] > 0) {
                 $debug [] = 'Line ' . __LINE__ . " | "  . 'shuffle  Questions ' ;
                 $this->shuffleQuestions();
+            }
+            // Keep the saved selection on pages that have already been visited.
+            foreach ($pages as $page => $questionsOnPage) {
+                $this->questionnaire->setShuffledQuestionsByPage($questionsOnPage, $page);
             }
             $questions = $this->questionnaire->getQuestionsForPage($requestedPage);
             /**
@@ -260,8 +255,10 @@ class ResultController extends AbstractController
                     $resultQuestion->setResult($newResult->getUid());
 
                     $resultQuestionRepository->add($resultQuestion);
-                    $persistenceManager->persistAll();
+                    $newResult->addQuestion($resultQuestion);
                 }  else {
+                    $resultQuestion = $resultQuestionRepository->findByUid($existingResultQuestion['uid']);
+                    $newResult->addQuestion($resultQuestion);
                     $debug[] = 'Line ' . __LINE__ . " | " . ' Existing Question Uid: ' . $question->getUid() . ' - ' . $question->getTitle();
                 }
             }
@@ -269,6 +266,10 @@ class ResultController extends AbstractController
 
 
         }
+        // Persist the result-question relation so Extbase updates the question count in result.questions.
+        $this->resultRepository->update($newResult);
+        $persistenceManager->persistAll();
+
         if ($newResult->getCrdate() == 0) {
             $newResult->setCrdate(time());
         }
