@@ -65,16 +65,16 @@
 			var current = ++sequence;
 			clearTimeout(timer);
 			if (request) request.abort();
-			setError(1);
 			info.text('Prüfung läuft …');
+			setError(1);
 
 			function isCurrent() {
 				return current === sequence && field.val() === value;
 			}
 			function failed() {
 				if (!isCurrent()) return;
-				setError(1);
 				info.text('Die Eingabe konnte nicht geprüft werden. Bitte erneut versuchen. ');
+				setError(1);
 				jQuery('<button type="button"></button>').text('Erneut prüfen')
 					.on('click', function () { validate(true); }).appendTo(info);
 			}
